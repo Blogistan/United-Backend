@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CorePackages\nArchitecture.Core\Core.Persistence\Core.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\..\CorePackages\nArchitecture.Core\Core.Security\Core.Security.csproj" />
+  </ItemGroup>
+
 </Project>
