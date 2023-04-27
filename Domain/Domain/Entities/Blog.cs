@@ -49,3 +49,4 @@ namespace Domain.Entities
             this.ShareCount = shareCount;
         }
     }
+}

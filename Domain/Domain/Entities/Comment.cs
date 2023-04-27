@@ -37,3 +37,4 @@ namespace Domain.Entities
             this.UserId = userId;
         }
     }
+}
