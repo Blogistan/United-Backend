@@ -7,7 +7,7 @@ namespace Persistance
 {
     public static class PersistanceServiceRegistration
     {
-        public static IServiceCollection AddPersistanceSerices(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection AddPersistanceServices(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddSingleton<IBlogRepository, BlogRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
