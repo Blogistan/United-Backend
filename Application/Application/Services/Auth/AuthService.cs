@@ -1,4 +1,5 @@
 ﻿using Application.Services.Repositories;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
 using Core.Persistence.Paging;
 using Core.Security.EmailAuthenticator;
@@ -6,6 +7,8 @@ using Core.Security.Entities;
 using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
+using System.Text;
 
 namespace Application.Services.Auth
 {
@@ -19,10 +22,12 @@ namespace Application.Services.Auth
         private readonly IMailService mailService;
         private IOtpAuthenticatorHelper otpAuthenticatorHelper;
         private readonly IEmailAuthenticatorHelper emailAuthenticatorHelper;
+        private readonly IOtpAuthenticatorRepository otpAuthenticatorRepository;
 
         public AuthService(ITokenHelper tokenHelper, IRefreshTokenRepository refreshTokenRepository, ISiteUserRepository siteUserRepository, IEmailAuthenticatorRepository emailAuthenticatorRepository, IUserOperationClaimRepository userOperationClaimRepository, IMailService mailService,
             IOtpAuthenticatorHelper otpAuthenticatorHelper,
-            IEmailAuthenticatorHelper emailAuthenticatorHelper)
+            IEmailAuthenticatorHelper emailAuthenticatorHelper,
+            IOtpAuthenticatorRepository otpAuthenticatorRepository)
         {
             this.tokenHelper = tokenHelper;
             this.mailService = mailService;
@@ -31,6 +36,7 @@ namespace Application.Services.Auth
             this.emailAuthenticatorRepository = emailAuthenticatorRepository;
             this.userOperationClaimRepository = userOperationClaimRepository;
             this.otpAuthenticatorHelper = otpAuthenticatorHelper;
+            this.otpAuthenticatorRepository = otpAuthenticatorRepository;
         }
 
 
@@ -77,29 +83,101 @@ namespace Application.Services.Auth
 
         public async Task DeleteOldActiveRefreshTokens(User user)
         {
-            ICollection<RefreshToken> oldActiveTokens = await refreshTokenRepository.GetAllOldActiveRefreshTokenAsync(user,tokenHelper.RefreshTokenTTLOption);
+            ICollection<RefreshToken> oldActiveTokens = await refreshTokenRepository.GetAllOldActiveRefreshTokenAsync(user, tokenHelper.RefreshTokenTTLOption);
 
             await refreshTokenRepository.DeleteAsync(oldActiveTokens.ToList());
         }
 
         public async Task RevokeDescendantRefreshTokens(RefreshToken token, string IpAddress, string reason)
         {
+            RefreshToken childRefreshToken = (await refreshTokenRepository.GetAsync(rt => token.ReplacedByToken == rt.Token))!;
+            if (childRefreshToken == null) throw new BusinessException("Couldn't find child token for this current token.");
+
+
+            if (childRefreshToken.Revoked == null) await RevokeRefreshToken(childRefreshToken, IpAddress, reason, null);
+            else await RevokeDescendantRefreshTokens(childRefreshToken, IpAddress, reason);
+        }
+
+        public async Task<RefreshToken> RotateRefreshToken(User user, RefreshToken refreshToken, string ipAddress)
+        {
+            RefreshToken newToken = tokenHelper.CreateRefreshToken(user, ipAddress);
+            await RevokeRefreshToken(refreshToken, ipAddress, "New Refresh Token Created. ", newToken.Token);
+            await AddRefreshToken(newToken);
+            return newToken;
+        }
+
+        public async Task SendAuthenticatorCode(User user)
+        {
+            switch (user.AuthenticatorType)
+            {
+
+                case Core.Security.Enums.AuthenticatorType.Email:
+                    await SendAuthenticatorCodeWithEmail(user);
+                    break;
+            }
+        }
+        //This method could be updated.
+        private async Task SendAuthenticatorCodeWithEmail(User user)
+        {
+            EmailAuthenticator emailAuthenticator = await emailAuthenticatorRepository.GetAsync(x => x.UserId == user.Id);
+
+            string authCode = await emailAuthenticatorHelper.CreateEmailActivationCode();
+            emailAuthenticator.ActivationKey = authCode;
+
+            await emailAuthenticatorRepository.UpdateAsync(emailAuthenticator);
+
+
+            List<MailboxAddress> mailboxAddresses = new()
+            {
+                new MailboxAddress(Encoding.UTF8,user.FirstName,user.Email)
+            };
+
+            Mail mail = new()
+            {
+                ToList = mailboxAddresses,
+                Subject = AuthBusinessMessage.AuthenticatorCodeSubject,
+                TextBody = AuthBusinessMessage.AuthenticatorCodeTextBody(authCode)
+            };
+
+            await mailService.SendEmailAsync(mail);
+
+
+        }
+
+        public async Task VerifyAuthenticatorCode(User user, string code)
+        {
+            switch (user.AuthenticatorType)
+            {
+
+                case Core.Security.Enums.AuthenticatorType.Email:
+                    await VerifyEmailAuthenticatorCode(user,code);
+                    break;
+                case Core.Security.Enums.AuthenticatorType.Otp:
+                    break;
+                    
+            }
+        }
+
+        public async Task RevokeRefreshToken(RefreshToken refreshToken, string IpAddress, string reason, string? replacedByToken)
+        {
+            refreshToken.RevokedByIp = IpAddress;
+            refreshToken.Revoked = DateTime.UtcNow;
+            refreshToken.ReasonRevoked = reason;
+            refreshToken.ReplacedByToken = replacedByToken;
+            await refreshTokenRepository.UpdateAsync(refreshToken);
+        }
+        private async Task VerifyEmailAuthenticatorCode(User user, string code)
+        {
+            EmailAuthenticator emailAuthenticator = await emailAuthenticatorRepository.GetAsync(x => x.UserId == user.Id);
+
+            if (emailAuthenticator.ActivationKey != code)
+                throw new BusinessException(AuthBusinessMessage.InvalidAuthenticatorCode);
+            await emailAuthenticatorRepository.UpdateAsync(emailAuthenticator);
+        }
+        private async Task VerifyEmailOtpAuthenticatorCode(User user,string codeToVerify)
+        {
             
         }
-
-        public Task<RefreshToken> RotateRefreshToken(User user, RefreshToken refreshToken, string ipAddress)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SendAuthenticatorCode(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task VerifyAuthenticatorCode(User user, string code)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

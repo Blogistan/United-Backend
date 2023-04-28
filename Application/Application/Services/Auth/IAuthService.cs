@@ -14,7 +14,7 @@ namespace Application.Services.Auth
         Task DeleteOldActiveRefreshTokens(User user);
 
         Task RevokeDescendantRefreshTokens(RefreshToken token, string IpAddress, string reason);
-
+        public Task RevokeRefreshToken(RefreshToken refreshToken, string IpAddress, string reason, string? replacedByToken)
         Task<RefreshToken> RotateRefreshToken(User user, RefreshToken refreshToken, string ipAddress);
 
         Task<EmailAuthenticator> CreateEmailAutenticator(User user);
