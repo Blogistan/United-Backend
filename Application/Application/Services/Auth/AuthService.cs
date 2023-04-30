@@ -150,11 +150,12 @@ namespace Application.Services.Auth
             {
 
                 case Core.Security.Enums.AuthenticatorType.Email:
-                    await VerifyEmailAuthenticatorCode(user,code);
+                    await VerifyEmailAuthenticatorCode(user, code);
                     break;
                 case Core.Security.Enums.AuthenticatorType.Otp:
+                    await VerifyEmailOtpAuthenticatorCode(user, code);
                     break;
-                    
+
             }
         }
 
@@ -174,10 +175,17 @@ namespace Application.Services.Auth
                 throw new BusinessException(AuthBusinessMessage.InvalidAuthenticatorCode);
             await emailAuthenticatorRepository.UpdateAsync(emailAuthenticator);
         }
-        private async Task VerifyEmailOtpAuthenticatorCode(User user,string codeToVerify)
+        private async Task VerifyEmailOtpAuthenticatorCode(User user, string codeToVerify)
         {
-            
+            OtpAuthenticator otpAuthenticator = await otpAuthenticatorRepository.GetAsync(x => x.UserId == user.Id);
+            bool result = await otpAuthenticatorHelper.VerifyCode(otpAuthenticator.SecretKey, codeToVerify);
+            if (!result)
+                throw new BusinessException(AuthBusinessMessage.InvalidAuthenticatorCode); ;
+
+
+
+
         }
-        
+
     }
 }
