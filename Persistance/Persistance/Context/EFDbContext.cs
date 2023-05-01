@@ -1,9 +1,11 @@
 ﻿using Core.Persistence.Repositories;
 using Core.Security.Entities;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
 
 namespace Persistance.Context
 {
@@ -23,10 +25,12 @@ namespace Persistance.Context
         public DbSet<OtpAuthenticator> OtpAuthenticators { get; set; }
 
         protected IConfiguration Configuration { get; set; }
+        protected IHttpContextAccessor httpContextAccessor { get; set; }
 
         public EFDbContext(DbContextOptions dbContextOptions,
-            IConfiguration configuration) : base(dbContextOptions)
+            IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : base(dbContextOptions)
         {
+            this.httpContextAccessor = httpContextAccessor;
             this.Configuration = configuration;
 
         }
@@ -40,18 +44,25 @@ namespace Persistance.Context
         {
             IEnumerable<EntityEntry<Entity<int>>> entities = ChangeTracker.Entries<Entity<int>>().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified || x.State == EntityState.Deleted);
 
+            var identity = httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+            var userClaim = identity?.Claims;
+            var userId = userClaim?.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value;
+
             foreach (var item in entities)
             {
                 switch (item.State)
                 {
                     case EntityState.Deleted:
                         item.Entity.DeletedDate = DateTime.UtcNow;
+                        item.Entity.CreateUser = int.Parse(userId);
                         break;
                     case EntityState.Modified:
                         item.Entity.UpdatedDate = DateTime.UtcNow;
+                        item.Entity.UpdateUser = int.Parse(userId);
                         break;
                     case EntityState.Added:
                         item.Entity.CreatedDate = DateTime.UtcNow;
+                        item.Entity.DeleteUser = int.Parse(userId);
                         break;
                 }
             }
