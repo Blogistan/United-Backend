@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand
 {
-    public class VerifyEmailAuthenticatorCommand : IRequest
+    public class VerifyEmailAuthenticatorCommand : IRequest<Unit>
     {
         public string ActivationKey { get; set; }
         public string[] Roles => Array.Empty<string>();
 
-        public class VerifyEmailAuthenticatorCommandHandler : IRequestHandler<VerifyEmailAuthenticatorCommand>
+        public class VerifyEmailAuthenticatorCommandHandler : IRequestHandler<VerifyEmailAuthenticatorCommand,Unit>
         {
             private readonly IEmailAuthenticatorRepository emailAuthenticatorRepository;
             private readonly AuthBussinessRules authBussinessRules;
@@ -21,7 +21,7 @@ namespace Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand
                 this.emailAuthenticatorRepository = emailAuthenticatorRepository;
                 this.authBussinessRules = authBussinessRules;
             }
-            public async Task Handle(VerifyEmailAuthenticatorCommand request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(VerifyEmailAuthenticatorCommand request, CancellationToken cancellationToken)
             {
                 EmailAuthenticator emailAuthenticator = await emailAuthenticatorRepository.GetAsync(x => x.ActivationKey == request.ActivationKey, include: x => x.Include(x => x.User));
 
@@ -29,7 +29,7 @@ namespace Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand
                 await authBussinessRules.UserEmailAuthenticatorShouldBeExists(emailAuthenticator);
 
                 await VerifyEmailAuthenticator(emailAuthenticator);
-                return Task.CompletedTask;
+                return Unit.Value;
             }
 
             private async Task VerifyEmailAuthenticator(EmailAuthenticator emailAuthenticator)
