@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\" />
+    <Folder Include="Features\Auth\Commands\" />
+    <Folder Include="Features\Auth\Dtos\" />
+    <Folder Include="Features\Auth\Models\" />
+    <Folder Include="Features\Auth\Constants\" />
+    <Folder Include="Features\Auth\Queries\" />
+    <Folder Include="Features\Auth\Profiles\" />
+    <Folder Include="Features\Auth\Rules\" />
   </ItemGroup>
 
   <ItemGroup>

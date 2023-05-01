@@ -1,6 +1,8 @@
 ﻿using Application.Services.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistance.Context;
 using Persistance.Repositories;
 
 namespace Persistance
@@ -21,6 +23,7 @@ namespace Persistance
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IVideoRepository, VideoRepository>();
             services.AddScoped<ISiteUserRepository, SiteUserRepository>();
+            services.AddDbContext<EFDbContext>(options=>options.UseSqlServer(configuration.GetConnectionString("UnitedDb")));
 
             return services;
         }
