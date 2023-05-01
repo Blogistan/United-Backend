@@ -10,5 +10,15 @@ namespace Persistance.Repositories
         public EmailAuthenticatorRepository(EFDbContext context) : base(context)
         {
         }
+
+        public async Task<ICollection<EmailAuthenticator>> DeleteAllNonVerifiedAsync(User user)
+        {
+            List<EmailAuthenticator> userEmailAuthenticators = Query()
+           .Where(uea => uea.UserId == user.Id && uea.IsVerified == false)
+           .ToList();
+
+            await DeleteRangeAsync(userEmailAuthenticators);
+            return userEmailAuthenticators;
+        }
     }
 }
