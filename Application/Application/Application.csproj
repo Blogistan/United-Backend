@@ -10,7 +10,6 @@
     <Folder Include="Features\Auth\Dtos\" />
     <Folder Include="Features\Auth\Models\" />
     <Folder Include="Features\Auth\Queries\" />
-    <Folder Include="Features\Auth\Profiles\" />
   </ItemGroup>
 
   <ItemGroup>
