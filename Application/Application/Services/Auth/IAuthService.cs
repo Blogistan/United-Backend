@@ -19,6 +19,7 @@ namespace Application.Services.Auth
 
         Task<EmailAuthenticator> CreateEmailAutenticator(User user);
 
+        public Task<OtpAuthenticator> CreateOtpAuthenticator(User user);
         Task<string> ConvertOtpKeyToString(byte[] secretBtyes);
 
         Task SendAuthenticatorCode(User user);

@@ -1,4 +1,5 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Auth.Constants;
+using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
 using Core.Persistence.Paging;
@@ -182,10 +183,14 @@ namespace Application.Services.Auth
             if (!result)
                 throw new BusinessException(AuthBusinessMessage.InvalidAuthenticatorCode); ;
 
-
-
-
         }
 
+        public async Task<OtpAuthenticator> CreateOtpAuthenticator(User user) => new()
+        {
+            UserId = user.Id,
+            SecretKey = await otpAuthenticatorHelper.GenerateSecretKey(),
+            IsVerified = false,
+        };
+        
     }
 }
