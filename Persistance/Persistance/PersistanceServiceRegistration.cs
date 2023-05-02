@@ -1,4 +1,5 @@
 ﻿using Application.Services.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,17 +12,17 @@ namespace Persistance
     {
         public static IServiceCollection AddPersistanceServices(this IServiceCollection services,IConfiguration configuration)
         {
-            services.AddSingleton<IBlogRepository, BlogRepository>();
-            services.AddSingleton<ICategoryRepository, CategoryRepository>();
-            services.AddSingleton<ICommentRepository, CommentRepository>();
-            services.AddSingleton<IContentRepository, ContentRepository>();
-            services.AddSingleton<IEmailAuthenticatorRepository, EmailAuthenticatorRepository>();
-            services.AddSingleton<IOperationClaimRepostiory, OperationClaimRepository>();
-            services.AddSingleton<IOtpAuthenticatorRepository, OtpAuthenticatorRepository>();
-            services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
-            services.AddSingleton<IUserOperationClaimRepository, UserOperationClaimRepository>();
-            services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IVideoRepository, VideoRepository>();
+            services.AddScoped<IBlogRepository, BlogRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IContentRepository, ContentRepository>();
+            services.AddScoped<IEmailAuthenticatorRepository, EmailAuthenticatorRepository>();
+            services.AddScoped<IOperationClaimRepostiory, OperationClaimRepository>();
+            services.AddScoped<IOtpAuthenticatorRepository, OtpAuthenticatorRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IVideoRepository, VideoRepository>();
             services.AddScoped<ISiteUserRepository, SiteUserRepository>();
             services.AddDbContext<EFDbContext>(options=>options.UseSqlServer(configuration.GetConnectionString("UnitedDb")));
 

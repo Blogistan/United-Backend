@@ -86,7 +86,7 @@ namespace Application.Services.Auth
         {
             ICollection<RefreshToken> oldActiveTokens = await refreshTokenRepository.GetAllOldActiveRefreshTokenAsync(user, tokenHelper.RefreshTokenTTLOption);
 
-            await refreshTokenRepository.DeleteAsync(oldActiveTokens.ToList());
+            await refreshTokenRepository.DeleteRangeAsync(oldActiveTokens.ToList());
         }
 
         public async Task RevokeDescendantRefreshTokens(RefreshToken token, string IpAddress, string reason)

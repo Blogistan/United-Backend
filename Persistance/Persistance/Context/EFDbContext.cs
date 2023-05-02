@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
+using System.Reflection;
 using System.Security.Claims;
 
 namespace Persistance.Context
@@ -68,6 +69,10 @@ namespace Persistance.Context
             }
 
             return await base.SaveChangesAsync(cancellationToken);
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

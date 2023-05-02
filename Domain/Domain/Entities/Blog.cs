@@ -22,14 +22,13 @@ namespace Domain.Entities
 
         public virtual ICollection<Comment> Comments { get; set; }
 
-        public virtual ICollection<Bookmark> FavoriteBookmarks { get; set; }
+        public virtual ICollection<SiteUser> FavoritedUsers { get; set; }
         public virtual Category Category { get; set; }
 
         public Blog()
         {
-            FavoriteBookmarks = new HashSet<Bookmark>();
         }
-        public Blog(int id, string title, int categoryId, string bannerImageUrl, int writerId, ICollection<Content> contents, ICollection<Comment> comments, ICollection<Bookmark> bookmarks,
+        public Blog(int id, string title, int categoryId, string bannerImageUrl, int writerId, ICollection<Content> contents, ICollection<Comment> comments,
             int reactionSuprisedCount, int reactionLovelyCount, int reactionSadCount, int reactionTriggeredCount, int reactionKEKWCount, int shareCount, int readCount) : this()
         {
             this.Id = id;
@@ -40,7 +39,6 @@ namespace Domain.Entities
             this.Contents = contents;
             this.Comments = comments;
             this.ReadCount = readCount;
-            this.FavoriteBookmarks = bookmarks;
             this.ReactionKEKWCount = reactionKEKWCount;
             this.ReactionLovelyCount = reactionSadCount;
             this.ReactionSadCount = reactionSadCount;
