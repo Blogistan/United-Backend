@@ -22,7 +22,7 @@ namespace Domain.Entities
 
         public virtual ICollection<Comment> Comments { get; set; }
 
-        public virtual ICollection<SiteUser> FavoritedUsers { get; set; }
+        public virtual ICollection<Bookmark> FavoritedUsers { get; set; }
         public virtual Category Category { get; set; }
 
         public Blog()

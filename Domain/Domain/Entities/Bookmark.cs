@@ -4,12 +4,12 @@ namespace Domain.Entities
 {
     public class Bookmark
     {
-        public int UserId { get; set; }
+        public int SiteUserId { get; set; }
         public int BlogId { get; set; }
 
         public virtual Blog Blog { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual SiteUser SiteUser { get; set; }
 
 
         public Bookmark()
@@ -19,7 +19,7 @@ namespace Domain.Entities
         public Bookmark(int userId, int blogId)
         {
             this.BlogId = blogId;
-            this.UserId = userId;
+            this.SiteUserId = userId;
         }
     }
 }

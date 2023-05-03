@@ -20,6 +20,7 @@ namespace Persistance.Context
         public DbSet<Video> Videos { get; set; }
         public DbSet<SiteUser> SiteUsers { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<VideoContent> VideoContents { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<EmailAuthenticator> EmailAuthenticators { get; set; }
