@@ -10,9 +10,9 @@ namespace Application.Features.Auth.Profiles
     {
         public MappingProfiles()
         {
-            CreateMap<SiteUser, UserForRegisterDto>();
+            CreateMap<SiteUser, UserForRegisterDto>().ReverseMap();
 
-            CreateMap<RevokedResponse, RefreshToken>();
+            CreateMap<RevokedResponse, RefreshToken>().ReverseMap();
         }
     }
 }

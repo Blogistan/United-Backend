@@ -12,7 +12,7 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20230505160030_init")]
+    [Migration("20230506140008_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -242,6 +242,10 @@ namespace Persistance.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -275,7 +279,9 @@ namespace Persistance.Migrations
 
                     b.ToTable("User");
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Core.Security.Entities.UserOperationClaim", b =>
@@ -797,14 +803,12 @@ namespace Persistance.Migrations
                     b.HasBaseType("Core.Security.Entities.User");
 
                     b.Property<string>("Biography")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Users", (string)null);
+                    b.HasDiscriminator().HasValue("SiteUser");
                 });
 
             modelBuilder.Entity("ContentVideo", b =>
@@ -960,15 +964,6 @@ namespace Persistance.Migrations
                     b.Navigation("ContentItem");
 
                     b.Navigation("Video");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SiteUser", b =>
-                {
-                    b.HasOne("Core.Security.Entities.User", null)
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.SiteUser", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>

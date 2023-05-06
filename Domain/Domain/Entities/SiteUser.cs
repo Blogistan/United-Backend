@@ -6,8 +6,8 @@ namespace Domain.Entities
     public class SiteUser : User
     {
 
-        public string ProfileImageUrl { get; set; }
-        public string Biography { get; set; }
+        public string? ProfileImageUrl { get; set; }
+        public string? Biography { get; set; }
 
         public virtual ICollection<Blog> Blogs { get; set; }
 
