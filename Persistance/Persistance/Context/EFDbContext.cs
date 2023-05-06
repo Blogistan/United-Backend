@@ -1,5 +1,6 @@
 ﻿using Core.Persistence.Repositories;
 using Core.Security.Entities;
+using Core.Security.Extensions;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -44,11 +45,7 @@ namespace Persistance.Context
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            IEnumerable<EntityEntry<Entity<int>>> entities = ChangeTracker.Entries<Entity<int>>().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified || x.State == EntityState.Deleted);
-
-            var identity = httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-            var userClaim = identity?.Claims;
-            var userId = userClaim?.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userId = httpContextAccessor.HttpContext.User.GetUserId();
 
             foreach (var item in entities)
             {
@@ -56,15 +53,15 @@ namespace Persistance.Context
                 {
                     case EntityState.Deleted:
                         item.Entity.DeletedDate = DateTime.UtcNow;
-                        item.Entity.CreateUser = int.Parse(userId);
+                        item.Entity.CreateUser = userId;
                         break;
                     case EntityState.Modified:
                         item.Entity.UpdatedDate = DateTime.UtcNow;
-                        item.Entity.UpdateUser = int.Parse(userId);
+                        item.Entity.UpdateUser = userId;
                         break;
                     case EntityState.Added:
                         item.Entity.CreatedDate = DateTime.UtcNow;
-                        item.Entity.DeleteUser = int.Parse(userId);
+                        item.Entity.DeleteUser = userId;
                         break;
                 }
             }
