@@ -45,6 +45,8 @@ namespace Persistance.Context
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            IEnumerable<EntityEntry<Entity<int>>> entities = ChangeTracker.Entries<Entity<int>>().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified || x.State == EntityState.Deleted);
+
             var userId = httpContextAccessor.HttpContext.User.GetUserId();
 
             foreach (var item in entities)
