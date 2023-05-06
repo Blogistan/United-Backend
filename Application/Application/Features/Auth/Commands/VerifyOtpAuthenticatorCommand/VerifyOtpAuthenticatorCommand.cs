@@ -6,11 +6,10 @@ using Core.Security.Entities;
 using Core.Security.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SharpCompress.Compressors.Xz;
 
 namespace Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand
 {
-    public class VerifyOtpAuthenticatorCommand : IRequest<Unit>, ISecuredRequest
+    public class VerifyOtpAuthenticatorCommand : IRequest, ISecuredRequest
     {
         public int UserId { get; set; }
         public string OtpCode { get; set; }
@@ -19,7 +18,7 @@ namespace Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand
 
     }
 
-    public class VerifyOtpAuthenticatorCommandHandler : IRequestHandler<VerifyOtpAuthenticatorCommand,Unit>
+    public class VerifyOtpAuthenticatorCommandHandler : IRequestHandler<VerifyOtpAuthenticatorCommand>
     {
         private IOtpAuthenticatorRepository otpAuthenticatorRepository;
         private AuthBussinessRules authBussinessRules;
@@ -31,7 +30,7 @@ namespace Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand
             this.authBussinessRules = authBussinessRules;
         }
 
-        public async Task<Unit> Handle(VerifyOtpAuthenticatorCommand request, CancellationToken cancellationToken)
+        public async Task Handle(VerifyOtpAuthenticatorCommand request, CancellationToken cancellationToken)
         {
             OtpAuthenticator otpAuthenticator = await otpAuthenticatorRepository.GetAsync(predicate: x => x.UserId == request.UserId, include: x => x.Include(x => x.User));
 
@@ -45,7 +44,7 @@ namespace Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand
 
             await otpAuthenticatorRepository.UpdateAsync(otpAuthenticator);
 
-            return Unit.Value;
+            
         }
     }
 

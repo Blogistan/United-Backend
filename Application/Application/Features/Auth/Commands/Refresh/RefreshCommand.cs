@@ -10,7 +10,7 @@ namespace Application.Features.Auth.Commands.Refresh
 {
     public class RefreshCommand : IRequest<RefreshedResponse>
     {
-        public RefreshToken RefreshToken { get; set; }
+        public string RefreshToken { get; set; }
         public string IpAddress { get; set; }
 
         public class RefreshCommandHandler : IRequestHandler<RefreshCommand, RefreshedResponse>
@@ -30,7 +30,7 @@ namespace Application.Features.Auth.Commands.Refresh
 
             public async Task<RefreshedResponse> Handle(RefreshCommand request, CancellationToken cancellationToken)
             {
-                RefreshToken refreshToken = await refreshTokenRepository.GetAsync(rt => rt.Token == request.RefreshToken.Token, include: x => x.Include(x => x.User));
+                RefreshToken refreshToken = await refreshTokenRepository.GetAsync(rt => rt.Token == request.RefreshToken, include: x => x.Include(x => x.User));
 
                 await AuthBussinessRules.RefreshTokenShouldBeExist(refreshToken);
 

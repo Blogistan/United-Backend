@@ -32,7 +32,7 @@ namespace UnitedAPI.Controllers
                 SameSite = SameSiteMode.Strict
             });
         }
-        protected int GetUserUdFromToken()
+        protected int GetUserIdFromToken()
         {
             return HttpContext.User.GetUserId();
                 
