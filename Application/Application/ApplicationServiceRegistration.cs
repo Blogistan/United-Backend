@@ -5,12 +5,15 @@ using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
 using Core.Application.Pipelines.Transaction;
 using Core.Application.Pipelines.Validation;
+using Core.CrossCuttingConcerns.Logging.Serilog.Logger;
+using Core.CrossCuttingConcerns.Logging.Serilog;
 using Core.Mailing;
 using Core.Mailing.MailKitImplementations;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Core.Application.Rules;
 
 namespace Application
 {
@@ -23,8 +26,11 @@ namespace Application
 
             services.AddScoped<AuthBussinessRules>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IMailService, MailKitMailService>();
+            services.AddScoped<IMailService, MailKitMailService>();;
 
+            services.AddSingleton<LoggerServiceBase, FileLogger>();
+
+            services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
@@ -34,6 +40,23 @@ namespace Application
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionScopeBehavior<,>));
 
+            return services;
+        }
+
+        public static IServiceCollection AddSubClassesOfType(this IServiceCollection services,Assembly assembly,Type type,Func<IServiceCollection,Type,IServiceCollection>? addWithLifeCycle = null)
+        {
+            var types = assembly.GetTypes().Where(x=>x.IsSubclassOf(type) && type!=x).ToList();
+            foreach (var item in types)
+            {
+                if (addWithLifeCycle == null)
+                {
+                    services.AddScoped(item);
+                }
+                else
+                {
+                    addWithLifeCycle(services, type);
+                }
+            }
             return services;
         }
     }
