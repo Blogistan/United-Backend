@@ -55,7 +55,7 @@ namespace Persistance.Context
                 {
                     case EntityState.Deleted:
                         item.Entity.DeletedDate = DateTime.UtcNow;
-                        item.Entity.CreateUser = userId;
+                        item.Entity.DeleteUser = userId;
                         break;
                     case EntityState.Modified:
                         item.Entity.UpdatedDate = DateTime.UtcNow;
@@ -63,7 +63,7 @@ namespace Persistance.Context
                         break;
                     case EntityState.Added:
                         item.Entity.CreatedDate = DateTime.UtcNow;
-                        item.Entity.DeleteUser = userId;
+                        item.Entity.CreateUser = userId;
                         break;
                 }
             }

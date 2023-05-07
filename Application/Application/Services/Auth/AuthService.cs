@@ -38,6 +38,7 @@ namespace Application.Services.Auth
             this.userOperationClaimRepository = userOperationClaimRepository;
             this.otpAuthenticatorHelper = otpAuthenticatorHelper;
             this.otpAuthenticatorRepository = otpAuthenticatorRepository;
+            this.emailAuthenticatorHelper = emailAuthenticatorHelper;
         }
 
 

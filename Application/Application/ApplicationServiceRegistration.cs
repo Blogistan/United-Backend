@@ -14,6 +14,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Core.Application.Rules;
+using Application.Features.Categories.Rules;
 
 namespace Application
 {
@@ -25,6 +26,7 @@ namespace Application
             services.AddMediatR(x=>x.RegisterServicesFromAssembly(typeof(ApplicationServiceRegistration).Assembly));
 
             services.AddScoped<AuthBussinessRules>();
+            services.AddScoped<CategoryBusinessRules>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IMailService, MailKitMailService>();;
 
