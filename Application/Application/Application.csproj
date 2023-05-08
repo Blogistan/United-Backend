@@ -11,9 +11,7 @@
     <Folder Include="Features\Auth\Models\" />
     <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Categories\Constants\" />
-    <Folder Include="Features\Categories\Dtos\" />
     <Folder Include="Features\Categories\Models\" />
-    <Folder Include="Features\Categories\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
