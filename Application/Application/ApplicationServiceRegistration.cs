@@ -1,20 +1,21 @@
 ﻿using Application.Features.Auth.Rules;
+using Application.Features.Categories.Rules;
+using Application.Features.Videos.Rules;
 using Application.Services.Auth;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
 using Core.Application.Pipelines.Transaction;
 using Core.Application.Pipelines.Validation;
-using Core.CrossCuttingConcerns.Logging.Serilog.Logger;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Logging.Serilog;
+using Core.CrossCuttingConcerns.Logging.Serilog.Logger;
 using Core.Mailing;
 using Core.Mailing.MailKitImplementations;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Core.Application.Rules;
-using Application.Features.Categories.Rules;
 
 namespace Application
 {
@@ -27,6 +28,7 @@ namespace Application
 
             services.AddScoped<AuthBussinessRules>();
             services.AddScoped<CategoryBusinessRules>();
+            services.AddScoped<VideoBusinessRules>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IMailService, MailKitMailService>();;
 
