@@ -12,19 +12,19 @@ namespace Application.Features.Videos.Rules
             this.videoRepository = videoRepository;
         }
 
-        public async Task VideoCannotBeDuplicatedWhenInserted(string videoName)
+        public async Task VideoCannotBeDuplicatedWhenInserted(string videoName, string videoUrl)
         {
-            Video video = await videoRepository.GetAsync(x => x.Title == videoName);
+            Video video = await videoRepository.GetAsync(x => x.Title == videoName && x.VideoUrl == videoUrl);
             if (video is not null)
                 throw new BusinessException("Video is exist");
         }
-        public async Task VideoCannotBeDuplicatedWhenUpdated(string videoName)
+        public async Task VideoCannotBeDuplicatedWhenUpdated(string videoName,string videoUrl)
         {
-            Video video = await videoRepository.GetAsync(x => x.Title == videoName);
+            Video video = await videoRepository.GetAsync(x => x.Title == videoName && x.VideoUrl==videoUrl);
             if (video is not null)
                 throw new BusinessException("Video is exist");
         }
-        public async Task<Video> CategoryCheckById(int id)
+        public async Task<Video> VideoCheckById(int id)
         {
             Video video = await videoRepository.GetAsync(x => x.Id == id);
             if (video == null) throw new BusinessException("Video is not exist");

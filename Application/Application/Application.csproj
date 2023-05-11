@@ -14,8 +14,6 @@
     <Folder Include="Features\Categories\Models\" />
     <Folder Include="Features\Videos\Constants\" />
     <Folder Include="Features\Videos\Models\" />
-    <Folder Include="Features\Videos\Queries\" />
-    <Folder Include="Features\Videos\Profiles\" />
   </ItemGroup>
 
   <ItemGroup>

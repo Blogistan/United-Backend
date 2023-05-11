@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Features.Videos.Commands.CreateVideo
 {
-    public class CreateVideoCommand : IRequest<CreatedVideoDto>
+    public class CreateVideoCommand : IRequest<CreateVideoResponse>
     {
         public string Title { get; set; }
         public string VideoUrl { get; set; }
@@ -15,7 +15,7 @@ namespace Application.Features.Videos.Commands.CreateVideo
 
         public int WatchCount => 0;
 
-        public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, CreatedVideoDto>
+        public class CreateVideoCommandHandler : IRequestHandler<CreateVideoCommand, CreateVideoResponse>
         {
             private readonly IVideoRepository videoRepository;
             private readonly VideoBusinessRules videoBusinessRules;
@@ -25,9 +25,9 @@ namespace Application.Features.Videos.Commands.CreateVideo
                 this.videoBusinessRules = videoBusinessRules;
             }
 
-            public async Task<CreatedVideoDto> Handle(CreateVideoCommand request, CancellationToken cancellationToken)
+            public async Task<CreateVideoResponse> Handle(CreateVideoCommand request, CancellationToken cancellationToken)
             {
-                await videoBusinessRules.VideoCannotBeDuplicatedWhenInserted(request.Title);
+                await videoBusinessRules.VideoCannotBeDuplicatedWhenInserted(request.Title,request.VideoUrl);
 
                 Video video = new()
                 {
@@ -38,7 +38,7 @@ namespace Application.Features.Videos.Commands.CreateVideo
 
                 Video CreatedVideo = await videoRepository.AddAsync(video);
 
-                return new CreatedVideoDto
+                return new CreateVideoResponse
                 {
                     Id = CreatedVideo.Id,
                     Description = CreatedVideo.Description,

@@ -1,6 +1,6 @@
-﻿namespace Application.Features.Videos.Dtos
+﻿namespace Application.Features.Videos.Commands.DeleteVideo
 {
-    public class CreatedVideoDto
+    public class DeleteVideoResponse
     {
         public int Id { get; set; }
         public string Title { get; set; }
