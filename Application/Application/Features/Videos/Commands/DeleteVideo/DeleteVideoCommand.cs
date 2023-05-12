@@ -8,6 +8,7 @@ namespace Application.Features.Videos.Commands.DeleteVideo
     public class DeleteVideoCommand : IRequest<DeleteVideoResponse>
     {
         public int Id { get; set; }
+        public bool Permanent { get; set; }
 
         public class DeleteVideoCommandHandler : IRequestHandler<DeleteVideoCommand, DeleteVideoResponse>
         {
@@ -23,7 +24,7 @@ namespace Application.Features.Videos.Commands.DeleteVideo
             {
                 var video = await videoBusinessRules.VideoCheckById(request.Id);
 
-                Video deletedVideo = await videoRepository.DeleteAsync(video);
+                Video deletedVideo = await videoRepository.DeleteAsync(video,request.Permanent);
 
                 return new DeleteVideoResponse
                 {

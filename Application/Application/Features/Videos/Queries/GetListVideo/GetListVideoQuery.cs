@@ -1,4 +1,4 @@
-﻿using Application.Features.Categories.Dtos;
+﻿using Application.Features.Videos.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Requests;
@@ -8,12 +8,12 @@ using MediatR;
 
 namespace Application.Features.Videos.Queries.GetListVideo
 {
-    public class GetListVideoQuery:IRequest<CategoryListDto>
+    public class GetListVideoQuery:IRequest<VideoListDto>
     {
         public PageRequest PageRequest { get; set; }
 
 
-        public class GetListVideoQueryHandler:IRequestHandler<GetListVideoQuery, CategoryListDto>
+        public class GetListVideoQueryHandler:IRequestHandler<GetListVideoQuery, VideoListDto>
         {
             private readonly IVideoRepository videoRepository;
             private readonly IMapper mapper;
@@ -23,13 +23,13 @@ namespace Application.Features.Videos.Queries.GetListVideo
                 this.mapper = mapper;
             }
 
-            public async Task<CategoryListDto> Handle(GetListVideoQuery request, CancellationToken cancellationToken)
+            public async Task<VideoListDto> Handle(GetListVideoQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<Video> paginate = await videoRepository.GetListAsync(index:request.PageRequest.Page,size:request.PageRequest.PageSize);
+                IPaginate<Video> paginate = await videoRepository.GetListAsync(index:request.PageRequest.Page,size:request.PageRequest.PageSize,withDeleted:false);
 
-                CategoryListDto categoryListDto = mapper.Map<CategoryListDto>(paginate);
+                VideoListDto videoListDto = mapper.Map<VideoListDto>(paginate);
 
-                return categoryListDto;
+                return videoListDto;
             }
         }
     }

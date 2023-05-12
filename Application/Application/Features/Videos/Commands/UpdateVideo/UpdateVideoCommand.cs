@@ -26,7 +26,7 @@ namespace Application.Features.Videos.Commands.UpdateVideo
 
             public async Task<UpdateVideoResponse> Handle(UpdateVideoCommand request, CancellationToken cancellationToken)
             {
-                await videoBusinessRules.VideoCannotBeDuplicatedWhenUpdated(request.Title, request.VideoUrl);
+               // await videoBusinessRules.VideoCannotBeDuplicatedWhenUpdated(request.VideoUrl);
 
                 Video video = new()
                 {

@@ -18,9 +18,9 @@ namespace Application.Features.Videos.Rules
             if (video is not null)
                 throw new BusinessException("Video is exist");
         }
-        public async Task VideoCannotBeDuplicatedWhenUpdated(string videoName,string videoUrl)
+        public async Task VideoCannotBeDuplicatedWhenUpdated(string videoUrl)
         {
-            Video video = await videoRepository.GetAsync(x => x.Title == videoName && x.VideoUrl==videoUrl);
+            Video video = await videoRepository.GetAsync(x=>x.VideoUrl==videoUrl);
             if (video is not null)
                 throw new BusinessException("Video is exist");
         }
