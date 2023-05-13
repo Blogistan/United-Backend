@@ -1,5 +1,4 @@
-﻿using Application.Features.Categories.Dtos;
-using Application.Features.Videos.Dtos;
+﻿using Application.Features.Videos.Dtos;
 using AutoMapper;
 using Core.Persistence.Paging;
 using Domain.Entities;
@@ -10,9 +9,13 @@ namespace Application.Features.Videos.Profiles
     {
         public MappingProfiles()
         {
+            CreateMap<Video, CreateVideoDto>().ReverseMap();
+
             CreateMap<Video, VideoViewDto>().ReverseMap();
 
             CreateMap<IPaginate<Video>, VideoListDto>().ReverseMap();
+
+            
         }
     }
     

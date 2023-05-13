@@ -16,7 +16,7 @@ namespace Application.Features.Videos.Rules
         {
             Video video = await videoRepository.GetAsync(x => x.Title == videoName && x.VideoUrl == videoUrl);
             if (video is not null)
-                throw new BusinessException("Video is exist");
+                throw new BusinessException($"Video Title:{videoName} , Url:{videoUrl} is exist");
         }
         public async Task VideoCannotBeDuplicatedWhenUpdated(string videoUrl)
         {

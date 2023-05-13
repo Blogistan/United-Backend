@@ -1,7 +1,9 @@
-﻿using Application.Features.Videos.Commands.CreateVideo;
+﻿using Application.Features.Videos.Commands.CreateRangeVideo;
+using Application.Features.Videos.Commands.CreateVideo;
 using Application.Features.Videos.Commands.DeleteVideo;
 using Application.Features.Videos.Commands.UpdateVideo;
 using Application.Features.Videos.Dtos;
+using Application.Features.Videos.Queries.GetById;
 using Application.Features.Videos.Queries.GetListVideo;
 using Application.Features.Videos.Queries.GetListVideoDynamic;
 using Core.Application.Requests;
@@ -37,10 +39,23 @@ namespace UnitedAPI.Controllers
 
             return Ok(videoListDto);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetById([FromQuery] GetVideoByIdQuery getVideoByIdQuery)
+        {
+            VideoViewDto videoViewDto = await Mediator.Send(getVideoByIdQuery);
+
+            return Ok(videoViewDto);
+        }
         [HttpPost]
         public async Task<IActionResult> Add([FromBody]CreateVideoCommand createVideoCommand)
         {
             CreateVideoResponse response = await Mediator.Send(createVideoCommand);
+            return Ok(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddRange([FromBody] CreateRangeVideoCommand createRangeVideoCommand)
+        {
+            CreateRangeVideoResponse response = await Mediator.Send(createRangeVideoCommand);
             return Ok(response);
         }
         [HttpPut]

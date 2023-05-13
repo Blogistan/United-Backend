@@ -6,8 +6,8 @@ namespace Application.Features.Videos.Commands.CreateVideo
     {
         public CreateVideoCommandValidator()
         {
-            RuleFor(x=>x.Title).NotEmpty();
-            RuleFor(x =>x.VideoUrl).NotEmpty();
+            RuleFor(x=>x.CreateVideoDto.Title).NotEmpty();
+            RuleFor(x =>x.CreateVideoDto.VideoUrl).NotEmpty();
             
         }
     }
