@@ -1,6 +1,8 @@
 ﻿using Application.Features.Videos.Commands.CreateRangeVideo;
 using Application.Features.Videos.Commands.CreateVideo;
+using Application.Features.Videos.Commands.DeleteRangeVideo;
 using Application.Features.Videos.Commands.DeleteVideo;
+using Application.Features.Videos.Commands.UpdateRangeVideo;
 using Application.Features.Videos.Commands.UpdateVideo;
 using Application.Features.Videos.Dtos;
 using Application.Features.Videos.Queries.GetById;
@@ -64,10 +66,22 @@ namespace UnitedAPI.Controllers
             UpdateVideoResponse response = await Mediator.Send(updateVideoCommand);
             return Ok(response);
         }
+        [HttpPut]
+        public async Task<IActionResult> UpdateRange([FromBody] UpdateRangeVideoCommand updateRangeVideoCommand)
+        {
+            UpdateRangeVideoResponse response = await Mediator.Send(updateRangeVideoCommand);
+            return Ok(response);
+        }
         [HttpDelete]
         public async Task<IActionResult> Delete(DeleteVideoCommand deleteVideoCommand)
         {
             DeleteVideoResponse response = await Mediator.Send(deleteVideoCommand);
+            return Ok(response);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteRange(DeleteRangeVideoCommand deleteRangeVideoCommand)
+        {
+            DeleteRangeVideoResponse response = await Mediator.Send(deleteRangeVideoCommand);
             return Ok(response);
         }
     }

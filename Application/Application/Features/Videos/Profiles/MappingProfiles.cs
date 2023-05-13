@@ -10,6 +10,7 @@ namespace Application.Features.Videos.Profiles
         public MappingProfiles()
         {
             CreateMap<Video, CreateVideoDto>().ReverseMap();
+            CreateMap<Video, UpdateVideoDto>().ReverseMap();
 
             CreateMap<Video, VideoViewDto>().ReverseMap();
 

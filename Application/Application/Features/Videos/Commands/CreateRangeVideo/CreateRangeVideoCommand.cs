@@ -25,10 +25,9 @@ namespace Application.Features.Videos.Commands.CreateRangeVideo
 
             public async Task<CreateRangeVideoResponse> Handle(CreateRangeVideoCommand request, CancellationToken cancellationToken)
             {
-                foreach (var item in request.CreateVideoDtos)
-                {
-                    await videoBusinessRules.VideoCannotBeDuplicatedWhenInserted(item.Title, item.VideoUrl);
-                }
+
+                await videoBusinessRules.VideoCannotBeDuplicatedWhenInsertedRange(request.CreateVideoDtos);
+
                 ICollection<Video> videos = mapper.Map<ICollection<Video>>(request.CreateVideoDtos);
 
                 var addeVideos = await videoRepository.AddRangeAsync(videos);
