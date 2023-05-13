@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Persistence.Paging;
 using Domain.Entities;
+using Org.BouncyCastle.Crypto.Tls;
 
 namespace Application.Features.Categories.Profiles
 {
@@ -15,6 +16,9 @@ namespace Application.Features.Categories.Profiles
                 .ReverseMap();
 
             CreateMap<IPaginate<Category>, CategoryListDto>().ReverseMap();
+
+            CreateMap<UpdateCategoryDto,Category>().ReverseMap();
+            CreateMap<CreateCategoryDto,Category>().ReverseMap();
         }
     }
 }
