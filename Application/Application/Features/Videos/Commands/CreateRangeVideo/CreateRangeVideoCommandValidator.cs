@@ -2,9 +2,9 @@
 
 namespace Application.Features.Videos.Commands.CreateRangeVideo
 {
-    public class CreateRangeCommandValidator:AbstractValidator<CreateRangeVideoCommand>
+    public class CreateRangeVideoCommandValidator:AbstractValidator<CreateRangeVideoCommand>
     {
-        public CreateRangeCommandValidator()
+        public CreateRangeVideoCommandValidator()
         {
             RuleFor(x=>x.CreateVideoDtos).NotEmpty();
         }

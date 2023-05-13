@@ -50,7 +50,7 @@ namespace Application.Features.Videos.Rules
 
             return video;
         }
-        public async Task<List<Video>> VideoCheckById(List<DeleteRangeDto> deleteRangeDtos)
+        public async Task<List<Video>> VideoCheckById(List<DeleteRangeVideoDto> deleteRangeDtos)
         {
             List<Video> videos = new();
 

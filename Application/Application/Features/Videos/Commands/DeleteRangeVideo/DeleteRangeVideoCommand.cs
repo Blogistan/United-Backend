@@ -9,7 +9,8 @@ namespace Application.Features.Videos.Commands.DeleteRangeVideo
 {
     public class DeleteRangeVideoCommand : IRequest<DeleteRangeVideoResponse>
     {
-        public List<DeleteRangeDto> DeleteRangeDto { get; set; }
+        public List<DeleteRangeVideoDto> DeleteRangeDto { get; set; }
+        public bool Permanent { get; set; }
 
         public class DeleteRangeVideoCommandHandler : IRequestHandler<DeleteRangeVideoCommand, DeleteRangeVideoResponse>
         {
@@ -27,7 +28,7 @@ namespace Application.Features.Videos.Commands.DeleteRangeVideo
             {
                 var videos = await videoBusinessRules.VideoCheckById(request.DeleteRangeDto);
 
-                ICollection<Video> deletedVidoes = await videoRepository.DeleteRangeAsync(videos);
+                ICollection<Video> deletedVidoes = await videoRepository.DeleteRangeAsync(videos,request.Permanent);
 
                 List<VideoViewDto> videoViewDtos = mapper.Map<List<VideoViewDto>>(deletedVidoes);
 
