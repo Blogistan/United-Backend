@@ -1,6 +1,4 @@
-﻿using Core.Security.Entities;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Bookmark
     {
