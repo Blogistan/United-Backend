@@ -6,6 +6,9 @@ public class Entity<TId> : IEntityTimestamps
     public DateTime CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
     public DateTime? DeletedDate { get; set; }
+    public TId CreateUser { get; set; }
+    public TId DeleteUser { get; set; }
+    public TId UpdateUser { get; set; }
 
     public Entity()
     {

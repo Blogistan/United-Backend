@@ -12,6 +12,8 @@ namespace Core.Security.JWT;
 public class JwtHelper : ITokenHelper
 {
     public IConfiguration Configuration { get; }
+    public int RefreshTokenTTLOption => _tokenOptions.RefreshTokenTTL;
+
     private readonly TokenOptions _tokenOptions;
     private DateTime _accessTokenExpiration;
 
@@ -22,6 +24,7 @@ public class JwtHelper : ITokenHelper
         _tokenOptions =
             Configuration.GetSection(configurationSection).Get<TokenOptions>()
             ?? throw new NullReferenceException($"\"{configurationSection}\" section cannot found in configuration.");
+        
     }
 
     public AccessToken CreateToken(User user, IList<OperationClaim> operationClaims)

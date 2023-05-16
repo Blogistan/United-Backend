@@ -7,7 +7,7 @@ namespace Application.Features.Comments.Commands.DeleteComment
         public DeleteCommentCommandValidator()
         {
             RuleFor(x=>x.Permanent).NotNull();
-            RuleFor(x => x.BlogId).NotNull();
+            RuleFor(x => x.Id).NotNull();
         }
                 
 

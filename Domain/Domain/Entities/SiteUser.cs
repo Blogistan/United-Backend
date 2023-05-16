@@ -1,4 +1,6 @@
-﻿using Core.Security.Entities;
+﻿
+
+using Core.Security.Entities;
 using Core.Security.Enums;
 
 namespace Domain.Entities

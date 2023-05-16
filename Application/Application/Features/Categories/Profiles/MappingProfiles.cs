@@ -2,7 +2,6 @@
 using AutoMapper;
 using Core.Persistence.Paging;
 using Domain.Entities;
-using Org.BouncyCastle.Crypto.Tls;
 
 namespace Application.Features.Categories.Profiles
 {

@@ -27,12 +27,13 @@ namespace Application.Features.Categories.Commands.CreateCategory
                 Category category = new()
                 {
                     CategoryName = request.CategoryName,
-                    CategoryId=request.ParentCategoryIds
+                    CategoryId=request?.ParentCategoryIds
                 };
+                
 
                 Category createdCategory = await categoryRepository.AddAsync(category);
 
-                return new CreateCategoryResponse { CategoryName = createdCategory.CategoryName, Id = createdCategory.Id,ParentCategroyId= (int)createdCategory.CategoryId };
+                return new CreateCategoryResponse { CategoryName = createdCategory.CategoryName, Id = createdCategory.Id,ParentCategroyId= createdCategory.CategoryId };
             }
         }
     }
