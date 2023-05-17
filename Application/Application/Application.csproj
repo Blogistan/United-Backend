@@ -13,7 +13,6 @@
     <Folder Include="Features\Comments\Dtos\" />
     <Folder Include="Features\Comments\Models\" />
     <Folder Include="Features\Comments\Constants\" />
-    <Folder Include="Features\Comments\Queries\" />
     <Folder Include="Features\Comments\Profiles\" />
     <Folder Include="Features\Categories\Constants\" />
     <Folder Include="Features\Categories\Models\" />

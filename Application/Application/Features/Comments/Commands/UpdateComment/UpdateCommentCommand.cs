@@ -44,6 +44,7 @@ namespace Application.Features.Comments.Commands.UpdateComment
 
                 return new UpdateCommentResponse
                 {
+                    Id=updatedComment.Id,
                     BlogId = updatedComment.BlogId,
                     CommentContent = updatedComment.CommentContent,
                     GuestName = updatedComment.GuestName,

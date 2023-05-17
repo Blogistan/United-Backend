@@ -42,6 +42,7 @@ namespace Application.Features.Comments.Commands.CreateComment
 
                 return new CreateCommentCommandResponse
                 {
+                    Id=createdComment.Id,
                     BlogId = createdComment.BlogId,
                     CommentContent = createdComment.CommentContent,
                     Dislikes = createdComment.Dislikes,
