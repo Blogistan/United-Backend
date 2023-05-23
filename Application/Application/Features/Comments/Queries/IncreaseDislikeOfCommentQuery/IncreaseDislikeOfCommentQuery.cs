@@ -1,30 +1,31 @@
 ﻿using Application.Services.Repositories;
 using MediatR;
 
-namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
+namespace Application.Features.Comments.Queries.IncreaseDislikeOfCommentQuery
 {
-    public class DecreaseLikeOfCommentQuery:IRequest<DecreaseLikeOfCommentQueryResponse>
+    public class IncreaseDislikeOfCommentQuery:IRequest<IncreaseDislikeOfCommentQueryResponse>
     {
         public int CommentId { get; set; }
 
-        public class DecreaseLikeOfCommentQueryHandler:IRequestHandler<DecreaseLikeOfCommentQuery, DecreaseLikeOfCommentQueryResponse>
+        public class IncreaseDislikeOfCommentQueryHandler:IRequestHandler<IncreaseDislikeOfCommentQuery, IncreaseDislikeOfCommentQueryResponse>
         {
             private readonly ICommentRepository commentRepository;
-            public DecreaseLikeOfCommentQueryHandler(ICommentRepository commentRepository)
+
+            public IncreaseDislikeOfCommentQueryHandler(ICommentRepository commentRepository)
             {
                 this.commentRepository = commentRepository;
             }
 
-            public async Task<DecreaseLikeOfCommentQueryResponse> Handle(DecreaseLikeOfCommentQuery request, CancellationToken cancellationToken)
+            public async Task<IncreaseDislikeOfCommentQueryResponse> Handle(IncreaseDislikeOfCommentQuery request, CancellationToken cancellationToken)
             {
                 var comment = await commentRepository.GetAsync(x => x.Id == request.CommentId);
 
 
-                comment.Likes -= 1;
+                comment.Dislikes += 1;
 
                 var updatedComment = await commentRepository.UpdateAsync(comment);
 
-                return new DecreaseLikeOfCommentQueryResponse
+                return new IncreaseDislikeOfCommentQueryResponse
                 {
                     Id = updatedComment.Id,
                     BlogId = updatedComment.BlogId,
@@ -36,5 +37,6 @@ namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
                 };
             }
         }
+           
     }
 }

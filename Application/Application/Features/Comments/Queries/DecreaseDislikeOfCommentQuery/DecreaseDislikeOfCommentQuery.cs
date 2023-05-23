@@ -1,21 +1,23 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery;
+using Application.Services.Repositories;
 using MediatR;
 
-namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
+namespace Application.Features.Comments.Queries.DecreaseDislikeOfCommentQuery
 {
-    public class DecreaseLikeOfCommentQuery:IRequest<DecreaseLikeOfCommentQueryResponse>
+    public class DecreaseDislikeOfCommentQuery:IRequest<DecreaseDislikeOfCommentCommentQueryResponse>
     {
         public int CommentId { get; set; }
 
-        public class DecreaseLikeOfCommentQueryHandler:IRequestHandler<DecreaseLikeOfCommentQuery, DecreaseLikeOfCommentQueryResponse>
+
+        public class DecreaseDislikeOfCommentQueryHandler:IRequestHandler<DecreaseDislikeOfCommentQuery, DecreaseDislikeOfCommentCommentQueryResponse>
         {
             private readonly ICommentRepository commentRepository;
-            public DecreaseLikeOfCommentQueryHandler(ICommentRepository commentRepository)
+            public DecreaseDislikeOfCommentQueryHandler(ICommentRepository commentRepository)
             {
                 this.commentRepository = commentRepository;
             }
 
-            public async Task<DecreaseLikeOfCommentQueryResponse> Handle(DecreaseLikeOfCommentQuery request, CancellationToken cancellationToken)
+            public async Task<DecreaseDislikeOfCommentCommentQueryResponse> Handle(DecreaseDislikeOfCommentQuery request, CancellationToken cancellationToken)
             {
                 var comment = await commentRepository.GetAsync(x => x.Id == request.CommentId);
 
@@ -24,7 +26,7 @@ namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
 
                 var updatedComment = await commentRepository.UpdateAsync(comment);
 
-                return new DecreaseLikeOfCommentQueryResponse
+                return new DecreaseDislikeOfCommentCommentQueryResponse
                 {
                     Id = updatedComment.Id,
                     BlogId = updatedComment.BlogId,
@@ -36,5 +38,6 @@ namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
                 };
             }
         }
+
     }
 }
