@@ -53,6 +53,12 @@ namespace Application.Features.Auth.Commands.EnableEmailAuthenticator
 
                 await emailAuthenticatorRepository.AddAsync(emailAuthenticator);
 
+                await SendInfoMailAsync(siteUser,emailAuthenticator.ActivationKey,request.VerifyToEmail);
+
+
+            }
+            public async Task SendInfoMailAsync(User siteUser,string activationKey,string VerifyToMail)
+            {
                 List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
                 mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
 
@@ -61,11 +67,9 @@ namespace Application.Features.Auth.Commands.EnableEmailAuthenticator
                     ToList = mailboxAddresses,
                     Subject = AuthBusinessMessage.VerifyEmail,
                     TextBody = $"{AuthBusinessMessage.ClickOnBelowLinkToVerifyEmail}\n" +
-                           $"{request.VerifyToEmail}?activationKey={HttpUtility.UrlEncode(emailAuthenticator.ActivationKey)}"
+                           $"{VerifyToMail}?activationKey={HttpUtility.UrlEncode(activationKey)}"
                 };
                 await mailService.SendEmailAsync(mailData);
-
-
             }
         }
     }

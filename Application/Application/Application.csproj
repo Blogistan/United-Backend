@@ -16,6 +16,7 @@
     <Folder Include="Features\Comments\Profiles\" />
     <Folder Include="Features\Categories\Constants\" />
     <Folder Include="Features\Categories\Models\" />
+    <Folder Include="Features\Contents\" />
     <Folder Include="Features\Videos\Constants\" />
     <Folder Include="Features\Videos\Models\" />
   </ItemGroup>
