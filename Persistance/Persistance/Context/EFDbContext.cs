@@ -25,7 +25,7 @@ namespace Persistance.Context
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<EmailAuthenticator> EmailAuthenticators { get; set; }
         public DbSet<OtpAuthenticator> OtpAuthenticators { get; set; }
-        public DbSet<VideoContent> VideoContents { get; set; }
+        //public DbSet<VideoContent> VideoContents { get; set; }
 
         protected IConfiguration Configuration { get; set; }
         protected IHttpContextAccessor httpContextAccessor { get; set; }

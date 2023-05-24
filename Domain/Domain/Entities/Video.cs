@@ -11,9 +11,9 @@ namespace Domain.Entities
         public int WatchCount { get; set; }
 
 
-        public virtual ICollection<Content> Contents { get; set; }
+        //public virtual ICollection<Content> Contents { get; set; }
 
-        public virtual ICollection<VideoContent> VideoContents { get; set; }
+        //public virtual ICollection<VideoContent> VideoContents { get; set; }
 
         public Video()
         {

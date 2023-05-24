@@ -1,13 +1,15 @@
 ﻿using Application.Features.Comments.Commands.CreateComment;
 using Application.Features.Comments.Commands.DeleteComment;
 using Application.Features.Comments.Commands.UpdateComment;
+using Application.Features.Comments.Queries.DecreaseDislikeOfCommentQuery;
 using Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery;
+using Application.Features.Comments.Queries.IncreaseDislikeOfCommentQuery;
 using Application.Features.Comments.Queries.IncreaseLikeOfCommentQuery;
 using Microsoft.AspNetCore.Mvc;
 
 namespace UnitedAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CommentController : BaseController
     {
@@ -37,11 +39,25 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
 
-        //To do : Dislike Query features
+        
         [HttpPut]
         public async Task<IActionResult> DecreaseLike ([FromBody] DecreaseLikeOfCommentQuery decreaseLikeOfCommentQuery)
         {
             DecreaseLikeOfCommentQueryResponse response = await Mediator.Send(decreaseLikeOfCommentQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> IncreaseDislike([FromBody] IncreaseDislikeOfCommentQuery ıncreaseDislikeOfCommentQuery)
+        {
+            IncreaseDislikeOfCommentQueryResponse response = await Mediator.Send(ıncreaseDislikeOfCommentQuery);
+            return Ok(response);
+        }
+
+
+        [HttpPut]
+        public async Task<IActionResult> DecreaseDislike([FromBody] DecreaseDislikeOfCommentQuery decreaseDislikeOfCommentQuery)
+        {
+            DecreaseDislikeOfCommentCommentQueryResponse response = await Mediator.Send(decreaseDislikeOfCommentQuery);
             return Ok(response);
         }
     }
