@@ -4,6 +4,7 @@ namespace Domain.Entities
 {
     public class Content : Entity<int>
     {
+        public int Id { get; set; }
         public string Title { get; set; }
 
         public string? ContentImageUrl { get; set; }
