@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.Contents.Commands.UpdateContent
 {
-    public class UpdateContentResponse
+    public class UpdateContentCommandResponse
     {
         public int Id { get; set; }
         public string Title { get; set; }

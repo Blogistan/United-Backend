@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Features.Contents.Commands.UpdateContent
 {
-    public class UpdateContentCommand : IRequest<UpdateContentResponse>
+    public class UpdateContentCommand : IRequest<UpdateContentCommandResponse>
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -13,7 +13,7 @@ namespace Application.Features.Contents.Commands.UpdateContent
 
         public string ContentPragraph { get; set; }
 
-        public class UpdateContentCommandHandler : IRequestHandler<UpdateContentCommand, UpdateContentResponse>
+        public class UpdateContentCommandHandler : IRequestHandler<UpdateContentCommand, UpdateContentCommandResponse>
         {
             private readonly IContentRepository contentRepository;
             public UpdateContentCommandHandler(IContentRepository contentRepository)
@@ -21,7 +21,7 @@ namespace Application.Features.Contents.Commands.UpdateContent
                 this.contentRepository = contentRepository;
             }
 
-            public async Task<UpdateContentResponse> Handle(UpdateContentCommand request, CancellationToken cancellationToken)
+            public async Task<UpdateContentCommandResponse> Handle(UpdateContentCommand request, CancellationToken cancellationToken)
             {
                 Content content = new()
                 {
@@ -33,7 +33,7 @@ namespace Application.Features.Contents.Commands.UpdateContent
 
                 Content updatedContent = await contentRepository.UpdateAsync(content);
 
-                return new UpdateContentResponse
+                return new UpdateContentCommandResponse
                 {
                     Id = updatedContent.Id,
                     Title = updatedContent.Title,
