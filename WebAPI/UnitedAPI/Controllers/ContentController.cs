@@ -30,7 +30,7 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
         [HttpGet]
-        public async Task<IActionResult> Delete([FromQuery] PageRequest pageRequest)
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
             GetListContentQuery getListContentQuery = new() { PageRequest = pageRequest };
             GetListContentQueryResponse response = await Mediator.Send(getListContentQuery);

@@ -1,4 +1,5 @@
 ﻿using Application.Features.Auth.Rules;
+using Application.Features.Blogs.Rules;
 using Application.Features.Categories.Rules;
 using Application.Features.Videos.Rules;
 using Application.Services.Auth;
@@ -28,6 +29,7 @@ namespace Application
 
             services.AddScoped<AuthBussinessRules>();
             services.AddScoped<CategoryBusinessRules>();
+            services.AddScoped<BlogBusinessRules>();
             services.AddScoped<VideoBusinessRules>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IMailService, MailKitMailService>();;
