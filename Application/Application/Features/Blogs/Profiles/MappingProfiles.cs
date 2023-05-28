@@ -1,7 +1,11 @@
 ﻿using Application.Features.Blogs.Commands.CreateBlog;
 using Application.Features.Blogs.Commands.DeleteBlog;
 using Application.Features.Blogs.Commands.UpdateBlog;
+using Application.Features.Blogs.Dtos;
+using Application.Features.Blogs.Queries.GetListBlog;
+using Application.Features.Blogs.Queries.GetListBlogDynamic;
 using AutoMapper;
+using Core.Persistence.Paging;
 using Domain.Entities;
 
 namespace Application.Features.Blogs.Profiles
@@ -24,6 +28,13 @@ namespace Application.Features.Blogs.Profiles
 
             CreateMap<Blog, UpdateBlogCommand>().ReverseMap();
             CreateMap<Blog, UpdateBlogCommandResponse>().ReverseMap();
+
+            CreateMap<Blog, BlogListViewDto>().ForMember(opt => opt.CategoryName, src => src.MapFrom(x => x.Category.CategoryName))
+                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.FirstName + ' ' + x.Writer.LastName))
+                .ReverseMap();
+
+            CreateMap<IPaginate<Blog>, GetListBlogQueryResponse>().ReverseMap();
+            CreateMap<IPaginate<Blog>, GetListBlogDynamicQueryResponse>().ReverseMap();
 
         }
     }
