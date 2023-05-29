@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Blogs.Queries.LikeBlog
+namespace Application.Features.Blogs.Queries.KEKWBlog
 {
-    public class ReadBlogQueryValidator:AbstractValidator<ReadBlogQuery>
+    public class KekwBlogQueryValidator:AbstractValidator<KekwBlogQuery>
     {
-        public ReadBlogQueryValidator()
+        public KekwBlogQueryValidator()
         {
             RuleFor(x=>x.BlogId).NotEmpty();
         }
