@@ -33,7 +33,7 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> IncreaseLike([FromBody] IncreaseLikeOfCommentQuery increaseLikeOfCommentQuery)
+        public async Task<IActionResult> Like([FromBody] IncreaseLikeOfCommentQuery increaseLikeOfCommentQuery)
         {
             IncreaseLikeOfCommentQueryResponse response = await Mediator.Send(increaseLikeOfCommentQuery);
             return Ok(response);
@@ -41,13 +41,13 @@ namespace UnitedAPI.Controllers
 
         
         [HttpPut]
-        public async Task<IActionResult> DecreaseLike ([FromBody] DecreaseLikeOfCommentQuery decreaseLikeOfCommentQuery)
+        public async Task<IActionResult> UnLike ([FromBody] DecreaseLikeOfCommentQuery decreaseLikeOfCommentQuery)
         {
             DecreaseLikeOfCommentQueryResponse response = await Mediator.Send(decreaseLikeOfCommentQuery);
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> IncreaseDislike([FromBody] IncreaseDislikeOfCommentQuery ıncreaseDislikeOfCommentQuery)
+        public async Task<IActionResult> Dislike([FromBody] IncreaseDislikeOfCommentQuery ıncreaseDislikeOfCommentQuery)
         {
             IncreaseDislikeOfCommentQueryResponse response = await Mediator.Send(ıncreaseDislikeOfCommentQuery);
             return Ok(response);
@@ -55,7 +55,7 @@ namespace UnitedAPI.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> DecreaseDislike([FromBody] DecreaseDislikeOfCommentQuery decreaseDislikeOfCommentQuery)
+        public async Task<IActionResult> UnDislike([FromBody] DecreaseDislikeOfCommentQuery decreaseDislikeOfCommentQuery)
         {
             DecreaseDislikeOfCommentCommentQueryResponse response = await Mediator.Send(decreaseDislikeOfCommentQuery);
             return Ok(response);
