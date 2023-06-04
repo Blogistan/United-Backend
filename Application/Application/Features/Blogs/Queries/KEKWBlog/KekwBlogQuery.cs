@@ -1,15 +1,9 @@
 ﻿using Application.Features.Blogs.Dtos;
-using Application.Features.Blogs.Queries.LikeBlog;
 using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Blogs.Queries.KEKWBlog
 {
