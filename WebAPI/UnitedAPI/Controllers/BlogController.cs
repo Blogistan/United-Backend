@@ -1,8 +1,15 @@
 ﻿using Application.Features.Blogs.Commands.CreateBlog;
 using Application.Features.Blogs.Commands.DeleteBlog;
 using Application.Features.Blogs.Commands.UpdateBlog;
+using Application.Features.Blogs.Dtos;
 using Application.Features.Blogs.Queries.GetListBlog;
 using Application.Features.Blogs.Queries.GetListBlogDynamic;
+using Application.Features.Blogs.Queries.KEKWBlog;
+using Application.Features.Blogs.Queries.LikeBlog;
+using Application.Features.Blogs.Queries.LovelyBlog;
+using Application.Features.Blogs.Queries.SadBlog;
+using Application.Features.Blogs.Queries.SuprisedBlog;
+using Application.Features.Blogs.Queries.TriggerBlog;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +52,42 @@ namespace UnitedAPI.Controllers
         {
             GetListBlogDynamicQuery getListBlogDynamicQuery = new() { PageRequest = pageRequest,DynamicQuery=dynamicQuery };
             GetListBlogDynamicQueryResponse response = await Mediator.Send(getListBlogDynamicQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> BlogKekw([FromBody] KekwBlogQuery kekwBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(kekwBlogQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> BlogLovely([FromBody] LovelyBlogQuery lovelyBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(lovelyBlogQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> BlogRead([FromBody] ReadBlogQuery readBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(readBlogQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> BlogSad([FromBody] SadBlogQuery sadBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(sadBlogQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> BlogSuprise([FromBody] SuprisedBlogQuery suprisedBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(suprisedBlogQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> BlogTrigger([FromBody] TriggerBlogQuery triggerBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(triggerBlogQuery);
             return Ok(response);
         }
     }

@@ -12,7 +12,6 @@
     <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Blogs\Constants\" />
     <Folder Include="Features\Blogs\Models\" />
-    <Folder Include="Features\Blogs\Queries\TriggerBlog\" />
     <Folder Include="Features\Comments\Dtos\" />
     <Folder Include="Features\Comments\Models\" />
     <Folder Include="Features\Comments\Constants\" />

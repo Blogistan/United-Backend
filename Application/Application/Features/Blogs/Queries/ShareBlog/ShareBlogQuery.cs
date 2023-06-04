@@ -2,6 +2,7 @@
 using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Blogs.Queries.ShareBlog
@@ -27,7 +28,9 @@ namespace Application.Features.Blogs.Queries.ShareBlog
 
                 blog.ShareCount++;
 
-                BlogListViewDto blogListViewDto = mapper.Map<BlogListViewDto>(blog);
+                Blog updatedBlog = await blogRepository.UpdateAsync(blog);
+
+                BlogListViewDto blogListViewDto = mapper.Map<BlogListViewDto>(updatedBlog);
 
                 return blogListViewDto;
             }

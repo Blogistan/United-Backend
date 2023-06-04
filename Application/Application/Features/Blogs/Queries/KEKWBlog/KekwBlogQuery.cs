@@ -3,6 +3,7 @@ using Application.Features.Blogs.Queries.LikeBlog;
 using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,9 @@ namespace Application.Features.Blogs.Queries.KEKWBlog
 
                 blog.ReactionKEKWCount++;
 
-                BlogListViewDto blogListViewDto = mapper.Map<BlogListViewDto>(blog);
+                Blog updatedBlog = await blogRepository.UpdateAsync(blog);
+
+                BlogListViewDto blogListViewDto = mapper.Map<BlogListViewDto>(updatedBlog);
 
                 return blogListViewDto;
             }
