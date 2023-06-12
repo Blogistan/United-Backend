@@ -5,7 +5,6 @@ using Application.Services.Repositories;
 using Core.Application.Pipelines.Authorization;
 using Core.Mailing;
 using Core.Security.Entities;
-using Domain.Entities;
 using MediatR;
 using MimeKit;
 using System.Text;

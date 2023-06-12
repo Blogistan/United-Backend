@@ -1,10 +1,8 @@
-﻿using Amazon.Runtime.Internal;
-using Application.Features.Auth.Rules;
+﻿using Application.Features.Auth.Rules;
 using Application.Services.Auth;
 using Application.Services.Repositories;
 using Core.Application.Pipelines.Authorization;
 using Core.Security.Entities;
-using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand
