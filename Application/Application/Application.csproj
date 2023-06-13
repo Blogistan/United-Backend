@@ -12,6 +12,13 @@
     <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Blogs\Constants\" />
     <Folder Include="Features\Blogs\Models\" />
+    <Folder Include="Features\Bookmarks\Commands\" />
+    <Folder Include="Features\Bookmarks\Constants\" />
+    <Folder Include="Features\Bookmarks\Models\" />
+    <Folder Include="Features\Bookmarks\Dtos\" />
+    <Folder Include="Features\Bookmarks\Profiles\" />
+    <Folder Include="Features\Bookmarks\Queries\RemoveFromBookmarks\" />
+    <Folder Include="Features\Bookmarks\Rules\" />
     <Folder Include="Features\Comments\Dtos\" />
     <Folder Include="Features\Comments\Models\" />
     <Folder Include="Features\Comments\Constants\" />
