@@ -17,7 +17,6 @@
     <Folder Include="Features\Bookmarks\Models\" />
     <Folder Include="Features\Bookmarks\Dtos\" />
     <Folder Include="Features\Bookmarks\Profiles\" />
-    <Folder Include="Features\Bookmarks\Queries\RemoveFromBookmarks\" />
     <Folder Include="Features\Bookmarks\Rules\" />
     <Folder Include="Features\Comments\Dtos\" />
     <Folder Include="Features\Comments\Models\" />

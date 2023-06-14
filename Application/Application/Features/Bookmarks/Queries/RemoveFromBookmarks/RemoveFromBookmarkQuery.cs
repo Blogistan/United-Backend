@@ -5,39 +5,35 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Bookmarks.Queries.AddToBookmarks
+namespace Application.Features.Bookmarks.Queries.RemoveFromBookmarks
 {
-    public class AddToBookmarksQuery : IRequest<bool>
+    public class RemoveFromBookmarkQuery : IRequest<bool>
     {
         public int BlogId { get; set; }
         public int UserId { get; set; }
 
-
-        public class AddToBookmarksQueryHandler : IRequestHandler<AddToBookmarksQuery, bool>
+        public class RemoveFromBookmarkQueryHandler : IRequestHandler<RemoveFromBookmarkQuery, bool>
         {
             private readonly ISiteUserRepository siteUserRepository;
             private readonly AuthBussinessRules authBussinessRules;
             private readonly BlogBusinessRules blogBusinessRules;
-            public AddToBookmarksQueryHandler(ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, BlogBusinessRules blogBusinessRules)
+            public RemoveFromBookmarkQueryHandler(BlogBusinessRules blogBusinessRules, AuthBussinessRules authBussinessRules, ISiteUserRepository siteUserRepository)
             {
-                this.siteUserRepository = siteUserRepository;
-                this.authBussinessRules = authBussinessRules;
                 this.blogBusinessRules = blogBusinessRules;
+                this.authBussinessRules = authBussinessRules;
+                this.siteUserRepository = siteUserRepository;
             }
-            public async Task<bool> Handle(AddToBookmarksQuery request, CancellationToken cancellationToken)
+
+            public async Task<bool> Handle(RemoveFromBookmarkQuery request, CancellationToken cancellationToken)
             {
                 await blogBusinessRules.BlogCheckById(request.BlogId);
                 SiteUser user = await siteUserRepository.GetAsync(x => x.Id == request.UserId, x => x.Include(x => x.Bookmarks));
 
                 await authBussinessRules.UserShouldBeExist(user);
 
-                Bookmark bookmark = new()
-                {
-                    BlogId = request.BlogId,
-                    SiteUserId = user.Id,
-                    SiteUser=user
-                };
-                user.Bookmarks.Add(bookmark);
+
+                var blogToBeRemove = user.Bookmarks.Single(x => x.BlogId == request.BlogId);
+                user.Bookmarks.Remove(blogToBeRemove);
 
                 return true;
             }
