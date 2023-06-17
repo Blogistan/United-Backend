@@ -322,6 +322,9 @@ namespace Persistance.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ContentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CreateUser")
                         .HasColumnType("int");
 
@@ -371,6 +374,8 @@ namespace Persistance.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ContentId");
 
                     b.HasIndex("WriterId");
 
@@ -603,9 +608,6 @@ namespace Persistance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BlogId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ContentImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -636,8 +638,6 @@ namespace Persistance.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BlogId");
 
                     b.ToTable("Contents");
 
@@ -681,90 +681,6 @@ namespace Persistance.Migrations
                             DeleteUser = 0,
                             Title = "IOT nedir",
                             UpdateUser = 0
-                        });
-                });
-
-            modelBuilder.Entity("Domain.Entities.Video", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CreateUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DeleteUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UpdateUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("VideoUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("WatchCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Videos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateUser = 0,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeleteUser = 0,
-                            Description = "MageSeekers oynanış videosu",
-                            Title = "The Mageseekers",
-                            UpdateUser = 0,
-                            VideoUrl = "https://youtube.com/watch/videolinki",
-                            WatchCount = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateUser = 0,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeleteUser = 0,
-                            Description = "Togg sürüç derlemesi",
-                            Title = "Togg Yollarda",
-                            UpdateUser = 0,
-                            VideoUrl = "https://youtube.com/watch/videolinki",
-                            WatchCount = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreateUser = 0,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeleteUser = 0,
-                            Description = "Iot nedir,Günüümzde nerelerde kullanılmaktadır.",
-                            Title = "Iot Nedir",
-                            UpdateUser = 0,
-                            VideoUrl = "https://youtube.com/watch/videolinki",
-                            WatchCount = 0
                         });
                 });
 
@@ -841,6 +757,12 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Content", "Content")
+                        .WithMany("Blogs")
+                        .HasForeignKey("ContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.SiteUser", "Writer")
                         .WithMany("Blogs")
                         .HasForeignKey("WriterId")
@@ -848,6 +770,8 @@ namespace Persistance.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Content");
 
                     b.Navigation("Writer");
                 });
@@ -895,13 +819,6 @@ namespace Persistance.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Content", b =>
-                {
-                    b.HasOne("Domain.Entities.Blog", null)
-                        .WithMany("Contents")
-                        .HasForeignKey("BlogId");
-                });
-
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
                 {
                     b.Navigation("UserOperationClaims");
@@ -922,8 +839,6 @@ namespace Persistance.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Contents");
-
                     b.Navigation("FavoritedUsers");
                 });
 
@@ -935,6 +850,11 @@ namespace Persistance.Migrations
             modelBuilder.Entity("Domain.Entities.Comment", b =>
                 {
                     b.Navigation("CommentResponses");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Content", b =>
+                {
+                    b.Navigation("Blogs");
                 });
 
             modelBuilder.Entity("Domain.Entities.SiteUser", b =>

@@ -11,6 +11,7 @@ namespace Application.Features.Blogs.Commands.CreateBlog
     {
         public string Title { get; set; }
         public int CategoryId { get; set; }
+        public int ContentId { get; set; }
         public string BannerImageUrl { get; set; }
         public int WriterId { get; set; }
         public int ReactionSuprisedCount => 0;

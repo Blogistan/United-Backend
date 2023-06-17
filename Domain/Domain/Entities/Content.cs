@@ -11,6 +11,7 @@ namespace Domain.Entities
 
         public string ContentPragraph { get; set; }
 
+        public virtual ICollection<Blog> Blogs { get; set; }
 
         //public virtual ICollection<Video>? Videos { get; set; }
         //public virtual ICollection<VideoContent>? VideoContents { get; set; }

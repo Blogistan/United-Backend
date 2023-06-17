@@ -18,7 +18,7 @@ namespace Persistance.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Content> Contents { get; set; }
-        public DbSet<Video> Videos { get; set; }
+        //public DbSet<Video> Videos { get; set; }
         public DbSet<SiteUser> SiteUsers { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }

@@ -22,11 +22,11 @@ namespace Persistance.Migrations
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,6 +39,27 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Contents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContentImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContentPragraph = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contents", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OperationClaims",
                 columns: table => new
                 {
@@ -46,11 +67,11 @@ namespace Persistance.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,37 +95,15 @@ namespace Persistance.Migrations
                     ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Videos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WatchCount = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Videos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,12 +123,13 @@ namespace Persistance.Migrations
                     ReactionTriggeredCount = table.Column<int>(type: "int", nullable: false),
                     ShareCount = table.Column<int>(type: "int", nullable: false),
                     ReadCount = table.Column<int>(type: "int", nullable: false),
+                    ContentId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -138,6 +138,12 @@ namespace Persistance.Migrations
                         name: "FK_Blogs_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Blogs_Contents_ContentId",
+                        column: x => x.ContentId,
+                        principalTable: "Contents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -158,11 +164,11 @@ namespace Persistance.Migrations
                     ActivationKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,11 +191,11 @@ namespace Persistance.Migrations
                     SecretKey = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -217,11 +223,11 @@ namespace Persistance.Migrations
                     ReplacedByToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReasonRevoked = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,11 +249,11 @@ namespace Persistance.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     OperationClaimId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -302,13 +308,14 @@ namespace Persistance.Migrations
                     Likes = table.Column<int>(type: "int", nullable: false),
                     Dislikes = table.Column<int>(type: "int", nullable: false),
                     BlogId = table.Column<int>(type: "int", nullable: true),
+                    ParentCommentId = table.Column<int>(type: "int", nullable: true),
                     CommentId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -328,81 +335,6 @@ namespace Persistance.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contents",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContentImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ContentPragraph = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BlogId = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contents", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Contents_Blogs_BlogId",
-                        column: x => x.BlogId,
-                        principalTable: "Blogs",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ContentVideo",
-                columns: table => new
-                {
-                    ContentsId = table.Column<int>(type: "int", nullable: false),
-                    VideosId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContentVideo", x => new { x.ContentsId, x.VideosId });
-                    table.ForeignKey(
-                        name: "FK_ContentVideo_Contents_ContentsId",
-                        column: x => x.ContentsId,
-                        principalTable: "Contents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ContentVideo_Videos_VideosId",
-                        column: x => x.VideosId,
-                        principalTable: "Videos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "VideoContents",
-                columns: table => new
-                {
-                    ContentId = table.Column<int>(type: "int", nullable: false),
-                    VideoId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_VideoContents", x => new { x.ContentId, x.VideoId });
-                    table.ForeignKey(
-                        name: "FK_VideoContents_Contents_ContentId",
-                        column: x => x.ContentId,
-                        principalTable: "Contents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_VideoContents_Videos_VideoId",
-                        column: x => x.VideoId,
-                        principalTable: "Videos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -425,29 +357,24 @@ namespace Persistance.Migrations
 
             migrationBuilder.InsertData(
                 table: "Contents",
-                columns: new[] { "Id", "BlogId", "ContentImageUrl", "ContentPragraph", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "Title", "UpdateUser", "UpdatedDate" },
+                columns: new[] { "Id", "ContentImageUrl", "ContentPragraph", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "Title", "UpdateUser", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, null, null, "Riot'un yeni oyunu pixel art'dan oluşan mage seekers 18.04.2023 tarihinde yayınlandı.", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "The Mage Seekers", 0, null },
-                    { 2, null, null, "Oyun 1 saat süre olmadan hackerlar tarafından kırıldı", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "OYUNDA ANINDA CRACKLANDİ", 0, null },
-                    { 3, null, null, "Yerli üretim aracımız togg artık yollarda ön satışlar bitti.", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Togg Yollarda", 0, null },
-                    { 4, null, null, "Nesnelerin interneti, fiziksel nesnelerin birbirleriyle veya daha büyük sistemlerle bağlantılı olduğu iletişim ağıdır.İnternet üzerinden diğer cihazlara ve sistemlere bağlanmak ve veri alışverişi yapmak amacıyla sensörler, yazılımlar ve diğer teknolojilerle gömülüdür.", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "IOT nedir", 0, null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Videos",
-                columns: new[] { "Id", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "Description", "Title", "UpdateUser", "UpdatedDate", "VideoUrl", "WatchCount" },
-                values: new object[,]
-                {
-                    { 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "MageSeekers oynanış videosu", "The Mageseekers", 0, null, "https://youtube.com/watch/videolinki", 0 },
-                    { 2, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Togg sürüç derlemesi", "Togg Yollarda", 0, null, "https://youtube.com/watch/videolinki", 0 },
-                    { 3, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Iot nedir,Günüümzde nerelerde kullanılmaktadır.", "Iot Nedir", 0, null, "https://youtube.com/watch/videolinki", 0 }
+                    { 1, null, "Riot'un yeni oyunu pixel art'dan oluşan mage seekers 18.04.2023 tarihinde yayınlandı.", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "The Mage Seekers", 0, null },
+                    { 2, null, "Oyun 1 saat süre olmadan hackerlar tarafından kırıldı", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "OYUNDA ANINDA CRACKLANDİ", 0, null },
+                    { 3, null, "Yerli üretim aracımız togg artık yollarda ön satışlar bitti.", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Togg Yollarda", 0, null },
+                    { 4, null, "Nesnelerin interneti, fiziksel nesnelerin birbirleriyle veya daha büyük sistemlerle bağlantılı olduğu iletişim ağıdır.İnternet üzerinden diğer cihazlara ve sistemlere bağlanmak ve veri alışverişi yapmak amacıyla sensörler, yazılımlar ve diğer teknolojilerle gömülüdür.", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "IOT nedir", 0, null }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blogs_CategoryId",
                 table: "Blogs",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blogs_ContentId",
+                table: "Blogs",
+                column: "ContentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blogs_WriterId",
@@ -480,16 +407,6 @@ namespace Persistance.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contents_BlogId",
-                table: "Contents",
-                column: "BlogId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ContentVideo_VideosId",
-                table: "ContentVideo",
-                column: "VideosId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_EmailAuthenticators_UserId",
                 table: "EmailAuthenticators",
                 column: "UserId");
@@ -513,11 +430,6 @@ namespace Persistance.Migrations
                 name: "IX_UserOperationClaims_UserId",
                 table: "UserOperationClaims",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VideoContents_VideoId",
-                table: "VideoContents",
-                column: "VideoId");
         }
 
         /// <inheritdoc />
@@ -528,9 +440,6 @@ namespace Persistance.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
-
-            migrationBuilder.DropTable(
-                name: "ContentVideo");
 
             migrationBuilder.DropTable(
                 name: "EmailAuthenticators");
@@ -545,22 +454,16 @@ namespace Persistance.Migrations
                 name: "UserOperationClaims");
 
             migrationBuilder.DropTable(
-                name: "VideoContents");
+                name: "Blogs");
 
             migrationBuilder.DropTable(
                 name: "OperationClaims");
 
             migrationBuilder.DropTable(
-                name: "Contents");
-
-            migrationBuilder.DropTable(
-                name: "Videos");
-
-            migrationBuilder.DropTable(
-                name: "Blogs");
-
-            migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Contents");
 
             migrationBuilder.DropTable(
                 name: "User");

@@ -1,4 +1,5 @@
 ﻿using Application.Features.Bookmarks.Queries.AddToBookmarks;
+using Application.Features.Bookmarks.Queries.GetListBookmarks;
 using Application.Features.Bookmarks.Queries.RemoveFromBookmarks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,12 @@ namespace UnitedAPI.Controllers
         {
             var result = await Mediator.Send(removeFromBookmarkQuery);
             return Ok(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] GetListBookmarksQuery getListBookmarksQuery)
+        {
+            var response = await Mediator.Send(getListBookmarksQuery);
+            return Ok(response);
         }
     }
 }

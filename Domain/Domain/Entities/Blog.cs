@@ -18,9 +18,10 @@ namespace Domain.Entities
 
         public int ShareCount { get; set; }
         public int ReadCount { get; set; }
+        public int ContentId { get; set; }
         public virtual SiteUser Writer { get; set; }
 
-        public virtual ICollection<Content> Contents { get; set; }
+        public virtual Content Content { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
 
@@ -30,7 +31,7 @@ namespace Domain.Entities
         public Blog()
         {
         }
-        public Blog(int id, string title, int categoryId, string bannerImageUrl, int writerId, ICollection<Content> contents, ICollection<Comment> comments,
+        public Blog(int id, string title, int categoryId, string bannerImageUrl, int writerId,int contentId, ICollection<Comment> comments,
             int reactionSuprisedCount, int reactionLovelyCount, int reactionSadCount, int reactionTriggeredCount, int reactionKEKWCount, int shareCount, int readCount) : this()
         {
             this.Id = id;
@@ -38,7 +39,7 @@ namespace Domain.Entities
             this.CategoryId = categoryId;
             this.WriterId = writerId;
             this.BannerImageUrl = bannerImageUrl;
-            this.Contents = contents;
+            this.ContentId = contentId;
             this.Comments = comments;
             this.ReadCount = readCount;
             this.ReactionKEKWCount = reactionKEKWCount;
