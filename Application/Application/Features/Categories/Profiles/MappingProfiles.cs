@@ -15,6 +15,7 @@ namespace Application.Features.Categories.Profiles
                 .ReverseMap();
 
             CreateMap<IPaginate<Category>, CategoryListDto>().ReverseMap();
+            CreateMap<Category, CategoryViewDto>().ReverseMap();
 
             CreateMap<UpdateCategoryDto,Category>().ReverseMap();
             CreateMap<CreateCategoryDto,Category>().ReverseMap();

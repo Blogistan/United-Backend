@@ -2,6 +2,7 @@
 using Application.Features.Blogs.Commands.DeleteBlog;
 using Application.Features.Blogs.Commands.UpdateBlog;
 using Application.Features.Blogs.Dtos;
+using Application.Features.Blogs.Queries.BlogDetailById;
 using Application.Features.Blogs.Queries.GetListBlog;
 using Application.Features.Blogs.Queries.GetListBlogDynamic;
 using Application.Features.Blogs.Queries.KEKWBlog;
@@ -89,6 +90,13 @@ namespace UnitedAPI.Controllers
         {
             BlogListViewDto response = await Mediator.Send(triggerBlogQuery);
             return Ok(response);
+        }
+        [HttpGet]
+        public async Task<IActionResult> BlogDetail([FromQuery] BlogDetailByIdQuery blogDetailByIdQuery)
+        {
+            BlogDetailDto response = await Mediator.Send(blogDetailByIdQuery);
+            return Ok(response); 
+                
         }
     }
 }
