@@ -1,6 +1,7 @@
 ﻿using Application.Services.Repositories;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Comments.Commands.CreateComment
 {
@@ -30,25 +31,27 @@ namespace Application.Features.Comments.Commands.CreateComment
                 {
                     BlogId = request.BlogId,
                     CommentContent = request.CommentContent,
-                    GuestName = request.GuestName,
-                    ParentCommentId = request.ParentCommentId,
+                    GuestName = request!.GuestName,
+                    ParentCommentId = request!.ParentCommentId,
                     Likes = 0,
                     Dislikes = 0,
-                    UserId = request.UserId
+                    UserId = request!.UserId
                 };
 
-                Comment createdComment = await commentRepository.AddAsync(comment);
+                await commentRepository.AddAsync(comment);
+
+                Comment commentWithUser = await commentRepository.GetAsync(x=>x.UserId==request.UserId,x=>x.Include(x=>x.User));
 
 
                 return new CreateCommentCommandResponse
                 {
-                    Id=createdComment.Id,
-                    BlogId = createdComment.BlogId,
-                    CommentContent = createdComment.CommentContent,
-                    Dislikes = createdComment.Dislikes,
-                    GuestName = createdComment.GuestName,
-                    Likes = createdComment.Likes,
-                    UserName = $"{createdComment.User.FirstName} {createdComment.User.LastName}"
+                    Id= commentWithUser.Id,
+                    BlogId = commentWithUser.BlogId,
+                    CommentContent = commentWithUser.CommentContent,
+                    Dislikes = commentWithUser.Dislikes,
+                    GuestName = commentWithUser.GuestName!,
+                    Likes = commentWithUser.Likes,
+                    UserName = $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}"
                 };
 
             }
