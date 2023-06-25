@@ -34,7 +34,6 @@ namespace Application.Features.Comments.Commands.DeleteComment
                     CommentContent = commentWithUser.CommentContent,
                     GuestName = commentWithUser.GuestName,
                     UserName = $"{commentWithUser.User.FirstName} {commentWithUser.User.LastName}",
-                    ParentCommentId = commentWithUser.ParentCommentId,
                     Likes = commentWithUser.Likes,
                     Dislikes = commentWithUser.Dislikes
                 };

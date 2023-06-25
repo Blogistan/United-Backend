@@ -18,7 +18,6 @@
     <Folder Include="Features\Bookmarks\Dtos\" />
     <Folder Include="Features\Bookmarks\Profiles\" />
     <Folder Include="Features\Bookmarks\Rules\" />
-    <Folder Include="Features\Comments\Dtos\" />
     <Folder Include="Features\Comments\Models\" />
     <Folder Include="Features\Comments\Constants\" />
     <Folder Include="Features\Comments\Profiles\" />

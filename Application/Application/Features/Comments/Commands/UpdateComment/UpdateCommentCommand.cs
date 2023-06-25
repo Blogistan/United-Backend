@@ -36,8 +36,7 @@ namespace Application.Features.Comments.Commands.UpdateComment
                     UserId = request.UserId,
                     GuestName = request.GuestName,
                     Likes = request.Likes,
-                    Dislikes = request.Dislikes,
-                    ParentCommentId = request.ParentCommentId
+                    Dislikes = request.Dislikes
                 };
 
                 Comment updatedComment = await commentRepository.UpdateAsync(comment);

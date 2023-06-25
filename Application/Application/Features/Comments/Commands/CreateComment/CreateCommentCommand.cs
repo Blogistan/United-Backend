@@ -13,7 +13,6 @@ namespace Application.Features.Comments.Commands.CreateComment
 
         public string CommentContent { get; set; }
 
-        public int? ParentCommentId { get; set; }
         public int? BlogId { get; set; }
 
 
@@ -32,7 +31,6 @@ namespace Application.Features.Comments.Commands.CreateComment
                     BlogId = request.BlogId,
                     CommentContent = request.CommentContent,
                     GuestName = request!.GuestName,
-                    ParentCommentId = request!.ParentCommentId,
                     Likes = 0,
                     Dislikes = 0,
                     UserId = request!.UserId

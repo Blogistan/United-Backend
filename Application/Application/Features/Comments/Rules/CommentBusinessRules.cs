@@ -1,16 +1,24 @@
-﻿using Application.Features.Categories.Dtos;
-using Application.Services.Repositories;
+﻿using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 
-namespace Application.Features.Bookmarks.Rules
+namespace Application.Features.Comments.Rules
 {
-    public class CreateBookmarkCommand
+    public class CommentBusinessRules
     {
         public readonly ICommentRepository commentRepository;
-        public CreateBookmarkCommand(ICommentRepository commentRepository)
+        public CommentBusinessRules(ICommentRepository commentRepository)
         {
             this.commentRepository = commentRepository;
+        }
+
+        public async Task<Comment> CommentCheckById(int commentId)
+        {
+            Comment comment = await commentRepository.GetAsync(x=>x.Id== commentId);
+            if (comment is null)
+                throw new BusinessException("Comment is not exist");
+
+            return comment;
         }
 
     }
