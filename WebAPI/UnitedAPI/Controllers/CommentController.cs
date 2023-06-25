@@ -3,6 +3,7 @@ using Application.Features.Comments.Commands.DeleteComment;
 using Application.Features.Comments.Commands.UpdateComment;
 using Application.Features.Comments.Queries.DecreaseDislikeOfCommentQuery;
 using Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery;
+using Application.Features.Comments.Queries.GetBlogCommentsQuery;
 using Application.Features.Comments.Queries.IncreaseDislikeOfCommentQuery;
 using Application.Features.Comments.Queries.IncreaseLikeOfCommentQuery;
 using Microsoft.AspNetCore.Mvc;
@@ -39,17 +40,17 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
 
-        
+
         [HttpPut]
-        public async Task<IActionResult> UnLike ([FromBody] DecreaseLikeOfCommentQuery decreaseLikeOfCommentQuery)
+        public async Task<IActionResult> UnLike([FromBody] DecreaseLikeOfCommentQuery decreaseLikeOfCommentQuery)
         {
             DecreaseLikeOfCommentQueryResponse response = await Mediator.Send(decreaseLikeOfCommentQuery);
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> Dislike([FromBody] IncreaseDislikeOfCommentQuery ıncreaseDislikeOfCommentQuery)
+        public async Task<IActionResult> Dislike([FromBody] IncreaseDislikeOfCommentQuery increaseDislikeOfCommentQuery)
         {
-            IncreaseDislikeOfCommentQueryResponse response = await Mediator.Send(ıncreaseDislikeOfCommentQuery);
+            IncreaseDislikeOfCommentQueryResponse response = await Mediator.Send(increaseDislikeOfCommentQuery);
             return Ok(response);
         }
 
@@ -60,5 +61,12 @@ namespace UnitedAPI.Controllers
             DecreaseDislikeOfCommentCommentQueryResponse response = await Mediator.Send(decreaseDislikeOfCommentQuery);
             return Ok(response);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetBlogComments([FromQuery] GetBlogCommentsQuery getBlogCommentsQuery)
+        {
+            GetBlogCommentsQueryResponse response = await Mediator.Send(getBlogCommentsQuery);
+            return Ok(response);
+        }
+
     }
 }

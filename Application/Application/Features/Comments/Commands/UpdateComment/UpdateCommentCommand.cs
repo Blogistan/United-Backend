@@ -1,4 +1,5 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Comments.Rules;
+using Application.Services.Repositories;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,27 +18,23 @@ namespace Application.Features.Comments.Commands.UpdateComment
         public int Dislikes { get; set; }
         public int? ParentCommentId { get; set; }
         public int? BlogId { get; set; }
+        public int? CommentId { get; set; }
 
         public class UpdateCommentCommandHandler : IRequestHandler<UpdateCommentCommand, UpdateCommentResponse>
         {
             private readonly ICommentRepository commentRepository;
-            public UpdateCommentCommandHandler(ICommentRepository commentRepository)
+            private readonly CommentBusinessRules commentBusinessRules;
+            public UpdateCommentCommandHandler(ICommentRepository commentRepository, CommentBusinessRules commentBusinessRules)
             {
                 this.commentRepository = commentRepository;
+                this.commentBusinessRules = commentBusinessRules;
             }
 
             public async Task<UpdateCommentResponse> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
             {
-                Comment comment = new()
-                {
+                var comment = await commentBusinessRules.CommentCheckById((int)request.CommentId);
 
-                    BlogId = request.BlogId,
-                    CommentContent = request.CommentContent,
-                    UserId = request.UserId,
-                    GuestName = request.GuestName,
-                    Likes = request.Likes,
-                    Dislikes = request.Dislikes
-                };
+                comment.CommentContent = request.CommentContent;
 
                 Comment updatedComment = await commentRepository.UpdateAsync(comment);
 
@@ -50,9 +47,9 @@ namespace Application.Features.Comments.Commands.UpdateComment
                     CommentContent = commentWithUser.CommentContent,
                     GuestName = commentWithUser.GuestName,
                     UserName = $"{commentWithUser.User.FirstName} {commentWithUser.User.LastName}",
-                    ParentCommentId = commentWithUser.ParentCommentId,
                     Likes = commentWithUser.Likes,
-                    Dislikes = commentWithUser.Dislikes
+                    Dislikes = commentWithUser.Dislikes,
+                    ParentCommentId=commentWithUser.CommentId
                 };
             }
         }

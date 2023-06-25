@@ -14,6 +14,7 @@ namespace Application.Features.Comments.Commands.CreateComment
         public string CommentContent { get; set; }
 
         public int? BlogId { get; set; }
+        public int? CommentId { get; set; }
 
 
         public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, CreateCommentCommandResponse>
@@ -33,7 +34,8 @@ namespace Application.Features.Comments.Commands.CreateComment
                     GuestName = request!.GuestName,
                     Likes = 0,
                     Dislikes = 0,
-                    UserId = request!.UserId
+                    UserId = request!.UserId,
+                    CommentId = (int)request.CommentId
                 };
 
                 await commentRepository.AddAsync(comment);
@@ -49,6 +51,7 @@ namespace Application.Features.Comments.Commands.CreateComment
                     Dislikes = commentWithUser.Dislikes,
                     GuestName = commentWithUser.GuestName!,
                     Likes = commentWithUser.Likes,
+                    ParentCommentId=commentWithUser.CommentId,
                     UserName = $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}"
                 };
 

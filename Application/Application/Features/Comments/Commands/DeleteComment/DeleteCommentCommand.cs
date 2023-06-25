@@ -35,7 +35,8 @@ namespace Application.Features.Comments.Commands.DeleteComment
                     GuestName = commentWithUser.GuestName,
                     UserName = $"{commentWithUser.User.FirstName} {commentWithUser.User.LastName}",
                     Likes = commentWithUser.Likes,
-                    Dislikes = commentWithUser.Dislikes
+                    Dislikes = commentWithUser.Dislikes,
+                    ParentCommentId=commentWithUser.CommentId
                 };
             }
         }

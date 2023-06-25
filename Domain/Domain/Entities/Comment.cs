@@ -14,8 +14,9 @@ namespace Domain.Entities
 
         public int Dislikes { get; set; }
         public int? BlogId { get; set; }
+        public int? CommentId { get; set; }
 
-        public virtual ICollection<Comment> CommentResponses { get; set; }
+        public virtual ICollection<Comment>? CommentResponses { get; set; }
 
         public virtual SiteUser User { get; set; }
 
