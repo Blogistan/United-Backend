@@ -1,6 +1,7 @@
 ﻿using Application.Services.Repositories;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Comments.Commands.UpdateComment
 {
@@ -41,17 +42,18 @@ namespace Application.Features.Comments.Commands.UpdateComment
 
                 Comment updatedComment = await commentRepository.UpdateAsync(comment);
 
+                Comment commentWithUser = await commentRepository.GetAsync(x => x.UserId == request.UserId, x => x.Include(x => x.User));
 
                 return new UpdateCommentResponse
                 {
-                    Id=updatedComment.Id,
-                    BlogId = updatedComment.BlogId,
-                    CommentContent = updatedComment.CommentContent,
-                    GuestName = updatedComment.GuestName,
-                    UserName = $"{updatedComment.User.FirstName} {updatedComment.User.LastName}",
-                    ParentCommentId = updatedComment.ParentCommentId,
-                    Likes = updatedComment.Likes,
-                    Dislikes = updatedComment.Dislikes
+                    Id= commentWithUser.Id,
+                    BlogId = commentWithUser.BlogId,
+                    CommentContent = commentWithUser.CommentContent,
+                    GuestName = commentWithUser.GuestName,
+                    UserName = $"{commentWithUser.User.FirstName} {commentWithUser.User.LastName}",
+                    ParentCommentId = commentWithUser.ParentCommentId,
+                    Likes = commentWithUser.Likes,
+                    Dislikes = commentWithUser.Dislikes
                 };
             }
         }

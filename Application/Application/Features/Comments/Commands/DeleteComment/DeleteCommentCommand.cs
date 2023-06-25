@@ -2,6 +2,7 @@
 using Application.Services.Repositories;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Comments.Commands.DeleteComment
 {
@@ -25,16 +26,17 @@ namespace Application.Features.Comments.Commands.DeleteComment
 
                 Comment  deletedComments = await commentRepository.DeleteAsync(comment, request.Permanent);
 
+                Comment commentWithUser = await commentRepository.GetAsync(x => x.Id==request.Id,x=>x.Include(x=>x.User));
 
                 return new DeleteCommentCommandResponse
                 {
-                    BlogId = deletedComments.BlogId,
-                    CommentContent = deletedComments.CommentContent,
-                    GuestName = deletedComments.GuestName,
-                    UserName = $"{deletedComments.User.FirstName} {deletedComments.User.LastName}",
-                    ParentCommentId = deletedComments.ParentCommentId,
-                    Likes = deletedComments.Likes,
-                    Dislikes = deletedComments.Dislikes
+                    BlogId = commentWithUser.BlogId,
+                    CommentContent = commentWithUser.CommentContent,
+                    GuestName = commentWithUser.GuestName,
+                    UserName = $"{commentWithUser.User.FirstName} {commentWithUser.User.LastName}",
+                    ParentCommentId = commentWithUser.ParentCommentId,
+                    Likes = commentWithUser.Likes,
+                    Dislikes = commentWithUser.Dislikes
                 };
             }
         }
