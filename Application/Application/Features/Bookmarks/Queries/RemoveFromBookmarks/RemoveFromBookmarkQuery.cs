@@ -34,6 +34,7 @@ namespace Application.Features.Bookmarks.Queries.RemoveFromBookmarks
 
                 var blogToBeRemove = user.Bookmarks.Single(x => x.BlogId == request.BlogId);
                 user.Bookmarks.Remove(blogToBeRemove);
+                await siteUserRepository.UpdateAsync(user);
 
                 return true;
             }

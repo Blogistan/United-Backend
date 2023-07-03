@@ -35,9 +35,10 @@ namespace Application.Features.Bookmarks.Queries.AddToBookmarks
                 {
                     BlogId = request.BlogId,
                     SiteUserId = user.Id,
-                    SiteUser=user
+                    SiteUser = user
                 };
                 user.Bookmarks.Add(bookmark);
+                await siteUserRepository.UpdateAsync(user);
 
                 return true;
             }
