@@ -1,12 +1,13 @@
 ﻿using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Blogs.Commands.UpdateBlog
 {
-    public class UpdateBlogCommand:IRequest<UpdateBlogCommandResponse>
+    public class UpdateBlogCommand:IRequest<UpdateBlogCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -21,6 +22,8 @@ namespace Application.Features.Blogs.Commands.UpdateBlog
 
         public int ShareCount { get; set; }
         public int ReadCount { get; set; }
+
+        public string[] Roles => new string[] {"Admin","Moderator","Blogger" };
 
         public class UpdateBlogCommandHandler:IRequestHandler<UpdateBlogCommand, UpdateBlogCommandResponse>
         {

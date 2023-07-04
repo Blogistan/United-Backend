@@ -1,15 +1,17 @@
 ﻿using Application.Features.Categories.Rules;
 using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using MongoDB.Bson;
 
 namespace Application.Features.Categories.Commands.DeleteCategory
 {
-    public class DeleteCategoryCommand : IRequest<DeleteCategoryResponse>
+    public class DeleteCategoryCommand : IRequest<DeleteCategoryResponse>,ISecuredRequest
     {
         public int Id { get; set; }
         public bool Permanent { get; set; }
+        public string[] Roles => new string[] { "Admin", "Moderator" };
 
         public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, DeleteCategoryResponse>
         {

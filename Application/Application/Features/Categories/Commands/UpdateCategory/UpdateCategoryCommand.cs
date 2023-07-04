@@ -1,15 +1,17 @@
 ﻿using Application.Features.Categories.Rules;
 using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Categories.Commands.UpdateCategory
 {
-    public class UpdateCategoryCommand : IRequest<UpdateCategoryResponse>
+    public class UpdateCategoryCommand : IRequest<UpdateCategoryResponse>,ISecuredRequest
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }
         public int ParentCategroyId { get; set; }
+        public string[] Roles => new string[] { "Admin", "Moderator" };
 
         public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, UpdateCategoryResponse>
         {

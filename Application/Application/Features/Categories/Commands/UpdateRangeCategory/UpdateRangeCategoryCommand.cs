@@ -2,14 +2,16 @@
 using Application.Features.Categories.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Categories.Commands.UpdateRangeCategory
 {
-    public class UpdateRangeCategoryCommand : IRequest<UpdateRangeCategoryResponse>
+    public class UpdateRangeCategoryCommand : IRequest<UpdateRangeCategoryResponse>,ISecuredRequest
     {
         public List<UpdateCategoryDto> UpdateCategoryDtos { get; set; }
+        public string[] Roles => new string[] { "Admin", "Moderator" };
 
         public class UpdateRangeCategoryCommandHandler : IRequestHandler<UpdateRangeCategoryCommand, UpdateRangeCategoryResponse>
         {

@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Core.Persistence.Paging;
@@ -9,10 +10,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Blogs.Queries.GetListBlogDynamic
 {
-    public class GetListBlogDynamicQuery:IRequest<GetListBlogDynamicQueryResponse>
+    public class GetListBlogDynamicQuery:IRequest<GetListBlogDynamicQueryResponse>,ISecuredRequest
     {
         public DynamicQuery DynamicQuery { get; set; }
         public PageRequest PageRequest { get; set; }
+
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User", "Guest" };
 
         public class GetListBlogDynamicQueryHandler:IRequestHandler<GetListBlogDynamicQuery, GetListBlogDynamicQueryResponse>
         {

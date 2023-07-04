@@ -1,17 +1,18 @@
 ﻿using Application.Features.Auth.Rules;
 using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Bookmarks.Queries.AddToBookmarks
 {
-    public class AddToBookmarksQuery : IRequest<bool>
+    public class AddToBookmarksQuery : IRequest<bool>,ISecuredRequest
     {
         public int BlogId { get; set; }
         public int UserId { get; set; }
-
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User"};
 
         public class AddToBookmarksQueryHandler : IRequestHandler<AddToBookmarksQuery, bool>
         {

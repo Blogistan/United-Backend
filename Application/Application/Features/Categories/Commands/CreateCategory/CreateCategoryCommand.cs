@@ -1,15 +1,16 @@
 ﻿using Application.Features.Categories.Rules;
 using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Categories.Commands.CreateCategory
 {
-    public class CreateCategoryCommand : IRequest<CreateCategoryResponse>
+    public class CreateCategoryCommand : IRequest<CreateCategoryResponse>,ISecuredRequest
     {
         public string CategoryName { get; set; }
         public int? ParentCategoryIds { get; set; }
-
+        public string[] Roles => new string[] { "Admin", "Moderator"};
         public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
         {
             private readonly ICategoryRepository categoryRepository;

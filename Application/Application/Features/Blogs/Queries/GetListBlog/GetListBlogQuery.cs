@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
 using Domain.Entities;
@@ -8,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Blogs.Queries.GetListBlog
 {
-    public class GetListBlogQuery:IRequest<GetListBlogQueryResponse>
+    public class GetListBlogQuery:IRequest<GetListBlogQueryResponse>,ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
+
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User", "Guest" };
 
         public class GetListBlogQueryHandler:IRequestHandler<GetListBlogQuery, GetListBlogQueryResponse>
         {

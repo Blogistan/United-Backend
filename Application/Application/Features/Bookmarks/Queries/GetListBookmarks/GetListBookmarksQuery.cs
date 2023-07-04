@@ -2,14 +2,18 @@
 using Application.Features.Blogs.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Bookmarks.Queries.GetListBookmarks
 {
-    public class GetListBookmarksQuery : IRequest<GetListBookmarkQueryResponse>
+    public class GetListBookmarksQuery : IRequest<GetListBookmarkQueryResponse>,ISecuredRequest
     {
         public int UserId { get; set; }
+
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User", "Guest" };
+
         public class GetListBookmarksQueryHandler : IRequestHandler<GetListBookmarksQuery, GetListBookmarkQueryResponse>
         {
             private readonly ISiteUserRepository siteUserRepository;

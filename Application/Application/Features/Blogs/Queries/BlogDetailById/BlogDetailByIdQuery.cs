@@ -11,6 +11,7 @@ namespace Application.Features.Blogs.Queries.BlogDetailById
     public class BlogDetailByIdQuery : IRequest<BlogDetailDto>
     {
         public int BlogId { get; set; }
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger","User","Guest"};
 
 
         public class BlogDetailByIdQueryHandler : IRequestHandler<BlogDetailByIdQuery, BlogDetailDto>

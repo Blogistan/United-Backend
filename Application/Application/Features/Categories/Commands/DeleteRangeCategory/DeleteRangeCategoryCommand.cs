@@ -2,15 +2,17 @@
 using Application.Features.Categories.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Categories.Commands.DeleteRangeCategory
 {
-    public class DeleteRangeCategoryCommand : IRequest<DeleteRangeCategoryResponse>
+    public class DeleteRangeCategoryCommand : IRequest<DeleteRangeCategoryResponse>,ISecuredRequest
     {
         public List<DeleteRangeCategoryDto> DeleteRangeCategoryDtos { get; set; }
         public bool Permanent { get; set; }
+        public string[] Roles => new string[] { "Admin", "Moderator" };
 
         public class DeleteRangeCategoryCommandHandler : IRequestHandler<DeleteRangeCategoryCommand, DeleteRangeCategoryResponse>
         {

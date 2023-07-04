@@ -1,13 +1,14 @@
 ﻿using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Blogs.Commands.CreateBlog
 {
-    public class CreateBlogCommand : IRequest<CreateBlogCommandResponse>
+    public class CreateBlogCommand : IRequest<CreateBlogCommandResponse>, ISecuredRequest
     {
         public string Title { get; set; }
         public int CategoryId { get; set; }
@@ -23,31 +24,33 @@ namespace Application.Features.Blogs.Commands.CreateBlog
         public int ShareCount => 0;
         public int ReadCount => 0;
 
-        public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, CreateBlogCommandResponse>
+        public string[] Roles =>new string[] {"Admin","Moderator","Blogger"};
+
+    public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, CreateBlogCommandResponse>
+    {
+        private readonly IBlogRepository blogRepository;
+        private readonly IMapper mapper;
+        private readonly BlogBusinessRules blogBusinessRules;
+        public CreateBlogCommandHandler(IBlogRepository blogRepository, IMapper mapper, BlogBusinessRules blogBusinessRules)
         {
-            private readonly IBlogRepository blogRepository;
-            private readonly IMapper mapper;
-            private readonly BlogBusinessRules blogBusinessRules;
-            public CreateBlogCommandHandler(IBlogRepository blogRepository, IMapper mapper, BlogBusinessRules blogBusinessRules)
-            {
-                this.blogRepository = blogRepository;
-                this.mapper = mapper;
-                this.blogBusinessRules = blogBusinessRules;
-            }
+            this.blogRepository = blogRepository;
+            this.mapper = mapper;
+            this.blogBusinessRules = blogBusinessRules;
+        }
 
-            public async Task<CreateBlogCommandResponse> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
-            {
-                await blogBusinessRules.BlogCannotBeDuplicatedWhenInserted(request.Title);
+        public async Task<CreateBlogCommandResponse> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
+        {
+            await blogBusinessRules.BlogCannotBeDuplicatedWhenInserted(request.Title);
 
-                Blog blog = mapper.Map<Blog>(request);
+            Blog blog = mapper.Map<Blog>(request);
 
-                Blog createdBlog = await blogRepository.AddAsync(blog);
+            Blog createdBlog = await blogRepository.AddAsync(blog);
 
-                Blog blogReturn = await blogRepository.GetAsync(x=>x.Id==createdBlog.Id,include:inc=>inc.Include(x=>x.Writer).Include(x=>x.Category));
+            Blog blogReturn = await blogRepository.GetAsync(x => x.Id == createdBlog.Id, include: inc => inc.Include(x => x.Writer).Include(x => x.Category));
 
-                CreateBlogCommandResponse response = mapper.Map<CreateBlogCommandResponse>(blogReturn);
-                return response;
-            }
+            CreateBlogCommandResponse response = mapper.Map<CreateBlogCommandResponse>(blogReturn);
+            return response;
         }
     }
+}
 }

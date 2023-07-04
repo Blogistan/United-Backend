@@ -1,14 +1,17 @@
 ﻿using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Blogs.Commands.DeleteBlog
 {
-    public class DeleteBlogCommand:IRequest<DeleteBlogCommandResponse>
+    public class DeleteBlogCommand:IRequest<DeleteBlogCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
+
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger" };
 
         public class DeleteBlogCommandHandler : IRequestHandler<DeleteBlogCommand, DeleteBlogCommandResponse>
         {
