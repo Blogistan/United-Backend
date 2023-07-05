@@ -1,16 +1,18 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Contents.Commands.CreateContent
 {
-    public class CreateContentCommand : IRequest<CreateContentCommandResponse>
+    public class CreateContentCommand : IRequest<CreateContentCommandResponse>,ISecuredRequest
     {
         public string Title { get; set; }
 
         public string? ContentImageUrl { get; set; }
 
         public string ContentPragraph { get; set; }
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User"};
 
         public class CreateContentCommandHandler : IRequestHandler<CreateContentCommand, CreateContentCommandResponse>
         {

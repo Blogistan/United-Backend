@@ -1,11 +1,12 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Comments.Commands.CreateComment
 {
-    public class CreateCommentCommand : IRequest<CreateCommentCommandResponse>
+    public class CreateCommentCommand : IRequest<CreateCommentCommandResponse>, ISecuredRequest
     {
         public int? UserId { get; set; }
 
@@ -16,6 +17,7 @@ namespace Application.Features.Comments.Commands.CreateComment
         public int? BlogId { get; set; }
         public int? CommentId { get; set; }
 
+        public string[] Roles => new string[] { "User"};
 
         public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, CreateCommentCommandResponse>
         {
@@ -40,18 +42,18 @@ namespace Application.Features.Comments.Commands.CreateComment
 
                 await commentRepository.AddAsync(comment);
 
-                Comment commentWithUser = await commentRepository.GetAsync(x=>x.UserId==request.UserId,x=>x.Include(x=>x.User));
+                Comment commentWithUser = await commentRepository.GetAsync(x => x.UserId == request.UserId, x => x.Include(x => x.User));
 
 
                 return new CreateCommentCommandResponse
                 {
-                    Id= commentWithUser.Id,
+                    Id = commentWithUser.Id,
                     BlogId = commentWithUser.BlogId,
                     CommentContent = commentWithUser.CommentContent,
                     Dislikes = commentWithUser.Dislikes,
                     GuestName = commentWithUser.GuestName!,
                     Likes = commentWithUser.Likes,
-                    ParentCommentId=commentWithUser.CommentId,
+                    ParentCommentId = commentWithUser.CommentId,
                     UserName = $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}"
                 };
 

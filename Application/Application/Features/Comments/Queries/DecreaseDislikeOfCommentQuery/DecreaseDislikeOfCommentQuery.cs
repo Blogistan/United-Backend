@@ -1,12 +1,14 @@
 ﻿using Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery;
 using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using MediatR;
 
 namespace Application.Features.Comments.Queries.DecreaseDislikeOfCommentQuery
 {
-    public class DecreaseDislikeOfCommentQuery:IRequest<DecreaseDislikeOfCommentCommentQueryResponse>
+    public class DecreaseDislikeOfCommentQuery:IRequest<DecreaseDislikeOfCommentCommentQueryResponse>,ISecuredRequest
     {
         public int CommentId { get; set; }
+        public string[] Roles => new string[] { "User" };
 
 
         public class DecreaseDislikeOfCommentQueryHandler:IRequestHandler<DecreaseDislikeOfCommentQuery, DecreaseDislikeOfCommentCommentQueryResponse>

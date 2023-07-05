@@ -1,10 +1,11 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Contents.Commands.UpdateContent
 {
-    public class UpdateContentCommand : IRequest<UpdateContentCommandResponse>
+    public class UpdateContentCommand : IRequest<UpdateContentCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -12,6 +13,7 @@ namespace Application.Features.Contents.Commands.UpdateContent
         public string? ContentImageUrl { get; set; }
 
         public string ContentPragraph { get; set; }
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
 
         public class UpdateContentCommandHandler : IRequestHandler<UpdateContentCommand, UpdateContentCommandResponse>
         {

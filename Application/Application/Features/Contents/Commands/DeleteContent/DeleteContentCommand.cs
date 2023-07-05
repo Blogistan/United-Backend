@@ -1,12 +1,14 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Contents.Commands.DeleteContent
 {
-    public class DeleteContentCommand : IRequest<DeleteContentCommandResponse>
+    public class DeleteContentCommand : IRequest<DeleteContentCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
 
         public class DeleteContentCommandHandler : IRequestHandler<DeleteContentCommand, DeleteContentCommandResponse>
         {

@@ -1,12 +1,13 @@
 ﻿using Application.Features.Comments.Rules;
 using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Comments.Commands.UpdateComment
 {
-    public class UpdateCommentCommand : IRequest<UpdateCommentResponse>
+    public class UpdateCommentCommand : IRequest<UpdateCommentResponse>, ISecuredRequest
     {
         public int? UserId { get; set; }
 
@@ -19,6 +20,7 @@ namespace Application.Features.Comments.Commands.UpdateComment
         public int? ParentCommentId { get; set; }
         public int? BlogId { get; set; }
         public int? CommentId { get; set; }
+        public string[] Roles => new string[] { "User" };
 
         public class UpdateCommentCommandHandler : IRequestHandler<UpdateCommentCommand, UpdateCommentResponse>
         {
@@ -42,14 +44,14 @@ namespace Application.Features.Comments.Commands.UpdateComment
 
                 return new UpdateCommentResponse
                 {
-                    Id= commentWithUser.Id,
+                    Id = commentWithUser.Id,
                     BlogId = commentWithUser.BlogId,
                     CommentContent = commentWithUser.CommentContent,
                     GuestName = commentWithUser.GuestName,
                     UserName = $"{commentWithUser.User.FirstName} {commentWithUser.User.LastName}",
                     Likes = commentWithUser.Likes,
                     Dislikes = commentWithUser.Dislikes,
-                    ParentCommentId=commentWithUser.CommentId
+                    ParentCommentId = commentWithUser.CommentId
                 };
             }
         }

@@ -5,12 +5,14 @@ using MediatR;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Application.Features.Comments.Dtos;
+using Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Comments.Queries.GetBlogCommentsQuery
 {
-    public class GetBlogCommentsQuery : IRequest<GetBlogCommentsQueryResponse>
+    public class GetBlogCommentsQuery : IRequest<GetBlogCommentsQueryResponse>,ISecuredRequest
     {
         public int BlogId { get; set; }
+        public string[] Roles => new string[] { "User" };
 
         public class GetBlogCommentsQueryHandler : IRequestHandler<GetBlogCommentsQuery, GetBlogCommentsQueryResponse>
         {

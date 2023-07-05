@@ -1,15 +1,17 @@
 ﻿using Application.Features.Comments.Commands.UpdateComment;
 using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Comments.Commands.DeleteComment
 {
-    public class DeleteCommentCommand:IRequest<DeleteCommentCommandResponse>
+    public class DeleteCommentCommand:IRequest<DeleteCommentCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
         public bool Permanent { get; set; }
+        public string[] Roles => new string[] { "User" };
 
         public class DeleteCommentCommandHandler:IRequestHandler<DeleteCommentCommand, DeleteCommentCommandResponse>
         {
