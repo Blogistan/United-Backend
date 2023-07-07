@@ -1,7 +1,6 @@
-﻿using Amazon.Runtime.Internal;
-using Application.Features.Contents.Dtos;
-using Application.Services.Repositories;
+﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
 using Domain.Entities;
@@ -9,9 +8,10 @@ using MediatR;
 
 namespace Application.Features.Contents.Queries.GetListContent
 {
-    public class GetListContentQuery : IRequest<GetListContentQueryResponse>
+    public class GetListContentQuery : IRequest<GetListContentQueryResponse>,ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
+        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
 
         public class GetListContentQueryHandler : IRequestHandler<GetListContentQuery, GetListContentQueryResponse>
         {

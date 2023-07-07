@@ -47,7 +47,8 @@ namespace Persistance.Context
         {
             IEnumerable<EntityEntry<Entity<int>>> entities = ChangeTracker.Entries<Entity<int>>().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified || x.State == EntityState.Deleted);
 
-            var userId = httpContextAccessor.HttpContext.User.GetUserId();
+            var userId = httpContextAccessor.HttpContext.User.GetUserId() == null ? 0 : httpContextAccessor.HttpContext.User.GetUserId();
+            
 
             foreach (var item in entities)
             {
