@@ -7,7 +7,7 @@ using System.Text.Json;
 namespace Core.Application.Pipelines.Logging;
 
 public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>, ILoggableRequest
+    where TRequest : IRequest<TResponse>/*, ILoggableRequest*/
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly LoggerServiceBase _loggerServiceBase;
