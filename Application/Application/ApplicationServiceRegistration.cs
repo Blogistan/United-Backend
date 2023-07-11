@@ -36,7 +36,7 @@ namespace Application
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IMailService, MailKitMailService>();;
 
-            services.AddSingleton<LoggerServiceBase, FileLogger>();
+            services.AddSingleton<LoggerServiceBase, MongoDbLogger>();
 
             services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
 
