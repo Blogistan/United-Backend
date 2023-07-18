@@ -4,6 +4,7 @@ using Application.Features.Comments.Commands.UpdateComment;
 using Application.Features.Comments.Queries.DecreaseDislikeOfCommentQuery;
 using Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery;
 using Application.Features.Comments.Queries.GetBlogCommentsQuery;
+using Application.Features.Comments.Queries.GetCommentResponsesQuery;
 using Application.Features.Comments.Queries.IncreaseDislikeOfCommentQuery;
 using Application.Features.Comments.Queries.IncreaseLikeOfCommentQuery;
 using Microsoft.AspNetCore.Mvc;
@@ -65,6 +66,12 @@ namespace UnitedAPI.Controllers
         public async Task<IActionResult> GetBlogComments([FromQuery] GetBlogCommentsQuery getBlogCommentsQuery)
         {
             GetBlogCommentsQueryResponse response = await Mediator.Send(getBlogCommentsQuery);
+            return Ok(response);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCommentResponses([FromQuery] GetCommentResponsesQuery getCommentResponsesQuery)
+        {
+            GetBlogCommentsQueryResponse response = await Mediator.Send(getCommentResponsesQuery);
             return Ok(response);
         }
 

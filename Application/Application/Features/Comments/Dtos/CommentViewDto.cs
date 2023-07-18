@@ -13,6 +13,6 @@
         public int Likes { get; set; }
 
         public int Dislikes { get; set; }
-        public List<CommentViewDto> SubComments { get; set; }
+        public List<CommentViewDto> CommentResponses { get; set; }
     }
 }
