@@ -1,4 +1,5 @@
 ﻿using Application.Features.Auth.Rules;
+using Application.Notifications.RegisterNotification;
 using Application.Services.Auth;
 using Application.Services.Repositories;
 using AutoMapper;
@@ -16,18 +17,21 @@ namespace Application.Features.Auth.Commands.Register
         public UserForRegisterDto UserForRegisterDto { get; set; }
         public string IpAddress { get; set; }
 
+
         public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisteredResponse>
         {
             private readonly ISiteUserRepository siteUserRepository;
             private readonly AuthBussinessRules authBussinessRules;
             private readonly IAuthService authService;
             private readonly IMapper mapper;
-            public RegisterCommandHandler(ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IAuthService authService, IMapper mapper)
+            private readonly IMediator mediator;
+            public RegisterCommandHandler(ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IAuthService authService, IMapper mapper, IMediator mediator)
             {
                 this.mapper = mapper;
                 this.siteUserRepository = siteUserRepository;
                 this.authBussinessRules = authBussinessRules;
                 this.authService = authService;
+                this.mediator = mediator;
             }
 
             public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -54,6 +58,8 @@ namespace Application.Features.Auth.Commands.Register
                     AccessToken = accessToken,
                     RefreshToken = refreshToken
                 };
+
+                await mediator.Publish(new RegisteredNotification() { SiteUser = siteUser });
 
                 return registeredResponse;
 
