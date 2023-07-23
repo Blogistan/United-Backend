@@ -1,5 +1,6 @@
 ﻿using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand;
+using Application.Features.Auth.Commands.ForgetPassword;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Refresh;
 using Application.Features.Auth.Commands.Register;
@@ -68,7 +69,7 @@ namespace UnitedAPI.Controllers
 
             return Ok(revokedResponse);
         }
-        [HttpPost("EnableEmailAuthenticator")]
+        [HttpGet("EnableEmailAuthenticator")]
         public async Task<IActionResult> EnableEmailAuthenticator()
         {
             EnableEmailAuthenticatorCommand command = new()
@@ -82,7 +83,7 @@ namespace UnitedAPI.Controllers
         }
 
 
-        [HttpPost("VerifyEmailAuthenticator")]// Verify Email URL api'a yönlendirdiği için GET kullandık. Bir frontend yardımıyla yapılırsa PUT olabilir.
+        [HttpGet("VerifyEmailAuthenticator")]// Verify Email URL api'a yönlendirdiği için GET kullandık. Bir frontend yardımıyla yapılırsa PUT olabilir.
         public async Task<IActionResult> VerifyEmailAuthenticator([FromQuery] string ActivationKey)
         {
             VerifyEmailAuthenticatorCommand command = new()
@@ -122,5 +123,24 @@ namespace UnitedAPI.Controllers
 
             return Ok();
         }
+        [HttpPost("ForgetPassword")]
+        public async Task<IActionResult> ForgetPassword(string email)
+        {
+            ForgetPasswordCommand forgetPasswordCommand = new()
+            {
+                Email = email,
+                PasswordResetUrl = webApiConfigurations.PasswordResetUrl
+            };
+            var result = await Mediator.Send(forgetPasswordCommand);
+            return Ok(result);
+        }
+        //[HttpPost("ResetPassword")]
+        //public async Task<IActionResult> ResetPassword()
+        //{
+
+        //}
+
+
+
     }
 }

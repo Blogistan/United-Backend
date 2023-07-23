@@ -40,7 +40,7 @@ namespace Application.Features.Auth.Commands.ForgetPassword
                 List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
                 mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
 
-                var user = HttpUtility.
+                //var user = HttpUtility.
                 
 
                 Mail mail = new()
@@ -49,7 +49,7 @@ namespace Application.Features.Auth.Commands.ForgetPassword
                     ToList = mailboxAddresses,
                     HtmlBody = $"Hi {siteUser.FirstName} {siteUser.LastName} " +
                     $"Here is your password reset link " +
-                    $"{passwordResetUrl}?user={user}"
+                    $"{passwordResetUrl}?user="
                 };
 
                 await mailService.SendEmailAsync(mail);
