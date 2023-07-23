@@ -4,6 +4,7 @@ using Core.Mailing;
 using Domain.Entities;
 using MediatR;
 using MimeKit;
+using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
 using System.Web;
@@ -40,7 +41,8 @@ namespace Application.Features.Auth.Commands.ForgetPassword
                 List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
                 mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
 
-                //var user = HttpUtility.
+
+                var resetKey = await CreateResetKey();
                 
 
                 Mail mail = new()
@@ -49,10 +51,14 @@ namespace Application.Features.Auth.Commands.ForgetPassword
                     ToList = mailboxAddresses,
                     HtmlBody = $"Hi {siteUser.FirstName} {siteUser.LastName} " +
                     $"Here is your password reset link " +
-                    $"{passwordResetUrl}?user="
+                    $"{passwordResetUrl}?resetKey{resetKey}="
                 };
 
                 await mailService.SendEmailAsync(mail);
+            }
+            private async Task<string> CreateResetKey()
+            {
+                 return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
             }
         }
     }
