@@ -24,6 +24,7 @@ namespace Persistance
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVideoRepository, VideoRepository>();
             services.AddScoped<ISiteUserRepository, SiteUserRepository>();
+            services.AddScoped<IForgotPasswordRepository, ForgotPasswordRepository>();
             services.AddDbContext<EFDbContext>(options=>options.UseSqlServer(configuration.GetConnectionString("UnitedDb")));
 
             return services;

@@ -41,7 +41,7 @@ namespace Application.Features.Auth.Commands.ForgetPassword
                 List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
                 mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
 
-
+                //To Do   New entity will be created like EmailtAuth , its will contains  old and newp passwords with user.
                 var resetKey = await CreateResetKey();
                 
 

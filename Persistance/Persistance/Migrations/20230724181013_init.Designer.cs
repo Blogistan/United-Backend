@@ -12,7 +12,7 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20230617120723_init")]
+    [Migration("20230724181013_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -65,6 +65,64 @@ namespace Persistance.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("EmailAuthenticators");
+                });
+
+            modelBuilder.Entity("Core.Security.Entities.ForgotPassword", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActivationKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreateUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DeleteUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("NewPasswordHash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("NewPasswordSalt")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("OldPasswordHash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("OldPasswordSalt")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("UpdateUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ForgottenPasswords");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
@@ -580,9 +638,6 @@ namespace Persistance.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ParentCommentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -711,6 +766,17 @@ namespace Persistance.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Core.Security.Entities.ForgotPassword", b =>
+                {
+                    b.HasOne("Core.Security.Entities.User", "User")
+                        .WithMany("ForgottenPasswords")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Core.Security.Entities.OtpAuthenticator", b =>
                 {
                     b.HasOne("Core.Security.Entities.User", "User")
@@ -830,6 +896,8 @@ namespace Persistance.Migrations
             modelBuilder.Entity("Core.Security.Entities.User", b =>
                 {
                     b.Navigation("EmailAuthenticators");
+
+                    b.Navigation("ForgottenPasswords");
 
                     b.Navigation("OtpAuthenticators");
 

@@ -182,6 +182,38 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ForgottenPasswords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ActivationKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OldPasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    OldPasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    NewPasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    NewPasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForgottenPasswords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ForgottenPasswords_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OtpAuthenticators",
                 columns: table => new
                 {
@@ -308,7 +340,6 @@ namespace Persistance.Migrations
                     Likes = table.Column<int>(type: "int", nullable: false),
                     Dislikes = table.Column<int>(type: "int", nullable: false),
                     BlogId = table.Column<int>(type: "int", nullable: true),
-                    ParentCommentId = table.Column<int>(type: "int", nullable: true),
                     CommentId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -412,6 +443,11 @@ namespace Persistance.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ForgottenPasswords_UserId",
+                table: "ForgottenPasswords",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OtpAuthenticators_UserId",
                 table: "OtpAuthenticators",
                 column: "UserId");
@@ -443,6 +479,9 @@ namespace Persistance.Migrations
 
             migrationBuilder.DropTable(
                 name: "EmailAuthenticators");
+
+            migrationBuilder.DropTable(
+                name: "ForgottenPasswords");
 
             migrationBuilder.DropTable(
                 name: "OtpAuthenticators");
