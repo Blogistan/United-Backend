@@ -69,6 +69,19 @@ namespace Application.Features.Auth.Rules
                 throw new BusinessException(AuthBusinessMessage.UserOtpAuthenticatorNotFound);
             return Task.CompletedTask;
         }
+        public Task PasswordResetKeyShouldBeExists (ForgotPassword forgotPassword)
+        {
+            if (forgotPassword is null)
+                throw new BusinessException("Invlaid Reset Token");
+            return Task.CompletedTask;
+        }
+        public Task PasswordResetTokenShouldBeActive(ForgotPassword forgotPassword)
+        {
+            if (forgotPassword.ExpireDate < DateTime.UtcNow)
+                throw new BusinessException("Password Reset Token not active");
+
+            return Task.CompletedTask;
+        }
 
     }
 }

@@ -2,6 +2,7 @@
 using Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand;
 using Application.Features.Auth.Commands.ForgetPassword;
 using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Commands.PasswordReset;
 using Application.Features.Auth.Commands.Refresh;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.Revoke;
@@ -134,11 +135,12 @@ namespace UnitedAPI.Controllers
             var result = await Mediator.Send(forgetPasswordCommand);
             return Ok(result);
         }
-        //[HttpPost("ResetPassword")]
-        //public async Task<IActionResult> ResetPassword()
-        //{
-
-        //}
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] PasswordResetCommand passwordResetCommand)
+        {
+            await Mediator.Send(passwordResetCommand);
+            return Ok();
+        }
 
 
 
