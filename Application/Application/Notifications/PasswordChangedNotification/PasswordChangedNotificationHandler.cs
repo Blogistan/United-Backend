@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using MimeKit;
 using System.Text;
+using UAParser;
 
 namespace Application.Notifications.PasswordChangedNotification
 {
@@ -25,7 +26,17 @@ namespace Application.Notifications.PasswordChangedNotification
             List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
             mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
 
-            var info = httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
+            var request = httpContextAccessor.HttpContext.Request;
+            var uaParser = Parser.GetDefault();
+            ClientInfo client = uaParser.Parse(request.Headers["User-Agent"]);
+            var browser = client.ToString();
+            
+
+            var ipAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
+            //It has to be beter : Client browser info,
+
+
 
             Mail mail = new()
             {
@@ -33,7 +44,7 @@ namespace Application.Notifications.PasswordChangedNotification
                 ToList = mailboxAddresses,
                 HtmlBody = $"Hi {siteUser.FirstName} {siteUser.LastName} \n" +
                 $"Your password is changed  at, \n" +
-                $"{info}"
+                $"{ipAddress} {browser}"
             };
 
             await mailService.SendEmailAsync(mail);
