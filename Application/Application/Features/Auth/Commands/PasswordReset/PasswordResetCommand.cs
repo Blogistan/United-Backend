@@ -1,4 +1,5 @@
 ﻿using Application.Features.Auth.Rules;
+using Application.Notifications.PasswordChangedNotification;
 using Application.Services.Auth;
 using Application.Services.Repositories;
 using Core.Mailing;
@@ -26,17 +27,16 @@ namespace Application.Features.Auth.Commands.PasswordReset
             private readonly ISiteUserRepository siteUserRepository;
             private readonly AuthBussinessRules authBussinessRules;
             private readonly IForgotPasswordRepository forgotPasswordRepository;
-            private readonly IMailService mailService;
-            private readonly IHttpContextAccessor httpContextAccessor;
+            private readonly IMediator mediator;
 
-            public PasswordResetCommandHandler(IAuthService authService, ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IForgotPasswordRepository forgotPasswordRepository, IMailService mailService, IHttpContextAccessor httpContextAccessor)
+
+            public PasswordResetCommandHandler(IAuthService authService, ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IForgotPasswordRepository forgotPasswordRepository, IMailService mailService, IHttpContextAccessor httpContextAccessor, IMediator mediator)
             {
                 this.authService = authService;
                 this.siteUserRepository = siteUserRepository;
                 this.authBussinessRules = authBussinessRules;
                 this.forgotPasswordRepository = forgotPasswordRepository;
-                this.mailService = mailService;
-                this.httpContextAccessor = httpContextAccessor;
+                this.mediator = mediator;
             }
 
             public async Task<Unit> Handle(PasswordResetCommand request, CancellationToken cancellationToken)
@@ -62,31 +62,13 @@ namespace Application.Features.Auth.Commands.PasswordReset
 
                 await forgotPasswordRepository.UpdateAsync(forgotPassword);
 
-                await SendPasswordChangeMail(forgotPassword.User);
+                await mediator.Publish(new PasswordChangedNotification() { User = forgotPassword.User });
 
                 return Unit.Value;
 
 
             }
-            private async Task SendPasswordChangeMail(User siteUser)
-            {
-                List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
-                mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
 
-                var info = httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
-
-                Mail mail = new()
-                {
-                    Subject = "Password Changed",
-                    ToList = mailboxAddresses,
-                    HtmlBody = $"Hi {siteUser.FirstName} {siteUser.LastName} \n" +
-                    $"Your password is changed  at, \n" +
-                    $"{info}"
-                };
-
-                await mailService.SendEmailAsync(mail);
-
-            }
 
         }
     }
