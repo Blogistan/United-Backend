@@ -6,6 +6,7 @@ using MimeKit;
 using System.Text;
 using UAParser;
 
+
 namespace Application.Notifications.PasswordChangedNotification
 {
     public class PasswordChangedNotificationHandler : INotificationHandler<PasswordChangedNotification>
@@ -28,13 +29,15 @@ namespace Application.Notifications.PasswordChangedNotification
 
             var request = httpContextAccessor.HttpContext.Request;
             var uaParser = Parser.GetDefault();
+
+           
             ClientInfo client = uaParser.Parse(request.Headers["User-Agent"]);
             var browser = client.ToString();
             
 
             var ipAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
 
-            //It has to be beter : Client browser info,
+
 
 
 
