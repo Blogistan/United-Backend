@@ -1,5 +1,6 @@
 using Persistance;
 using Application;
+using Infrastructure;
 using Microsoft.OpenApi.Models;
 using Core.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,9 +24,9 @@ builder.Services.AddCors(c =>
 
 builder.Services.AddApplicationServices();
 builder.Services.AddPersistanceServices(builder.Configuration);
-//builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddHttpClient();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
