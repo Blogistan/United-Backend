@@ -14,7 +14,7 @@ TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Ge
 // Add services to the container.
 
 builder.Services.AddSecurityServices();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Services.AddCors(c =>
 {

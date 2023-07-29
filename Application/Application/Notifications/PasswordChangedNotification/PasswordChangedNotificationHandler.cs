@@ -36,9 +36,10 @@ namespace Application.Notifications.PasswordChangedNotification
 
             ClientInfo client = uaParser.Parse(request.Headers["User-Agent"]);
             var browser = client.ToString();
-            
+
 
             var ipAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
 
             IPInfo ipInfo = await ipStackService.GetClientIpInfo(ipAddress);
 
@@ -47,8 +48,8 @@ namespace Application.Notifications.PasswordChangedNotification
                 Subject = "Password Changed",
                 ToList = mailboxAddresses,
                 HtmlBody = $"Hi {siteUser.FirstName} {siteUser.LastName} \n" +
-                $"Your password is changed  at, \n" +
-                $"{ipAddress} {browser}  /  {ipInfo.CountryName} {ipInfo.RegionName}"
+                $"Your password is changed  at, " +
+                $" {ipAddress} {browser}  /  {ipInfo.Country_Name} {ipInfo.Region_Name}"
             };
 
             await mailService.SendEmailAsync(mail);

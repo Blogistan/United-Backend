@@ -24,7 +24,7 @@ namespace Infrastructure.IpStack.Concrete
 
             string responseBody = await httpResponse.Content.ReadAsStringAsync();
 
-            var result = JsonSerializer.Deserialize<IPInfo>(responseBody);
+            var result = JsonSerializer.Deserialize<IPInfo>(responseBody,new JsonSerializerOptions { PropertyNameCaseInsensitive=true});
 
             return result;
         }
