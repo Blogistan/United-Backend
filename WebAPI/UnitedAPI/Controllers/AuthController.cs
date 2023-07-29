@@ -20,10 +20,13 @@ namespace UnitedAPI.Controllers
     public class AuthController : BaseController
     {
         private WebApiConfigurations webApiConfigurations;
-        public AuthController(IConfiguration configuration)
+
+        public AuthController(IConfiguration configuration, HttpClient httpClient)
         {
             this.webApiConfigurations = configuration.GetSection("WebApiConfigurations").Get<WebApiConfigurations>() ?? throw new ArgumentNullException(nameof(WebApiConfigurations));
+
         }
+
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto)
         {
