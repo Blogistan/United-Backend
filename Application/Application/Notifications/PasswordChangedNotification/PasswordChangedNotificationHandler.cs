@@ -1,5 +1,7 @@
 ﻿using Core.Mailing;
 using Core.Security.Entities;
+using Infrastructure.IpStack.Abstract;
+using Infrastructure.IpStack.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using MimeKit;
@@ -13,10 +15,12 @@ namespace Application.Notifications.PasswordChangedNotification
     {
         private readonly IMailService mailService;
         private readonly IHttpContextAccessor httpContextAccessor;
-        public PasswordChangedNotificationHandler(IMailService mailService, IHttpContextAccessor httpContextAccessor)
+        private readonly IIpStackService ipStackService;
+        public PasswordChangedNotificationHandler(IMailService mailService, IHttpContextAccessor httpContextAccessor, HttpClient httpClient, IIpStackService ipStackService)
         {
             this.mailService = mailService;
             this.httpContextAccessor = httpContextAccessor;
+            this.ipStackService = ipStackService;
         }
         public async Task Handle(PasswordChangedNotification notification, CancellationToken cancellationToken)
         {
@@ -30,16 +34,13 @@ namespace Application.Notifications.PasswordChangedNotification
             var request = httpContextAccessor.HttpContext.Request;
             var uaParser = Parser.GetDefault();
 
-           
             ClientInfo client = uaParser.Parse(request.Headers["User-Agent"]);
             var browser = client.ToString();
             
 
             var ipAddress = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
 
-
-
-
+            IPInfo ipInfo = await ipStackService.GetClientIpInfo(ipAddress);
 
             Mail mail = new()
             {
@@ -47,7 +48,7 @@ namespace Application.Notifications.PasswordChangedNotification
                 ToList = mailboxAddresses,
                 HtmlBody = $"Hi {siteUser.FirstName} {siteUser.LastName} \n" +
                 $"Your password is changed  at, \n" +
-                $"{ipAddress} {browser}"
+                $"{ipAddress} {browser}  /  {ipInfo.CountryName} {ipInfo.RegionName}"
             };
 
             await mailService.SendEmailAsync(mail);
