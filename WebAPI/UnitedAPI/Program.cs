@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Core.Security.Encryption;
 using Core.Security.JWT;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
@@ -27,6 +28,18 @@ builder.Services.AddPersistanceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
+
+builder.Services.AddRateLimiter(rateLimitOptions =>
+{
+    rateLimitOptions.AddSlidingWindowLimiter("slider", options =>
+    {
+        options.Window = TimeSpan.FromSeconds(10);
+        options.PermitLimit = 10;
+        options.SegmentsPerWindow = 2;
+        options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 5;
+    });
+});
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -94,7 +107,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseRateLimiter();
 app.UseAuthorization();
 app.UseCors("AllowAnyOrigin");
 app.MapControllers();
