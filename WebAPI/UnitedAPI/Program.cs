@@ -8,6 +8,8 @@ using Core.Security.Encryption;
 using Core.Security.JWT;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.RateLimiting;
+using System.Threading;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
@@ -29,9 +31,26 @@ builder.Services.AddInfrastructureServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
+
+
 builder.Services.AddRateLimiter(rateLimitOptions =>
 {
-    rateLimitOptions.AddSlidingWindowLimiter("slider", options =>
+    rateLimitOptions.AddConcurrencyLimiter("Concurrency", options =>
+    {
+        options.PermitLimit = 4;
+        options.QueueLimit = 2;
+        options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+    });
+    rateLimitOptions.OnRejected = (context, CancellationToken) =>
+    {
+        //Log Operations...
+        return new();
+    };
+});
+
+builder.Services.AddRateLimiter(rateLimitOptions =>
+{
+    rateLimitOptions.AddSlidingWindowLimiter("Slider", options =>
     {
         options.Window = TimeSpan.FromSeconds(10);
         options.PermitLimit = 10;
@@ -39,6 +58,12 @@ builder.Services.AddRateLimiter(rateLimitOptions =>
         options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
         options.QueueLimit = 5;
     });
+
+    rateLimitOptions.OnRejected = (context, CancellationToken) =>
+    {
+        //Log Operations...
+        return new();
+    };
 });
 
 
@@ -99,6 +124,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
+app.Map("/", () => { }).RequireRateLimiting("...");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -113,3 +140,6 @@ app.UseCors("AllowAnyOrigin");
 app.MapControllers();
 
 app.Run();
+
+
+
