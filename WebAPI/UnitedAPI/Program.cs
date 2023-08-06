@@ -1,15 +1,13 @@
-using Persistance;
 using Application;
-using Infrastructure;
-using Microsoft.OpenApi.Models;
 using Core.Security;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Core.Security.Encryption;
 using Core.Security.JWT;
-using Microsoft.IdentityModel.Tokens;
+using Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
-using System.Threading;
-using System.Threading.RateLimiting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
