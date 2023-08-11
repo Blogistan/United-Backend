@@ -9,8 +9,8 @@ namespace Application.Features.Auth.Commands.Revoke
 {
     public class RevokeCommand:IRequest<RevokedResponse>
     {
-        public string Token { get; set; }
-        public string IpAddress { get; set; }
+        public string Token { get; set; } = string.Empty;
+        public string IpAddress { get; set; } = string.Empty;
 
         public class RevokeCommandHandler:IRequestHandler<RevokeCommand,RevokedResponse>
         {

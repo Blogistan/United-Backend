@@ -16,10 +16,10 @@ namespace Application.Features.Auth.Commands.PasswordReset
 {
     public class PasswordResetCommand : IRequest<Unit>
     {
-        public string ResetKey { get; set; }
+        public string ResetKey { get; set; }= string.Empty;
 
-        public string NewPassword { get; set; }
-        public string NewPasswordConfirm { get; set; }
+        public string NewPassword { get; set; } = string.Empty;
+        public string NewPasswordConfirm { get; set; } = string.Empty;
 
         public class PasswordResetCommandHandler : IRequestHandler<PasswordResetCommand, Unit>
         {

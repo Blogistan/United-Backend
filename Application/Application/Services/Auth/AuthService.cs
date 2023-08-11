@@ -93,7 +93,7 @@ namespace Application.Services.Auth
         public async Task RevokeDescendantRefreshTokens(RefreshToken token, string IpAddress, string reason)
         {
             RefreshToken childRefreshToken = (await refreshTokenRepository.GetAsync(rt => token.ReplacedByToken == rt.Token))!;
-            if (childRefreshToken == null) throw new BusinessException("Couldn't find child token for this current token.");
+            if (childRefreshToken == null) throw new BusinessException(AuthBusinessMessage.CouldntFindChildToken);
 
 
             if (childRefreshToken.Revoked == null) await RevokeRefreshToken(childRefreshToken, IpAddress, reason, null);

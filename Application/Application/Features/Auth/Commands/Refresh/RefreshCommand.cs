@@ -10,8 +10,8 @@ namespace Application.Features.Auth.Commands.Refresh
 {
     public class RefreshCommand : IRequest<RefreshedResponse>
     {
-        public string RefreshToken { get; set; }
-        public string IpAddress { get; set; }
+        public string RefreshToken { get; set; } = string.Empty;
+        public string IpAddress { get; set; } = string.Empty;
 
         public class RefreshCommandHandler : IRequestHandler<RefreshCommand, RefreshedResponse>
         {

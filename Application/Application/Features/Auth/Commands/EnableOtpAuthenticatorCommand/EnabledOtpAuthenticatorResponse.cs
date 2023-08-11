@@ -2,8 +2,8 @@
 {
     public class EnabledOtpAuthenticatorResponse
     {
-        public string SecretKey { get; set; }
-        public string SecketKeyUrl { get; set; }
+        public string SecretKey { get; set; } = string.Empty;
+        public string SecketKeyUrl { get; set; }= string.Empty;
     }
 }
 

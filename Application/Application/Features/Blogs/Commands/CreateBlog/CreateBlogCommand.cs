@@ -10,10 +10,10 @@ namespace Application.Features.Blogs.Commands.CreateBlog
 {
     public class CreateBlogCommand : IRequest<CreateBlogCommandResponse>, ISecuredRequest
     {
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         public int CategoryId { get; set; }
         public int ContentId { get; set; }
-        public string BannerImageUrl { get; set; }
+        public string BannerImageUrl { get; set; } = string.Empty;
         public int WriterId { get; set; }
         public int ReactionSuprisedCount => 0;
         public int ReactionLovelyCount => 0;

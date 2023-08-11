@@ -12,7 +12,7 @@ namespace Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand
     public class VerifyOtpAuthenticatorCommand : IRequest, ISecuredRequest
     {
         public int UserId { get; set; }
-        public string OtpCode { get; set; }
+        public string OtpCode { get; set; } = string.Empty;
 
         public string[] Roles => Array.Empty<string>();
 
