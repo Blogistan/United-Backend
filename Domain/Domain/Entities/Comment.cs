@@ -6,9 +6,9 @@ namespace Domain.Entities
     {
         public int? UserId { get; set; }
 
-        public string? GuestName { get; set; }
+        public string? GuestName { get; set; } = String.Empty;
 
-        public string CommentContent { get; set; }
+        public string CommentContent { get; set; } = String.Empty;
 
         public int Likes { get; set; }
 
