@@ -1,9 +1,10 @@
 ﻿using Core.Security.Entities;
 using Core.Security.JWT;
+using Infrastructure.ExternalLogin;
 
 namespace Application.Services.Auth
 {
-    public interface IAuthService
+    public interface IAuthService:IExternalAuthenticationService
     {
         Task<AccessToken> CreateAccessToken(User user);
 

@@ -27,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.ElasticSearch", "coreP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Mailing", "corePackages\Core.Mailing\Core.Mailing\Core.Mailing.csproj", "{1E677F45-EFE6-4E02-A9D3-CDA1608B3B0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Persistence", "corePackages\Core.Persistence\Core.Persistence\Core.Persistence.csproj", "{B4402D16-DCE3-4265-A41F-7D0B742EDA73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Persistence", "corePackages\Core.Persistence\Core.Persistence\Core.Persistence.csproj", "{B4402D16-DCE3-4265-A41F-7D0B742EDA73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Security", "corePackages\Core.Security\Core.Security\Core.Security.csproj", "{3431E660-CA00-422B-9082-C6558FC5AD15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Security", "corePackages\Core.Security\Core.Security\Core.Security.csproj", "{3431E660-CA00-422B-9082-C6558FC5AD15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Test", "corePackages\Core.Test\Core.Test\Core.Test.csproj", "{F8523EEE-E55F-4AD1-8F31-2E183799504C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Test", "corePackages\Core.Test\Core.Test\Core.Test.csproj", "{F8523EEE-E55F-4AD1-8F31-2E183799504C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

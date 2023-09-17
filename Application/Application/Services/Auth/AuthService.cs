@@ -192,6 +192,12 @@ namespace Application.Services.Auth
             SecretKey = await otpAuthenticatorHelper.GenerateSecretKey(),
             IsVerified = false,
         };
-        
+
+        public Task<AccessToken> GoogleLoginAsync(string idToken, int tokenLifeTime)
+        {
+            //Google OAuth 2.0 
+
+           
+        }
     }
 }
