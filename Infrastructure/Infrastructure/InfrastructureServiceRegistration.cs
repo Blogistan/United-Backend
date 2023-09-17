@@ -9,7 +9,11 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddScoped<IIpStackService, IpStackService>();
-
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = "YOUR_CLIENT_ID";
+                googleOptions.ClientSecret = "";
+            });
             return services;
         }
     }
