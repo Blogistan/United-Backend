@@ -1,5 +1,4 @@
 ﻿using Application.Features.Auth.Constants;
-using Application.Features.Auth.Rules;
 using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
@@ -8,10 +7,7 @@ using Core.Security.EmailAuthenticator;
 using Core.Security.Entities;
 using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
-using Google.Apis.Auth;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System.Text;
 
@@ -197,29 +193,11 @@ namespace Application.Services.Auth
             IsVerified = false,
         };
 
-        public async Task<AccessToken> GoogleLoginAsync(string idToken, int tokenLifeTime,string ipAdress)
+        public Task<AccessToken> GoogleLoginAsync(string idToken, int tokenLifeTime)
         {
-            var settings = new GoogleJsonWebSignature.ValidationSettings()
-            {
-                Audience = new List<string> { configuration.GetValue<string>("Google:Auth:web:client_id") }
-            };
+            //Google OAuth 2.0 
 
-            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
-
-            var user = await siteUserRepository.GetAsync(x => x.Email == payload.Email);
-
-
-            var userCheck = user != null;
-
-            if (userCheck)
-            {
-                var token = await CreateAccessToken(user);
-               await DeleteOldActiveRefreshTokens(user);
-                var refreshToken = await CreateRefreshToken(user, ipAdress);
-
-            }
-
-
+           
         }
     }
 }
