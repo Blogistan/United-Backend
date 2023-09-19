@@ -1,4 +1,4 @@
-using Application;
+﻿using Application;
 using Core.Security;
 using Core.Security.Encryption;
 using Core.Security.JWT;
@@ -97,6 +97,41 @@ builder.Services.AddSwaggerGen(c =>
             new string[] {}
         }
     });
+
+    // OAuth2 kimlik sağlayıcısı eklemek için özel bir yapılandırma
+    c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+            Implicit = new OpenApiOAuthFlow
+            {
+                AuthorizationUrl = new Uri("https://accounts.google.com/o/oauth2/auth"),
+                TokenUrl = new Uri("https://accounts.google.com/o/oauth2/token"),
+                Scopes = new Dictionary<string, string>
+                {
+                    { "openid", "OpenID Scope" },
+                    { "profile", "Profile Scope" },
+                    { "email", "Email Scope" }
+                }
+            }
+        }
+    });
+
+    // Swagger UI üzerinde "Authorize" düğmesini görüntülemek için gereken yapılandırma
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference=new OpenApiReference{Type=ReferenceType.SecurityScheme,Id="oauth2"}
+            },
+            new[]{"openid","profile","email"}// İzin verilen OAuth2 kapsamları
+        }
+
+    });
+
+
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -113,9 +148,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidIssuer = tokenOptions.Issuer,
             ValidAudience = tokenOptions.Audience
-
-
-
         };
     });
 

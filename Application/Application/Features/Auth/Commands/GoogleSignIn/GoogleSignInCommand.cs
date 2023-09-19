@@ -1,6 +1,9 @@
 ﻿using Application.Features.Auth.Commands.Login;
 using Application.Services.Auth;
 using Application.Services.Repositories;
+using Core.Security.Entities;
+using Core.Security.JWT;
+using Domain.Entities;
 using Google.Apis.Auth;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +39,42 @@ namespace Application.Features.Auth.Commands.GoogleSignIn
 
                 var user = await siteUserRepository.GetAsync(x => x.Email == payload.Email);
 
-                //Will be contunied
+
+
+
+
+            }
+
+            private async Task<LoginResponse> CreateUserExternalAsync(SiteUser user, string email, string name, string surname)
+            {
+                
+                if (user == null)
+                {
+                    user = await siteUserRepository.GetAsync(x => x.Email == email);
+                    if (user == null)
+                    {
+                        user = new()
+                        {
+                            Email = email,
+                            FirstName = name,
+                            LastName = surname,
+                            Status = true,
+                        };
+
+                        var createdUser = await siteUserRepository.AddAsync(user);
+                      
+                    }
+                }
+
+                //var  userToBeLogin=user!=null?user:created
+
+                //AccessToken accessToken = await authService.CreateAccessToken(());
+
+                //await authService.DeleteOldActiveRefreshTokens(siteUser);
+
+                //RefreshToken refreshToken = await authService.CreateRefreshToken(siteUser, request.IpAddress);
+
+                //await authService.AddRefreshToken(refreshToken);
 
             }
         }

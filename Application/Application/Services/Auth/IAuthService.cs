@@ -4,7 +4,7 @@ using Infrastructure.ExternalLogin;
 
 namespace Application.Services.Auth
 {
-    public interface IAuthService:IExternalAuthenticationService
+    public interface IAuthService
     {
         Task<AccessToken> CreateAccessToken(User user);
 

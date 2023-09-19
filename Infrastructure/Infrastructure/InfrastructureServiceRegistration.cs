@@ -12,9 +12,12 @@ namespace Infrastructure
             services.AddScoped<IIpStackService, IpStackService>();
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = configuration.GetValue<string>("Google:Auth:web:client_id");
-                googleOptions.ClientSecret = configuration.GetValue<string>("Google:Auth:web:client_secret");
+                googleOptions.ClientId = configuration.GetValue<string>("Google:web:client_id");
+                googleOptions.ClientSecret = configuration.GetValue<string>("Google:web:client_secret");
             });
+
+
+
             return services;
         }
     }
