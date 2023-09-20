@@ -13,7 +13,6 @@ namespace Application.Features.Auth.Commands.GoogleSignIn
     public class GoogleSignInCommand : IRequest<LoginResponse>
     {
         public string IdToken { get; set; }
-        public string TokenLifeTime { get; set; }
         public string IpAdress { get; set; }
 
         public class GoogleSignInCommandHandler : IRequestHandler<GoogleSignInCommand, LoginResponse>
@@ -39,43 +38,50 @@ namespace Application.Features.Auth.Commands.GoogleSignIn
 
                 var user = await siteUserRepository.GetAsync(x => x.Email == payload.Email);
 
-
-
-
+                return await CreateUserExternalAsync(user, payload.Email, payload.Name, payload.FamilyName, payload.Picture, request.IpAdress);
 
             }
 
-            private async Task<LoginResponse> CreateUserExternalAsync(SiteUser user, string email, string name, string surname)
+            private async Task<LoginResponse> CreateUserExternalAsync(SiteUser user, string email, string name, string surname, string picture, string ipAdress)
             {
-                
+                bool result = user != null;
+
+                AccessToken accessToken = new();
+                RefreshToken refreshToken = new();
+
+                LoginResponse loginResponse = new();
+
                 if (user == null)
                 {
-                    user = await siteUserRepository.GetAsync(x => x.Email == email);
-                    if (user == null)
+                    SiteUser siteUser = new()
                     {
-                        user = new()
-                        {
-                            Email = email,
-                            FirstName = name,
-                            LastName = surname,
-                            Status = true,
-                        };
+                        FirstName = name,
+                        LastName = surname,
+                        Email = email,
+                        Status = true,
+                        ProfileImageUrl = picture
+                    };
 
-                        var createdUser = await siteUserRepository.AddAsync(user);
-                      
-                    }
+                    var createdUser = await siteUserRepository.AddAsync(siteUser);
+                    accessToken = await authService.CreateAccessToken(siteUser);
+                    refreshToken = await authService.CreateRefreshToken(siteUser, ipAdress);
+
+                    await authService.AddRefreshToken(refreshToken);
+
+                    loginResponse.RefreshToken = refreshToken;
+                    loginResponse.AccessToken = accessToken;
+                }
+                else
+                {
+                    accessToken = await authService.CreateAccessToken(user);
+                    refreshToken = await authService.CreateRefreshToken(user, ipAdress);
+                    await authService.AddRefreshToken(refreshToken);
+
+                    loginResponse.RefreshToken = refreshToken;
+                    loginResponse.AccessToken = accessToken;
                 }
 
-                //var  userToBeLogin=user!=null?user:created
-
-                //AccessToken accessToken = await authService.CreateAccessToken(());
-
-                //await authService.DeleteOldActiveRefreshTokens(siteUser);
-
-                //RefreshToken refreshToken = await authService.CreateRefreshToken(siteUser, request.IpAddress);
-
-                //await authService.AddRefreshToken(refreshToken);
-
+                return loginResponse;
             }
         }
     }
