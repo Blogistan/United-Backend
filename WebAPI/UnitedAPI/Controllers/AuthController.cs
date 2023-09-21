@@ -1,6 +1,7 @@
 ﻿using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand;
 using Application.Features.Auth.Commands.ForgetPassword;
+using Application.Features.Auth.Commands.GoogleSignIn;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.PasswordReset;
 using Application.Features.Auth.Commands.Refresh;
@@ -145,6 +146,13 @@ namespace UnitedAPI.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GoogleSignIn([FromBody] GoogleSignInCommand googleSignInCommand)
+        {
+            LoginResponse response = await Mediator.Send(googleSignInCommand);
+            SetRefreshTokenToCookie(response.RefreshToken);
+            return Ok(response);
+        }
 
 
     }
