@@ -16,7 +16,11 @@ namespace Infrastructure
                 googleOptions.ClientSecret = configuration.GetValue<string>("Google:web:client_secret");
             });
 
-
+            services.AddAuthentication().AddFacebook(facebook =>
+            {
+                facebook.AppId= configuration["Authentication:Facebook:AppId"];
+                facebook.AppSecret= configuration["Authentication:Facebook:AppSecret"];
+            });
 
             return services;
         }

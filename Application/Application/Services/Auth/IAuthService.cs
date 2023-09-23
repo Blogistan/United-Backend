@@ -1,6 +1,5 @@
 ﻿using Core.Security.Entities;
 using Core.Security.JWT;
-using Infrastructure.ExternalLogin;
 
 namespace Application.Services.Auth
 {
