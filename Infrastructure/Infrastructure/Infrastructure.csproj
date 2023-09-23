@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.62.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.11" />
@@ -17,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\corePackages\Core.Security\Core.Security\Core.Security.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>
