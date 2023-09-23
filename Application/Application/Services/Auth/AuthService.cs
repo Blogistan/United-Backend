@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Constants;
+﻿using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Constants;
 using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
@@ -7,7 +8,12 @@ using Core.Security.EmailAuthenticator;
 using Core.Security.Entities;
 using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
+using Domain.Entities;
+using Google.Apis.Auth;
+using Infrastructure;
+using Infrastructure.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System.Text;
 
@@ -24,11 +30,13 @@ namespace Application.Services.Auth
         private IOtpAuthenticatorHelper otpAuthenticatorHelper;
         private readonly IEmailAuthenticatorHelper emailAuthenticatorHelper;
         private readonly IOtpAuthenticatorRepository otpAuthenticatorRepository;
+        private readonly HttpClient httpClient;
+        private readonly IConfiguration configuration;
 
         public AuthService(ITokenHelper tokenHelper, IRefreshTokenRepository refreshTokenRepository, ISiteUserRepository siteUserRepository, IEmailAuthenticatorRepository emailAuthenticatorRepository, IUserOperationClaimRepository userOperationClaimRepository, IMailService mailService,
             IOtpAuthenticatorHelper otpAuthenticatorHelper,
             IEmailAuthenticatorHelper emailAuthenticatorHelper,
-            IOtpAuthenticatorRepository otpAuthenticatorRepository)
+            IOtpAuthenticatorRepository otpAuthenticatorRepository, HttpClient httpClient, IConfiguration configuration)
         {
             this.tokenHelper = tokenHelper;
             this.mailService = mailService;
@@ -39,6 +47,8 @@ namespace Application.Services.Auth
             this.otpAuthenticatorHelper = otpAuthenticatorHelper;
             this.otpAuthenticatorRepository = otpAuthenticatorRepository;
             this.emailAuthenticatorHelper = emailAuthenticatorHelper;
+            this.httpClient = httpClient;
+            this.configuration = configuration;
         }
 
 
@@ -192,5 +202,58 @@ namespace Application.Services.Auth
             SecretKey = await otpAuthenticatorHelper.GenerateSecretKey(),
             IsVerified = false,
         };
+
+        public async Task<GoogleLoginResponse> CreateUserExternalAsync(SiteUser user, string email, string name, string surname, string picture, string ipAdress)
+        {
+            bool result = user != null;
+
+            AccessToken accessToken = new();
+            RefreshToken refreshToken = new();
+
+            GoogleLoginResponse loginResponse = new();
+
+            if (user == null)
+            {
+                SiteUser siteUser = new()
+                {
+                    FirstName = name,
+                    LastName = surname,
+                    Email = email,
+                    Status = true,
+                    ProfileImageUrl = picture
+                };
+
+                var createdUser = await siteUserRepository.AddAsync(siteUser);
+                accessToken = await CreateAccessToken(siteUser);
+                refreshToken = await CreateRefreshToken(siteUser, ipAdress);
+
+                await AddRefreshToken(refreshToken);
+
+                loginResponse.RefreshToken = refreshToken;
+                loginResponse.AccessToken = accessToken;
+            }
+            else
+            {
+                accessToken = await CreateAccessToken(user);
+                refreshToken = await CreateRefreshToken(user, ipAdress);
+                await AddRefreshToken(refreshToken);
+
+                loginResponse.RefreshToken = refreshToken;
+                loginResponse.AccessToken = accessToken;
+            }
+
+            return loginResponse;
+        }
+
+        public async Task<GoogleJsonWebSignature.Payload> GoogleSignIn(string idToken)
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string> { configuration["ExternalLoginSettings:Google:Client_ID"] }
+            };
+
+            return await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
+
+        }
     }
 }
