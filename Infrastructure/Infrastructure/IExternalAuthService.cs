@@ -1,12 +1,14 @@
 ﻿using Domain.Entities;
 using Infrastructure.Dtos;
+using Infrastructure.Dtos.Facebook;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace Infrastructure
 {
     public interface IExternalAuthService
     {
-        Task<GoogleLoginResponse> CreateUserExternalAsync(SiteUser user, string email, string name, string surname, string picture, string ipAdress);
+        Task<LoginResponseBase> CreateUserExternalAsync(SiteUser user, string email, string name, string? surname, string? picture, string ipAdress);
         Task<Payload> GoogleSignIn(string idToken);
+        Task<FacebookUserInfoResponse> FacebookSignIn(string authToken); 
     }
 }

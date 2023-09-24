@@ -3,7 +3,7 @@ using Core.Security.JWT;
 
 namespace Infrastructure.Dtos
 {
-    public class GoogleLoginResponse
+    public abstract class LoginResponseBase
     {
         public AccessToken? AccessToken { get; set; }
         public RefreshToken? RefreshToken { get; set; }

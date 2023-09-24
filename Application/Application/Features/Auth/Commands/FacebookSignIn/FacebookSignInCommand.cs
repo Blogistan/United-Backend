@@ -1,0 +1,39 @@
+﻿using Application.Services.Auth;
+using Application.Services.Repositories;
+using Infrastructure.Dtos.Facebook;
+using MediatR;
+
+namespace Application.Features.Auth.Commands.FacebookSignIn
+{
+    public class FacebookSignInCommand : IRequest<FacebookLoginResponse>
+    {
+        public string Token { get; set; }
+        public string IpAdress { get; set; }
+
+        public class FacebookSignInCommandHandler : IRequestHandler<FacebookSignInCommand, FacebookLoginResponse>
+        {
+            private IAuthService authService;
+            private ISiteUserRepository siteUserRepository;
+            public FacebookSignInCommandHandler(IAuthService authService, ISiteUserRepository siteUserRepository)
+            {
+                this.authService = authService;
+                this.siteUserRepository = siteUserRepository;
+            }
+
+            public async Task<FacebookLoginResponse> Handle(FacebookSignInCommand request, CancellationToken cancellationToken)
+            {
+                var info = await authService.FacebookSignIn(request.Token);
+
+                var user = await siteUserRepository.GetAsync(x => x.Email == info.Email);
+
+                var result = await authService.CreateUserExternalAsync(user, info.Email, info.Name, "", "", request.IpAdress);
+
+                return new FacebookLoginResponse()
+                {
+                    AccessToken = result.AccessToken,
+                    RefreshToken = result.RefreshToken
+                };
+            }
+        }
+    }
+}

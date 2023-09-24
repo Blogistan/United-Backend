@@ -1,5 +1,6 @@
 ﻿using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand;
+using Application.Features.Auth.Commands.FacebookSignIn;
 using Application.Features.Auth.Commands.ForgetPassword;
 using Application.Features.Auth.Commands.GoogleSignIn;
 using Application.Features.Auth.Commands.Login;
@@ -10,6 +11,7 @@ using Application.Features.Auth.Commands.Revoke;
 using Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand;
 using Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand;
 using Core.Application.Dtos;
+using Infrastructure.Dtos.Facebook;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using UnitedAPI.ValueObjects;
@@ -146,13 +148,31 @@ namespace UnitedAPI.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GoogleSignIn([FromBody] GoogleSignInCommand googleSignInCommand)
+        [HttpPost("GoogleSignIn")]
+        public async Task<IActionResult> GoogleSignIn([FromBody] string token)
         {
+            GoogleSignInCommand googleSignInCommand = new GoogleSignInCommand()
+            {
+                IdToken = token,
+                IpAdress = GetIpAddress()
+            };
             LoginResponse response = await Mediator.Send(googleSignInCommand);
             SetRefreshTokenToCookie(response.RefreshToken);
             return Ok(response);
         }
+        [HttpPost("FacebookSignIn")]
+        public async Task<IActionResult> FacbookSignIn([FromBody] string Token)
+        {
+            FacebookSignInCommand facebookSignInCommand = new()
+            {
+                Token=Token,
+                IpAdress=GetIpAddress()
+            };
+
+            FacebookLoginResponse facebookLoginResponse = await Mediator.Send(facebookSignInCommand);
+            return Ok(facebookLoginResponse);
+        }
+        
 
 
     }

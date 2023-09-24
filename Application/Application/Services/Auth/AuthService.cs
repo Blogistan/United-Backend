@@ -1,5 +1,4 @@
-﻿using Application.Features.Auth.Commands.Login;
-using Application.Features.Auth.Constants;
+﻿using Application.Features.Auth.Constants;
 using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
@@ -10,12 +9,14 @@ using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
 using Domain.Entities;
 using Google.Apis.Auth;
-using Infrastructure;
 using Infrastructure.Dtos;
+using Infrastructure.Dtos.Facebook;
+using Infrastructure.Dtos.Google;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System.Text;
+using System.Text.Json;
 
 namespace Application.Services.Auth
 {
@@ -203,7 +204,7 @@ namespace Application.Services.Auth
             IsVerified = false,
         };
 
-        public async Task<GoogleLoginResponse> CreateUserExternalAsync(SiteUser user, string email, string name, string surname, string picture, string ipAdress)
+        public async Task<LoginResponseBase> CreateUserExternalAsync(SiteUser user, string email, string name, string surname, string picture, string ipAdress)
         {
             bool result = user != null;
 
@@ -249,10 +250,36 @@ namespace Application.Services.Auth
         {
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
-                Audience = new List<string> { configuration["ExternalLoginSettings:Google:Client_ID"] }
+                Audience = new List<string> { configuration["Google:web:client_id"] }
             };
 
             return await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
+
+        }
+
+        public async Task<FacebookUserInfoResponse> FacebookSignIn(string authToken)
+        {
+            string accesTokenResponse = await httpClient.GetStringAsync($"https://graph.facebook.com/oauth/access_token?client_id={configuration["Authentication:Facebook:AppId"]}&client_secret={configuration["Authentication:Facebook:AppSecret"]}&grant_type=client_credentials");
+
+            FacebookAccessTokenResponse? facebookAccessTokenResponse = JsonSerializer.Deserialize<FacebookAccessTokenResponse>(accesTokenResponse);
+            
+            string userAccessTokenValidation = await httpClient.GetStringAsync($"https://graph.facebook.com/debug_token?input_token={authToken}&access_token={facebookAccessTokenResponse?.AccessToken}");
+
+            FacebookUserAccessTokenValidation? validation = JsonSerializer.Deserialize<FacebookUserAccessTokenValidation>(userAccessTokenValidation);
+
+            FacebookUserInfoResponse? userInfoResponse = new();
+
+            if (validation.Data.IsValid!=false)
+            {
+                string userInfoRespons = await httpClient.GetStringAsync($"https://graph.facebook.com/me?fields=email,name&access_token={authToken}");
+
+                userInfoResponse = JsonSerializer.Deserialize<FacebookUserInfoResponse>(userInfoRespons);
+            }
+            else
+            {
+                throw new BusinessException("Invalid external authentication.");
+            }
+            return userInfoResponse;
 
         }
     }

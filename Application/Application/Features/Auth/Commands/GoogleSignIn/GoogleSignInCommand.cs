@@ -16,12 +16,10 @@ namespace Application.Features.Auth.Commands.GoogleSignIn
         {
             private readonly ISiteUserRepository siteUserRepository;
             private readonly IAuthService authService;
-            private readonly IConfiguration configuration;
             public GoogleSignInCommandHandler(ISiteUserRepository siteUserRepository, IAuthService authService, IConfiguration configuration)
             {
                 this.siteUserRepository = siteUserRepository;
                 this.authService = authService;
-                this.configuration = configuration;
             }
 
             public async Task<LoginResponse> Handle(GoogleSignInCommand request, CancellationToken cancellationToken)
