@@ -22,6 +22,11 @@ namespace Infrastructure
                 facebook.AppSecret= configuration["Authentication:Facebook:AppSecret"];
             });
 
+            services.AddAuthentication().AddTwitter(twitter =>
+            {
+                twitter.ConsumerKey= configuration["Authentication:Twitter:ConsumerAPIKey"];
+                twitter.ConsumerSecret= configuration["Authentication:Twitter:ConsumerSecret"];
+            });
             return services;
         }
     }
