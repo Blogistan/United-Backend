@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using System.Security.Claims;
 
 namespace Persistance.Context
 {
@@ -30,10 +31,6 @@ namespace Persistance.Context
         protected IConfiguration Configuration { get; set; }
         protected IHttpContextAccessor httpContextAccessor { get; set; }
 
-        public EFDbContext()
-        {
-            
-        }
         public EFDbContext(DbContextOptions dbContextOptions,
             IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : base(dbContextOptions)
         {
@@ -52,10 +49,8 @@ namespace Persistance.Context
             IEnumerable<EntityEntry<Entity<int>>> entities = ChangeTracker.Entries<Entity<int>>().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified || x.State == EntityState.Deleted);
 
             var userId = httpContextAccessor.HttpContext.User.GetUserId() == null ? 0 : httpContextAccessor.HttpContext.User.GetUserId();
-
-            //var context = new EFDbContext();
-            //var transaction=context.Database.CurrentTransaction;
             
+
             foreach (var item in entities)
             {
                 switch (item.State)
@@ -73,7 +68,6 @@ namespace Persistance.Context
                         item.Entity.CreateUser = userId;
                         break;
                 }
-                item.Entity.TransactionId = transaction.TransactionId;
             }
 
             return await base.SaveChangesAsync(cancellationToken);
