@@ -53,8 +53,7 @@ namespace Persistance.Context
 
             var userId = httpContextAccessor.HttpContext.User.GetUserId() == null ? 0 : httpContextAccessor.HttpContext.User.GetUserId();
 
-            //var context = new EFDbContext();
-            //var transaction=context.Database.CurrentTransaction;
+
             
             foreach (var item in entities)
             {
