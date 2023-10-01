@@ -72,7 +72,6 @@ namespace Persistance.Context
                         item.Entity.CreateUser = userId;
                         break;
                 }
-                item.Entity.TransactionId = transaction.TransactionId;
             }
 
             return await base.SaveChangesAsync(cancellationToken);
