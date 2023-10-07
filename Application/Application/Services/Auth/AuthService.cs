@@ -250,7 +250,7 @@ namespace Application.Services.Auth
         {
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
-                Audience = new List<string> { configuration["Google:web:client_id"] }
+                Audience = new List<string> { configuration["Google:client_id"] }
             };
 
             return await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
