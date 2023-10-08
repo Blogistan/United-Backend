@@ -12,7 +12,7 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20230928181859_init")]
+    [Migration("20231008142317_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -50,9 +50,6 @@ namespace Persistance.Migrations
 
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
-
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
@@ -112,9 +109,6 @@ namespace Persistance.Migrations
                     b.Property<byte[]>("OldPasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -155,9 +149,6 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -195,9 +186,6 @@ namespace Persistance.Migrations
                     b.Property<byte[]>("SecretKey")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
-
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
@@ -257,9 +245,6 @@ namespace Persistance.Migrations
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
@@ -327,9 +312,6 @@ namespace Persistance.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -367,9 +349,6 @@ namespace Persistance.Migrations
 
                     b.Property<int>("OperationClaimId")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
@@ -444,9 +423,6 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -509,9 +485,6 @@ namespace Persistance.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -532,7 +505,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -542,7 +514,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -552,7 +523,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -562,7 +532,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -572,7 +541,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -582,7 +550,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -592,7 +559,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -602,7 +568,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -612,7 +577,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -622,7 +586,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -632,7 +595,6 @@ namespace Persistance.Migrations
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         });
                 });
@@ -675,9 +637,6 @@ namespace Persistance.Migrations
 
                     b.Property<int>("Likes")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
@@ -730,9 +689,6 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -753,7 +709,6 @@ namespace Persistance.Migrations
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
                             Title = "The Mage Seekers",
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -765,7 +720,6 @@ namespace Persistance.Migrations
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
                             Title = "OYUNDA ANINDA CRACKLANDİ",
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -777,7 +731,6 @@ namespace Persistance.Migrations
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
                             Title = "Togg Yollarda",
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         },
                         new
@@ -789,7 +742,6 @@ namespace Persistance.Migrations
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
                             Title = "IOT nedir",
-                            TransactionId = new Guid("00000000-0000-0000-0000-000000000000"),
                             UpdateUser = 0
                         });
                 });
