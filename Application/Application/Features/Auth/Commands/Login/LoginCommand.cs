@@ -2,6 +2,7 @@
 using Application.Services.Auth;
 using Application.Services.Repositories;
 using Core.Application.Dtos;
+using Core.Application.Pipelines.Logging;
 using Core.Security.Entities;
 using Core.Security.Enums;
 using Core.Security.JWT;
@@ -10,7 +11,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.Login
 {
-    public class LoginCommand : IRequest<LoginResponse>
+    public class LoginCommand : IRequest<LoginResponse>,ILoggableRequest
     {
         public UserForLoginDto UserForLoginDto { get; set; }
         public string IpAddress { get; set; }
