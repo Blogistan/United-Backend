@@ -15,6 +15,7 @@
         public const string UserOtpAuthenticatorNotFound = "It does not exist in the users's otp query that need to be confirmed.";
         public const string VerifyEmail = "Verify your email";
         public const string CouldntFindChildToken = "Couldn't find child token for this current token.";
+        public const string ExternalLoginCredentialsWrong = "Your external login credentials wrong";
 
 
         public static string AuthenticatorCodeTextBody(string authenticatorCode)

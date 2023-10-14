@@ -10,6 +10,7 @@ using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.Revoke;
 using Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand;
 using Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand;
+using Application.Services.Auth;
 using Core.Application.Dtos;
 using Infrastructure.Dtos.Facebook;
 using Microsoft.AspNetCore.Mvc;
@@ -23,11 +24,11 @@ namespace UnitedAPI.Controllers
     public class AuthController : BaseController
     {
         private WebApiConfigurations webApiConfigurations;
-
-        public AuthController(IConfiguration configuration, HttpClient httpClient)
+        private IAuthService authService;
+        public AuthController(IConfiguration configuration, HttpClient httpClient, IAuthService authService)
         {
             this.webApiConfigurations = configuration.GetSection("WebApiConfigurations").Get<WebApiConfigurations>() ?? throw new ArgumentNullException(nameof(WebApiConfigurations));
-
+            this.authService = authService;
         }
 
         [HttpPost("Login")]
@@ -165,14 +166,26 @@ namespace UnitedAPI.Controllers
         {
             FacebookSignInCommand facebookSignInCommand = new()
             {
-                Token=Token,
-                IpAdress=GetIpAddress()
+                Token = Token,
+                IpAdress = GetIpAddress()
             };
 
             FacebookLoginResponse facebookLoginResponse = await Mediator.Send(facebookSignInCommand);
             return Ok(facebookLoginResponse);
         }
-        
+
+        [HttpGet("TwitterSignIn")]
+        public async Task<IActionResult> TwitterSignIn(string oauth_token, string oauth_verifier)
+        {
+            var result = await authService.TwitterSignIn(new Infrastructure.Dtos.Twitter.OAuthCredentials()
+            {
+                Oauth_token = oauth_token,
+                Oauth_verifier = oauth_verifier
+            });
+            return Ok(result);
+        }
+
+
 
 
     }

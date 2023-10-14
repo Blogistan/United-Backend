@@ -12,10 +12,13 @@ using Google.Apis.Auth;
 using Infrastructure.Dtos;
 using Infrastructure.Dtos.Facebook;
 using Infrastructure.Dtos.Google;
+using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using System.Security.Cryptography;
 using System.Text;
+
 using System.Text.Json;
 
 namespace Application.Services.Auth
@@ -262,14 +265,14 @@ namespace Application.Services.Auth
             string accesTokenResponse = await httpClient.GetStringAsync($"https://graph.facebook.com/oauth/access_token?client_id={configuration["Authentication:Facebook:AppId"]}&client_secret={configuration["Authentication:Facebook:AppSecret"]}&grant_type=client_credentials");
 
             FacebookAccessTokenResponse? facebookAccessTokenResponse = JsonSerializer.Deserialize<FacebookAccessTokenResponse>(accesTokenResponse);
-            
+
             string userAccessTokenValidation = await httpClient.GetStringAsync($"https://graph.facebook.com/debug_token?input_token={authToken}&access_token={facebookAccessTokenResponse?.AccessToken}");
 
             FacebookUserAccessTokenValidation? validation = JsonSerializer.Deserialize<FacebookUserAccessTokenValidation>(userAccessTokenValidation);
 
             FacebookUserInfoResponse? userInfoResponse = new();
 
-            if (validation.Data.IsValid!=false)
+            if (validation.Data.IsValid != false)
             {
                 string userInfoRespons = await httpClient.GetStringAsync($"https://graph.facebook.com/me?fields=email,name&access_token={authToken}");
 
@@ -281,6 +284,51 @@ namespace Application.Services.Auth
             }
             return userInfoResponse;
 
+        }
+
+        public async Task<OAuthResponse> TwitterSignIn(OAuthCredentials oAuthCredentials)
+        {
+            string apiUrl = "https://api.twitter.com/oauth/access_token";
+            string consumerKey = configuration["Authentication:Twitter:ConsumerAPIKey"];
+
+            var postData = new FormUrlEncodedContent(new[]
+            {
+            new KeyValuePair<string, string>("oauth_token", oAuthCredentials.Oauth_token),
+            new KeyValuePair<string, string>("oauth_verifier", oAuthCredentials.Oauth_verifier)
+             });
+
+            OAuthResponse oAuthResponse = new();
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + consumerKey);
+
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, postData);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    var parseResponse= System.Web.HttpUtility.ParseQueryString(responseContent);
+
+                    oAuthResponse.Oauth_token_secret = parseResponse["oauth_token_secret"];
+                    oAuthResponse.Oauth_token = parseResponse["oauth_token"];
+
+                }
+                else
+                {
+                    throw new BusinessException($"{AuthBusinessMessage.ExternalLoginCredentialsWrong} : Error Code: {response.StatusCode}");
+                }
+
+                return oAuthResponse;
+            }
+
+        }
+        static string ComputeHMACSHA1Signature(string data, string key)
+        {
+            using (var hmacsha1 = new HMACSHA1(Encoding.ASCII.GetBytes(key)))
+            {
+                var hashBytes = hmacsha1.ComputeHash(Encoding.ASCII.GetBytes(data));
+                return Convert.ToBase64String(hashBytes);
+            }
         }
     }
 }
