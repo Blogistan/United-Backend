@@ -8,7 +8,7 @@ namespace Application.Features.Auth.Commands.FacebookSignIn
     public class FacebookSignInCommand : IRequest<FacebookLoginResponse>
     {
         public string Token { get; set; }
-        public string IpAdress { get; set; }
+        public string IpAddress { get; set; }
 
         public class FacebookSignInCommandHandler : IRequestHandler<FacebookSignInCommand, FacebookLoginResponse>
         {
@@ -26,7 +26,7 @@ namespace Application.Features.Auth.Commands.FacebookSignIn
 
                 var user = await siteUserRepository.GetAsync(x => x.Email == info.Email);
 
-                var result = await authService.CreateUserExternalAsync(user, info.Email, info.Name, "", "", request.IpAdress);
+                var result = await authService.CreateUserExternalAsync(user, info.Email, info.Name, "", "", request.IpAddress);
 
                 return new FacebookLoginResponse()
                 {
