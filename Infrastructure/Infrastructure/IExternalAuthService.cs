@@ -12,5 +12,6 @@ namespace Infrastructure
         Task<Payload> GoogleSignIn(string idToken);
         Task<FacebookUserInfoResponse> FacebookSignIn(string authToken);
         Task<OAuthResponse> TwitterSignIn(OAuthCredentials oAuthCredentials);
+        Task<TwitterUserInfo> GetTwitterUserInfo(OAuthResponse oAuthResponse);
     }
 }

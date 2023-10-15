@@ -9,6 +9,7 @@ using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
 using Domain.Entities;
 using Google.Apis.Auth;
+using Infrastructure.Constants;
 using Infrastructure.Dtos;
 using Infrastructure.Dtos.Facebook;
 using Infrastructure.Dtos.Google;
@@ -16,6 +17,7 @@ using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -224,7 +226,7 @@ namespace Application.Services.Auth
                     LastName = surname,
                     Email = email,
                     Status = true,
-                    ProfileImageUrl = picture
+                    ProfileImageUrl = picture,
                 };
 
                 var createdUser = await siteUserRepository.AddAsync(siteUser);
@@ -288,7 +290,7 @@ namespace Application.Services.Auth
 
         public async Task<OAuthResponse> TwitterSignIn(OAuthCredentials oAuthCredentials)
         {
-            string apiUrl = "https://api.twitter.com/oauth/access_token";
+
             string consumerKey = configuration["Authentication:Twitter:ConsumerAPIKey"];
 
             var postData = new FormUrlEncodedContent(new[]
@@ -302,12 +304,12 @@ namespace Application.Services.Auth
             {
                 httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + consumerKey);
 
-                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, postData);
+                HttpResponseMessage response = await httpClient.PostAsync(ExternalAPIUrls.TwitterAccessToken, postData);
 
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
-                    var parseResponse= System.Web.HttpUtility.ParseQueryString(responseContent);
+                    var parseResponse = System.Web.HttpUtility.ParseQueryString(responseContent);
 
                     oAuthResponse.Oauth_token_secret = parseResponse["oauth_token_secret"];
                     oAuthResponse.Oauth_token = parseResponse["oauth_token"];
@@ -322,6 +324,62 @@ namespace Application.Services.Auth
             }
 
         }
+        public async Task<TwitterUserInfo> GetTwitterUserInfo(OAuthResponse oAuthResponse)
+        {
+            TwitterUserInfo twitterUserInfo = new();
+            string consumerKey = configuration["Authentication:Twitter:ConsumerAPIKey"];
+            string consumerSecret = configuration["Authentication:Twitter:ConsumerSecret"];
+            string accessToken = "1296707282659618818-Be7xMddKLr0PhfTwHFyh3R4dYYWqQq";
+            ///oAuthResponse.Oauth_token;
+            string tokenSecret = "XrVVAEMy6WIqy07YSjGWmzaYsaqGcw557OBwQDPKr1ykp";
+                ///oAuthResponse.Oauth_token_secret;
+
+            string nonce = new Random().Next(100000).ToString("X");
+            string timestamp = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
+
+            var requestParams = new SortedDictionary<string, string>
+            {
+                { "oauth_consumer_key", consumerKey },
+                { "oauth_nonce", nonce },
+                { "oauth_signature_method", "HMAC-SHA1" },
+                { "oauth_timestamp", timestamp },
+                { "oauth_token", accessToken },
+                { "oauth_version", "1.1" },
+            };
+            string signatureBase = "POST&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams));
+
+            string siginKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
+            string signature = ComputeHMACSHA1Signature(signatureBase, siginKey);
+
+            requestParams.Add("oauth_signature", signature);
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
+                httpClient.DefaultRequestHeaders.Add("Authorization", header);
+
+                var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await httpClient.PostAsync(ExternalAPIUrls.UserInfo, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    twitterUserInfo = JsonSerializer.Deserialize<TwitterUserInfo>(responseContent);
+                }
+                else
+                {
+
+                    throw new BusinessException("Erro Code: " + response.StatusCode);
+                }
+
+            }
+
+            return twitterUserInfo;
+
+
+        }
         static string ComputeHMACSHA1Signature(string data, string key)
         {
             using (var hmacsha1 = new HMACSHA1(Encoding.ASCII.GetBytes(key)))
@@ -330,5 +388,7 @@ namespace Application.Services.Auth
                 return Convert.ToBase64String(hashBytes);
             }
         }
+
+
     }
 }

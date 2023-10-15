@@ -180,9 +180,11 @@ namespace UnitedAPI.Controllers
             var result = await authService.TwitterSignIn(new Infrastructure.Dtos.Twitter.OAuthCredentials()
             {
                 Oauth_token = oauth_token,
-                Oauth_verifier = oauth_verifier
+                Oauth_verifier = oauth_verifier 
             });
-            return Ok(result);
+
+            var userInfo = await authService.GetTwitterUserInfo(result);
+            return Ok(userInfo);
         }
 
 
