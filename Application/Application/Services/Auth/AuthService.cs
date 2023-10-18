@@ -340,10 +340,10 @@ namespace Application.Services.Auth
             var requestParams = new SortedDictionary<string, string>
             {
                 { "oauth_consumer_key", consumerKey },
-                { "oauth_nonce", nonce },
+                { "oauth_token", accessToken },
                 { "oauth_signature_method", "HMAC-SHA1" },
                 { "oauth_timestamp", timestamp },
-                { "oauth_token", accessToken },
+                { "oauth_nonce", nonce },                      
                 { "oauth_version", "1.1" },
             };
             string signatureBase = "POST&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams));
@@ -356,11 +356,12 @@ namespace Application.Services.Auth
             using (HttpClient httpClient = new HttpClient())
             {
                 var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
+
                 httpClient.DefaultRequestHeaders.Add("Authorization", header);
 
                 var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await httpClient.PostAsync(ExternalAPIUrls.UserInfo, content);
+                HttpResponseMessage response = await httpClient.GetAsync(ExternalAPIUrls.UserInfo);
 
                 if (response.IsSuccessStatusCode)
                 {

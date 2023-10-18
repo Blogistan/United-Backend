@@ -167,7 +167,7 @@ namespace UnitedAPI.Controllers
             FacebookSignInCommand facebookSignInCommand = new()
             {
                 Token = Token,
-                IpAdress = GetIpAddress()
+                IpAddress = GetIpAddress()
             };
 
             FacebookLoginResponse facebookLoginResponse = await Mediator.Send(facebookSignInCommand);
