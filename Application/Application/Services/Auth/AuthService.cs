@@ -329,15 +329,16 @@ namespace Application.Services.Auth
             TwitterUserInfo twitterUserInfo = new();
             string consumerKey = configuration["Authentication:Twitter:ConsumerAPIKey"];
             string consumerSecret = configuration["Authentication:Twitter:ConsumerSecret"];
-            string accessToken = "1296707282659618818-Be7xMddKLr0PhfTwHFyh3R4dYYWqQq";
-            ///oAuthResponse.Oauth_token;
-            string tokenSecret = "XrVVAEMy6WIqy07YSjGWmzaYsaqGcw557OBwQDPKr1ykp";
-                ///oAuthResponse.Oauth_token_secret;
+            string accessToken = oAuthResponse.Oauth_token;
+            string tokenSecret =oAuthResponse.Oauth_token_secret;
 
             string nonce = new Random().Next(100000).ToString("X");
             string timestamp = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
 
-            var requestParams = new SortedDictionary<string, string>
+
+
+
+            var requestParams = new Dictionary<string, string>
             {
                 { "oauth_consumer_key", consumerKey },
                 { "oauth_token", accessToken },
