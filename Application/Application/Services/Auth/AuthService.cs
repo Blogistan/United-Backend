@@ -17,7 +17,6 @@ using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -282,7 +281,7 @@ namespace Application.Services.Auth
             }
             else
             {
-                throw new BusinessException("Invalid external authentication.");
+                throw new BusinessException(AuthBusinessMessage.ExternalLoginCredentialsWrong);
             }
             return userInfoResponse;
 
