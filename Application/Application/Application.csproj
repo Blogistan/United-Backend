@@ -10,7 +10,6 @@
     <Folder Include="Features\Auth\Dtos\" />
     <Folder Include="Features\Auth\Models\" />
     <Folder Include="Features\Auth\Queries\" />
-    <Folder Include="Features\Blogs\Constants\" />
     <Folder Include="Features\Blogs\Models\" />
     <Folder Include="Features\Bookmarks\Commands\" />
     <Folder Include="Features\Bookmarks\Constants\" />
