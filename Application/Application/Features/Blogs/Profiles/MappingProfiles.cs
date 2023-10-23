@@ -38,7 +38,12 @@ namespace Application.Features.Blogs.Profiles
                 .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.FirstName + ' ' + x.Writer.LastName))
                 .ReverseMap();
 
+            CreateMap<Blog, MostSharedBlogDto>().ForMember(opt => opt.CategoryName, src => src.MapFrom(x => x.Category.CategoryName))
+                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.FirstName + ' ' + x.Writer.LastName))
+                .ReverseMap();
+
             CreateMap<IPaginate<Blog>, GetListBlogQueryResponse>().ReverseMap();
+            CreateMap<IPaginate<Blog>, MostReadedBlogQueryResponse>().ReverseMap();
             CreateMap<IPaginate<Blog>, MostReadedBlogQueryResponse>().ReverseMap();
             CreateMap<IPaginate<Blog>, GetListBlogDynamicQueryResponse>().ReverseMap();
 

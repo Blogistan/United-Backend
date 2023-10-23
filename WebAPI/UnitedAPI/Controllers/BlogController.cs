@@ -9,6 +9,7 @@ using Application.Features.Blogs.Queries.KEKWBlog;
 using Application.Features.Blogs.Queries.LikeBlog;
 using Application.Features.Blogs.Queries.LovelyBlog;
 using Application.Features.Blogs.Queries.Reports.MostReaded;
+using Application.Features.Blogs.Queries.Reports.MostShared;
 using Application.Features.Blogs.Queries.SadBlog;
 using Application.Features.Blogs.Queries.SuprisedBlog;
 using Application.Features.Blogs.Queries.TriggerBlog;
@@ -103,6 +104,13 @@ namespace UnitedAPI.Controllers
         public async Task<IActionResult> MostReadedBlogs([FromQuery] MostReadedBlogQuery mostReadedBlogQuery)
         {
             MostReadedBlogQueryResponse response = await Mediator.Send(mostReadedBlogQuery);
+            return Ok(response);
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> MostSharedBlogs([FromQuery] MostSharedBlogQuery mostSharedBlogQuery)
+        {
+            MostSharedBlogQueryResponse response = await Mediator.Send(mostSharedBlogQuery);
             return Ok(response);
 
         }
