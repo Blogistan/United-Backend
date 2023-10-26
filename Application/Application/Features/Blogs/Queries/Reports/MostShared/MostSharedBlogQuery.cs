@@ -1,15 +1,16 @@
 ﻿using Application.Features.Blogs.Constants;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Blogs.Queries.Reports.MostShared
 {
-    public class MostSharedBlogQuery:IRequest<MostSharedBlogQueryResponse>
+    public class MostSharedBlogQuery:IRequest<MostSharedBlogQueryResponse>,ISecuredRequest
     {
         public DateFilter DateFilter { get; set; }
-
+        public string[] Roles => new[] { "Admin", "Moderator", "Writer", "User" };
         public class MostSharedBlogQueryHandler : IRequestHandler<MostSharedBlogQuery, MostSharedBlogQueryResponse>
         {
             private readonly IMapper mapper;

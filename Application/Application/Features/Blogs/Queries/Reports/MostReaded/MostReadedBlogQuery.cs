@@ -1,15 +1,17 @@
 ﻿using Application.Features.Blogs.Constants;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Blogs.Queries.Reports.MostReaded
 {
-    public class MostReadedBlogQuery : IRequest<MostReadedBlogQueryResponse>
+    public class MostReadedBlogQuery : IRequest<MostReadedBlogQueryResponse>, ISecuredRequest
     {
         public DateFilter DateFilter { get; set; }
 
+        public string[] Roles => new[]{"Admin","Moderator","Writer","User"};
 
         public class MostReadedBlogQueryHandler : IRequestHandler<MostReadedBlogQuery, MostReadedBlogQueryResponse>
         {
