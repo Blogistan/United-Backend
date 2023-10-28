@@ -1,6 +1,4 @@
-﻿
-
-using Core.Security.Entities;
+﻿using Core.Security.Entities;
 using Core.Security.Enums;
 
 namespace Domain.Entities
@@ -10,6 +8,7 @@ namespace Domain.Entities
 
         public string? ProfileImageUrl { get; set; } = String.Empty;
         public string? Biography { get; set; } = String.Empty;
+        public bool IsActive { get; set; }
 
         public virtual ICollection<Blog> Blogs { get; set; }
 
