@@ -31,7 +31,7 @@ namespace Application.Features.Auth.Commands.Login
 
             public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
-                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Email == request.UserForLoginDto.Email);
+                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Email == request.UserForLoginDto.Email && x.IsActive==true);
 
                 await authBussinessRules.UserShouldBeExist(siteUser);
 

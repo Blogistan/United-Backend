@@ -32,7 +32,7 @@ namespace Application.Features.Auth.Commands.ForgetPassword
 
             public async Task<Unit> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
             {
-                var user = await siteUserRepository.GetAsync(x => x.Email == request.Email);
+                var user = await siteUserRepository.GetAsync(x => x.Email == request.Email && x.IsActive==true);
                 await authBussinessRules.UserShouldBeExist(user);
 
                 var key = await CreateResetKey();

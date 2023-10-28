@@ -31,7 +31,7 @@ namespace Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand
 
             public async Task<EnabledOtpAuthenticatorResponse> Handle(EnableOtpAuthenticatorCommand request, CancellationToken cancellationToken)
             {
-                User? siteUser = await siteUserRepository.GetAsync(x => x.Id == request.UserID);
+                User? siteUser = await siteUserRepository.GetAsync(x => x.Id == request.UserID && x.IsActive==true);
 
                 await AuthBussinessRules.UserShouldBeExist(siteUser);
                 await AuthBussinessRules.UserShouldNotBeHasAuthenticator(siteUser);

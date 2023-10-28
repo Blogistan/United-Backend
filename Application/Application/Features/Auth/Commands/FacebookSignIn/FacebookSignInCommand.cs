@@ -24,7 +24,7 @@ namespace Application.Features.Auth.Commands.FacebookSignIn
             {
                 var info = await authService.FacebookSignIn(request.Token);
 
-                var user = await siteUserRepository.GetAsync(x => x.Email == info.Email);
+                var user = await siteUserRepository.GetAsync(x => x.Email == info.Email &&  x.IsActive==true);
 
                 var result = await authService.CreateUserExternalAsync(user, info.Email, info.Name, "", "", request.IpAddress);
 

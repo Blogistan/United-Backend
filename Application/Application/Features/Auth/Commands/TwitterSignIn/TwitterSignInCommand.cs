@@ -26,7 +26,7 @@ namespace Application.Features.Auth.Commands.TwitterSignIn
             public async Task<LoginResponse> Handle(TwitterSignInCommand request, CancellationToken cancellationToken)
             {
                 var info = await authService.GetTwitterUserInfo(new OAuthResponse { Oauth_token = request.AccessToken, Oauth_token_secret = request.TokenSecret });
-                var user = await siteUserRepository.GetAsync(x => x.Email == info.email);
+                var user = await siteUserRepository.GetAsync(x => x.Email == info.email && x.IsActive==true);
 
                 var result = await authService.CreateUserExternalAsync(user, info.email, info.screen_name, "", "", request.IpAddress);
 

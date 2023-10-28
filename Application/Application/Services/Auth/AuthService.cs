@@ -189,7 +189,7 @@ namespace Application.Services.Auth
             EmailAuthenticator emailAuthenticator = await emailAuthenticatorRepository.GetAsync(x => x.UserId == user.Id);
 
             if (emailAuthenticator.ActivationKey != code)
-                throw new BusinessException(AuthBusinessMessage.InvalidAuthenticatorCode);
+                await Task.FromException(new BusinessException(AuthBusinessMessage.InvalidAuthenticatorCode));
             await emailAuthenticatorRepository.UpdateAsync(emailAuthenticator);
         }
         private async Task VerifyEmailOtpAuthenticatorCode(User user, string codeToVerify)
@@ -281,7 +281,7 @@ namespace Application.Services.Auth
             }
             else
             {
-                throw new BusinessException(AuthBusinessMessage.ExternalLoginCredentialsWrong);
+                await Task.FromException(new BusinessException(AuthBusinessMessage.ExternalLoginCredentialsWrong));
             }
             return userInfoResponse;
 
@@ -316,7 +316,7 @@ namespace Application.Services.Auth
                 }
                 else
                 {
-                    throw new BusinessException($"{AuthBusinessMessage.ExternalLoginCredentialsWrong} : Error Code: {response.StatusCode}");
+                    await Task.FromException(new BusinessException($"{AuthBusinessMessage.ExternalLoginCredentialsWrong} : Error Code: {response.StatusCode}"));
                 }
 
                 return oAuthResponse;
@@ -372,7 +372,7 @@ namespace Application.Services.Auth
                 else
                 {
 
-                    throw new BusinessException("Erro Code: " + response.StatusCode);
+                    await Task.FromException(new BusinessException("Erro Code: " + response.StatusCode));
                 }
 
             }

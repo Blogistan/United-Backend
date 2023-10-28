@@ -40,7 +40,7 @@ namespace Application.Features.Auth.Commands.EnableEmailAuthenticator
 
             public async Task Handle(EnableEmailAuthenticatorCommand request, CancellationToken cancellationToken)
             {
-                User? siteUser = await siteUserRepository.GetAsync(x => x.Id == request.UserID);
+                User? siteUser = await siteUserRepository.GetAsync(x => x.Id == request.UserID && x.IsActive == true);
 
                 await authBussinessRules.UserShouldBeExist(siteUser);
 
@@ -52,11 +52,11 @@ namespace Application.Features.Auth.Commands.EnableEmailAuthenticator
 
                 await emailAuthenticatorRepository.AddAsync(emailAuthenticator);
 
-                await SendInfoMailAsync(siteUser,emailAuthenticator.ActivationKey,request.VerifyToEmail);
+                await SendInfoMailAsync(siteUser, emailAuthenticator.ActivationKey, request.VerifyToEmail);
 
 
             }
-            public async Task SendInfoMailAsync(User siteUser,string activationKey,string VerifyToMail)
+            public async Task SendInfoMailAsync(User siteUser, string activationKey, string VerifyToMail)
             {
                 List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
                 mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
