@@ -6,9 +6,12 @@ namespace Domain.Entities
     public class SiteUser : User
     {
 
-        public string? ProfileImageUrl { get; set; } = String.Empty;
-        public string? Biography { get; set; } = String.Empty;
+        public string? ProfileImageUrl { get; set; } = string.Empty;
+        public string? Biography { get; set; } = string.Empty;
         public bool IsActive { get; set; }
+        public bool IsVerified { get; set; }
+        public DateTime VerifiedAt { get; set; }
+
 
         public virtual ICollection<Blog> Blogs { get; set; }
 

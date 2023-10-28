@@ -4,9 +4,9 @@ namespace Domain.Entities
 {
     public class Blog : Entity<int>
     {
-        public string Title { get; set; } = String.Empty;
+        public string Title { get; set; } = string.Empty;
         public int CategoryId { get; set; }
-        public string BannerImageUrl { get; set; } = String.Empty;
+        public string BannerImageUrl { get; set; } = string.Empty;
         public int WriterId { get; set; }
         public int ReactionSuprisedCount { get; set; }
         public int ReactionLovelyCount { get; set; }

@@ -4,7 +4,7 @@ namespace Domain.Entities
 {
     public class Category : Entity<int>
     {
-        public string CategoryName { get; set; } = String.Empty;
+        public string CategoryName { get; set; } = string.Empty;
         public int? CategoryId { get; set; }
 
         public virtual ICollection<Category>? SubCategories { get; set; }
