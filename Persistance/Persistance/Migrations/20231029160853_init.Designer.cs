@@ -12,7 +12,7 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20231029144706_init")]
+    [Migration("20231029160853_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -746,6 +746,212 @@ namespace Persistance.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.Report", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreateUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeleteUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReportDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReportTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UpdateUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportTypeID");
+
+                    b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReportType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreateUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DeleteUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReportTypeDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UpdateUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReportTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreateUser = 0,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeleteUser = 0,
+                            ReportTypeDescription = "Putting people down or being negative about the website or article",
+                            ReportTypeName = "Negative Attitude",
+                            UpdateUser = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreateUser = 0,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeleteUser = 0,
+                            ReportTypeDescription = "Including, but not limited to language that is unlawful, harmful, threatening, abusive, harassing, defamatory, vulgar, obscene, sexually explicit, or otherwise objectionable.",
+                            ReportTypeName = "Verbal Abuse",
+                            UpdateUser = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreateUser = 0,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeleteUser = 0,
+                            ReportTypeDescription = "Racism, sexism, homophobia, etc.",
+                            ReportTypeName = "Hate Speech",
+                            UpdateUser = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreateUser = 0,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeleteUser = 0,
+                            ReportTypeDescription = "Unwanted behavior, physical or verbal (or even suggested), that makes a reasonable person feel uncomfortable, humiliated, or mentally distressed.",
+                            ReportTypeName = "Harassment",
+                            UpdateUser = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreateUser = 0,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeleteUser = 0,
+                            ReportTypeDescription = "Stupid pointless annoying articles",
+                            ReportTypeName = "Spam",
+                            UpdateUser = 0
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserBan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BanDetail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BanEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("BanStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreateUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeleteUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsPerma")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ReportID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UpdateUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportID")
+                        .IsUnique();
+
+                    b.ToTable("UserBans");
+                });
+
+            modelBuilder.Entity("ReportSiteUser", b =>
+                {
+                    b.Property<Guid>("ReportsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReportsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ReportSiteUser");
+                });
+
+            modelBuilder.Entity("SiteUserUserBan", b =>
+                {
+                    b.Property<int>("SiteUserId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserBansId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("SiteUserId", "UserBansId");
+
+                    b.HasIndex("UserBansId");
+
+                    b.ToTable("SiteUserUserBan");
+                });
+
             modelBuilder.Entity("Domain.Entities.SiteUser", b =>
                 {
                     b.HasBaseType("Core.Security.Entities.User");
@@ -898,6 +1104,58 @@ namespace Persistance.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Report", b =>
+                {
+                    b.HasOne("Domain.Entities.ReportType", "ReportType")
+                        .WithMany("Reports")
+                        .HasForeignKey("ReportTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReportType");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserBan", b =>
+                {
+                    b.HasOne("Domain.Entities.Report", "Report")
+                        .WithOne("UserBan")
+                        .HasForeignKey("Domain.Entities.UserBan", "ReportID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
+            modelBuilder.Entity("ReportSiteUser", b =>
+                {
+                    b.HasOne("Domain.Entities.Report", null)
+                        .WithMany()
+                        .HasForeignKey("ReportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.SiteUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SiteUserUserBan", b =>
+                {
+                    b.HasOne("Domain.Entities.SiteUser", null)
+                        .WithMany()
+                        .HasForeignKey("SiteUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.UserBan", null)
+                        .WithMany()
+                        .HasForeignKey("UserBansId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
                 {
                     b.Navigation("UserOperationClaims");
@@ -936,6 +1194,17 @@ namespace Persistance.Migrations
             modelBuilder.Entity("Domain.Entities.Content", b =>
                 {
                     b.Navigation("Blogs");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Report", b =>
+                {
+                    b.Navigation("UserBan")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.ReportType", b =>
+                {
+                    b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("Domain.Entities.SiteUser", b =>

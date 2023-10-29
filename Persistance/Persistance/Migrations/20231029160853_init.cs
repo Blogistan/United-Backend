@@ -79,6 +79,26 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReportTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReportTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReportTypeDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -106,6 +126,31 @@ namespace Persistance.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReportTypeID = table.Column<int>(type: "int", nullable: false),
+                    ReportDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DeleteUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdateUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_ReportTypes_ReportTypeID",
+                        column: x => x.ReportTypeID,
+                        principalTable: "ReportTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,6 +352,58 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReportSiteUser",
+                columns: table => new
+                {
+                    ReportsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportSiteUser", x => new { x.ReportsId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_ReportSiteUser_Reports_ReportsId",
+                        column: x => x.ReportsId,
+                        principalTable: "Reports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReportSiteUser_User_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserBans",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReportID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsPerma = table.Column<bool>(type: "bit", nullable: false),
+                    BanStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BanEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BanDetail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DeleteUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdateUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserBans", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserBans_Reports_ReportID",
+                        column: x => x.ReportID,
+                        principalTable: "Reports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Bookmarks",
                 columns: table => new
                 {
@@ -370,6 +467,30 @@ namespace Persistance.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SiteUserUserBan",
+                columns: table => new
+                {
+                    SiteUserId = table.Column<int>(type: "int", nullable: false),
+                    UserBansId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SiteUserUserBan", x => new { x.SiteUserId, x.UserBansId });
+                    table.ForeignKey(
+                        name: "FK_SiteUserUserBan_UserBans_UserBansId",
+                        column: x => x.UserBansId,
+                        principalTable: "UserBans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SiteUserUserBan_User_SiteUserId",
+                        column: x => x.SiteUserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CategoryId", "CategoryName", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "UpdateUser", "UpdatedDate" },
@@ -397,6 +518,18 @@ namespace Persistance.Migrations
                     { 2, "", "Oyun 1 saat süre olmadan hackerlar tarafından kırıldı", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "OYUNDA ANINDA CRACKLANDİ", 0, null },
                     { 3, "", "Yerli üretim aracımız togg artık yollarda ön satışlar bitti.", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Togg Yollarda", 0, null },
                     { 4, "", "Nesnelerin interneti, fiziksel nesnelerin birbirleriyle veya daha büyük sistemlerle bağlantılı olduğu iletişim ağıdır.İnternet üzerinden diğer cihazlara ve sistemlere bağlanmak ve veri alışverişi yapmak amacıyla sensörler, yazılımlar ve diğer teknolojilerle gömülüdür.", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "IOT nedir", 0, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ReportTypes",
+                columns: new[] { "Id", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "ReportTypeDescription", "ReportTypeName", "UpdateUser", "UpdatedDate" },
+                values: new object[,]
+                {
+                    { 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Putting people down or being negative about the website or article", "Negative Attitude", 0, null },
+                    { 2, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Including, but not limited to language that is unlawful, harmful, threatening, abusive, harassing, defamatory, vulgar, obscene, sexually explicit, or otherwise objectionable.", "Verbal Abuse", 0, null },
+                    { 3, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Racism, sexism, homophobia, etc.", "Hate Speech", 0, null },
+                    { 4, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Unwanted behavior, physical or verbal (or even suggested), that makes a reasonable person feel uncomfortable, humiliated, or mentally distressed.", "Harassment", 0, null },
+                    { 5, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Stupid pointless annoying articles", "Spam", 0, null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -460,6 +593,27 @@ namespace Persistance.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reports_ReportTypeID",
+                table: "Reports",
+                column: "ReportTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReportSiteUser_UsersId",
+                table: "ReportSiteUser",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SiteUserUserBan_UserBansId",
+                table: "SiteUserUserBan",
+                column: "UserBansId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserBans_ReportID",
+                table: "UserBans",
+                column: "ReportID",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserOperationClaims_OperationClaimId",
                 table: "UserOperationClaims",
                 column: "OperationClaimId");
@@ -492,10 +646,19 @@ namespace Persistance.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
+                name: "ReportSiteUser");
+
+            migrationBuilder.DropTable(
+                name: "SiteUserUserBan");
+
+            migrationBuilder.DropTable(
                 name: "UserOperationClaims");
 
             migrationBuilder.DropTable(
                 name: "Blogs");
+
+            migrationBuilder.DropTable(
+                name: "UserBans");
 
             migrationBuilder.DropTable(
                 name: "OperationClaims");
@@ -508,6 +671,12 @@ namespace Persistance.Migrations
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Reports");
+
+            migrationBuilder.DropTable(
+                name: "ReportTypes");
         }
     }
 }

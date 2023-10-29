@@ -7,6 +7,8 @@ namespace Domain.Entities
         public string ReportTypeName { get; set; } = string.Empty;
         public string ReportTypeDescription { get; set; } = string.Empty;
 
+        public virtual ICollection<Report> Reports { get; set; }
+
 
         public ReportType()
         {
