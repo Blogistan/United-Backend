@@ -2,9 +2,9 @@
 {
     public class WebApiConfigurations
     {
-        public string AuthVerifyEmailUrl { get; set; }
-        public string SecretKeyLabel { get; set; }
-        public string SecretKeyIssuer { get; set; }
-        public string PasswordResetUrl { get; set; }
+        public string AuthVerifyEmailUrl { get; set; } = string.Empty;
+        public string SecretKeyLabel { get; set; }= string.Empty;
+        public string SecretKeyIssuer { get; set; } = string.Empty;
+        public string PasswordResetUrl { get; set; } = string.Empty;
     }
 }

@@ -11,5 +11,17 @@ namespace Domain.Entities
 
         public virtual Blog Blog { get; set; }
         public virtual ReportType ReportType { get; set; }
+
+
+        public Report()
+        {
+            
+        }
+        public Report(Guid id,int blogID,int reprotTypeID):this()
+        {
+            this.Id = id;
+            this.BlogID = blogID;
+            this.ReportTypeID = reprotTypeID;
+        }
     }
 }

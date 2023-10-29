@@ -224,7 +224,7 @@ namespace Application.Services.Auth
                     FirstName = name,
                     LastName = surname,
                     Email = email,
-                    Status = true,
+                    IsVerified = false,
                     ProfileImageUrl = picture,
                 };
 

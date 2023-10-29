@@ -5,7 +5,7 @@ namespace Infrastructure.Dtos.Facebook
     public class FacebookUserInfoResponse
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         [JsonPropertyName("email")]
         public string Email { get; set; }

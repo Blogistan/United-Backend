@@ -14,7 +14,7 @@ namespace Application.Features.Auth.Commands.Login
     public class LoginCommand : IRequest<LoginResponse>,ILoggableRequest
     {
         public UserForLoginDto UserForLoginDto { get; set; }
-        public string IpAddress { get; set; }
+        public string IpAddress { get; set; } = string.Empty;
 
         public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
         {

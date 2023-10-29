@@ -8,7 +8,6 @@ namespace Domain.Entities
 
         public string? ProfileImageUrl { get; set; } = string.Empty;
         public string? Biography { get; set; } = string.Empty;
-        public bool IsActive { get; set; }
         public bool IsVerified { get; set; }
         public DateTime VerifiedAt { get; set; }
 
@@ -22,7 +21,7 @@ namespace Domain.Entities
             Bookmarks = new HashSet<Bookmark>();
         }
         public SiteUser(int id, string firstName, string lastName, string email, string profileImageUrl, string biography, byte[] passwordSalt, byte[] passwordHash,
-                   bool status, AuthenticatorType authenticatorType, ICollection<Blog> blogs, ICollection<Bookmark> bookmarks) : this()
+                   bool isActive, AuthenticatorType authenticatorType, ICollection<Blog> blogs, ICollection<Bookmark> bookmarks) : this()
         {
             Id = id;
             FirstName = firstName;
@@ -30,7 +29,7 @@ namespace Domain.Entities
             Email = email;
             PasswordSalt = passwordSalt;
             PasswordHash = passwordHash;
-            Status = status;
+            IsActive = isActive;
             AuthenticatorType = authenticatorType;
             Bookmarks = bookmarks;
             Blogs = blogs;

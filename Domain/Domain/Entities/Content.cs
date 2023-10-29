@@ -4,12 +4,11 @@ namespace Domain.Entities
 {
     public class Content : Entity<int>
     {
-        public int Id { get; set; }
-        public string Title { get; set; } = String.Empty;
+        public string Title { get; set; } = string.Empty;
 
-        public string? ContentImageUrl { get; set; } = String.Empty;
+        public string? ContentImageUrl { get; set; } = string.Empty;
 
-        public string ContentPragraph { get; set; } = String.Empty;
+        public string ContentPragraph { get; set; } = string.Empty;
 
         public virtual ICollection<Blog> Blogs { get; set; }
 

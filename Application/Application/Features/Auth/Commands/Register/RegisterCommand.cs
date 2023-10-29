@@ -46,14 +46,15 @@ namespace Application.Features.Auth.Commands.Register
 
                 siteUser.PasswordHash = hash;
                 siteUser.PasswordSalt = salt;
-                siteUser.Status = true;
+                siteUser.IsActive = true;
+                siteUser.IsVerified = false;
 
                 await siteUserRepository.AddAsync(siteUser);
 
                 AccessToken accessToken = await authService.CreateAccessToken(siteUser);
                 RefreshToken refreshToken = await authService.CreateRefreshToken(siteUser, request.IpAddress);
                 await authService.AddRefreshToken(refreshToken);
-                refreshToken.User = null;
+                refreshToken.User = new User();
                 RegisteredResponse registeredResponse = new()
                 {
                     AccessToken = accessToken,

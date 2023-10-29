@@ -2,7 +2,7 @@
 {
     public class IpStackConfiguration
     {
-        public string ApiUrl { get; set; }
-        public string AccessKey { get; set; }
+        public string ApiUrl { get; set; } = string.Empty;
+        public string AccessKey { get; set; } = string.Empty;
     }
 }

@@ -5,7 +5,7 @@ namespace Core.Security.Entities
     public class ForgotPassword : Entity<int>
     {
         public int UserId { get; set; }
-        public string ActivationKey { get; set; }
+        public string ActivationKey { get; set; } = string.Empty;
         public bool IsVerified { get; set; }
         public DateTime ExpireDate { get; set; }
 
