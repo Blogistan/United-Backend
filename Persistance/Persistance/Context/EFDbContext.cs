@@ -17,7 +17,7 @@ namespace Persistance.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Content> Contents { get; set; }
-        //public DbSet<Video> Videos { get; set; }
+        public DbSet<Report> Reports { get; set; }
         public DbSet<SiteUser> SiteUsers { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
@@ -25,7 +25,8 @@ namespace Persistance.Context
         public DbSet<EmailAuthenticator> EmailAuthenticators { get; set; }
         public DbSet<OtpAuthenticator> OtpAuthenticators { get; set; }
         public DbSet<ForgotPassword> ForgottenPasswords { get; set; }
-        //public DbSet<VideoContent> VideoContents { get; set; }
+        public DbSet<ReportType> ReportTypes { get; set; }
+        public DbSet<UserBan> UserBans { get; set; }
 
         protected IConfiguration Configuration { get; set; }
         protected IHttpContextAccessor httpContextAccessor { get; set; }
