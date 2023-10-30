@@ -365,6 +365,21 @@ namespace Persistance.Migrations
                     b.ToTable("UserOperationClaims");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Ban", b =>
+                {
+                    b.Property<Guid>("ReportID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserBanID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ReportID", "UserBanID");
+
+                    b.HasIndex("UserBanID");
+
+                    b.ToTable("Bans");
+                });
+
             modelBuilder.Entity("Domain.Entities.Blog", b =>
                 {
                     b.Property<int>("Id")
@@ -1031,6 +1046,25 @@ namespace Persistance.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Ban", b =>
+                {
+                    b.HasOne("Domain.Entities.Report", "Report")
+                        .WithMany("Bans")
+                        .HasForeignKey("ReportID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.UserBan", "UserBan")
+                        .WithMany("Bans")
+                        .HasForeignKey("UserBanID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+
+                    b.Navigation("UserBan");
+                });
+
             modelBuilder.Entity("Domain.Entities.Blog", b =>
                 {
                     b.HasOne("Domain.Entities.Category", "Category")
@@ -1195,6 +1229,8 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
                 {
+                    b.Navigation("Bans");
+
                     b.Navigation("UserBan")
                         .IsRequired();
                 });
@@ -1202,6 +1238,11 @@ namespace Persistance.Migrations
             modelBuilder.Entity("Domain.Entities.ReportType", b =>
                 {
                     b.Navigation("Reports");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserBan", b =>
+                {
+                    b.Navigation("Bans");
                 });
 
             modelBuilder.Entity("Domain.Entities.SiteUser", b =>

@@ -27,6 +27,7 @@ namespace Persistance.Context
         public DbSet<ForgotPassword> ForgottenPasswords { get; set; }
         public DbSet<ReportType> ReportTypes { get; set; }
         public DbSet<UserBan> UserBans { get; set; }
+        public DbSet<Ban> Bans { get; set; }
 
         protected IConfiguration Configuration { get; set; }
         protected IHttpContextAccessor httpContextAccessor { get; set; }

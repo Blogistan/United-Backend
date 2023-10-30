@@ -10,6 +10,7 @@ namespace Domain.Entities
 
 
         public virtual ICollection<SiteUser> Users { get; set; }
+        public virtual ICollection<Ban> Bans { get; set; }
         public virtual ReportType ReportType { get; set; }
         public virtual UserBan UserBan { get; set; }
 

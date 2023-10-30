@@ -11,6 +11,7 @@ namespace Domain.Entities
         public string? BanDetail { get; set; }
 
         public virtual ICollection<SiteUser> SiteUser { get; set; }
+        public virtual ICollection<Ban> Bans { get; set; }
         public virtual Report Report { get; set; }
 
         public UserBan()

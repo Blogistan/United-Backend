@@ -468,6 +468,30 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bans",
+                columns: table => new
+                {
+                    UserBanID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReportID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bans", x => new { x.ReportID, x.UserBanID });
+                    table.ForeignKey(
+                        name: "FK_Bans_Reports_ReportID",
+                        column: x => x.ReportID,
+                        principalTable: "Reports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bans_UserBans_UserBanID",
+                        column: x => x.UserBanID,
+                        principalTable: "UserBans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SiteUserUserBan",
                 columns: table => new
                 {
@@ -531,6 +555,11 @@ namespace Persistance.Migrations
                     { 4, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Unwanted behavior, physical or verbal (or even suggested), that makes a reasonable person feel uncomfortable, humiliated, or mentally distressed.", "Harassment", 0, null },
                     { 5, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Stupid pointless annoying articles", "Spam", 0, null }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bans_UserBanID",
+                table: "Bans",
+                column: "UserBanID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blogs_CategoryId",
@@ -627,6 +656,9 @@ namespace Persistance.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Bans");
+
             migrationBuilder.DropTable(
                 name: "Bookmarks");
 
