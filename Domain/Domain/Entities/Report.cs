@@ -8,9 +8,9 @@ namespace Domain.Entities
         public int ReportTypeID { get; set; }
         public string ReportDescription { get; set; } = string.Empty;
 
-
         public virtual ICollection<SiteUser> Users { get; set; }
         public virtual ICollection<Ban> Bans { get; set; }
+        public virtual ICollection<UserReport> UserReports { get; set; }
         public virtual ReportType ReportType { get; set; }
         public virtual UserBan UserBan { get; set; }
 
@@ -19,10 +19,11 @@ namespace Domain.Entities
         {
             
         }
-        public Report(Guid id,int userID,int reprotTypeID):this()
+        public Report(Guid id,int reprotTypeID):this()
         {
             this.Id = id;
             this.ReportTypeID = reprotTypeID;
+
         }
     }
 }

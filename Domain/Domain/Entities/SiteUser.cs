@@ -10,13 +10,11 @@ namespace Domain.Entities
         public string? Biography { get; set; } = string.Empty;
         public bool IsVerified { get; set; }
         public DateTime VerifiedAt { get; set; }
-
-
         public virtual ICollection<Blog> Blogs { get; set; }
-
         public virtual ICollection<Bookmark> Bookmarks { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<UserBan> UserBans { get; set; }
+        public virtual ICollection<UserReport> UserReports { get; set; }
 
         public SiteUser()
         {
