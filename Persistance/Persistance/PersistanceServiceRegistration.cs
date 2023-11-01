@@ -10,7 +10,7 @@ namespace Persistance
 {
     public static class PersistanceServiceRegistration
     {
-        public static IServiceCollection AddPersistanceServices(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection AddPersistanceServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IBlogRepository, BlogRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -27,7 +27,8 @@ namespace Persistance
             services.AddScoped<IForgotPasswordRepository, ForgotPasswordRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IReportTypeRepository, ReportTypeRepository>();
-            services.AddDbContext<EFDbContext>(options=>options.UseSqlServer(configuration.GetConnectionString("UnitedDb")));
+            services.AddScoped<IBanRepository, BanRepository>();
+            services.AddDbContext<EFDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("UnitedDb")));
 
             return services;
         }
