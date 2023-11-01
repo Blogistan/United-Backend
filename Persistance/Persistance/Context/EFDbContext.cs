@@ -26,7 +26,7 @@ namespace Persistance.Context
         public DbSet<OtpAuthenticator> OtpAuthenticators { get; set; }
         public DbSet<ForgotPassword> ForgottenPasswords { get; set; }
         public DbSet<ReportType> ReportTypes { get; set; }
-        public DbSet<UserBan> UserBans { get; set; }
+        public DbSet<UserReport> UserReports { get; set; }
         public DbSet<Ban> Bans { get; set; }
 
         protected IConfiguration Configuration { get; set; }

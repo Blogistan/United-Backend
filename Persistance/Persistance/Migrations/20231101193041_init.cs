@@ -352,35 +352,12 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ReportSiteUser",
-                columns: table => new
-                {
-                    ReportsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UsersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReportSiteUser", x => new { x.ReportsId, x.UsersId });
-                    table.ForeignKey(
-                        name: "FK_ReportSiteUser_Reports_ReportsId",
-                        column: x => x.ReportsId,
-                        principalTable: "Reports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ReportSiteUser_User_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserBans",
+                name: "Bans",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReportID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
                     IsPerma = table.Column<bool>(type: "bit", nullable: false),
                     BanStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BanEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -394,11 +371,41 @@ namespace Persistance.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserBans", x => x.Id);
+                    table.PrimaryKey("PK_Bans", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserBans_Reports_ReportID",
+                        name: "FK_Bans_Reports_ReportID",
                         column: x => x.ReportID,
                         principalTable: "Reports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bans_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserReports",
+                columns: table => new
+                {
+                    SiteUserID = table.Column<int>(type: "int", nullable: false),
+                    ReportID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserReports", x => new { x.ReportID, x.SiteUserID });
+                    table.ForeignKey(
+                        name: "FK_UserReports_Reports_ReportID",
+                        column: x => x.ReportID,
+                        principalTable: "Reports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserReports_User_SiteUserID",
+                        column: x => x.SiteUserID,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -467,54 +474,6 @@ namespace Persistance.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Bans",
-                columns: table => new
-                {
-                    UserBanID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReportID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bans", x => new { x.ReportID, x.UserBanID });
-                    table.ForeignKey(
-                        name: "FK_Bans_Reports_ReportID",
-                        column: x => x.ReportID,
-                        principalTable: "Reports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Bans_UserBans_UserBanID",
-                        column: x => x.UserBanID,
-                        principalTable: "UserBans",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SiteUserUserBan",
-                columns: table => new
-                {
-                    SiteUserId = table.Column<int>(type: "int", nullable: false),
-                    UserBansId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SiteUserUserBan", x => new { x.SiteUserId, x.UserBansId });
-                    table.ForeignKey(
-                        name: "FK_SiteUserUserBan_UserBans_UserBansId",
-                        column: x => x.UserBansId,
-                        principalTable: "UserBans",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SiteUserUserBan_User_SiteUserId",
-                        column: x => x.SiteUserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "CategoryId", "CategoryName", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "UpdateUser", "UpdatedDate" },
@@ -557,9 +516,14 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bans_UserBanID",
+                name: "IX_Bans_ReportID",
                 table: "Bans",
-                column: "UserBanID");
+                column: "ReportID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bans_UserID",
+                table: "Bans",
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blogs_CategoryId",
@@ -627,22 +591,6 @@ namespace Persistance.Migrations
                 column: "ReportTypeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportSiteUser_UsersId",
-                table: "ReportSiteUser",
-                column: "UsersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SiteUserUserBan_UserBansId",
-                table: "SiteUserUserBan",
-                column: "UserBansId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserBans_ReportID",
-                table: "UserBans",
-                column: "ReportID",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserOperationClaims_OperationClaimId",
                 table: "UserOperationClaims",
                 column: "OperationClaimId");
@@ -651,6 +599,11 @@ namespace Persistance.Migrations
                 name: "IX_UserOperationClaims_UserId",
                 table: "UserOperationClaims",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserReports_SiteUserID",
+                table: "UserReports",
+                column: "SiteUserID");
         }
 
         /// <inheritdoc />
@@ -678,22 +631,19 @@ namespace Persistance.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "ReportSiteUser");
-
-            migrationBuilder.DropTable(
-                name: "SiteUserUserBan");
-
-            migrationBuilder.DropTable(
                 name: "UserOperationClaims");
+
+            migrationBuilder.DropTable(
+                name: "UserReports");
 
             migrationBuilder.DropTable(
                 name: "Blogs");
 
             migrationBuilder.DropTable(
-                name: "UserBans");
+                name: "OperationClaims");
 
             migrationBuilder.DropTable(
-                name: "OperationClaims");
+                name: "Reports");
 
             migrationBuilder.DropTable(
                 name: "Categories");
@@ -703,9 +653,6 @@ namespace Persistance.Migrations
 
             migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "Reports");
 
             migrationBuilder.DropTable(
                 name: "ReportTypes");
