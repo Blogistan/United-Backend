@@ -4,9 +4,9 @@ using Domain.Entities;
 
 namespace Application.Features.Comments.Profiles
 {
-    public class Proiles:Profile
+    public class MappingProfiles:Profile
     {
-        public Proiles()
+        public MappingProfiles()
         {
             CreateMap<Comment, CommentViewDto>().ForMember(opt=>opt.Id,src=>src.MapFrom(x=>x.Id))
                 .ForMember(opt=>opt.UserName,src=>src.MapFrom(x=>x.User.FirstName+' '+x.User.LastName))
