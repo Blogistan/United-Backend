@@ -12,7 +12,7 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20231101193041_init")]
+    [Migration("20231103192539_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -401,20 +401,20 @@ namespace Persistance.Migrations
                     b.Property<Guid>("ReportID")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("SiteUserId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("UpdateUser")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ReportID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("SiteUserId");
 
                     b.ToTable("Bans");
                 });
@@ -828,9 +828,14 @@ namespace Persistance.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ReportTypeID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Reports");
                 });
@@ -926,21 +931,6 @@ namespace Persistance.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserReport", b =>
-                {
-                    b.Property<Guid>("ReportID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SiteUserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ReportID", "SiteUserID");
-
-                    b.HasIndex("SiteUserID");
-
-                    b.ToTable("UserReports");
-                });
-
             modelBuilder.Entity("Domain.Entities.SiteUser", b =>
                 {
                     b.HasBaseType("Core.Security.Entities.User");
@@ -1031,15 +1021,11 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.SiteUser", "User")
+                    b.HasOne("Domain.Entities.SiteUser", null)
                         .WithMany("Bans")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SiteUserId");
 
                     b.Navigation("Report");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Blog", b =>
@@ -1120,26 +1106,15 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.SiteUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ReportType");
-                });
 
-            modelBuilder.Entity("Domain.Entities.UserReport", b =>
-                {
-                    b.HasOne("Domain.Entities.Report", "Report")
-                        .WithMany("UserReports")
-                        .HasForeignKey("ReportID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.SiteUser", "SiteUser")
-                        .WithMany("UserReports")
-                        .HasForeignKey("SiteUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Report");
-
-                    b.Navigation("SiteUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
@@ -1185,8 +1160,6 @@ namespace Persistance.Migrations
             modelBuilder.Entity("Domain.Entities.Report", b =>
                 {
                     b.Navigation("Bans");
-
-                    b.Navigation("UserReports");
                 });
 
             modelBuilder.Entity("Domain.Entities.ReportType", b =>
@@ -1201,8 +1174,6 @@ namespace Persistance.Migrations
                     b.Navigation("Blogs");
 
                     b.Navigation("Bookmarks");
-
-                    b.Navigation("UserReports");
                 });
 #pragma warning restore 612, 618
         }
