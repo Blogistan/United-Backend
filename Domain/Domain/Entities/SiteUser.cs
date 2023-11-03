@@ -12,7 +12,6 @@ namespace Domain.Entities
         public virtual ICollection<Blog> Blogs { get; set; }
         public virtual ICollection<Bookmark> Bookmarks { get; set; }
         public virtual ICollection<Ban> Bans { get; set; }
-        public virtual ICollection<UserReport> UserReports { get; set; }
 
         public SiteUser()
         {
