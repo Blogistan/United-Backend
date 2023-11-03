@@ -28,20 +28,20 @@ namespace Application.Features.Reports.Commands.CreateReport
                 {
                     ReportTypeID = request.ReportTypeID,
                     ReportDescription = request.ReportDescription,
+                    UserID=request.UserID
 
                 };
 
                 var createdReport = await reportRepository.AddAsync(report);
 
-                report.UserReports.Add(new UserReport { SiteUserID = request.UserID, ReportID = report.Id });
-
-                var reportResult = await reportRepository.GetAsync(x => x.Id == report.Id, include: x => x.Include(x => x.ReportType));
+                var reportResult = await reportRepository.GetAsync(x => x.Id == report.Id, include: x => x.Include(x => x.ReportType).Include(x=>x.User));
 
                 CreateReportCommandResponse createReportCommandResponse = new()
                 {
                     Id = reportResult.Id,
                     ReportType = reportResult.ReportType.ReportTypeName,
-                    ReportDescription = reportResult.ReportDescription
+                    ReportDescription = reportResult.ReportDescription,
+                    UserName=reportResult.User.FirstName+' '+reportResult.User.LastName
                 };
 
                 return createReportCommandResponse;

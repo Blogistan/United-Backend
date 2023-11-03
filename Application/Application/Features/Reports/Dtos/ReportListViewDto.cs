@@ -1,6 +1,6 @@
-﻿namespace Application.Features.Reports.Commands.CreateReport
+﻿namespace Application.Features.Reports.Dtos
 {
-    public class CreateReportCommandResponse
+    public class ReportListViewDto
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }

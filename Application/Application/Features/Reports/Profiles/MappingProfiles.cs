@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using Application.Features.Reports.Dtos;
+using Application.Features.Reports.Queries.GetListReport;
+using AutoMapper;
+using Core.Persistence.Paging;
+using Domain.Entities;
 
 namespace Application.Features.Reports.Profiles
 {
@@ -6,7 +10,10 @@ namespace Application.Features.Reports.Profiles
     {
         public MappingProfiles()
         {
-           
+            CreateMap<Report, ReportListViewDto>().ForMember(opt=>opt.ReportType,src=>src.MapFrom(x=>x.ReportType.ReportTypeName))
+                .ForMember(opt=>opt.UserName,src=>src.MapFrom(x=>x.User.FirstName+' '+x.User.LastName)).ReverseMap();
+
+            CreateMap<IPaginate<Report>, GetListReportQueryResponse>().ReverseMap();
         }
     }
 }

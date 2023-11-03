@@ -25,9 +25,7 @@
     <Folder Include="Features\Contents\Models\" />
     <Folder Include="Features\Contents\Rules\" />
     <Folder Include="Features\Reports\Constants\" />
-    <Folder Include="Features\Reports\Dtos\" />
     <Folder Include="Features\Reports\Models\" />
-    <Folder Include="Features\Reports\Queries\" />
     <Folder Include="Features\Videos\Constants\" />
     <Folder Include="Features\Videos\Models\" />
   </ItemGroup>
