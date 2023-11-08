@@ -1,7 +1,9 @@
 ﻿using Application.Features.Reports.Commands.DeleteReport;
 using Application.Features.ReportTypes.Commands.CreateReportType;
 using Application.Features.ReportTypes.Commands.UpdateReportType;
+using Application.Features.ReportTypes.Queries.GetListReportTypes;
 using AutoMapper;
+using Core.Persistence.Paging;
 using Domain.Entities;
 
 namespace Application.Features.ReportTypes.Profiles
@@ -19,6 +21,9 @@ namespace Application.Features.ReportTypes.Profiles
 
             CreateMap<ReportType, UpdateReportTypeCommandResponse>().ReverseMap();
             CreateMap<ReportType, UpdateReportTypeCommand>().ReverseMap();
+
+            CreateMap<IPaginate<ReportType>, GetListReportTypeQueryResponse>().ReverseMap();
+
         }
     }
 }

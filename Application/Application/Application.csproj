@@ -28,8 +28,6 @@
     <Folder Include="Features\Reports\Models\" />
     <Folder Include="Features\ReportTypes\Constants\" />
     <Folder Include="Features\ReportTypes\Models\" />
-    <Folder Include="Features\ReportTypes\Dtos\" />
-    <Folder Include="Features\ReportTypes\Queries\" />
     <Folder Include="Features\Videos\Constants\" />
     <Folder Include="Features\Videos\Models\" />
   </ItemGroup>
