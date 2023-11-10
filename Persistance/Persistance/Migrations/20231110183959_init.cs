@@ -428,11 +428,11 @@ namespace Persistance.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReportID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
                     IsPerma = table.Column<bool>(type: "bit", nullable: false),
                     BanStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BanEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BanDetail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SiteUserId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -450,10 +450,11 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bans_User_SiteUserId",
-                        column: x => x.SiteUserId,
+                        name: "FK_Bans_User_UserID",
+                        column: x => x.UserID,
                         principalTable: "User",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -503,9 +504,9 @@ namespace Persistance.Migrations
                 column: "ReportID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bans_SiteUserId",
+                name: "IX_Bans_UserID",
                 table: "Bans",
-                column: "SiteUserId");
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blogs_CategoryId",

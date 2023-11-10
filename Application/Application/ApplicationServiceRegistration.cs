@@ -3,6 +3,7 @@ using Application.Features.Blogs.Rules;
 using Application.Features.Categories.Rules;
 using Application.Features.Comments.Rules;
 using Application.Features.Reports.Rules;
+using Application.Features.ReportTypes.Rules;
 using Application.Features.Videos.Rules;
 using Application.Services.Auth;
 using Core.Application.Pipelines.Authorization;
@@ -35,6 +36,7 @@ namespace Application
             services.AddScoped<VideoBusinessRules>();
             services.AddScoped<CommentBusinessRules>();
             services.AddScoped<ReportBusinessRules>();
+            services.AddScoped<ReportTypeBusinessRules>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IMailService, MailKitMailService>();;
 

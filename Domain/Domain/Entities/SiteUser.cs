@@ -12,7 +12,7 @@ namespace Domain.Entities
         public virtual ICollection<Blog> Blogs { get; set; }
         public virtual ICollection<Bookmark> Bookmarks { get; set; }
         public virtual ICollection<Ban> Bans { get; set; }
-
+        public virtual ICollection<Report> Reports { get; set; }
         public SiteUser()
         {
             Bookmarks = new HashSet<Bookmark>();

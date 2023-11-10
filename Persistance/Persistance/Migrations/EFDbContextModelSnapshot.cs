@@ -398,20 +398,20 @@ namespace Persistance.Migrations
                     b.Property<Guid>("ReportID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("SiteUserId")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("UpdateUser")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ReportID");
 
-                    b.HasIndex("SiteUserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Bans");
                 });
@@ -1018,11 +1018,15 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.SiteUser", null)
+                    b.HasOne("Domain.Entities.SiteUser", "User")
                         .WithMany("Bans")
-                        .HasForeignKey("SiteUserId");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Report");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Blog", b =>
@@ -1104,7 +1108,7 @@ namespace Persistance.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.SiteUser", "User")
-                        .WithMany()
+                        .WithMany("Reports")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1171,6 +1175,8 @@ namespace Persistance.Migrations
                     b.Navigation("Blogs");
 
                     b.Navigation("Bookmarks");
+
+                    b.Navigation("Reports");
                 });
 #pragma warning restore 612, 618
         }
