@@ -12,7 +12,6 @@ namespace Application.Features.Bans.Commands.UpdateBan
             RuleFor(x => x.BanStartDate).NotNull();
             RuleFor(x => x.BanEndDate).NotNull();
             RuleFor(x => x.BanDetail).NotNull();
-            RuleFor(x => x.).NotNull();
         }
     }
 }
