@@ -1,6 +1,6 @@
 ﻿using Application.Features.Bans.Dtos;
 
-namespace Application.Features.Bans.Rules.GetListBans
+namespace Application.Features.Bans.Queries.GetListBans
 {
     public class GetListBansQueryResponse
     {

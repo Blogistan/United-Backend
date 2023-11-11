@@ -6,7 +6,7 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Bans.Rules.GetListBans
+namespace Application.Features.Bans.Queries.GetListBans
 {
     public class GetListBansQuery : IRequest<GetListBansQueryResponse>
     {

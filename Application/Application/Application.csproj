@@ -14,7 +14,7 @@
     <Folder Include="Features\Bans\Constants\" />
     <Folder Include="Features\Bans\Models\" />
     <Folder Include="Features\Bans\Profiles\" />
-    <Folder Include="Features\Bans\Queries\" />
+    <Folder Include="Features\Bans\Rules\" />
     <Folder Include="Features\Blogs\Models\" />
     <Folder Include="Features\Bookmarks\Commands\" />
     <Folder Include="Features\Bookmarks\Constants\" />
