@@ -10,10 +10,8 @@
     <Folder Include="Features\Auth\Dtos\" />
     <Folder Include="Features\Auth\Models\" />
     <Folder Include="Features\Auth\Queries\" />
-    <Folder Include="Features\Bans\Commands\" />
     <Folder Include="Features\Bans\Constants\" />
     <Folder Include="Features\Bans\Models\" />
-    <Folder Include="Features\Bans\Profiles\" />
     <Folder Include="Features\Bans\Rules\" />
     <Folder Include="Features\Blogs\Models\" />
     <Folder Include="Features\Bookmarks\Commands\" />
