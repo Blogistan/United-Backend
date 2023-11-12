@@ -3,7 +3,7 @@
     public class DeleteReportCommandResponse
     {
         public Guid Id { get; set; }
-        public string ReportType { get; set; } = string.Empty;
+        public int ReportType { get; set; } 
         public string ReportDescription { get; set; } = string.Empty;
     }
 }

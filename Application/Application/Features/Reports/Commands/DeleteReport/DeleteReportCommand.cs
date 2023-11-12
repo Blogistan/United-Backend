@@ -26,13 +26,14 @@ namespace Application.Features.Reports.Commands.DeleteReport
             {
                 var report = await reportBusinessRules.ReportCheckById(request.ReportID);
 
-                var deletedReport = await reportRepository.DeleteAsync(report);
+                var deletedReport = await reportRepository.DeleteAsync(report,true);
 
-                return new DeleteReportCommandResponse
+
+                return new DeleteReportCommandResponse()
                 {
-                    Id = report.Id,
+                    Id = deletedReport.Id,
                     ReportDescription = deletedReport.ReportDescription,
-                    ReportType = deletedReport.ReportType.ReportTypeName
+                    ReportType = deletedReport.ReportTypeID
                 };
             }
         }
