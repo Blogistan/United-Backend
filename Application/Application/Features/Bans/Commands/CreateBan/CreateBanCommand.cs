@@ -8,7 +8,7 @@ namespace Application.Features.Bans.Commands.CreateBan
     public class CreateBanCommand : IRequest<CreateBanCommandResponse>
     {
         public int UserID { get; set; }
-        public int ReportID { get; set; }
+        public Guid ReportID { get; set; }
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }
@@ -17,11 +17,13 @@ namespace Application.Features.Bans.Commands.CreateBan
         public class CreateBanCommandHandler : IRequestHandler<CreateBanCommand, CreateBanCommandResponse>
         {
             private readonly IBanRepository banRepository;
+            private readonly ISiteUserRepository siteUserRepository;
             private readonly IMapper mapper;
-            public CreateBanCommandHandler(IBanRepository banRepository, IMapper mapper)
+            public CreateBanCommandHandler(IBanRepository banRepository, IMapper mapper, ISiteUserRepository siteUserRepository)
             {
                 this.banRepository = banRepository;
                 this.mapper = mapper;
+                this.siteUserRepository = siteUserRepository;
             }
 
             public async Task<CreateBanCommandResponse> Handle(CreateBanCommand request, CancellationToken cancellationToken)
@@ -29,6 +31,10 @@ namespace Application.Features.Bans.Commands.CreateBan
                 Ban ban = mapper.Map<Ban>(request);
 
                 Ban AddedBan = await banRepository.AddAsync(ban);
+
+                var user = await siteUserRepository.GetAsync(x => x.Id == AddedBan.UserID);
+                user.IsActive = false;
+                await siteUserRepository.UpdateAsync(user);
 
                 var response = mapper.Map<CreateBanCommandResponse>(AddedBan);
 

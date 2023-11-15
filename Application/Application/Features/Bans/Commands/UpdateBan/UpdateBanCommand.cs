@@ -8,6 +8,7 @@ namespace Application.Features.Bans.Commands.UpdateBan
     public  class UpdateBanCommand:IRequest<UpdateBanCommandResponse>
     {
         public Guid Id { get; set; }
+        public Guid ReportID { get; set; }
         public int UserId { get; set; }
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }
@@ -18,10 +19,12 @@ namespace Application.Features.Bans.Commands.UpdateBan
         {
             private readonly IBanRepository banRepository;
             private readonly IMapper mapper;
-            public UpdateBanCommandHandler(IBanRepository banRepository, IMapper mapper)
+            private readonly ISiteUserRepository siteUserRepository;
+            public UpdateBanCommandHandler(IBanRepository banRepository, IMapper mapper, ISiteUserRepository siteUserRepository)
             {
                 this.banRepository = banRepository;
                 this.mapper = mapper;
+                this.siteUserRepository = siteUserRepository;
             }
 
             public async Task<UpdateBanCommandResponse> Handle(UpdateBanCommand request, CancellationToken cancellationToken)
@@ -29,6 +32,11 @@ namespace Application.Features.Bans.Commands.UpdateBan
                 var ban = mapper.Map<Ban>(request);
 
                 Ban updatedBan = await banRepository.UpdateAsync(ban);
+
+                var user = await siteUserRepository.GetAsync(x => x.Id == updatedBan.UserID);
+                user.IsActive = request.IsPerma;
+
+                await siteUserRepository.UpdateAsync(user);
 
                 UpdateBanCommandResponse response = mapper.Map<UpdateBanCommandResponse>(updatedBan);
 
