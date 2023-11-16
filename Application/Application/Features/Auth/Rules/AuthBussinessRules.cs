@@ -4,6 +4,8 @@ using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Security.Entities;
 using Core.Security.Enums;
 using Core.Security.Hashing;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Rules
 {
@@ -42,7 +44,7 @@ namespace Application.Features.Auth.Rules
 
             return Task.CompletedTask;
         }
-        public  Task RefreshTokenShouldBeActive(RefreshToken refreshToken)
+        public Task RefreshTokenShouldBeActive(RefreshToken refreshToken)
         {
             if (refreshToken.Revoked != null || refreshToken.Revoked == null && refreshToken.Expires < DateTime.UtcNow)
                 throw new BusinessException(AuthBusinessMessage.RefreshTokenNotActive);
@@ -69,7 +71,7 @@ namespace Application.Features.Auth.Rules
                 throw new BusinessException(AuthBusinessMessage.UserOtpAuthenticatorNotFound);
             return Task.CompletedTask;
         }
-        public Task PasswordResetKeyShouldBeExists (ForgotPassword forgotPassword)
+        public Task PasswordResetKeyShouldBeExists(ForgotPassword forgotPassword)
         {
             if (forgotPassword is null)
                 throw new BusinessException("Invlaid Reset Token");
@@ -81,6 +83,14 @@ namespace Application.Features.Auth.Rules
                 throw new BusinessException("Password Reset Token not active");
 
             return Task.CompletedTask;
+        }
+        public async Task IsUserActive(int id)
+        {
+            var user = await siteUserRepository.GetAsync(x => x.Id == id, include: x => x.Include(x => x.Bans));
+
+            var result = user.Bans.Where(x => x.IsPerma == true).Count();
+            if (result > 0)
+                throw new BusinessException(AuthBusinessMessage.UserPermaBanned);
         }
 
     }

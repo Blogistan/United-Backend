@@ -11,7 +11,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.Login
 {
-    public class LoginCommand : IRequest<LoginResponse>,ILoggableRequest
+    public class LoginCommand : IRequest<LoginResponse>, ILoggableRequest
     {
         public UserForLoginDto UserForLoginDto { get; set; }
         public string IpAddress { get; set; } = string.Empty;
@@ -31,11 +31,13 @@ namespace Application.Features.Auth.Commands.Login
 
             public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
-                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Email == request.UserForLoginDto.Email && x.IsActive==true);
+                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Email == request.UserForLoginDto.Email && x.IsActive == true);
 
                 await authBussinessRules.UserShouldBeExist(siteUser);
 
                 await authBussinessRules.UserPasswordShoudBeMatch(siteUser, request.UserForLoginDto.Password);
+
+                await authBussinessRules.IsUserActive(siteUser.Id);
 
                 LoginResponse loginResponse = new();
 

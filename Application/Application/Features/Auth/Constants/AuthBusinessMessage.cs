@@ -16,6 +16,7 @@
         public const string VerifyEmail = "Verify your email";
         public const string CouldntFindChildToken = "Couldn't find child token for this current token.";
         public const string ExternalLoginCredentialsWrong = "Your external login credentials wrong";
+        public const string UserPermaBanned = "Your account is permanently banned.";
 
 
         public static string AuthenticatorCodeTextBody(string authenticatorCode)
