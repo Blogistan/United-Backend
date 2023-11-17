@@ -39,6 +39,8 @@ namespace Application.Features.Auth.Commands.Login
 
                 await authBussinessRules.IsUserActive(siteUser.Id);
 
+                await authBussinessRules.IsUserTimeOut(siteUser.Id);
+
                 LoginResponse loginResponse = new();
 
                 if (siteUser!.AuthenticatorType is not AuthenticatorType.None)
