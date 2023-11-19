@@ -31,15 +31,20 @@ namespace Application.Features.Auth.Commands.Login
 
             public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
-                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Email == request.UserForLoginDto.Email && x.IsActive == true);
+                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Email == request.UserForLoginDto.Email);
+
 
                 await authBussinessRules.UserShouldBeExist(siteUser);
-
-                await authBussinessRules.UserPasswordShoudBeMatch(siteUser, request.UserForLoginDto.Password);
 
                 await authBussinessRules.IsUserActive(siteUser.Id);
 
                 await authBussinessRules.IsUserTimeOut(siteUser.Id);
+               
+                
+
+                await authBussinessRules.UserPasswordShoudBeMatch(siteUser, request.UserForLoginDto.Password);
+
+
 
                 LoginResponse loginResponse = new();
 

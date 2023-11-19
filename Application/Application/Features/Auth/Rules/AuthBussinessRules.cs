@@ -88,15 +88,15 @@ namespace Application.Features.Auth.Rules
         {
             var user = await siteUserRepository.GetAsync(x => x.Id == id && x.IsActive==false, include: x => x.Include(x => x.Bans));
 
-            var result = user.Bans.Any();
-            if (!result)
+            var result = user?.Bans?.Any(x=>x.IsPerma==true)?? false;
+            if (result)
                 throw new BusinessException(AuthBusinessMessage.UserPermaBanned);
         }
         public async Task IsUserTimeOut(int id)
         {
             var user = await siteUserRepository.GetAsync(x => x.Id == id && x.IsActive == false, include: x => x.Include(x => x.Bans));
 
-            var activeBan = user.Bans.FirstOrDefault(x => x.BanStartDate <= DateTime.Now && x.BanEndDate >= DateTime.Now);
+            var activeBan = user?.Bans?.FirstOrDefault(x => x.BanStartDate <= DateTime.Now && x.BanEndDate >= DateTime.Now);
             if (activeBan!=null)
             {
                 var daysUntilEnd = (int)(activeBan.BanEndDate - DateTime.Now).TotalDays;
