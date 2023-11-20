@@ -30,7 +30,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 
 
-
 builder.Services.AddRateLimiter(rateLimitOptions =>
 {
     rateLimitOptions.AddConcurrencyLimiter("Concurrency", options =>
@@ -162,6 +161,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 app.UseRateLimiter();
