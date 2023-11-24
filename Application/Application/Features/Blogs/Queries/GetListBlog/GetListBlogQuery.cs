@@ -27,7 +27,8 @@ namespace Application.Features.Blogs.Queries.GetListBlog
 
             public async Task<GetListBlogQueryResponse> Handle(GetListBlogQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<Blog> paginate = await blogRepository.GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: x => x.Include(x => x.Category).Include(x => x.Writer));
+                IPaginate<Blog> paginate = await blogRepository.GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: x => (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Blog, object>)x.Include(x => x.Category).Include(x => x.Writer).ThenInclude(x=>x.Bans).Where(blog=>blog.Writer!=null && (blog.Writer.Bans==null || !blog.Writer.Bans.Any(ban => ban.IsPerma || (ban.BanEndDate != null && ban.BanEndDate < DateTime.UtcNow)))));
+
 
                 GetListBlogQueryResponse response = mapper.Map<GetListBlogQueryResponse>(paginate);
 
