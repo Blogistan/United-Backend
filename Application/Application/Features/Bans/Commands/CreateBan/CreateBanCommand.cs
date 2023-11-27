@@ -33,7 +33,9 @@ namespace Application.Features.Bans.Commands.CreateBan
                 Ban AddedBan = await banRepository.AddAsync(ban);
 
                 var user = await siteUserRepository.GetAsync(x => x.Id == AddedBan.UserID);
-                user.IsActive = false;
+                if (request.IsPerma)
+                    user.IsActive = false;
+
                 await siteUserRepository.UpdateAsync(user);
 
                 var response = mapper.Map<CreateBanCommandResponse>(AddedBan);

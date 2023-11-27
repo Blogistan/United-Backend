@@ -94,7 +94,7 @@ namespace Application.Features.Auth.Rules
         }
         public async Task IsUserTimeOut(int id)
         {
-            var user = await siteUserRepository.GetAsync(x => x.Id == id && x.IsActive == false, include: x => x.Include(x => x.Bans));
+            var user = await siteUserRepository.GetAsync(x => x.Id == id , include: x => x.Include(x => x.Bans));
 
             var activeBan = user?.Bans?.FirstOrDefault(x => x.BanStartDate <= DateTime.Now && x.BanEndDate >= DateTime.Now);
             if (activeBan!=null)
