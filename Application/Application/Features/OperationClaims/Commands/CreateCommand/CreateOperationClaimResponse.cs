@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Auth.Commands.OperationClaim
+﻿namespace Application.Features.OperationClaims.Commands.CreateCommand
 {
     public class CreateOperationClaimResponse
     {

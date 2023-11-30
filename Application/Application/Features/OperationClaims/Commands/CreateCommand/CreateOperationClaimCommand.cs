@@ -3,13 +3,13 @@ using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using MediatR;
 
-namespace Application.Features.Auth.Commands.OperationClaim
+namespace Application.Features.OperationClaims.Commands.CreateCommand
 {
     public class CreateOperationClaimCommand : IRequest<CreateOperationClaimResponse>, ISecuredRequest
     {
-        public string[] Roles => new string[] {"Admin","Moderator","Writer","User"};
+        public string[] Roles => new string[] { "Admin", "Moderator", "Writer", "User" };
 
-        public class CreateOperationClaimCommandHandler:IRequestHandler<CreateOperationClaimCommand, CreateOperationClaimResponse>
+        public class CreateOperationClaimCommandHandler : IRequestHandler<CreateOperationClaimCommand, CreateOperationClaimResponse>
         {
             private readonly IOperationClaimRepostiory operationClaimRepostiory;
             private readonly IMapper mapper;
