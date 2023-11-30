@@ -3,10 +3,6 @@ using Application.Features.Bans.Commands.DeleteBan;
 using Application.Features.Bans.Commands.UpdateBan;
 using Application.Features.Bans.Queries.GetListBans;
 using Application.Features.Bans.Queries.GetListBansDynamic;
-using Application.Features.Reports.Commands.CreateReport;
-using Application.Features.Reports.Commands.DeleteReport;
-using Application.Features.Reports.Commands.UpdateReport;
-using Application.Features.Reports.Queries.GetListReportDynamic;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +14,7 @@ namespace UnitedAPI.Controllers
     public class BanController:BaseController
     {
         [HttpGet]
-        public async Task<IActionResult> GetListReport([FromQuery] PageRequest pageRequest)
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
             GetListBansQuery getListBansQuery = new() { PageRequest = pageRequest };
             GetListBansQueryResponse response = await Mediator.Send(getListBansQuery);
