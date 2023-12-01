@@ -30,7 +30,6 @@
     <Folder Include="Features\OperationClaims\Constants\" />
     <Folder Include="Features\OperationClaims\Dtos\" />
     <Folder Include="Features\OperationClaims\Models\" />
-    <Folder Include="Features\OperationClaims\Profiles\" />
     <Folder Include="Features\OperationClaims\Queries\" />
     <Folder Include="Features\OperationClaims\Rules\" />
     <Folder Include="Features\Reports\Constants\" />

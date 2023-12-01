@@ -1,12 +1,14 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.Security.Entities;
 using MediatR;
 
 namespace Application.Features.OperationClaims.Commands.CreateCommand
 {
     public class CreateOperationClaimCommand : IRequest<CreateOperationClaimResponse>, ISecuredRequest
     {
+        public string Name { get; set; }
         public string[] Roles => new string[] { "Admin", "Moderator", "Writer", "User" };
 
         public class CreateOperationClaimCommandHandler : IRequestHandler<CreateOperationClaimCommand, CreateOperationClaimResponse>
@@ -21,7 +23,13 @@ namespace Application.Features.OperationClaims.Commands.CreateCommand
             //To Be Contiuned
             public async Task<CreateOperationClaimResponse> Handle(CreateOperationClaimCommand request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                var claim = mapper.Map<OperationClaim>(request);
+
+                var addedClaim = await operationClaimRepostiory.AddAsync(claim);
+
+                var response = mapper.Map<CreateOperationClaimResponse>(addedClaim);
+
+                return response;
             }
         }
     }
