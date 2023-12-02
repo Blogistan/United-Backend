@@ -1,4 +1,5 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.OperationClaims.Rules;
+using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Security.Entities;
@@ -15,14 +16,17 @@ namespace Application.Features.OperationClaims.Commands.CreateOperationClaim
         {
             private readonly IOperationClaimRepostiory operationClaimRepostiory;
             private readonly IMapper mapper;
-            public CreateOperationClaimCommandHandler(IOperationClaimRepostiory operationClaimRepostiory, IMapper mapper)
+            private readonly OperationClaimBusinessRules operationClaimBusinessRules;
+            public CreateOperationClaimCommandHandler(IOperationClaimRepostiory operationClaimRepostiory, IMapper mapper, OperationClaimBusinessRules operationClaimBusinessRules)
             {
                 this.operationClaimRepostiory = operationClaimRepostiory;
                 this.mapper = mapper;
+                this.operationClaimBusinessRules = operationClaimBusinessRules;
             }
-            //To Be Contiuned
             public async Task<CreateOperationClaimResponse> Handle(CreateOperationClaimCommand request, CancellationToken cancellationToken)
             {
+                await operationClaimBusinessRules.OperationClaimCannotBeDuplicatedWhenInserted(request.Name);
+
                 var claim = mapper.Map<OperationClaim>(request);
 
                 var addedClaim = await operationClaimRepostiory.AddAsync(claim);
