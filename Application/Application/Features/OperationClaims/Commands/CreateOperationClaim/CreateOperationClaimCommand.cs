@@ -4,7 +4,7 @@ using Core.Application.Pipelines.Authorization;
 using Core.Security.Entities;
 using MediatR;
 
-namespace Application.Features.OperationClaims.Commands.CreateCommand
+namespace Application.Features.OperationClaims.Commands.CreateOperationClaim
 {
     public class CreateOperationClaimCommand : IRequest<CreateOperationClaimResponse>, ISecuredRequest
     {
