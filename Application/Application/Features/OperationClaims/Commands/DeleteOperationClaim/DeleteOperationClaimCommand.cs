@@ -23,11 +23,9 @@ namespace Application.Features.OperationClaims.Commands.DeleteOperationClaim
 
             public async Task<DeleteOperationClaimResponse> Handle(DeleteOperationClaimCommand request, CancellationToken cancellationToken)
             {
-                await operationClaimBusinessRules.OperationClaimCheckById(request.Id);
+                var operationClaim=await operationClaimBusinessRules.OperationClaimCheckById(request.Id);
 
-                var operationClaim = await operationClaimRepostiory.GetAsync(x => x.Id == request.Id);
-
-                var deletedOperationClaim = await operationClaimRepostiory.DeleteAsync(operationClaim);
+                var deletedOperationClaim = await operationClaimRepostiory.DeleteAsync(operationClaim,true);
 
                 var response = mapper.Map<DeleteOperationClaimResponse>(deletedOperationClaim);
 

@@ -2,7 +2,7 @@
 using Application.Features.OperationClaims.Commands.DeleteOperationClaim;
 using Application.Features.OperationClaims.Commands.UpdateOperationClaim;
 using Application.Features.OperationClaims.Dtos;
-using Application.Features.OperationClaims.Queries.NewFolder.GetListOperationClaim;
+using Application.Features.OperationClaims.Queries.GetListOperationClaim;
 using AutoMapper;
 using Core.Persistence.Paging;
 using Core.Security.Entities;
@@ -17,7 +17,7 @@ namespace Application.Features.OperationClaims.Profiles
             CreateMap<OperationClaim, CreateOperationClaimResponse>().ReverseMap();
 
 
-            CreateMap<OperationClaim, DeleteOperationClaimCommand>().ReverseMap();
+            CreateMap<OperationClaim, DeleteOperationClaimResponse>().ReverseMap();
 
 
             CreateMap<OperationClaim, UpdateOperationClaimCommand>().ReverseMap();

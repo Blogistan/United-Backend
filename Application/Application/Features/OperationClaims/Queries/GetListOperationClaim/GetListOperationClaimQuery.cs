@@ -5,7 +5,7 @@ using Core.Persistence.Paging;
 using Core.Security.Entities;
 using MediatR;
 
-namespace Application.Features.OperationClaims.Queries.NewFolder.GetListOperationClaim
+namespace Application.Features.OperationClaims.Queries.GetListOperationClaim
 {
     public class GetListOperationClaimQuery : IRequest<GetListOperationClaimQueryResponse>
     {

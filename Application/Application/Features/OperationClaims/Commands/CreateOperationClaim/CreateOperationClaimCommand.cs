@@ -7,10 +7,10 @@ using MediatR;
 
 namespace Application.Features.OperationClaims.Commands.CreateOperationClaim
 {
-    public class CreateOperationClaimCommand : IRequest<CreateOperationClaimResponse>, ISecuredRequest
+    public class CreateOperationClaimCommand : IRequest<CreateOperationClaimResponse>
     {
         public string Name { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator", "Writer", "User" };
+        //public string[] Roles => new string[] { "Admin", "Moderator", "Writer", "User" };
 
         public class CreateOperationClaimCommandHandler : IRequestHandler<CreateOperationClaimCommand, CreateOperationClaimResponse>
         {
