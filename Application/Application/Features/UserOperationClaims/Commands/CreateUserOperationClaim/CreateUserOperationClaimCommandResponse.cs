@@ -4,8 +4,8 @@ namespace Application.Features.UserOperationClaims.Commands.CreateUserOperationC
 {
     public class CreateUserOperationClaimCommandResponse
     {
-        public int UserID { get; set; }
-        public string UserName { get; set; }
+        public int UserId { get; set; }
+        public string OperationClaimId { get; set; }
         public List<OperationClaim> Claims { get; set; }
     }
 }
