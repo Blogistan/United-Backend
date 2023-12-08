@@ -1,5 +1,4 @@
-﻿using Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim;
-using Application.Features.UserOperationClaims.Rules;
+﻿using Application.Features.UserOperationClaims.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using MediatR;

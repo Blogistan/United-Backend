@@ -5,6 +5,7 @@ using Application.Features.Comments.Rules;
 using Application.Features.OperationClaims.Rules;
 using Application.Features.Reports.Rules;
 using Application.Features.ReportTypes.Rules;
+using Application.Features.UserOperationClaims.Rules;
 using Application.Features.Videos.Rules;
 using Application.Services.Auth;
 using Core.Application.Pipelines.Authorization;
@@ -29,7 +30,7 @@ namespace Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(x=>x.RegisterServicesFromAssembly(typeof(ApplicationServiceRegistration).Assembly));
+            services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(ApplicationServiceRegistration).Assembly));
 
             services.AddScoped<AuthBussinessRules>();
             services.AddScoped<CategoryBusinessRules>();
@@ -39,8 +40,9 @@ namespace Application
             services.AddScoped<ReportBusinessRules>();
             services.AddScoped<ReportTypeBusinessRules>();
             services.AddScoped<OperationClaimBusinessRules>();
+            services.AddScoped<UserOperationClaimBusinessRules>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IMailService, MailKitMailService>();;
+            services.AddScoped<IMailService, MailKitMailService>(); ;
 
             services.AddSingleton<LoggerServiceBase, MongoDbLogger>();
 
@@ -57,9 +59,9 @@ namespace Application
             return services;
         }
 
-        public static IServiceCollection AddSubClassesOfType(this IServiceCollection services,Assembly assembly,Type type,Func<IServiceCollection,Type,IServiceCollection>? addWithLifeCycle = null)
+        public static IServiceCollection AddSubClassesOfType(this IServiceCollection services, Assembly assembly, Type type, Func<IServiceCollection, Type, IServiceCollection>? addWithLifeCycle = null)
         {
-            var types = assembly.GetTypes().Where(x=>x.IsSubclassOf(type) && type!=x).ToList();
+            var types = assembly.GetTypes().Where(x => x.IsSubclassOf(type) && type != x).ToList();
             foreach (var item in types)
             {
                 if (addWithLifeCycle == null)

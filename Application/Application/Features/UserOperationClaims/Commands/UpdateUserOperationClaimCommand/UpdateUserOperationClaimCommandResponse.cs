@@ -1,8 +1,8 @@
 ﻿using Core.Security.Entities;
 
-namespace Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim
+namespace Application.Features.UserOperationClaims.Commands.UpdateUserOperationClaimCommand
 {
-    public class CreateUserOperationClaimCommandResponse
+    public class UpdateUserOperationClaimCommandResponse
     {
         public int UserId { get; set; }
         public string UserName { get; set; }
