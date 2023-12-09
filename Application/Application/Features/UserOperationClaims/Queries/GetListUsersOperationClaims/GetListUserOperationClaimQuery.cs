@@ -6,7 +6,7 @@ using Core.Security.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.UserOperationClaims.Queries.GetListUserOperationClaims
+namespace Application.Features.UserOperationClaims.Queries.GetListUsersOperationClaims
 {
     public class GetListUserOperationClaimQuery : IRequest<GetListUserOperationClaimQueryResponse>
     {

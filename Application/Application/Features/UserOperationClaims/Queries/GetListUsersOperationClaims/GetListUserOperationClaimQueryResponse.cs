@@ -1,6 +1,6 @@
 ﻿using Application.Features.UserOperationClaims.Dtos;
 
-namespace Application.Features.UserOperationClaims.Queries.GetListUserOperationClaims
+namespace Application.Features.UserOperationClaims.Queries.GetListUsersOperationClaims
 {
     public class GetListUserOperationClaimQueryResponse
     {

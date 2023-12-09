@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.UserOperationClaims.Queries.GetListUserOperationClaims
+namespace Application.Features.UserOperationClaims.Queries.GetListUsersOperationClaims
 {
     public class GetListUserOperationClaimQueryValidator : AbstractValidator<GetListUserOperationClaimQuery>
     {

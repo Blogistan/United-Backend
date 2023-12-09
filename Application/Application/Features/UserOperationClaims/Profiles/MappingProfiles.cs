@@ -2,7 +2,8 @@
 using Application.Features.OperationClaims.Commands.UpdateOperationClaim;
 using Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim;
 using Application.Features.UserOperationClaims.Dtos;
-using Application.Features.UserOperationClaims.Queries.GetListUserOperationClaims;
+using Application.Features.UserOperationClaims.Queries.GetListUsersOperationClaims;
+using Application.Features.UserOperationClaims.Queries.GetListUsesrOperationClaimDynamic;
 using AutoMapper;
 using Core.Persistence.Paging;
 using Core.Security.Entities;
@@ -28,6 +29,7 @@ namespace Application.Features.UserOperationClaims.Profiles
             CreateMap<DeleteOperationClaimCommand, CreateUserOperationClaimCommandResponse>();
 
             CreateMap<IPaginate<UserOperationClaim>, GetListUserOperationClaimQueryResponse>().ReverseMap();
+            CreateMap<IPaginate<UserOperationClaim>, GetListUserOperationClaimDynamicQueryResponse>().ReverseMap();
         }
     }
 }
