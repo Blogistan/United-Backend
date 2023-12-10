@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,10 @@ TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Ge
 // Add services to the container.
 
 builder.Services.AddSecurityServices();
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 
 builder.Services.AddCors(c =>
 {

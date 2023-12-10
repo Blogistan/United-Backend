@@ -9,8 +9,8 @@ namespace Application.Features.UserOperationClaims.Commands.UpdateUserOperationC
 {
     public class UpdateUserOperationClaimCommand : IRequest<UpdateUserOperationClaimCommandResponse>
     {
-        public int UserID { get; set; }
-        public int OpreationClaimID { get; set; }
+        public int UserId { get; set; }
+        public int OperationClaimId { get; set; }
 
         public class UpdateUserOperationClaimCommandHandler : IRequestHandler<UpdateUserOperationClaimCommand, UpdateUserOperationClaimCommandResponse>
         {
@@ -26,7 +26,7 @@ namespace Application.Features.UserOperationClaims.Commands.UpdateUserOperationC
 
             public async Task<UpdateUserOperationClaimCommandResponse> Handle(UpdateUserOperationClaimCommand request, CancellationToken cancellationToken)
             {
-                await userOperationClaimBusinessRules.UserOperationClaimCannotBeDuplicatedWhenUpdated(request.UserID, request.OpreationClaimID);
+                await userOperationClaimBusinessRules.UserOperationClaimCannotBeDuplicatedWhenUpdated(request.UserId, request.OperationClaimId);
                 var userClaim = mapper.Map<UserOperationClaim>(request);
 
                 var createdUserClaim = await userOperationClaimRepository.AddAsync(userClaim);

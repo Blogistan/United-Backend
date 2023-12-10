@@ -9,7 +9,7 @@ namespace UnitedAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class OperationClaimControlller : BaseController
+    public class OperationClaimController : BaseController
     {
 
         [HttpGet]

@@ -1,11 +1,9 @@
-﻿using Core.Security.Entities;
+﻿using Application.Features.UserOperationClaims.Dtos;
 
 namespace Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim
 {
     public class CreateUserOperationClaimCommandResponse
     {
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public List<OperationClaim> Claims { get; set; }
+        public List<UserOperationClaimListViewDto> Items { get; set; }
     }
 }

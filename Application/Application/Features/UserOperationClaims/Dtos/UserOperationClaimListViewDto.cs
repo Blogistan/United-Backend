@@ -1,4 +1,5 @@
-﻿using Core.Security.Entities;
+﻿using Application.Features.OperationClaims.Dtos;
+using Core.Security.Entities;
 
 namespace Application.Features.UserOperationClaims.Dtos
 {
@@ -6,6 +7,6 @@ namespace Application.Features.UserOperationClaims.Dtos
     {
         public int UserID { get; set; }
         public string UserName { get; set; }
-        public List<OperationClaim> Claims { get; set; }
+        public List<OperationClaimListViewDto> Claims { get; set; }
     }
 }

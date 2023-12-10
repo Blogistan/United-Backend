@@ -7,7 +7,7 @@ namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationC
         public DeleteUserOperationClaimCommandValidator()
         {
             RuleFor(x => x.OperationClaimId).NotEmpty();
-            RuleFor(x => x.UserID).NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }

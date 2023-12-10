@@ -7,7 +7,7 @@ namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationC
 {
     public class DeleteUserOperationClaimCommand : IRequest<DeleteUserOperationClaimResponse>
     {
-        public int UserID { get; set; }
+        public int UserId { get; set; }
         public int OperationClaimId { get; set; }
 
         public class DeleteUserOperationClaimCommandHandler : IRequestHandler<DeleteUserOperationClaimCommand, DeleteUserOperationClaimResponse>
@@ -24,7 +24,7 @@ namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationC
 
             public async Task<DeleteUserOperationClaimResponse> Handle(DeleteUserOperationClaimCommand request, CancellationToken cancellationToken)
             {
-                var claim = await businessRules.UserOperationClaimCheckById(request.UserID, request.OperationClaimId);
+                var claim = await businessRules.UserOperationClaimCheckById(request.UserId, request.OperationClaimId);
                 var deletedOperationClaim = await userOperationClaimRepository.DeleteAsync(claim);
                 var response = mapper.Map<DeleteUserOperationClaimResponse>(deletedOperationClaim);
 

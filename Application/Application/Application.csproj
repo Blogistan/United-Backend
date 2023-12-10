@@ -44,7 +44,6 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
     <PackageReference Include="Google.Apis.Auth" Version="1.62.1" />
     <PackageReference Include="MediatR" Version="12.1.1" />
-    <PackageReference Include="Microsoft.Owin.Security.Twitter" Version="4.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="UAParser" Version="3.1.47" />
   </ItemGroup>

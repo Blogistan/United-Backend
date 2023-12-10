@@ -1,4 +1,7 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.OperationClaims.Dtos;
+using Application.Features.UserOperationClaims.Dtos;
+using Application.Features.UserOperationClaims.Queries.GetListUsesrOperationClaimDynamic;
+using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
@@ -27,7 +30,7 @@ namespace Application.Features.UserOperationClaims.Queries.GetListUsersOperation
                 IPaginate<UserOperationClaim> paginate = await userOperationClaimRepository.GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: include => include.Include(x => x.OperationClaim).Include(x => x.User));
 
                 var response = mapper.Map<GetListUserOperationClaimQueryResponse>(paginate);
-
+                
                 return response;
             }
         }

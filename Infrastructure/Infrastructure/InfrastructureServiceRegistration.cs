@@ -12,8 +12,8 @@ namespace Infrastructure
             services.AddScoped<IIpStackService, IpStackService>();
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = configuration.GetValue<string>("Google:client_id");
-                googleOptions.ClientSecret = configuration.GetValue<string>("Google:client_secret");
+                googleOptions.ClientId = configuration.GetValue<string>("Authentication:Google:client_id");
+                googleOptions.ClientSecret = configuration.GetValue<string>("Authentication:Google:client_secret");
             });
 
             services.AddAuthentication().AddFacebook(facebook =>
