@@ -4,6 +4,6 @@ namespace Application.Features.UserOperationClaims.Commands.CreateUserOperationC
 {
     public class CreateUserOperationClaimCommandResponse
     {
-        public List<UserOperationClaimListViewDto> Items { get; set; }
+        public UserOperationClaimListViewDto Items { get; set; }
     }
 }
