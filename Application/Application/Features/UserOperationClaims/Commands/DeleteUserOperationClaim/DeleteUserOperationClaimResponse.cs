@@ -1,4 +1,5 @@
-﻿using Core.Security.Entities;
+﻿using Application.Features.OperationClaims.Dtos;
+using Core.Security.Entities;
 
 namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationClaim
 {
@@ -6,7 +7,7 @@ namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationC
     {
         public int UserId { get; set; }
         public string UserName { get; set; }
-        public List<OperationClaim> Claims { get; set; }
+        public List<OperationClaimListViewDto> Claims { get; set; }
 
     }
 }

@@ -1,7 +1,13 @@
-﻿using Application.Features.UserOperationClaims.Rules;
+﻿using Application.Features.OperationClaims.Dtos;
+using Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim;
+using Application.Features.UserOperationClaims.Dtos;
+using Application.Features.UserOperationClaims.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Persistence.Paging;
+using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationClaim
 {
@@ -15,18 +21,33 @@ namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationC
             private readonly IUserOperationClaimRepository userOperationClaimRepository;
             private readonly IMapper mapper;
             private readonly UserOperationClaimBusinessRules businessRules;
-            public DeleteUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper, UserOperationClaimBusinessRules businessRules)
+            private readonly ISiteUserRepository siteUserRepository;
+            public DeleteUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper, UserOperationClaimBusinessRules businessRules, ISiteUserRepository siteUserRepository)
             {
                 this.userOperationClaimRepository = userOperationClaimRepository;
                 this.mapper = mapper;
                 this.businessRules = businessRules;
+                this.siteUserRepository = siteUserRepository;
             }
 
             public async Task<DeleteUserOperationClaimResponse> Handle(DeleteUserOperationClaimCommand request, CancellationToken cancellationToken)
             {
                 var claim = await businessRules.UserOperationClaimCheckById(request.UserId, request.OperationClaimId);
-                var deletedOperationClaim = await userOperationClaimRepository.DeleteAsync(claim);
-                var response = mapper.Map<DeleteUserOperationClaimResponse>(deletedOperationClaim);
+                var deletedOperationClaim = await userOperationClaimRepository.DeleteAsync(claim,true);
+                //var response = mapper.Map<DeleteUserOperationClaimResponse>(deletedOperationClaim);
+
+                IPaginate<SiteUser> paginate = await siteUserRepository.GetListAsync(predicate: x => x.Id == request.UserId, include: include => 
+                include.Include(x => x.UserOperationClaims).ThenInclude(x => x.OperationClaim));
+                //var response = mapper.Map<CreateUserOperationClaimCommandResponse>(paginate);
+                var claims = paginate.Items[0].UserOperationClaims.Select(x => x.OperationClaim).ToList();
+                DeleteUserOperationClaimResponse response = new DeleteUserOperationClaimResponse
+                {
+
+                    UserId = paginate.Items[0].Id,
+                    UserName = paginate.Items[0].FirstName + ' ' + paginate.Items[0].LastName,
+                    Claims = mapper.Map<List<OperationClaimListViewDto>>(claims)
+
+                };
 
                 return response;
             }
