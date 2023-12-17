@@ -4,6 +4,6 @@ namespace Application.Features.UserOperationClaims.Queries.GetListUsersOperation
 {
     public class GetListUserOperationClaimQueryResponse
     {
-        public UserOperationClaimListViewDto UserOperationClaimListViewDto { get; set; }
+        public List<UserOperationClaimListViewDto> Items { get; set; }
     }
 }

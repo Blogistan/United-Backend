@@ -3,6 +3,7 @@ using Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim
 using Application.Features.UserOperationClaims.Commands.DeleteUserOperationClaim;
 using Application.Features.UserOperationClaims.Commands.UpdateUserOperationClaimCommand;
 using Application.Features.UserOperationClaims.Queries.GetListUsersOperationClaims;
+using Application.Features.UserOperationClaims.Queries.GetListUsesrOperationClaimDynamic;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Microsoft.AspNetCore.Mvc;
@@ -23,8 +24,8 @@ namespace UnitedAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetListDynamic([FromQuery] PageRequest pageRequest, [FromQuery] DynamicQuery dynamicQuery)
         {
-            GetListBansDynamicQuery getListBansDynamicQuery = new() { PageRequest = pageRequest, DynamicQuery = dynamicQuery };
-            GetListBansDynamicQueryResponse response = await Mediator.Send(getListBansDynamicQuery);
+            GetListUserOperationClaimDynamicQuery getListUserOperationClaimDynamicQuery = new() { PageRequest = pageRequest, DynamicQuery = dynamicQuery };
+            GetListUserOperationClaimDynamicQueryResponse response = await Mediator.Send(getListUserOperationClaimDynamicQuery);
             return Ok(response);
         }
         [HttpPost]

@@ -3,7 +3,7 @@ using AutoMapper;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Core.Persistence.Paging;
-using Core.Security.Entities;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,15 +18,17 @@ namespace Application.Features.UserOperationClaims.Queries.GetListUsesrOperation
         {
             private readonly IUserOperationClaimRepository userOperationClaimRepository;
             private readonly IMapper mapper;
-            public GetListUserOperationClaimByIdQueryHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper)
+            private readonly ISiteUserRepository siteUserRepository;
+            public GetListUserOperationClaimByIdQueryHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper, ISiteUserRepository siteUserRepository)
             {
                 this.userOperationClaimRepository = userOperationClaimRepository;
                 this.mapper = mapper;
+                this.siteUserRepository = siteUserRepository;
             }
 
             public async Task<GetListUserOperationClaimDynamicQueryResponse> Handle(GetListUserOperationClaimDynamicQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<UserOperationClaim> paginate = await userOperationClaimRepository.GetListByDynamicAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, dynamic: request.DynamicQuery, include: include => include.Include(x => x.OperationClaim).Include(x => x.User));
+                IPaginate<SiteUser> paginate = await siteUserRepository.GetListByDynamicAsync(dynamic:request.DynamicQuery,index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: include => include.Include(x => x.UserOperationClaims).ThenInclude(x => x.OperationClaim));
 
                 var response = mapper.Map<GetListUserOperationClaimDynamicQueryResponse>(paginate);
 
