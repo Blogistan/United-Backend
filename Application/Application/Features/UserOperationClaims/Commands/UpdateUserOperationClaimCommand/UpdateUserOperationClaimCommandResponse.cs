@@ -1,12 +1,11 @@
 ﻿using Application.Features.OperationClaims.Dtos;
+using Application.Features.UserOperationClaims.Dtos;
 using Core.Security.Entities;
 
 namespace Application.Features.UserOperationClaims.Commands.UpdateUserOperationClaimCommand
 {
     public class UpdateUserOperationClaimCommandResponse
     {
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public List<OperationClaimListViewDto> Claims { get; set; }
+        public List<UserOperationClaimListViewDto> Items { get; set; }
     }
 }

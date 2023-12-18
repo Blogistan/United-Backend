@@ -39,21 +39,9 @@ namespace Application.Features.UserOperationClaims.Commands.CreateUserOperationC
 
                 var createdUserClaim = await userOperationClaimRepository.AddAsync(userClaim);
 
-                //IPaginate<UserOperationClaim> paginate = await userOperationClaimRepository.GetListAsync(predicate: x => x.UserId == request.UserId, include: include => include.Include(x => x.OperationClaim).Include(x => x.User));
+                IPaginate<SiteUser> paginate = await siteUserRepository.GetListAsync(predicate: x => x.Id == request.UserId, include: include => include.Include(x => x.UserOperationClaims).ThenInclude(x => x.OperationClaim));
+                var response = mapper.Map<CreateUserOperationClaimCommandResponse>(paginate);
 
-
-                IPaginate<SiteUser> paginate = await siteUserRepository.GetListAsync(predicate:x=>x.Id==request.UserId,include: include => include.Include(x => x.UserOperationClaims).ThenInclude(x=>x.OperationClaim));
-                //var response = mapper.Map<CreateUserOperationClaimCommandResponse>(paginate);
-                var claims = paginate.Items[0].UserOperationClaims.Select(x => x.OperationClaim).ToList();
-                CreateUserOperationClaimCommandResponse response = new CreateUserOperationClaimCommandResponse
-                {
-                    Items = new UserOperationClaimListViewDto
-                    {
-                        UserID = paginate.Items[0].Id,
-                        UserName = paginate.Items[0].FirstName + ' ' + paginate.Items[0].LastName,
-                        Claims = mapper.Map<List<OperationClaimListViewDto>>(claims)
-                   }
-                };
 
                 return response;
 

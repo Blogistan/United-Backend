@@ -24,13 +24,13 @@ namespace Application.Features.UserOperationClaims.Profiles
 
 
             CreateMap<UserOperationClaim, CreateUserOperationClaimCommand>().ReverseMap();
-            CreateMap<IPaginate<UserOperationClaim>, CreateUserOperationClaimCommandResponse>().ReverseMap();
+            CreateMap<IPaginate<SiteUser>, CreateUserOperationClaimCommandResponse>().ReverseMap();
 
             CreateMap<UserOperationClaim, UpdateUserOperationClaimCommand>().ReverseMap();
-            CreateMap<UserOperationClaim, UpdateOperationClaimCommandResponse>().ReverseMap();
+            CreateMap<IPaginate<SiteUser>, UpdateUserOperationClaimCommandResponse>().ReverseMap();
 
             CreateMap<DeleteOperationClaimCommand, DeleteUserOperationClaimCommand>().ReverseMap();
-            CreateMap<DeleteOperationClaimCommand, DeleteUserOperationClaimResponse>().ReverseMap();
+            CreateMap<IPaginate<SiteUser>, DeleteUserOperationClaimResponse>().ReverseMap();
 
 
             CreateMap<IPaginate<SiteUser>, GetListUserOperationClaimQueryResponse>().ReverseMap();
