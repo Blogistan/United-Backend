@@ -1,6 +1,4 @@
-﻿using Application.Features.OperationClaims.Dtos;
-using Application.Features.UserOperationClaims.Dtos;
-using Core.Security.Entities;
+﻿using Application.Features.UserOperationClaims.Dtos;
 
 namespace Application.Features.UserOperationClaims.Commands.UpdateUserOperationClaimCommand
 {

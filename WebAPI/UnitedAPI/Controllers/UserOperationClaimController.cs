@@ -1,5 +1,4 @@
-﻿using Application.Features.Bans.Queries.GetListBansDynamic;
-using Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim;
+﻿using Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim;
 using Application.Features.UserOperationClaims.Commands.DeleteUserOperationClaim;
 using Application.Features.UserOperationClaims.Commands.UpdateUserOperationClaimCommand;
 using Application.Features.UserOperationClaims.Queries.GetListUsersOperationClaims;
