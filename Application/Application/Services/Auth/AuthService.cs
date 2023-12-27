@@ -17,6 +17,7 @@ using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -304,7 +305,6 @@ namespace Application.Services.Auth
                 httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + consumerKey);
 
                 HttpResponseMessage response = await httpClient.PostAsync(ExternalAPIUrls.TwitterAccessToken, postData);
-
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
@@ -358,6 +358,14 @@ namespace Application.Services.Auth
                 var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
 
                 httpClient.DefaultRequestHeaders.Add("Authorization", header);
+
+                var cookieContainer = new CookieContainer();
+                cookieContainer.Add(new Uri("twitter.com"), new Cookie("_twitter_sess", "BAh7CSIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%250ASGFzaHsABjoKQHVzZWR7ADoPY3JlYXRlZF9hdGwrCPTok6yMAToMY3NyZl9p%250AZCIlYjkxMThhODA5Yzg3ZGI1ZGRiNjQwNWY4OTk4ODg2NzY6B2lkIiU3Mzhm%250AMjY1ZmRlZDQ3OTM1YmQ5YzYzMWQzZmRiYTEyMQ%253D%253D--21bcaa8b14d521b4b046b87b0e772f42aa1c3260"));
+                cookieContainer.Add(new Uri("twitter.com"), new Cookie("guest_id", "v1%3A170334333625980689"));
+                cookieContainer.Add(new Uri("twitter.com"), new Cookie("guest_id_ads", "v1%3A170334333625980689; "));
+                cookieContainer.Add(new Uri("twitter.com"), new Cookie("guest_id_marketing", "v1%3A170334333625980689"));
+                cookieContainer.Add(new Uri("twitter.com"), new Cookie("personalization_id", "v1_ilHQcSadXSnu8r3jsOqZmQ=="));
+
 
                 var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
