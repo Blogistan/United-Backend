@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Constants;
+﻿using Amazon.Runtime.Internal;
+using Application.Features.Auth.Constants;
 using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
@@ -20,7 +21,7 @@ using MimeKit;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace Application.Services.Auth
@@ -329,7 +330,7 @@ namespace Application.Services.Auth
             string consumerKey = configuration["Authentication:Twitter:ConsumerAPIKey"];
             string consumerSecret = configuration["Authentication:Twitter:ConsumerSecret"];
             string accessToken = oAuthResponse.Oauth_token;
-            string tokenSecret =oAuthResponse.Oauth_token_secret;
+            string tokenSecret = oAuthResponse.Oauth_token_secret;
 
             string nonce = new Random().Next(100000).ToString("X");
             string timestamp = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
@@ -343,7 +344,7 @@ namespace Application.Services.Auth
                 { "oauth_token", accessToken },
                 { "oauth_signature_method", "HMAC-SHA1" },
                 { "oauth_timestamp", timestamp },
-                { "oauth_nonce", nonce },                      
+                { "oauth_nonce", nonce },
                 { "oauth_version", "1.1" },
             };
             string signatureBase = "POST&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams));
@@ -353,19 +354,22 @@ namespace Application.Services.Auth
 
             requestParams.Add("oauth_signature", signature);
 
-            using (HttpClient httpClient = new HttpClient())
+            var cookieContainer = new CookieContainer();
+            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("_twitter_sess", "BAh7CSIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%250ASGFzaHsABjoKQHVzZWR7ADoPY3JlYXRlZF9hdGwrCPTok6yMAToMY3NyZl9p%250AZCIlYjkxMThhODA5Yzg3ZGI1ZGRiNjQwNWY4OTk4ODg2NzY6B2lkIiU3Mzhm%250AMjY1ZmRlZDQ3OTM1YmQ5YzYzMWQzZmRiYTEyMQ%253D%253D--21bcaa8b14d521b4b046b87b0e772f42aa1c3260"));
+            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("guest_id", UrlEncoder.Create().Encode("v1%3A170334333625980689")));
+            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("guest_id_ads", UrlEncoder.Create().Encode("v1%3A170334333625980689")));
+            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("guest_id_marketing", UrlEncoder.Create().Encode("v1%3A170334333625980689")));
+            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("personalization_id", UrlEncoder.Create().Encode("v1_ilHQcSadXSnu8r3jsOqZmQ==")));
+
+            var handler =new HttpClientHandler();
+            handler.CookieContainer = cookieContainer;
+
+            using (HttpClient httpClient = new HttpClient(handler))
             {
                 var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
 
                 httpClient.DefaultRequestHeaders.Add("Authorization", header);
-
-                var cookieContainer = new CookieContainer();
-                cookieContainer.Add(new Uri("twitter.com"), new Cookie("_twitter_sess", "BAh7CSIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%250ASGFzaHsABjoKQHVzZWR7ADoPY3JlYXRlZF9hdGwrCPTok6yMAToMY3NyZl9p%250AZCIlYjkxMThhODA5Yzg3ZGI1ZGRiNjQwNWY4OTk4ODg2NzY6B2lkIiU3Mzhm%250AMjY1ZmRlZDQ3OTM1YmQ5YzYzMWQzZmRiYTEyMQ%253D%253D--21bcaa8b14d521b4b046b87b0e772f42aa1c3260"));
-                cookieContainer.Add(new Uri("twitter.com"), new Cookie("guest_id", "v1%3A170334333625980689"));
-                cookieContainer.Add(new Uri("twitter.com"), new Cookie("guest_id_ads", "v1%3A170334333625980689; "));
-                cookieContainer.Add(new Uri("twitter.com"), new Cookie("guest_id_marketing", "v1%3A170334333625980689"));
-                cookieContainer.Add(new Uri("twitter.com"), new Cookie("personalization_id", "v1_ilHQcSadXSnu8r3jsOqZmQ=="));
-
+              
 
                 var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
