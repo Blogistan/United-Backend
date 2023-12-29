@@ -311,6 +311,20 @@ namespace Application.Services.Auth
                     string responseContent = await response.Content.ReadAsStringAsync();
                     var parseResponse = System.Web.HttpUtility.ParseQueryString(responseContent);
 
+                    var cookies = response.Headers.GetValues("Set-Cookie");
+
+                    // Her bir cookie değerini yazdır
+                    //Getting cookies from here and pushing to GetUserInfoMethod
+                    foreach (var cookie in cookies)
+                    {
+                        
+                        if (cookie.Contains("your_specific_value"))
+                        {
+                            
+                            Console.WriteLine("Özel değer bulundu!");
+                        }
+                    }
+
                     oAuthResponse.Oauth_token_secret = parseResponse["oauth_token_secret"];
                     oAuthResponse.Oauth_token = parseResponse["oauth_token"];
 
