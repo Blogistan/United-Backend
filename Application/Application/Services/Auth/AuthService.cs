@@ -17,7 +17,9 @@ using Infrastructure.Dtos.Google;
 using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using MimeKit;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -306,6 +308,9 @@ namespace Application.Services.Auth
                 httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + consumerKey);
 
                 HttpResponseMessage response = await httpClient.PostAsync(ExternalAPIUrls.TwitterAccessToken, postData);
+
+                List<string> cookieNames = new List<string> { "guest_id", "_twitter_sess", "guest_id_ads", "guest_id_marketing", "personalization_id" };
+
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
@@ -313,15 +318,20 @@ namespace Application.Services.Auth
 
                     var cookies = response.Headers.GetValues("Set-Cookie");
 
-                    // Her bir cookie değerini yazdır
-                    //Getting cookies from here and pushing to GetUserInfoMethod
+
                     foreach (var cookie in cookies)
                     {
-                        
-                        if (cookie.Contains("your_specific_value"))
+                        string[] cookieParts = cookie.Split(";");
+                        foreach (var item in cookieParts)
                         {
-                            
-                            Console.WriteLine("Özel değer bulundu!");
+                            foreach (var searched in cookieNames)
+                            {
+                                string[] keyValue = item.Split("=");
+                                if (keyValue.Length == 2)
+                                {
+                                    oAuthResponse.Cookies.Add(searched, keyValue[1].Trim());
+                                }
+                            }
                         }
                     }
 
@@ -369,13 +379,12 @@ namespace Application.Services.Auth
             requestParams.Add("oauth_signature", signature);
 
             var cookieContainer = new CookieContainer();
-            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("_twitter_sess", "BAh7CSIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNo%250ASGFzaHsABjoKQHVzZWR7ADoPY3JlYXRlZF9hdGwrCPTok6yMAToMY3NyZl9p%250AZCIlYjkxMThhODA5Yzg3ZGI1ZGRiNjQwNWY4OTk4ODg2NzY6B2lkIiU3Mzhm%250AMjY1ZmRlZDQ3OTM1YmQ5YzYzMWQzZmRiYTEyMQ%253D%253D--21bcaa8b14d521b4b046b87b0e772f42aa1c3260"));
-            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("guest_id", UrlEncoder.Create().Encode("v1%3A170334333625980689")));
-            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("guest_id_ads", UrlEncoder.Create().Encode("v1%3A170334333625980689")));
-            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("guest_id_marketing", UrlEncoder.Create().Encode("v1%3A170334333625980689")));
-            cookieContainer.Add(new Uri("http://twitter.com"), new Cookie("personalization_id", UrlEncoder.Create().Encode("v1_ilHQcSadXSnu8r3jsOqZmQ==")));
+            foreach (var item in oAuthResponse.Cookies)
+            {
+                cookieContainer.Add(new Uri("http://twitter.com"), new Cookie(item.Key, item.Value));
+            }
 
-            var handler =new HttpClientHandler();
+            var handler = new HttpClientHandler();
             handler.CookieContainer = cookieContainer;
 
             using (HttpClient httpClient = new HttpClient(handler))
@@ -383,7 +392,7 @@ namespace Application.Services.Auth
                 var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
 
                 httpClient.DefaultRequestHeaders.Add("Authorization", header);
-              
+
 
                 var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
