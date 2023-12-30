@@ -303,6 +303,7 @@ namespace Application.Services.Auth
              });
 
             OAuthResponse oAuthResponse = new();
+            oAuthResponse.Cookies = new Dictionary<string, string>();
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + consumerKey);
@@ -322,14 +323,18 @@ namespace Application.Services.Auth
                     foreach (var cookie in cookies)
                     {
                         string[] cookieParts = cookie.Split(";");
-                        foreach (var item in cookieParts)
+                        foreach (var searched in cookieNames)
                         {
-                            foreach (var searched in cookieNames)
+                            foreach (var item in cookieParts)
                             {
                                 string[] keyValue = item.Split("=");
-                                if (keyValue.Length == 2)
+                                if (keyValue[0] == searched)
                                 {
-                                    oAuthResponse.Cookies.Add(searched, keyValue[1].Trim());
+                                    
+                                    if (keyValue.Length == 2)
+                                    {
+                                        oAuthResponse.Cookies.Add(searched, keyValue[1].Trim());
+                                    }
                                 }
                             }
                         }
