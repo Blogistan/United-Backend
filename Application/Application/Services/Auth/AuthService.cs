@@ -330,7 +330,7 @@ namespace Application.Services.Auth
                                 string[] keyValue = item.Split("=");
                                 if (keyValue[0] == searched)
                                 {
-                                    
+
                                     if (keyValue.Length == 2)
                                     {
                                         oAuthResponse.Cookies.Add(searched, keyValue[1].Trim());
@@ -364,22 +364,20 @@ namespace Application.Services.Auth
             string nonce = new Random().Next(100000).ToString("X");
             string timestamp = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
 
-
-
-
-            var requestParams = new Dictionary<string, string>
+            var requestParams = new SortedDictionary<string, string>
             {
                 { "oauth_consumer_key", consumerKey },
-                { "oauth_token", accessToken },
+                { "oauth_nonce", nonce },
                 { "oauth_signature_method", "HMAC-SHA1" },
                 { "oauth_timestamp", timestamp },
-                { "oauth_nonce", nonce },
-                { "oauth_version", "1.1" },
+                { "oauth_token", accessToken },                            
+                { "oauth_version", "1.0" },
             };
-            string signatureBase = "POST&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams));
 
-            string siginKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
-            string signature = ComputeHMACSHA1Signature(signatureBase, siginKey);
+
+            string signatureBase = "POST&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams));
+            string signingKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
+            string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
 
             requestParams.Add("oauth_signature", signature);
 
