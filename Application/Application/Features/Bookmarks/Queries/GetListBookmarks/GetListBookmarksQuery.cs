@@ -28,32 +28,13 @@ namespace Application.Features.Bookmarks.Queries.GetListBookmarks
 
             public async Task<GetListBookmarkQueryResponse> Handle(GetListBookmarksQuery request, CancellationToken cancellationToken)
             {
-                var user = await siteUserRepository.GetAsync(x => x.Id == request.UserId, x => x.Include(x => x.Bookmarks).ThenInclude(x=>x.Blog).ThenInclude(x => x.Category).Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x=>x.Category)
+                var user = await siteUserRepository.GetAsync(x => x.Id == request.UserId, x => x.Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Category).Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Category)
                 .Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Writer)
              );
                 await authBussinessRules.UserShouldBeExist(user);
 
-                GetListBookmarkQueryResponse response = new();
-                List<BlogListViewDto> blogListViewDtos = new();
-                user.Bookmarks.ToList().ForEach(x => blogListViewDtos.Add(
-
-                     new BlogListViewDto
-                     {
-                         Id = x.Blog.Id,
-                         CategoryName = x.Blog.Category.CategoryName,
-                         BannerImageUrl = x.Blog.BannerImageUrl,
-                         ReactionKEKWCount = x.Blog.ReactionKEKWCount,
-                         ReactionLovelyCount = x.Blog.ReactionLovelyCount,
-                         ReactionSadCount = x.Blog.ReactionSadCount,
-                         ReactionSuprisedCount = x.Blog.ReactionSuprisedCount,
-                         ReactionTriggeredCount = x.Blog.ReactionTriggeredCount,
-                         Title = x.Blog.Title,
-                         ShareCount = x.Blog.ShareCount,
-                         WriterName = x.Blog.Writer.FirstName + " " + x.Blog.Writer.LastName,
-                     }
-                    ));
-
-                response.Items = blogListViewDtos;
+              
+                var response = mapper.Map<GetListBookmarkQueryResponse>(user);
 
                 return response;
             }

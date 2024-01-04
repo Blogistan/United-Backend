@@ -5,6 +5,7 @@ using Application.Features.Blogs.Dtos;
 using Application.Features.Blogs.Queries.GetListBlog;
 using Application.Features.Blogs.Queries.GetListBlogDynamic;
 using Application.Features.Blogs.Queries.Reports.MostReaded;
+using Application.Features.Bookmarks.Queries.GetListBookmarks;
 using AutoMapper;
 using Core.Persistence.Paging;
 using Domain.Entities;
@@ -46,6 +47,11 @@ namespace Application.Features.Blogs.Profiles
             CreateMap<IPaginate<Blog>, MostReadedBlogQueryResponse>().ReverseMap();
             CreateMap<IPaginate<Blog>, MostReadedBlogQueryResponse>().ReverseMap();
             CreateMap<IPaginate<Blog>, GetListBlogDynamicQueryResponse>().ReverseMap();
+
+
+            
+
+
 
         }
     }
