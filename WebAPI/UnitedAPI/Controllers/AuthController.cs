@@ -8,6 +8,7 @@ using Application.Features.Auth.Commands.PasswordReset;
 using Application.Features.Auth.Commands.Refresh;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.Revoke;
+using Application.Features.Auth.Commands.TwitterSignIn;
 using Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand;
 using Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand;
 using Application.Services.Auth;
@@ -177,14 +178,17 @@ namespace UnitedAPI.Controllers
         [HttpGet("TwitterSignIn")]
         public async Task<IActionResult> TwitterSignIn(string oauth_token, string oauth_verifier)
         {
+
             var result = await authService.TwitterSignIn(new Infrastructure.Dtos.Twitter.OAuthCredentials()
             {
                 Oauth_token = oauth_token,
-                Oauth_verifier = oauth_verifier 
+                Oauth_verifier = oauth_verifier
             });
 
-            var userInfo = await authService.GetTwitterUserInfo(result);
-            return Ok(userInfo);
+            LoginResponse loginResponse = await Mediator.Send(new TwitterSignInCommand { AccessToken = result.Oauth_token, TokenSecret = result.Oauth_token_secret, IpAddress = GetIpAddress(), Cookies = result.Cookies });
+
+            //var userInfo = await authService.GetTwitterUserInfo(result);
+            return Ok(loginResponse);
         }
 
 

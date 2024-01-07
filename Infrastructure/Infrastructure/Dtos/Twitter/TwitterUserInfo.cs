@@ -12,16 +12,16 @@
         public string url { get; set; } = string.Empty;
         public Entities entities { get; set; }
         public bool _protected { get; set; }
-        public int followers_count { get; set; }
-        public int friends_count { get; set; }
-        public int listed_count { get; set; }
+        public long followers_count { get; set; }
+        public long friends_count { get; set; }
+        public long listed_count { get; set; }
         public string created_at { get; set; }
-        public int favourites_count { get; set; }
+        public long favourites_count { get; set; }
         public object utc_offset { get; set; }
         public object time_zone { get; set; }
         public bool geo_enabled { get; set; }
         public bool verified { get; set; }
-        public int statuses_count { get; set; }
+        public long statuses_count { get; set; }
         public object lang { get; set; }
         public Status status { get; set; }
         public bool contributors_enabled { get; set; }
@@ -87,7 +87,7 @@
         public string source { get; set; } = string.Empty;
         public long in_reply_to_status_id { get; set; }
         public string in_reply_to_status_id_str { get; set; } = string.Empty;
-        public int in_reply_to_user_id { get; set; }
+        public long in_reply_to_user_id { get; set; }
         public string in_reply_to_user_id_str { get; set; } = string.Empty;
         public string in_reply_to_screen_name { get; set; } = string.Empty;
         public object geo { get; set; }
@@ -95,8 +95,8 @@
         public object place { get; set; }
         public object contributors { get; set; }
         public bool is_quote_status { get; set; }
-        public int retweet_count { get; set; }
-        public int favorite_count { get; set; }
+        public long retweet_count { get; set; }
+        public long favorite_count { get; set; }
         public bool favorited { get; set; }
         public bool retweeted { get; set; }
         public string lang { get; set; } = string.Empty;
@@ -120,7 +120,7 @@
     {
         public string screen_name { get; set; } = string.Empty;
         public string name { get; set; } = string.Empty;
-        public int id { get; set; }
+        public long id { get; set; }
         public string id_str { get; set; } = string.Empty;
         public int[] indices { get; set; }
     }

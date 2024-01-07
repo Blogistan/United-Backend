@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -361,7 +362,7 @@ namespace Application.Services.Auth
             string accessToken = oAuthResponse.Oauth_token;
             string tokenSecret = oAuthResponse.Oauth_token_secret;
 
-            string nonce = new Random().Next(100000).ToString("X");
+            string nonce = GenerateNonce();
             string timestamp = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
 
             var requestParams = new SortedDictionary<string, string>
@@ -370,12 +371,12 @@ namespace Application.Services.Auth
                 { "oauth_nonce", nonce },
                 { "oauth_signature_method", "HMAC-SHA1" },
                 { "oauth_timestamp", timestamp },
-                { "oauth_token", accessToken },                            
+                { "oauth_token", accessToken },
                 { "oauth_version", "1.0" },
             };
 
 
-            string signatureBase = "POST&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams));
+            string signatureBase = "GET&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")));
             string signingKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
             string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
 
@@ -395,7 +396,7 @@ namespace Application.Services.Auth
                 var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
 
                 httpClient.DefaultRequestHeaders.Add("Authorization", header);
-
+                
 
                 var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
@@ -426,6 +427,35 @@ namespace Application.Services.Auth
                 var hashBytes = hmacsha1.ComputeHash(Encoding.ASCII.GetBytes(data));
                 return Convert.ToBase64String(hashBytes);
             }
+        }
+        static string GenerateNonce(int length = 32)
+        {
+            byte[] randomBytes = new byte[length];
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomBytes);
+            }
+
+            string base64Nonce = Convert.ToBase64String(randomBytes);
+            string cleanNonce = RemoveInvalidChars(base64Nonce);
+
+            string timestamp = GetTimestamp();
+            string nonceWithTimestamp = timestamp + cleanNonce;
+
+            return nonceWithTimestamp.Length <= length ? nonceWithTimestamp : nonceWithTimestamp.Substring(0, length);
+        }
+
+        static string GetTimestamp()
+        {
+            return Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds).ToString();
+        }
+
+        static string RemoveInvalidChars(string input)
+        {
+            // Remove characters that are not valid in a nonce
+            return new string(input
+                .Where(c => char.IsLetterOrDigit(c) || c == '+' || c == '/' || c == '=')
+                .ToArray());
         }
 
 
