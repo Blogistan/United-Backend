@@ -12,7 +12,7 @@ namespace Application.Features.Categories.Commands.DeleteRangeCategory
     {
         public List<DeleteRangeCategoryDto> DeleteRangeCategoryDtos { get; set; }
         public bool Permanent { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class DeleteRangeCategoryCommandHandler : IRequestHandler<DeleteRangeCategoryCommand, DeleteRangeCategoryResponse>
         {

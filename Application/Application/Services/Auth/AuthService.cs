@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal;
-using Application.Features.Auth.Constants;
+﻿using Application.Features.Auth.Constants;
 using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
@@ -17,14 +16,10 @@ using Infrastructure.Dtos.Google;
 using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using MimeKit;
-using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace Application.Services.Auth

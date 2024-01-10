@@ -10,7 +10,7 @@ namespace Application.Features.Categories.Commands.CreateCategory
     {
         public string CategoryName { get; set; }
         public int? ParentCategoryIds { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator"};
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator"};
         public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
         {
             private readonly ICategoryRepository categoryRepository;

@@ -20,7 +20,7 @@ namespace Application.Features.Comments.Commands.UpdateComment
         public int? ParentCommentId { get; set; }
         public int? BlogId { get; set; }
         public int? CommentId { get; set; }
-        public string[] Roles => new string[] { "User" };
+        string[] ISecuredRequest.Roles => new string[] { "User" };
 
         public class UpdateCommentCommandHandler : IRequestHandler<UpdateCommentCommand, UpdateCommentResponse>
         {

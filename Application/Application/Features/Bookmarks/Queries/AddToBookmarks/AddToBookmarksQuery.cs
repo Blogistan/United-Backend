@@ -12,7 +12,7 @@ namespace Application.Features.Bookmarks.Queries.AddToBookmarks
     {
         public int BlogId { get; set; }
         public int UserId { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User"};
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger", "User"};
 
         public class AddToBookmarksQueryHandler : IRequestHandler<AddToBookmarksQuery, bool>
         {

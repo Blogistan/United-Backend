@@ -11,7 +11,7 @@ namespace Application.Features.Categories.Commands.DeleteCategory
     {
         public int Id { get; set; }
         public bool Permanent { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, DeleteCategoryResponse>
         {

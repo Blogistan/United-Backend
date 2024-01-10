@@ -7,7 +7,7 @@ namespace Application.Features.Comments.Queries.IncreaseDislikeOfCommentQuery
     public class IncreaseDislikeOfCommentQuery:IRequest<IncreaseDislikeOfCommentQueryResponse>,ISecuredRequest
     {
         public int CommentId { get; set; }
-        public string[] Roles => new string[] { "User" };
+        string[] ISecuredRequest.Roles => new string[] { "User" };
 
         public class IncreaseDislikeOfCommentQueryHandler:IRequestHandler<IncreaseDislikeOfCommentQuery, IncreaseDislikeOfCommentQueryResponse>
         {

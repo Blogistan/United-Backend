@@ -23,7 +23,7 @@ namespace Application.Features.Blogs.Commands.UpdateBlog
         public int ShareCount { get; set; }
         public int ReadCount { get; set; }
 
-        public string[] Roles => new string[] {"Admin","Moderator","Blogger" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
 
         public class UpdateBlogCommandHandler:IRequestHandler<UpdateBlogCommand, UpdateBlogCommandResponse>
         {

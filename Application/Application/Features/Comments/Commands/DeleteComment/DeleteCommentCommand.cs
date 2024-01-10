@@ -11,7 +11,7 @@ namespace Application.Features.Comments.Commands.DeleteComment
     {
         public int Id { get; set; }
         public bool Permanent { get; set; }
-        public string[] Roles => new string[] { "User" };
+        string[] ISecuredRequest.Roles => new string[] { "User" };
 
         public class DeleteCommentCommandHandler:IRequestHandler<DeleteCommentCommand, DeleteCommentCommandResponse>
         {

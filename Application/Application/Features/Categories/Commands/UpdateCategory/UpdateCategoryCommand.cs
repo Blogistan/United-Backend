@@ -11,7 +11,7 @@ namespace Application.Features.Categories.Commands.UpdateCategory
         public int Id { get; set; }
         public string CategoryName { get; set; }
         public int ParentCategroyId { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, UpdateCategoryResponse>
         {

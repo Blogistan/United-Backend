@@ -11,7 +11,7 @@ namespace Application.Features.Blogs.Commands.DeleteBlog
     {
         public int Id { get; set; }
 
-        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
 
         public class DeleteBlogCommandHandler : IRequestHandler<DeleteBlogCommand, DeleteBlogCommandResponse>
         {

@@ -24,9 +24,11 @@ namespace Application.Features.Blogs.Commands.CreateBlog
         public int ShareCount => 0;
         public int ReadCount => 0;
 
-        public string[] Roles =>new string[] {"Admin","Moderator","Blogger"};
+         string[] ISecuredRequest.Roles => new string[] {"Admin","Moderator","Blogger"};
 
-    public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, CreateBlogCommandResponse>
+
+
+        public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, CreateBlogCommandResponse>
     {
         private readonly IBlogRepository blogRepository;
         private readonly IMapper mapper;

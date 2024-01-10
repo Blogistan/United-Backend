@@ -12,7 +12,7 @@ namespace Application.Features.Comments.Queries.GetBlogCommentsQuery
     public class GetBlogCommentsQuery : IRequest<GetBlogCommentsQueryResponse>,ISecuredRequest
     {
         public int BlogId { get; set; }
-        public string[] Roles => new string[] { "User" };
+        string[] ISecuredRequest.Roles => new string[] { "User" };
 
         public class GetBlogCommentsQueryHandler : IRequestHandler<GetBlogCommentsQuery, GetBlogCommentsQueryResponse>
         {

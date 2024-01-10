@@ -7,7 +7,7 @@ namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
     public class DecreaseLikeOfCommentQuery:IRequest<DecreaseLikeOfCommentQueryResponse>,ISecuredRequest
     {
         public int CommentId { get; set; }
-        public string[] Roles => new string[] { "User" };
+        string[] ISecuredRequest.Roles => new string[] { "User" };
 
         public class DecreaseLikeOfCommentQueryHandler:IRequestHandler<DecreaseLikeOfCommentQuery, DecreaseLikeOfCommentQueryResponse>
         {

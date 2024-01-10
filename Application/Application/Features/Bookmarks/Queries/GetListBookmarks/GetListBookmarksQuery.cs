@@ -12,7 +12,7 @@ namespace Application.Features.Bookmarks.Queries.GetListBookmarks
     {
         public int UserId { get; set; }
 
-        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User", "Guest" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
 
         public class GetListBookmarksQueryHandler : IRequestHandler<GetListBookmarksQuery, GetListBookmarkQueryResponse>
         {

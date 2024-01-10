@@ -11,7 +11,7 @@ namespace Application.Features.Categories.Commands.CreateRangeCategory
     public class CreateRangeCategoryCommand : IRequest<CreateRangeCategoryResponse>,ISecuredRequest
     {
         public List<CreateCategoryDto> CreateCategoryDtos { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator"};
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class CreateRangeCategoryCommandHandler : IRequestHandler<CreateRangeCategoryCommand, CreateRangeCategoryResponse>
         {

@@ -12,7 +12,7 @@ namespace Application.Features.Bookmarks.Queries.RemoveFromBookmarks
     {
         public int BlogId { get; set; }
         public int UserId { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User", "Guest" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
 
         public class RemoveFromBookmarkQueryHandler : IRequestHandler<RemoveFromBookmarkQuery, bool>
         {
