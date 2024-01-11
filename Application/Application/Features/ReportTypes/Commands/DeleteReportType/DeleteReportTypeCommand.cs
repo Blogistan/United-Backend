@@ -1,13 +1,15 @@
 ﻿using Application.Features.ReportTypes.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using MediatR;
 
 namespace Application.Features.ReportTypes.Commands.DeleteReportType
 {
-    public class DeleteReportTypeCommand : IRequest<DeleteReportTypeCommandResponse>
+    public class DeleteReportTypeCommand : IRequest<DeleteReportTypeCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class DeleteReportTypeCommandHandler : IRequestHandler<DeleteReportTypeCommand, DeleteReportTypeCommandResponse>
         {

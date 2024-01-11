@@ -13,7 +13,7 @@ namespace Application.Features.Contents.Commands.UpdateContent
         public string? ContentImageUrl { get; set; }
 
         public string ContentPragraph { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
 
         public class UpdateContentCommandHandler : IRequestHandler<UpdateContentCommand, UpdateContentCommandResponse>
         {

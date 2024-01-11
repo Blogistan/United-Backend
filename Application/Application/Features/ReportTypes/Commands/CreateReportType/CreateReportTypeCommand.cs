@@ -1,15 +1,17 @@
 ﻿using Application.Features.ReportTypes.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.ReportTypes.Commands.CreateReportType
 {
-    public class CreateReportTypeCommand : IRequest<CreateReportTypeCommandResponse>
+    public class CreateReportTypeCommand : IRequest<CreateReportTypeCommandResponse>,ISecuredRequest
     {
         public string ReportTypeName { get; set; } = string.Empty;
         public string ReportTypeDescription { get; set; } = string.Empty;
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator"};
 
 
         public class CreateReportTypeCommandHandler : IRequestHandler<CreateReportTypeCommand, CreateReportTypeCommandResponse>

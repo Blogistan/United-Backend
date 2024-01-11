@@ -1,13 +1,15 @@
 ﻿using Application.Features.OperationClaims.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using MediatR;
 
 namespace Application.Features.OperationClaims.Commands.DeleteOperationClaim
 {
-    public class DeleteOperationClaimCommand : IRequest<DeleteOperationClaimResponse>
+    public class DeleteOperationClaimCommand : IRequest<DeleteOperationClaimResponse>,ISecuredRequest
     {
         public int Id { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Writer", "User" };
 
         public class DeleteOperationClaimCommandHandler : IRequestHandler<DeleteOperationClaimCommand, DeleteOperationClaimResponse>
         {

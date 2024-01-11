@@ -1,6 +1,7 @@
 ﻿using Application.Features.UserOperationClaims.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Persistence.Paging;
 using Domain.Entities;
 using MediatR;
@@ -8,10 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationClaim
 {
-    public class DeleteUserOperationClaimCommand : IRequest<DeleteUserOperationClaimResponse>
+    public class DeleteUserOperationClaimCommand : IRequest<DeleteUserOperationClaimResponse>,ISecuredRequest
     {
         public int UserId { get; set; }
         public int OperationClaimId { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class DeleteUserOperationClaimCommandHandler : IRequestHandler<DeleteUserOperationClaimCommand, DeleteUserOperationClaimResponse>
         {

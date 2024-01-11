@@ -1,15 +1,17 @@
 ﻿using Application.Features.OperationClaims.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Security.Entities;
 using MediatR;
 
 namespace Application.Features.OperationClaims.Commands.UpdateOperationClaim
 {
-    public class UpdateOperationClaimCommand : IRequest<UpdateOperationClaimCommandResponse>
+    public class UpdateOperationClaimCommand : IRequest<UpdateOperationClaimCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Writer", "User" };
 
         public class UpdateOperationClaimCommandHandler : IRequestHandler<UpdateOperationClaimCommand, UpdateOperationClaimCommandResponse>
         {

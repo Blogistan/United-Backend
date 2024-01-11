@@ -1,6 +1,7 @@
 ﻿using Application.Features.UserOperationClaims.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Persistence.Paging;
 using Core.Security.Entities;
 using Domain.Entities;
@@ -9,10 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.UserOperationClaims.Commands.UpdateUserOperationClaimCommand
 {
-    public class UpdateUserOperationClaimCommand : IRequest<UpdateUserOperationClaimCommandResponse>
+    public class UpdateUserOperationClaimCommand : IRequest<UpdateUserOperationClaimCommandResponse>,ISecuredRequest
     {
         public int UserId { get; set; }
         public int OperationClaimId { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class UpdateUserOperationClaimCommandHandler : IRequestHandler<UpdateUserOperationClaimCommand, UpdateUserOperationClaimCommandResponse>
         {

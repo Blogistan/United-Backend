@@ -1,16 +1,18 @@
 ﻿using Application.Features.ReportTypes.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.ReportTypes.Commands.UpdateReportType
 {
-    public class UpdateReportTypeCommand:IRequest<UpdateReportTypeCommandResponse>
+    public class UpdateReportTypeCommand:IRequest<UpdateReportTypeCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
         public string ReportTypeName { get; set; } = string.Empty;
         public string ReportTypeDescription { get; set; } = string.Empty;
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class UpdateReportCommandHandler:IRequestHandler<UpdateReportTypeCommand, UpdateReportTypeCommandResponse>
         {
