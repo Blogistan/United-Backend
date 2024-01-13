@@ -367,7 +367,7 @@ namespace Application.Services.Auth
                 { "oauth_signature_method", "HMAC-SHA1" },
                 { "oauth_timestamp", timestamp },
                 { "oauth_token", accessToken },
-                { "oauth_version", "1.0" },
+                { "oauth_version", "1.0" }
             };
 
 
@@ -376,7 +376,7 @@ namespace Application.Services.Auth
             string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
 
             requestParams.Add("oauth_signature", signature);
-
+          
             var cookieContainer = new CookieContainer();
             foreach (var item in oAuthResponse.Cookies)
             {
@@ -391,11 +391,11 @@ namespace Application.Services.Auth
                 var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
 
                 httpClient.DefaultRequestHeaders.Add("Authorization", header);
-                
+
 
                 var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await httpClient.GetAsync(ExternalAPIUrls.UserInfo);
+                HttpResponseMessage response = await httpClient.GetAsync(ExternalAPIUrls.UserInfo+ "?include_email=true");
 
                 if (response.IsSuccessStatusCode)
                 {
