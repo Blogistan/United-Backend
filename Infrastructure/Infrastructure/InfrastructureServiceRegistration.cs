@@ -7,7 +7,7 @@ namespace Infrastructure
 {
     public static class InfrastructureServiceRegistration
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IIpStackService, IpStackService>();
             services.AddAuthentication().AddGoogle(googleOptions =>
@@ -18,14 +18,16 @@ namespace Infrastructure
 
             services.AddAuthentication().AddFacebook(facebook =>
             {
-                facebook.AppId= configuration["Authentication:Facebook:AppId"];
-                facebook.AppSecret= configuration["Authentication:Facebook:AppSecret"];
+                facebook.AppId = configuration["Authentication:Facebook:AppId"];
+                facebook.AppSecret = configuration["Authentication:Facebook:AppSecret"];
             });
 
             services.AddAuthentication().AddTwitter(twitter =>
             {
-                twitter.ConsumerKey= configuration["Authentication:Twitter:ConsumerAPIKey"];
-                twitter.ConsumerSecret= configuration["Authentication:Twitter:ConsumerSecret"];
+                twitter.ConsumerKey = configuration["Authentication:Twitter:ConsumerAPIKey"];
+                twitter.ConsumerSecret = configuration["Authentication:Twitter:ConsumerSecret"];
+                twitter.RetrieveUserDetails = true;
+                
             });
             return services;
         }

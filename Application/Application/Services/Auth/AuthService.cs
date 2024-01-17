@@ -17,6 +17,7 @@ using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -395,7 +396,7 @@ namespace Application.Services.Auth
 
                 var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await httpClient.GetAsync(ExternalAPIUrls.UserInfo+ "?include_email=true");
+                HttpResponseMessage response = await httpClient.GetAsync(ExternalAPIUrls.UserInfo);
 
                 if (response.IsSuccessStatusCode)
                 {
