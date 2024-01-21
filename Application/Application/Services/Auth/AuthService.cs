@@ -17,7 +17,6 @@ using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -377,7 +376,7 @@ namespace Application.Services.Auth
             string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
 
             requestParams.Add("oauth_signature", signature);
-          
+
             var cookieContainer = new CookieContainer();
             foreach (var item in oAuthResponse.Cookies)
             {
@@ -424,7 +423,7 @@ namespace Application.Services.Auth
                 return Convert.ToBase64String(hashBytes);
             }
         }
-        static string GenerateNonce(int length = 32)
+        static string GenerateNonce(int length = 11)
         {
             byte[] randomBytes = new byte[length];
             using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
@@ -453,7 +452,6 @@ namespace Application.Services.Auth
                 .Where(c => char.IsLetterOrDigit(c) || c == '+' || c == '/' || c == '=')
                 .ToArray());
         }
-
-
     }
+  
 }

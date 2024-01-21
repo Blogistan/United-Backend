@@ -189,10 +189,6 @@ namespace UnitedAPI.Controllers
 
             //var userInfo = await authService.GetTwitterUserInfo(result);
             return Ok(loginResponse);
-        }
-
-
-
-
+        }     
     }
 }
