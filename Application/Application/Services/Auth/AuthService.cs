@@ -371,11 +371,16 @@ namespace Application.Services.Auth
             };
 
 
-            string signatureBase = "GET&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")));
+
+
+            string signatureBase = "GET&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + 
+                Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")));
+
+
             string signingKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
             string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
 
-            requestParams.Add("oauth_signature", signature); 
+            requestParams.Add("oauth_signature", signature);
 
             var cookieContainer = new CookieContainer();
             foreach (var item in oAuthResponse.Cookies)
@@ -391,7 +396,7 @@ namespace Application.Services.Auth
                 var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
 
                 httpClient.DefaultRequestHeaders.Add("Authorization", header);
-                
+
                 HttpResponseMessage response = await httpClient.GetAsync(ExternalAPIUrls.UserInfo);
 
                 if (response.IsSuccessStatusCode)
@@ -450,5 +455,5 @@ namespace Application.Services.Auth
                 .ToArray());
         }
     }
-  
+
 }
