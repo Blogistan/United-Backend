@@ -17,6 +17,7 @@ using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using System.Buffers.Text;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -371,11 +372,10 @@ namespace Application.Services.Auth
             };
 
 
-
-
-            string signatureBase = "GET&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + 
-                Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")));
-
+            string signatureBase = $"GET&{Uri.EscapeDataString(ExternalAPIUrls.UserInfo)}&{Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")))}";
+            //string signatureBase = $"GET&https%3A%2F%2Fapi.twitter.com%2F1.1%2Faccount%2Fverify_credentials.json&include_email%3Dtrue%26" +
+            //    $"oauth_consumer_key%3D{requestParams["oauth_consumer_key"]}%26oauth_nonce%3D{requestParams["oauth_nonce"]}%26oauth_signature_method%3D" +
+            //    $"{requestParams["oauth_signature_method"]}%26oauth_timestamp%3D{requestParams["oauth_timestamp"]}%26oauth_token%3D{requestParams["oauth_token"]}%26oauth_version%3D{requestParams["oauth_version"]}";
 
             string signingKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
             string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
