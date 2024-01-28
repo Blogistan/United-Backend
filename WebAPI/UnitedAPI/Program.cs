@@ -101,7 +101,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // OAuth2 kimlik sağlayıcısı eklemek için özel bir yapılandırma
+    // OAuth2 authentication configuration
     c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         Type = SecuritySchemeType.OAuth2,
@@ -121,7 +121,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // Swagger UI üzerinde "Authorize" düğmesini görüntülemek için gereken yapılandırma
+    // Requirements for displaying "Authorize" on Swagger UI
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -129,7 +129,7 @@ builder.Services.AddSwaggerGen(c =>
             {
                 Reference=new OpenApiReference{Type=ReferenceType.SecurityScheme,Id="oauth2"}
             },
-            new[]{"openid","profile","email"}// İzin verilen OAuth2 kapsamları
+            new[]{"openid","profile","email"}// Allowed OAuth2 scopes
         }
 
     });

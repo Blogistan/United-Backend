@@ -249,7 +249,6 @@ namespace Application.Services.Auth
 
             return loginResponse;
         }
-
         public async Task<GoogleJsonWebSignature.Payload> GoogleSignIn(string idToken)
         {
             var settings = new GoogleJsonWebSignature.ValidationSettings()
@@ -286,7 +285,6 @@ namespace Application.Services.Auth
             return userInfoResponse;
 
         }
-
         public async Task<OAuthResponse> TwitterSignIn(OAuthCredentials oAuthCredentials)
         {
 
@@ -370,8 +368,8 @@ namespace Application.Services.Auth
                 { "oauth_version", "1.0" }
             };
 
-
             string signatureBase = "GET&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")));
+
             string signingKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
             string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
 
