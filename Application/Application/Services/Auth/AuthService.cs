@@ -391,6 +391,9 @@ namespace Application.Services.Auth
             var handler = new HttpClientHandler();
             handler.CookieContainer = cookieContainer;
 
+            string url = $"https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&oauth_consumer_key={requestParams["oauth_consumer_key"]}&oauth_token={requestParams["oauth_token"]}&oauth_signature_method={requestParams["oauth_signature_method"]}&oauth_timestamp={requestParams["oauth_timestamp"]}&oauth_nonce={requestParams["oauth_nonce"]}&oauth_version=1.0&oauth_signature=lIkjRs4KKt4uUfL6cHO8Bib6KA4%3D";
+            string url2 = $"https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&oauth_consumer_key=VrdYN3pb9oi3eEDSfE4iL2Xqc&oauth_token=1296707282659618818-h3Heswq7gpMpdjSwG3lJoUzd9j9V8e&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1706896681&oauth_nonce=vcSxTSDpTfz&oauth_version=1.0&oauth_signature=lIkjRs4KKt4uUfL6cHO8Bib6KA4%3D";
+
             using (HttpClient httpClient = new HttpClient(handler))
             {
                 var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
@@ -427,19 +430,20 @@ namespace Application.Services.Auth
         }
         static string GenerateNonce(int length = 11)
         {
-            byte[] randomBytes = new byte[length];
-            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomBytes);
-            }
+            //byte[] randomBytes = new byte[length];
+            //using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            //{
+            //    rng.GetBytes(randomBytes);
+            //}
 
-            string base64Nonce = Convert.ToBase64String(randomBytes);
-            string cleanNonce = RemoveInvalidChars(base64Nonce);
+            //string base64Nonce = Convert.ToBase64String(randomBytes);
+            //string cleanNonce = RemoveInvalidChars(base64Nonce);
 
-            string timestamp = GetTimestamp();
-            string nonceWithTimestamp = timestamp + cleanNonce;
+            //string timestamp = GetTimestamp();
+            //string nonceWithTimestamp = timestamp + cleanNonce;
 
-            return nonceWithTimestamp.Length <= length ? nonceWithTimestamp : nonceWithTimestamp.Substring(0, length);
+            //return nonceWithTimestamp.Length <= length ? nonceWithTimestamp : nonceWithTimestamp.Substring(0, length);
+            return Guid.NewGuid().ToString("N");
         }
 
         static string GetTimestamp()
