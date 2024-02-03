@@ -358,21 +358,21 @@ namespace Application.Services.Auth
             string accessToken = oAuthResponse.Oauth_token;
             string tokenSecret = oAuthResponse.Oauth_token_secret;
 
-            string nonce = GenerateNonce();
-            string timestamp = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
-
-            var requestParams = new SortedDictionary<string, string>
+            var requestParams = new Dictionary<string, string>
             {
+                {"include_email", "true"},
                 { "oauth_consumer_key", consumerKey },
-                { "oauth_nonce", nonce },
-                { "oauth_signature_method", "HMAC-SHA1" },
-                { "oauth_timestamp", timestamp },
                 { "oauth_token", accessToken },
+                { "oauth_nonce", GenerateNonce() },
+                { "oauth_timestamp", DateTimeOffset.Now.ToUnixTimeSeconds().ToString() },
+                { "oauth_signature_method", "HMAC-SHA1" },                             
                 { "oauth_version", "1.0" }
             };
 
+            string parameterString = string.Join("&", requestParams.OrderBy(kvp => kvp.Key).Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
 
-            string signatureBase = $"GET&{Uri.EscapeDataString(ExternalAPIUrls.UserInfo)}&{Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")))}";
+
+            string signatureBase = $"GET&{Uri.EscapeDataString(ExternalAPIUrls.UserInfo)}&{Uri.EscapeDataString(parameterString)}";
             //string signatureBase = $"GET&https%3A%2F%2Fapi.twitter.com%2F1.1%2Faccount%2Fverify_credentials.json&include_email%3Dtrue%26" +
             //    $"oauth_consumer_key%3D{requestParams["oauth_consumer_key"]}%26oauth_nonce%3D{requestParams["oauth_nonce"]}%26oauth_signature_method%3D" +
             //    $"{requestParams["oauth_signature_method"]}%26oauth_timestamp%3D{requestParams["oauth_timestamp"]}%26oauth_token%3D{requestParams["oauth_token"]}%26oauth_version%3D{requestParams["oauth_version"]}";
@@ -393,6 +393,8 @@ namespace Application.Services.Auth
 
             string url = $"https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&oauth_consumer_key={requestParams["oauth_consumer_key"]}&oauth_token={requestParams["oauth_token"]}&oauth_signature_method={requestParams["oauth_signature_method"]}&oauth_timestamp={requestParams["oauth_timestamp"]}&oauth_nonce={requestParams["oauth_nonce"]}&oauth_version=1.0&oauth_signature=lIkjRs4KKt4uUfL6cHO8Bib6KA4%3D";
             string url2 = $"https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&oauth_consumer_key=VrdYN3pb9oi3eEDSfE4iL2Xqc&oauth_token=1296707282659618818-h3Heswq7gpMpdjSwG3lJoUzd9j9V8e&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1706896681&oauth_nonce=vcSxTSDpTfz&oauth_version=1.0&oauth_signature=lIkjRs4KKt4uUfL6cHO8Bib6KA4%3D";
+
+
 
             using (HttpClient httpClient = new HttpClient(handler))
             {
