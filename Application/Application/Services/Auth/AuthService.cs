@@ -14,9 +14,12 @@ using Infrastructure.Dtos;
 using Infrastructure.Dtos.Facebook;
 using Infrastructure.Dtos.Google;
 using Infrastructure.Dtos.Twitter;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using OAuth;
+using System.Buffers.Text;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -368,12 +371,11 @@ namespace Application.Services.Auth
                 { "oauth_version", "1.0" }
             };
 
-            string signatureBase = "GET&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")));
 
+            string signatureBase = "GET&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")));
             string signingKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
             string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
 
-            requestParams.Add("oauth_signature", signature); 
 
             var cookieContainer = new CookieContainer();
             foreach (var item in oAuthResponse.Cookies)
@@ -410,43 +412,6 @@ namespace Application.Services.Auth
 
 
         }
-        static string ComputeHMACSHA1Signature(string data, string key)
-        {
-            using (var hmacsha1 = new HMACSHA1(Encoding.ASCII.GetBytes(key)))
-            {
-                var hashBytes = hmacsha1.ComputeHash(Encoding.ASCII.GetBytes(data));
-                return Convert.ToBase64String(hashBytes);
-            }
-        }
-        static string GenerateNonce(int length = 11)
-        {
-            byte[] randomBytes = new byte[length];
-            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomBytes);
-            }
-
-            string base64Nonce = Convert.ToBase64String(randomBytes);
-            string cleanNonce = RemoveInvalidChars(base64Nonce);
-
-            string timestamp = GetTimestamp();
-            string nonceWithTimestamp = timestamp + cleanNonce;
-
-            return nonceWithTimestamp.Length <= length ? nonceWithTimestamp : nonceWithTimestamp.Substring(0, length);
-        }
-
-        static string GetTimestamp()
-        {
-            return Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds).ToString();
-        }
-
-        static string RemoveInvalidChars(string input)
-        {
-            // Remove characters that are not valid in a nonce
-            return new string(input
-                .Where(c => char.IsLetterOrDigit(c) || c == '+' || c == '/' || c == '=')
-                .ToArray());
-        }
     }
-  
+
 }
