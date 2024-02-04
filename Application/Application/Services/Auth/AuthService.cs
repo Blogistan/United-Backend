@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Constants;
+﻿using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Constants;
 using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
@@ -218,7 +219,7 @@ namespace Application.Services.Auth
             AccessToken accessToken = new();
             RefreshToken refreshToken = new();
 
-            GoogleLoginResponse loginResponse = new();
+            LoginResponse loginResponse = new();
 
             if (user == null)
             {

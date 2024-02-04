@@ -1,13 +1,12 @@
 ﻿using Core.Security.Entities;
 using Core.Security.Enums;
 using Core.Security.JWT;
+using Infrastructure.Dtos;
 
 namespace Application.Features.Auth.Commands.Login
 {
-    public class LoginResponse
+    public class LoginResponse:LoginResponseBase
     {
-        public AccessToken? AccessToken { get; set; }
-        public RefreshToken? RefreshToken { get; set; }
         public AuthenticatorType? RequiredAuthenticatorType { get; set; }
 
         public class LoggedHttpResponse
