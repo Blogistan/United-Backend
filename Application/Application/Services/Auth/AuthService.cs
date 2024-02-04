@@ -358,24 +358,21 @@ namespace Application.Services.Auth
             string accessToken = oAuthResponse.Oauth_token;
             string tokenSecret = oAuthResponse.Oauth_token_secret;
 
-            string nonce = GenerateNonce();
-            string timestamp = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
-
-            var requestParams = new SortedDictionary<string, string>
+            var oauth = new OAuthRequest
             {
-                { "oauth_consumer_key", consumerKey },
-                { "oauth_nonce", nonce },
-                { "oauth_signature_method", "HMAC-SHA1" },
-                { "oauth_timestamp", timestamp },
-                { "oauth_token", accessToken },
-                { "oauth_version", "1.0" }
+                Method = "GET",
+                Type = OAuthRequestType.ProtectedResource,
+                SignatureMethod = OAuthSignatureMethod.HmacSha1,
+                ConsumerKey = consumerKey,
+                ConsumerSecret = consumerSecret,
+                Token = accessToken,
+                TokenSecret = tokenSecret,
+                RequestUrl = ExternalAPIUrls.UserInfo,
+                Version = "1.0"
             };
 
-
-            string signatureBase = "GET&" + Uri.EscapeDataString(ExternalAPIUrls.UserInfo) + "&" + Uri.EscapeDataString(string.Join("&", requestParams.Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}")));
-            string signingKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
-            string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
-
+            var request = new HttpRequestMessage(HttpMethod.Get, oauth.RequestUrl);
+            request.Headers.Add("Authorization", oauth.GetAuthorizationHeader());
 
             var cookieContainer = new CookieContainer();
             foreach (var item in oAuthResponse.Cookies)
@@ -387,12 +384,9 @@ namespace Application.Services.Auth
             handler.CookieContainer = cookieContainer;
 
             using (HttpClient httpClient = new HttpClient(handler))
-            {
-                var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
-
-                httpClient.DefaultRequestHeaders.Add("Authorization", header);
+            {              
                 
-                HttpResponseMessage response = await httpClient.GetAsync(ExternalAPIUrls.UserInfo);
+                HttpResponseMessage response = await httpClient.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
