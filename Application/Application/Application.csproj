@@ -44,6 +44,7 @@
     <PackageReference Include="Google.Apis.Auth" Version="1.64.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="OAuth.DotNetCore" Version="3.0.1" />
     <PackageReference Include="UAParser" Version="3.1.47" />
   </ItemGroup>
 

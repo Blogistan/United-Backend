@@ -14,9 +14,11 @@ using Infrastructure.Dtos;
 using Infrastructure.Dtos.Facebook;
 using Infrastructure.Dtos.Google;
 using Infrastructure.Dtos.Twitter;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using OAuth;
 using System.Buffers.Text;
 using System.Net;
 using System.Security.Cryptography;
@@ -358,29 +360,22 @@ namespace Application.Services.Auth
             string accessToken = oAuthResponse.Oauth_token;
             string tokenSecret = oAuthResponse.Oauth_token_secret;
 
-            var requestParams = new Dictionary<string, string>
+            var oauth = new OAuthRequest
             {
-                {"include_email", "true"},
-                { "oauth_consumer_key", consumerKey },
-                { "oauth_token", accessToken },
-                { "oauth_nonce", GenerateNonce() },
-                { "oauth_timestamp", DateTimeOffset.Now.ToUnixTimeSeconds().ToString() },
-                { "oauth_signature_method", "HMAC-SHA1" },                             
-                { "oauth_version", "1.0" }
+                Method = "GET",
+                Type = OAuthRequestType.ProtectedResource,
+                SignatureMethod = OAuthSignatureMethod.HmacSha1,
+                ConsumerKey = consumerKey,
+                ConsumerSecret = consumerSecret,
+                Token = accessToken,
+                TokenSecret = tokenSecret,
+                RequestUrl = ExternalAPIUrls.UserInfo,
+                Version = "1.0"
             };
 
-            string parameterString = string.Join("&", requestParams.OrderBy(kvp => kvp.Key).Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
+            var request = new HttpRequestMessage(HttpMethod.Get, oauth.RequestUrl);
+            request.Headers.Add("Authorization", oauth.GetAuthorizationHeader());
 
-
-            string signatureBase = $"GET&{Uri.EscapeDataString(ExternalAPIUrls.UserInfo)}&{Uri.EscapeDataString(parameterString)}";
-            //string signatureBase = $"GET&https%3A%2F%2Fapi.twitter.com%2F1.1%2Faccount%2Fverify_credentials.json&include_email%3Dtrue%26" +
-            //    $"oauth_consumer_key%3D{requestParams["oauth_consumer_key"]}%26oauth_nonce%3D{requestParams["oauth_nonce"]}%26oauth_signature_method%3D" +
-            //    $"{requestParams["oauth_signature_method"]}%26oauth_timestamp%3D{requestParams["oauth_timestamp"]}%26oauth_token%3D{requestParams["oauth_token"]}%26oauth_version%3D{requestParams["oauth_version"]}";
-
-            string signingKey = Uri.EscapeDataString(consumerSecret) + "&" + Uri.EscapeDataString(tokenSecret);
-            string signature = ComputeHMACSHA1Signature(signatureBase, signingKey);
-
-            requestParams.Add("oauth_signature", signature);
 
             var cookieContainer = new CookieContainer();
             foreach (var item in oAuthResponse.Cookies)
@@ -391,18 +386,9 @@ namespace Application.Services.Auth
             var handler = new HttpClientHandler();
             handler.CookieContainer = cookieContainer;
 
-            string url = $"https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&oauth_consumer_key={requestParams["oauth_consumer_key"]}&oauth_token={requestParams["oauth_token"]}&oauth_signature_method={requestParams["oauth_signature_method"]}&oauth_timestamp={requestParams["oauth_timestamp"]}&oauth_nonce={requestParams["oauth_nonce"]}&oauth_version=1.0&oauth_signature=lIkjRs4KKt4uUfL6cHO8Bib6KA4%3D";
-            string url2 = $"https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&oauth_consumer_key=VrdYN3pb9oi3eEDSfE4iL2Xqc&oauth_token=1296707282659618818-h3Heswq7gpMpdjSwG3lJoUzd9j9V8e&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1706896681&oauth_nonce=vcSxTSDpTfz&oauth_version=1.0&oauth_signature=lIkjRs4KKt4uUfL6cHO8Bib6KA4%3D";
-
-
-
             using (HttpClient httpClient = new HttpClient(handler))
             {
-                var header = "OAuth " + string.Join(",", requestParams.Keys.Select(key => $"{key}=\"{Uri.EscapeDataString(requestParams[key])}\""));
-
-                httpClient.DefaultRequestHeaders.Add("Authorization", header);
-
-                HttpResponseMessage response = await httpClient.GetAsync(ExternalAPIUrls.UserInfo);
+                HttpResponseMessage response = await httpClient.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -421,44 +407,6 @@ namespace Application.Services.Auth
             return twitterUserInfo;
 
 
-        }
-        static string ComputeHMACSHA1Signature(string data, string key)
-        {
-            using (var hmacsha1 = new HMACSHA1(Encoding.ASCII.GetBytes(key)))
-            {
-                var hashBytes = hmacsha1.ComputeHash(Encoding.ASCII.GetBytes(data));
-                return Convert.ToBase64String(hashBytes);
-            }
-        }
-        static string GenerateNonce(int length = 11)
-        {
-            //byte[] randomBytes = new byte[length];
-            //using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-            //{
-            //    rng.GetBytes(randomBytes);
-            //}
-
-            //string base64Nonce = Convert.ToBase64String(randomBytes);
-            //string cleanNonce = RemoveInvalidChars(base64Nonce);
-
-            //string timestamp = GetTimestamp();
-            //string nonceWithTimestamp = timestamp + cleanNonce;
-
-            //return nonceWithTimestamp.Length <= length ? nonceWithTimestamp : nonceWithTimestamp.Substring(0, length);
-            return Guid.NewGuid().ToString("N");
-        }
-
-        static string GetTimestamp()
-        {
-            return Convert.ToInt64((DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds).ToString();
-        }
-
-        static string RemoveInvalidChars(string input)
-        {
-            // Remove characters that are not valid in a nonce
-            return new string(input
-                .Where(c => char.IsLetterOrDigit(c) || c == '+' || c == '/' || c == '=')
-                .ToArray());
         }
     }
 
