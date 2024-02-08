@@ -1,5 +1,7 @@
 ﻿using Infrastructure.IpStack.Abstract;
 using Infrastructure.IpStack.Concrete;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,6 +30,18 @@ namespace Infrastructure
                 twitter.ConsumerSecret = configuration["Authentication:Twitter:ConsumerSecret"];
                 twitter.RetrieveUserDetails = true;
                 
+            });
+
+            services.AddAuthentication().AddOAuth("Github", options =>
+            {
+                options.ClientId = configuration.GetValue<string>("Authentication:Github:client_id");
+                options.ClientSecret = configuration.GetValue<string>("Authentication:Github:client_secret");
+                options.CallbackPath = new PathString("sigin-github");
+                options.ClaimsIssuer = "OAuth2-Github";
+                options.SaveTokens = true;
+                options.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
+                options.TokenEndpoint = "https://github.com/login/oauth/access_token";
+                options.UserInformationEndpoint = "https://api.github.com/user";
             });
             return services;
         }
