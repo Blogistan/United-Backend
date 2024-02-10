@@ -1,6 +1,5 @@
 ﻿using Infrastructure.IpStack.Abstract;
 using Infrastructure.IpStack.Concrete;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

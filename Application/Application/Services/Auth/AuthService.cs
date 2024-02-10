@@ -13,16 +13,13 @@ using Google.Apis.Auth;
 using Infrastructure.Constants;
 using Infrastructure.Dtos;
 using Infrastructure.Dtos.Facebook;
-using Infrastructure.Dtos.Google;
+using Infrastructure.Dtos.Github;
 using Infrastructure.Dtos.Twitter;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using OAuth;
-using System.Buffers.Text;
 using System.Net;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
@@ -406,6 +403,16 @@ namespace Application.Services.Auth
             return twitterUserInfo;
 
 
+        }
+
+        public Task<string> GithubSignIn(string code)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<GithubUserInfo> GithubUserInfo(string bearerToken)
+        {
+            throw new NotImplementedException();
         }
     }
 
