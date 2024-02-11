@@ -365,7 +365,7 @@ namespace Application.Services.Auth
                 ConsumerSecret = consumerSecret,
                 Token = accessToken,
                 TokenSecret = tokenSecret,
-                RequestUrl = ExternalAPIUrls.UserInfo,
+                RequestUrl = ExternalAPIUrls.TwitterUserInfo,
                 Version = "1.0"
             };
 
@@ -382,8 +382,8 @@ namespace Application.Services.Auth
             handler.CookieContainer = cookieContainer;
 
             using (HttpClient httpClient = new HttpClient(handler))
-            {              
-                
+            {
+
                 HttpResponseMessage response = await httpClient.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
@@ -405,9 +405,40 @@ namespace Application.Services.Auth
 
         }
 
-        public Task<string> GithubSignIn(string code)
+        public async Task<string> GithubSignIn(string code)
         {
-            throw new NotImplementedException();
+            string client_id = configuration["Authentication:Github:client_id"];
+            string client_secret = configuration["Authentication:Github:client_secret"];
+
+
+            string accessToken = "";
+            var postData = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("client_id", client_id),
+                new KeyValuePair<string, string>("client_secret", client_secret),
+                new KeyValuePair<string, string>("code", code),
+             });
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(ExternalAPIUrls.GithubAccessToken, postData);
+
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var result = await responseMessage.Content.ReadAsStringAsync();
+
+                    string accessTokenPrefix = "access_token=";
+                    int index = result.IndexOf(accessTokenPrefix);
+
+                    int accessTokenStartIndex = index + accessTokenPrefix.Length;
+                    int accessTokenEndIndex = result.IndexOf('&', accessTokenStartIndex);
+
+                    accessToken = result.Substring(accessTokenStartIndex, accessTokenEndIndex - accessTokenStartIndex);
+                }
+            }
+
+            return accessToken;
         }
 
         public Task<GithubUserInfo> GithubUserInfo(string bearerToken)

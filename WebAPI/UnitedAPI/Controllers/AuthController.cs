@@ -2,6 +2,7 @@
 using Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand;
 using Application.Features.Auth.Commands.FacebookSignIn;
 using Application.Features.Auth.Commands.ForgetPassword;
+using Application.Features.Auth.Commands.GithubSignIn;
 using Application.Features.Auth.Commands.GoogleSignIn;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.PasswordReset;
@@ -187,8 +188,15 @@ namespace UnitedAPI.Controllers
 
             LoginResponse loginResponse = await Mediator.Send(new TwitterSignInCommand { AccessToken = result.Oauth_token, TokenSecret = result.Oauth_token_secret, IpAddress = GetIpAddress(), Cookies = result.Cookies });
 
-            //var userInfo = await authService.GetTwitterUserInfo(result);
             return Ok(loginResponse);
-        }     
+        }
+        [HttpGet("GithubSignIn")]
+        public async Task<IActionResult> GithubSignIn(string token)
+        {
+            var result = await authService.GithubSignIn(token);
+
+            LoginResponse loginResponse = await Mediator.Send(new GithubSignInCommand { Token = result, IpAddress = GetIpAddress() });
+            return Ok(loginResponse);
+        }
     }
 }
