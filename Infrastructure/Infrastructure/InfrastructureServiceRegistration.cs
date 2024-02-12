@@ -35,7 +35,7 @@ namespace Infrastructure
             {
                 options.ClientId = configuration.GetValue<string>("Authentication:Github:client_id");
                 options.ClientSecret = configuration.GetValue<string>("Authentication:Github:client_secret");
-                options.CallbackPath = new PathString("sigin-github");
+                options.CallbackPath = new PathString("/GithubSignIn");
                 options.ClaimsIssuer = "OAuth2-Github";
                 options.SaveTokens = true;
                 options.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";

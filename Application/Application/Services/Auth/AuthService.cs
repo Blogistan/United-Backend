@@ -421,6 +421,7 @@ namespace Application.Services.Auth
                 new KeyValuePair<string, string>("client_id", client_id),
                 new KeyValuePair<string, string>("client_secret", client_secret),
                 new KeyValuePair<string, string>("code", code),
+                new KeyValuePair<string, string>("redirect_uri", "https://localhost:44334/api/Auth/GithubSignIn"),
              });
 
             using (HttpClient httpClient = new HttpClient())

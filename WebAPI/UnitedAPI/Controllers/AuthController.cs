@@ -191,9 +191,9 @@ namespace UnitedAPI.Controllers
             return Ok(loginResponse);
         }
         [HttpGet("GithubSignIn")]
-        public async Task<IActionResult> GithubSignIn(string token)
+        public async Task<IActionResult> GithubSignIn(string code)
         {
-            var result = await authService.GithubSignIn(token);
+            var result = await authService.GithubSignIn(code);
 
             LoginResponse loginResponse = await Mediator.Send(new GithubSignInCommand { Token = result, IpAddress = GetIpAddress() });
             return Ok(loginResponse);
