@@ -1,6 +1,8 @@
-﻿using Application.Features.Auth.Commands.Login;
+﻿using Amazon.SecurityToken.Model;
+using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Constants;
 using Application.Services.Repositories;
+using Azure;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
 using Core.Persistence.Paging;
@@ -18,8 +20,10 @@ using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using MongoDB.Driver.Core.WireProtocol.Messages;
 using OAuth;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -436,14 +440,37 @@ namespace Application.Services.Auth
 
                     accessToken = result.Substring(accessTokenStartIndex, accessTokenEndIndex - accessTokenStartIndex);
                 }
+                else
+                {
+
+                    await Task.FromException(new BusinessException("Erro Code: " + responseMessage.StatusCode));
+                }
             }
 
             return accessToken;
         }
 
-        public Task<GithubUserInfo> GithubUserInfo(string bearerToken)
+        public async Task<GithubUserInfo> GithubUserInfo(string bearerToken)
         {
-            throw new NotImplementedException();
+            GithubUserInfo userInfo = new();
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+                HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(ExternalAPIUrls.GithubUserInfo);
+
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    var result = await httpResponseMessage.Content.ReadAsStringAsync();
+                    userInfo = JsonSerializer.Deserialize<GithubUserInfo>(result);
+                }
+                else
+                {
+
+                    await Task.FromException(new BusinessException("Erro Code: " + httpResponseMessage.StatusCode));
+                }
+            }
+
+            return userInfo;
         }
     }
 
