@@ -1,6 +1,8 @@
-﻿using Application.Features.Auth.Commands.Login;
+﻿using Amazon.SecurityToken.Model;
+using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Constants;
 using Application.Services.Repositories;
+using Azure;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
 using Core.Persistence.Paging;
@@ -13,16 +15,15 @@ using Google.Apis.Auth;
 using Infrastructure.Constants;
 using Infrastructure.Dtos;
 using Infrastructure.Dtos.Facebook;
-using Infrastructure.Dtos.Google;
+using Infrastructure.Dtos.Github;
 using Infrastructure.Dtos.Twitter;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using MongoDB.Driver.Core.WireProtocol.Messages;
 using OAuth;
-using System.Buffers.Text;
 using System.Net;
-using System.Security.Cryptography;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -368,7 +369,7 @@ namespace Application.Services.Auth
                 ConsumerSecret = consumerSecret,
                 Token = accessToken,
                 TokenSecret = tokenSecret,
-                RequestUrl = ExternalAPIUrls.UserInfo,
+                RequestUrl = ExternalAPIUrls.TwitterUserInfo,
                 Version = "1.0"
             };
 
@@ -385,8 +386,8 @@ namespace Application.Services.Auth
             handler.CookieContainer = cookieContainer;
 
             using (HttpClient httpClient = new HttpClient(handler))
-            {              
-                
+            {
+
                 HttpResponseMessage response = await httpClient.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
@@ -406,6 +407,73 @@ namespace Application.Services.Auth
             return twitterUserInfo;
 
 
+        }
+
+        public async Task<string> GithubSignIn(string code)
+        {
+            string client_id = configuration["Authentication:Github:client_id"];
+            string client_secret = configuration["Authentication:Github:client_secret"];
+
+
+            string accessToken = "";
+            var postData = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("client_id", client_id),
+                new KeyValuePair<string, string>("client_secret", client_secret),
+                new KeyValuePair<string, string>("code", code),
+                new KeyValuePair<string, string>("redirect_uri", "https://localhost:44334/api/Auth/GithubSignIn"),
+             });
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(ExternalAPIUrls.GithubAccessToken, postData);
+
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var result = await responseMessage.Content.ReadAsStringAsync();
+
+                    string accessTokenPrefix = "access_token=";
+                    int index = result.IndexOf(accessTokenPrefix);
+
+                    int accessTokenStartIndex = index + accessTokenPrefix.Length;
+                    int accessTokenEndIndex = result.IndexOf('&', accessTokenStartIndex);
+
+                    accessToken = result.Substring(accessTokenStartIndex, accessTokenEndIndex - accessTokenStartIndex);
+                }
+                else
+                {
+
+                    await Task.FromException(new BusinessException("Erro Code: " + responseMessage.StatusCode));
+                }
+            }
+
+            return accessToken;
+        }
+
+        public async Task<GithubUserInfo> GithubUserInfo(string bearerToken)
+        {
+            GithubUserInfo userInfo = new();
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+                httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
+                HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(ExternalAPIUrls.GithubUserInfo);
+
+
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    var result = await httpResponseMessage.Content.ReadAsStringAsync();
+                    userInfo = JsonSerializer.Deserialize<GithubUserInfo>(result);
+                }
+                else
+                {
+
+                    await Task.FromException(new BusinessException("Erro Code: " + httpResponseMessage.StatusCode));
+                }
+            }
+
+            return userInfo;
         }
     }
 
