@@ -457,7 +457,9 @@ namespace Application.Services.Auth
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+                httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
                 HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(ExternalAPIUrls.GithubUserInfo);
+
 
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
