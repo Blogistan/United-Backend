@@ -24,8 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mocks\FakeDatas\" />
     <Folder Include="Mocks\Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\corePackages\Core.Test\Core.Test\Core.Test.csproj" />
   </ItemGroup>
 
 </Project>
