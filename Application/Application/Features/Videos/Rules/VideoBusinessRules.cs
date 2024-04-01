@@ -1,11 +1,12 @@
 ﻿using Application.Features.Videos.Dtos;
 using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 
 namespace Application.Features.Videos.Rules
 {
-    public class VideoBusinessRules
+    public class VideoBusinessRules: BaseBusinessRules
     {
         private readonly IVideoRepository videoRepository;
         public VideoBusinessRules(IVideoRepository videoRepository)

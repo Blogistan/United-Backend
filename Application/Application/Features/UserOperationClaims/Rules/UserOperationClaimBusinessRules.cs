@@ -1,10 +1,11 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Security.Entities;
 
 namespace Application.Features.UserOperationClaims.Rules
 {
-    public class UserOperationClaimBusinessRules
+    public class UserOperationClaimBusinessRules: BaseBusinessRules
     {
         private readonly IUserOperationClaimRepository userOperationClaimRepository;
         public UserOperationClaimBusinessRules(IUserOperationClaimRepository userOperationClaimRepository)

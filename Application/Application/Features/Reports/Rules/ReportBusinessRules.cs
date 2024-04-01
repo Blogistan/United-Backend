@@ -1,10 +1,11 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 
 namespace Application.Features.Reports.Rules
 {
-    public class ReportBusinessRules
+    public class ReportBusinessRules: BaseBusinessRules
     {
         public readonly IReportRepository reportRepository;
         public ReportBusinessRules(IReportRepository reportRepository)

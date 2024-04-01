@@ -1,10 +1,11 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 
 namespace Application.Features.Comments.Rules
 {
-    public class CommentBusinessRules
+    public class CommentBusinessRules:BaseBusinessRules
     {
         public readonly ICommentRepository commentRepository;
         public CommentBusinessRules(ICommentRepository commentRepository)

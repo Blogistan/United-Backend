@@ -1,10 +1,11 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Security.Entities;
 
 namespace Application.Features.OperationClaims.Rules
 {
-    public class OperationClaimBusinessRules
+    public class OperationClaimBusinessRules: BaseBusinessRules
     {
         private readonly IOperationClaimRepostiory operationClaimRepostiory;
         public OperationClaimBusinessRules(IOperationClaimRepostiory operationClaimRepostiory)

@@ -1,11 +1,12 @@
 ﻿using Application.Features.Categories.Dtos;
 using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 
 namespace Application.Features.Categories.Rules
 {
-    public class CategoryBusinessRules
+    public class CategoryBusinessRules:BaseBusinessRules
     {
         private readonly ICategoryRepository categoryRepository;
         public CategoryBusinessRules(ICategoryRepository categoryRepository)

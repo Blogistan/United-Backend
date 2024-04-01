@@ -1,10 +1,11 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 
 namespace Application.Features.Blogs.Rules
 {
-    public class BlogBusinessRules
+    public class BlogBusinessRules:BaseBusinessRules
     {
 
         private readonly IBlogRepository blogRepository;

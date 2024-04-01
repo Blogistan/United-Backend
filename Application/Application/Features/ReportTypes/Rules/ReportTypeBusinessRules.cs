@@ -1,11 +1,11 @@
-﻿using Application.Features.Categories.Dtos;
-using Application.Services.Repositories;
+﻿using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 
 namespace Application.Features.ReportTypes.Rules
 {
-    public class ReportTypeBusinessRules
+    public class ReportTypeBusinessRules: BaseBusinessRules
     {
         private readonly IReportTypeRepository reportTypeRepository;
         public ReportTypeBusinessRules(IReportTypeRepository reportTypeRepository)

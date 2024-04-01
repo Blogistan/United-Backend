@@ -1,15 +1,15 @@
 ﻿using Application.Features.Auth.Constants;
 using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Security.Entities;
 using Core.Security.Enums;
 using Core.Security.Hashing;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Rules
 {
-    public class AuthBussinessRules
+    public class AuthBussinessRules:BaseBusinessRules
     {
         private readonly ISiteUserRepository siteUserRepository;
         public AuthBussinessRules(ISiteUserRepository siteUserRepository)
