@@ -1,18 +1,18 @@
-﻿using Core.Security.Entities;
-using Core.Security.Hashing;
+﻿using Core.Security.Hashing;
 using Core.Test.Application.FakeData;
+using Domain.Entities;
 
 namespace AuthTest.Mocks.FakeDatas
 {
-    public class UserFakeData : BaseFakeData<User, int>
+    public class SiteUserFakeData : BaseFakeData<SiteUser, int>
     {
         public static int[] Ids = new int[] { 234, 123, 12 };
-        public override List<User> CreateFakeData()
+        public override List<SiteUser> CreateFakeData()
         {
             HashingHelper.CreatePasswordHash("123456", out byte[] passwordHash, out byte[] passwordSalt);
-            List<User> data = new List<User>
+            List<SiteUser> data = new List<SiteUser>
             {
-                new User
+                new SiteUser
             {
                 Id = Ids[0],
                 Email = "example@united.io",
@@ -20,7 +20,7 @@ namespace AuthTest.Mocks.FakeDatas
                 PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
             },
-            new User
+            new SiteUser
             {
                 Id = Ids[1],
                 Email = "example2@united.io",
@@ -28,7 +28,7 @@ namespace AuthTest.Mocks.FakeDatas
                 PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
             },
-            new User
+            new SiteUser
             {
                 Id = Ids[2],
                 Email = "example3@united.io",

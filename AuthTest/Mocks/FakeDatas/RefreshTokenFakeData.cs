@@ -7,7 +7,7 @@ namespace AuthTest.Mocks.FakeDatas
     {
         public override List<RefreshToken> CreateFakeData()
         {
-            return new List<RefreshToken> { new() { UserId = UserFakeData.Ids[0], Token = "abc" } };
+            return new List<RefreshToken> { new() { UserId = SiteUserFakeData.Ids[0], Token = "abc" } };
         }
     }
 }
