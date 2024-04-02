@@ -13,22 +13,22 @@ namespace AuthTest.Mocks.Repositories.Auth
             this.operationClaimFakeData = operationClaimFakeData;
         }
 
-        public IOperationClaimRepostiory GetOperationClaimRepostiory()
+        public IUserOperationClaimRepository GetOperationClaimRepostiory()
         {
             List<OperationClaim> operationClaims = operationClaimFakeData.Data;
 
-            var mockRepo = new Mock<IOperationClaimRepostiory>();
+            var mockRepo = new Mock<IUserOperationClaimRepository>();
 
-            //GetOperationClaimsByUserIdAsync will created.
-            //mockRepo
-            //.Setup(s => s.GetOperationClaimsByUserIdAsync(It.IsAny<Guid>()))
-            //.ReturnsAsync(
-            //    (Guid userId) =>
-            //    {
-            //        var claims = operationClaims.ToList();
-            //        return claims;
-            //    }
-            //);
+
+            mockRepo
+            .Setup(s => s.GetOperationClaimsByUserIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(
+                (int userId) =>
+                {
+                    var claims = operationClaims.ToList();
+                    return claims;
+                }
+            );
 
             return mockRepo.Object;
 
