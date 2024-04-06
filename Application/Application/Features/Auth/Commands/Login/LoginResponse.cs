@@ -1,10 +1,11 @@
-﻿using Core.Security.Enums;
+﻿using Core.Application.Responses;
+using Core.Security.Enums;
 using Core.Security.JWT;
 using Infrastructure.Dtos;
 
 namespace Application.Features.Auth.Commands.Login
 {
-    public class LoginResponse:LoginResponseBase
+    public class LoginResponse:LoginResponseBase,IResponse
     {
         public AuthenticatorType? RequiredAuthenticatorType { get; set; }
 
