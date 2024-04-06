@@ -1,6 +1,8 @@
-﻿namespace Application.Features.Comments.Commands.CreateComment
+﻿using Core.Application.Responses;
+
+namespace Application.Features.Comments.Commands.CreateComment
 {
-    public class CreateCommentCommandResponse
+    public class CreateCommentCommandResponse:IResponse
     {
         public int Id { get; set; }
         public int? BlogId { get; set; }
@@ -14,7 +16,18 @@
 
         public int Dislikes { get; set; }
         public int? ParentCommentId { get; set; }
-        
+
+        public CreateCommentCommandResponse(int id, int? blogId, string? userName, string? guestName, string commentContent, int likes, int dislikes, int? parentCommentId)
+        {
+            Id = id;
+            BlogId = blogId;
+            UserName = userName;
+            GuestName = guestName;
+            CommentContent = commentContent;
+            Likes = likes;
+            Dislikes = dislikes;
+            ParentCommentId = parentCommentId;
+        }
 
     }
 }

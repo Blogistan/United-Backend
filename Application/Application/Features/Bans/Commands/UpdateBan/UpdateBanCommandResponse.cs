@@ -1,8 +1,8 @@
-﻿using Domain.Entities;
+﻿using Core.Application.Responses;
 
 namespace Application.Features.Bans.Commands.UpdateBan
 {
-    public class UpdateBanCommandResponse
+    public class UpdateBanCommandResponse:IResponse
     {
         public Guid Id { get; set; }
         public Guid ReportID { get; set; }
@@ -11,5 +11,15 @@ namespace Application.Features.Bans.Commands.UpdateBan
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }
         public string? BanDetail { get; set; } = string.Empty;
+
+        public UpdateBanCommandResponse(Guid id, string userName, bool isPerma, DateTime banStartDate, DateTime banEndDate, string? banDetail)
+        {
+            this.Id = id;
+            this.UserName = userName;
+            this.IsPerma = isPerma;
+            this.BanStartDate = banStartDate;
+            this.BanEndDate = banEndDate;
+            this.BanDetail = banDetail;
+        }
     }
 }

@@ -1,9 +1,15 @@
 ﻿using Application.Features.Comments.Dtos;
+using Core.Application.Responses;
 
 namespace Application.Features.Comments.Queries.GetBlogCommentsQuery
 {
-    public class GetBlogCommentsQueryResponse
+    public class GetBlogCommentsQueryResponse:IResponse
     {
         public CommentViewDto commentViewDto { get; set; }
+
+        public GetBlogCommentsQueryResponse(CommentViewDto commentViewDto)
+        {
+            this.commentViewDto = commentViewDto;
+        }
     }
 }

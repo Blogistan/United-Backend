@@ -1,6 +1,8 @@
-﻿namespace Application.Features.Bans.Commands.DeleteBan
+﻿using Core.Application.Responses;
+
+namespace Application.Features.Bans.Commands.DeleteBan
 {
-    public class DeleteBanCommandResponse
+    public class DeleteBanCommandResponse:IResponse
     {
         public Guid Id { get; set; }
         public string UserName { get; set; } = string.Empty;
@@ -8,5 +10,15 @@
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }
         public string? BanDetail { get; set; } = string.Empty;
+
+        public DeleteBanCommandResponse(Guid id, string userName, bool isPerma, DateTime banStartDate, DateTime banEndDate, string? banDetail)
+        {
+            this.Id = id;
+            this.UserName = userName;
+            this.IsPerma = isPerma;
+            this.BanStartDate = banStartDate;
+            this.BanEndDate = banEndDate;
+            this.BanDetail = banDetail;
+        }
     }
 }

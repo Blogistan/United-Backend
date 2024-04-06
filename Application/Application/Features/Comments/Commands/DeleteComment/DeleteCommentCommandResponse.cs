@@ -1,6 +1,8 @@
-﻿namespace Application.Features.Comments.Commands.DeleteComment
+﻿using Core.Application.Responses;
+
+namespace Application.Features.Comments.Commands.DeleteComment
 {
-    public class DeleteCommentCommandResponse
+    public class DeleteCommentCommandResponse:IResponse
     {
         public int? BlogId { get; set; }
         public string? UserName { get; set; }
@@ -13,5 +15,16 @@
 
         public int Dislikes { get; set; }
         public int? ParentCommentId { get; set; }
+
+        public DeleteCommentCommandResponse(int? blogId, string? userName, string? guestName, string commentContent, int likes, int dislikes, int? parentCommentId)
+        {
+            BlogId = blogId;
+            UserName = userName;
+            GuestName = guestName;
+            CommentContent = commentContent;
+            Likes = likes;
+            Dislikes = dislikes;
+            ParentCommentId = parentCommentId;
+        }
     }
 }

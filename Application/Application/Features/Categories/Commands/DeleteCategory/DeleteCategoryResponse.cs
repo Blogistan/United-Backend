@@ -1,8 +1,16 @@
-﻿namespace Application.Features.Categories.Commands.DeleteCategory
+﻿using Core.Application.Responses;
+
+namespace Application.Features.Categories.Commands.DeleteCategory
 {
-    public class DeleteCategoryResponse
+    public class DeleteCategoryResponse:IResponse
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }
+
+        public DeleteCategoryResponse(int id, string categoryName)
+        {
+            Id = id;
+            CategoryName = categoryName;
+        }
     }
 }
