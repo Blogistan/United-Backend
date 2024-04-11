@@ -5,6 +5,7 @@ using Application.Features.Comments.Rules;
 using Application.Features.OperationClaims.Rules;
 using Application.Features.Reports.Rules;
 using Application.Features.ReportTypes.Rules;
+using Application.Features.SiteUsers.Rules;
 using Application.Features.UserOperationClaims.Rules;
 using Application.Features.Videos.Rules;
 using Application.Services.Auth;
@@ -33,6 +34,7 @@ namespace Application
             services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(ApplicationServiceRegistration).Assembly));
 
             services.AddScoped<AuthBussinessRules>();
+            services.AddScoped<UserBusinessRules>();
             services.AddScoped<CategoryBusinessRules>();
             services.AddScoped<BlogBusinessRules>();
             services.AddScoped<VideoBusinessRules>();

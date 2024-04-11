@@ -33,10 +33,8 @@
     <Folder Include="Features\ReportTypes\Constants\" />
     <Folder Include="Features\ReportTypes\Models\" />
     <Folder Include="Features\SiteUsers\Constants\" />
-    <Folder Include="Features\SiteUsers\Mappers\" />
     <Folder Include="Features\SiteUsers\Models\" />
-    <Folder Include="Features\SiteUsers\Dtos\" />
-    <Folder Include="Features\SiteUsers\Queries\" />
+    <Folder Include="Features\SiteUsers\Queries\GetById\" />
     <Folder Include="Features\UserOperationClaims\Constants\" />
     <Folder Include="Features\UserOperationClaims\Models\" />
     <Folder Include="Features\Videos\Constants\" />

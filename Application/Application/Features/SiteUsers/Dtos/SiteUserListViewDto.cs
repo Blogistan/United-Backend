@@ -1,8 +1,8 @@
-﻿using Core.Application.Responses;
+﻿using Core.Application.Dtos;
 
-namespace Application.Features.SiteUsers.Commands
+namespace Application.Features.SiteUsers.Dtos
 {
-    public class CreatedSiteUserResponse:IResponse
+    public class SiteUserListViewDto:IDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -10,14 +10,14 @@ namespace Application.Features.SiteUsers.Commands
         public string Email { get; set; }
         public bool Status { get; set; }
 
-        public CreatedSiteUserResponse()
+        public SiteUserListViewDto()
         {
             FirstName = string.Empty;
             LastName = string.Empty;
             Email = string.Empty;
         }
 
-        public CreatedSiteUserResponse(int id, string firstName, string lastName, string email, bool status)
+        public SiteUserListViewDto(int id, string firstName, string lastName, string email, bool status)
         {
             Id = id;
             FirstName = firstName;

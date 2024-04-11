@@ -1,14 +1,14 @@
 ﻿using Application.Features.SiteUsers.Rules;
+using Application.Notifications.RegisterNotification;
 using Application.Services.Repositories;
 using AutoMapper;
-using Core.Security.Entities;
 using Core.Security.Hashing;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Features.SiteUsers.Commands
+namespace Application.Features.SiteUsers.Commands.CreateSiteUser
 {
-    public class CreateSiteUserCommand : IRequest<CreatedSiteUserResponse>
+    public class CreateSiteUserCommand : IRequest<CreateSiteUserResponse>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -17,31 +17,33 @@ namespace Application.Features.SiteUsers.Commands
 
         public CreateSiteUserCommand()
         {
-            this.FirstName = string.Empty;
-            this.LastName = string.Empty;
-            this.Email = string.Empty;
-            this.Password = string.Empty;
+            FirstName = string.Empty;
+            LastName = string.Empty;
+            Email = string.Empty;
+            Password = string.Empty;
         }
         public CreateSiteUserCommand(string firstname, string lastName, string email, string password)
         {
-            this.FirstName = firstname;
-            this.LastName = lastName;
-            this.Email = email;
-            this.Password = password;
+            FirstName = firstname;
+            LastName = lastName;
+            Email = email;
+            Password = password;
         }
 
-        public class CreateSiteUserCommandHandler : IRequestHandler<CreateSiteUserCommand, CreatedSiteUserResponse>
+        public class CreateSiteUserCommandHandler : IRequestHandler<CreateSiteUserCommand, CreateSiteUserResponse>
         {
             private readonly ISiteUserRepository siteUserRepository;
             private readonly IMapper mapper;
             private readonly UserBusinessRules userBusinessRules;
-            public CreateSiteUserCommandHandler(ISiteUserRepository siteUserRepository, IMapper mapper, UserBusinessRules userBusinessRules)
+            private readonly IMediator mediator;
+            public CreateSiteUserCommandHandler(ISiteUserRepository siteUserRepository, IMapper mapper, UserBusinessRules userBusinessRules, IMediator mediator)
             {
                 this.siteUserRepository = siteUserRepository;
                 this.mapper = mapper;
                 this.userBusinessRules = userBusinessRules;
+                this.mediator = mediator;
             }
-            public async Task<CreatedSiteUserResponse> Handle(CreateSiteUserCommand request, CancellationToken cancellationToken)
+            public async Task<CreateSiteUserResponse> Handle(CreateSiteUserCommand request, CancellationToken cancellationToken)
             {
                 await userBusinessRules.UserEmailShouldNotExistsWhenInsert(request.Email);
                 SiteUser user = mapper.Map<SiteUser>(request);
@@ -55,7 +57,10 @@ namespace Application.Features.SiteUsers.Commands
                 user.PasswordSalt = passwordSalt;
                 SiteUser createdUser = await siteUserRepository.AddAsync(user);
 
-                CreatedSiteUserResponse response = mapper.Map<CreatedSiteUserResponse>(createdUser);
+                CreateSiteUserResponse response = mapper.Map<CreateSiteUserResponse>(createdUser);
+
+                await mediator.Publish(new RegisteredNotification() { SiteUser = createdUser });
+
                 return response;
             }
         }
