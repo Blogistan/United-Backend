@@ -9,6 +9,10 @@ namespace Application.Features.Reports.Commands.CreateReport
         public string ReportType { get; set; } = string.Empty;
         public string ReportDescription { get; set; } = string.Empty;
 
+        public CreateReportCommandResponse()
+        {
+            
+        }
         public CreateReportCommandResponse(Guid id, string userName, string reportType, string reportDescription)
         {
             Id = id;

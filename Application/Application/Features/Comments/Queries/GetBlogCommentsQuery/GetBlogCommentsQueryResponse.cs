@@ -7,6 +7,10 @@ namespace Application.Features.Comments.Queries.GetBlogCommentsQuery
     {
         public CommentViewDto commentViewDto { get; set; }
 
+        public GetBlogCommentsQueryResponse()
+        {
+            
+        }
         public GetBlogCommentsQueryResponse(CommentViewDto commentViewDto)
         {
             this.commentViewDto = commentViewDto;

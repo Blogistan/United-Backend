@@ -7,6 +7,11 @@ namespace Application.Features.Categories.Commands.DeleteCategory
         public int Id { get; set; }
         public string CategoryName { get; set; }
 
+        public DeleteCategoryResponse()
+        {
+            
+        }
+
         public DeleteCategoryResponse(int id, string categoryName)
         {
             Id = id;

@@ -7,6 +7,10 @@ namespace Application.Features.Categories.Commands.UpdateRangeCategory
     {
         public List<CategoryViewDto> CategoryViewDtos { get; set; }
 
+        public UpdateRangeCategoryResponse()
+        {
+            
+        }
         public UpdateRangeCategoryResponse(List<CategoryViewDto> categoryViewDtos)
         {
             CategoryViewDtos = categoryViewDtos;

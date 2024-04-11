@@ -17,6 +17,11 @@ namespace Application.Features.Comments.Commands.CreateComment
         public int Dislikes { get; set; }
         public int? ParentCommentId { get; set; }
 
+        public CreateCommentCommandResponse()
+        {
+            
+        }
+
         public CreateCommentCommandResponse(int id, int? blogId, string? userName, string? guestName, string commentContent, int likes, int dislikes, int? parentCommentId)
         {
             Id = id;

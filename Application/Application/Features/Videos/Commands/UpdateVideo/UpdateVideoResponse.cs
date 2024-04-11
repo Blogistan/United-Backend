@@ -10,6 +10,10 @@ namespace Application.Features.Videos.Commands.UpdateVideo
         public string Description { get; set; }
         public int WatchCount { get; set; }
 
+        public UpdateVideoResponse()
+        {
+            
+        }
         public UpdateVideoResponse(int id, string title, string videoUrl, string description, int watchCount)
         {
             Id = id;

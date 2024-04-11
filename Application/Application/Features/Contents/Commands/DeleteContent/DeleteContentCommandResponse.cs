@@ -11,6 +11,10 @@ namespace Application.Features.Contents.Commands.DeleteContent
 
         public string ContentPragraph { get; set; } = string.Empty;
 
+        public DeleteContentCommandResponse()
+        {
+            
+        }
         public DeleteContentCommandResponse(int id, string title, string? contentImageUrl, string contentPragraph)
         {
             Id = id;

@@ -10,6 +10,10 @@ namespace Application.Features.Videos.Commands.DeleteVideo
         public string Description { get; set; }
         public int WatchCount { get; set; }
 
+        public DeleteVideoResponse()
+        {
+            
+        }
         public DeleteVideoResponse(int id, string title, string videoUrl, string description, int watchCount)
         {
             Id = id;

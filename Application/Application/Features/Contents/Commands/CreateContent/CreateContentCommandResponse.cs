@@ -11,6 +11,10 @@ namespace Application.Features.Contents.Commands.CreateContent
 
         public string ContentPragraph { get; set; } = string.Empty;
 
+        public CreateContentCommandResponse()
+        {
+            
+        }
         public CreateContentCommandResponse(int id, string title, string? contentImageUrl, string contentPragraph)
         {
             this.Id = id;

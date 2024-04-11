@@ -13,6 +13,11 @@ namespace Application.Features.Comments.Queries.IncreaseLikeOfCommentQuery
         public int Dislikes { get; set; }
         public int? ParentCommentId { get; set; }
 
+
+        public IncreaseLikeOfCommentQueryResponse()
+        {
+            
+        }
         public IncreaseLikeOfCommentQueryResponse(int id, int? blogId, string? userName, string? guestName, string commentContent, int likes, int dislikes, int? parentCommentId)
         {
             this.Id = id;

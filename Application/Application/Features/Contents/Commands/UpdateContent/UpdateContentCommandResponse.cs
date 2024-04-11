@@ -12,6 +12,10 @@ namespace Application.Features.Contents.Commands.UpdateContent
         public string ContentPragraph { get; set; } = string.Empty;
 
 
+        public UpdateContentCommandResponse()
+        {
+            
+        }
         public UpdateContentCommandResponse(int id, string title, string? contentImageUrl, string contentPragraph)
         {
             Id = id;

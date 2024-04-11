@@ -8,6 +8,10 @@ namespace Application.Features.Categories.Commands.CreateCategory
         public string CategoryName { get; set; }
         public int? ParentCategroyId { get; set; }
 
+        public CreateCategoryResponse()
+        {
+            
+        }
         public CreateCategoryResponse(int id, string categoryName, int? parentCategroyId)
         {
             Id = id;

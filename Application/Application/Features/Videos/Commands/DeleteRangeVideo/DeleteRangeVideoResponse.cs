@@ -7,6 +7,10 @@ namespace Application.Features.Videos.Commands.DeleteRangeVideo
     {
         public List<VideoViewDto> Items { get; set; }
 
+        public DeleteRangeVideoResponse()
+        {
+            
+        }
         public DeleteRangeVideoResponse(List<VideoViewDto> items)
         {
             Items = items;

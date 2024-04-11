@@ -17,6 +17,10 @@ namespace Application.Features.Comments.Commands.UpdateComment
         public int? ParentCommentId { get; set; }
         public int? BlogId { get; set; }
 
+        public UpdateCommentResponse()
+        {
+            
+        }
         public UpdateCommentResponse(int id, string? userName, string? guestName, string commentContent, int likes, int dislikes, int? parentCommentId, int? blogId)
         {
             Id = id;

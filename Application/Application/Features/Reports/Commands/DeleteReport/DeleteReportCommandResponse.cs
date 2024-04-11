@@ -8,6 +8,10 @@ namespace Application.Features.Reports.Commands.DeleteReport
         public int ReportType { get; set; } 
         public string ReportDescription { get; set; } = string.Empty;
 
+        public DeleteReportCommandResponse()
+        {
+            
+        }
         public DeleteReportCommandResponse(Guid id, int reportType, string reportDescription)
         {
             Id = id;

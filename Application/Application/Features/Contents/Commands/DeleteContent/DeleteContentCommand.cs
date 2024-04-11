@@ -23,7 +23,7 @@ namespace Application.Features.Contents.Commands.DeleteContent
                 var content = await contentRepository.GetAsync(x => x.Id == request.Id);
 
                 Content deletedContent = await contentRepository.DeleteAsync(content);
-
+             
                 return new DeleteContentCommandResponse
                 {
 

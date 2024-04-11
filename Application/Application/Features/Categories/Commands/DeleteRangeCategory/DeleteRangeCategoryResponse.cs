@@ -7,6 +7,10 @@ namespace Application.Features.Categories.Commands.DeleteRangeCategory
     {
         public List<CategoryViewDto> CategoryViewDtos { get; set; }
 
+        public DeleteRangeCategoryResponse()
+        {
+            
+        }
         public DeleteRangeCategoryResponse(List<CategoryViewDto> categoryViewDtos)
         {
             CategoryViewDtos = categoryViewDtos;

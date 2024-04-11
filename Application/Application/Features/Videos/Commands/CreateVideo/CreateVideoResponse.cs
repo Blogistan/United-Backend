@@ -10,6 +10,11 @@ namespace Application.Features.Videos.Commands.CreateVideo
         public string Description { get; set; }
         public int WatchCount { get; set; }
 
+        public CreateVideoResponse()
+        {
+            
+        }
+
         public CreateVideoResponse(int id, string title, string videoUrl, string description, int watchCount)
         {
             Id = id;

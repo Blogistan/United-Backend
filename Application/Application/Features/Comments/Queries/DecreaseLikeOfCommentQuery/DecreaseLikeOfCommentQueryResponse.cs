@@ -14,6 +14,11 @@ namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
         public int Dislikes { get; set; }
         public int? ParentCommentId { get; set; }
 
+
+        public DecreaseLikeOfCommentQueryResponse()
+        {
+            
+        }
         public DecreaseLikeOfCommentQueryResponse(int id, int? blogId, string? userName, string? guestName, string commentContent, int likes, int dislikes, int? parentCommentId)
         {
             Id = id;

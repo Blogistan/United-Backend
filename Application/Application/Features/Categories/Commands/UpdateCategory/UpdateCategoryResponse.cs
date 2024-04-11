@@ -8,6 +8,11 @@ namespace Application.Features.Categories.Commands.UpdateCategory
         public string CategoryName { get; set; }
         public int ParentCategroyId { get; set; }
 
+        public UpdateCategoryResponse()
+        {
+            
+        }
+
         public UpdateCategoryResponse(int ıd, string categoryName, int parentCategroyId)
         {
             Id = ıd;

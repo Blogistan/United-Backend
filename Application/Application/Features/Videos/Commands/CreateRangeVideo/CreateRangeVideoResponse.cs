@@ -7,6 +7,11 @@ namespace Application.Features.Videos.Commands.CreateRangeVideo
     {
         public List<VideoViewDto> Items { get; set; }
 
+
+        public CreateRangeVideoResponse()
+        {
+            
+        }
         public CreateRangeVideoResponse(List<VideoViewDto> items)
         {
             Items = items;

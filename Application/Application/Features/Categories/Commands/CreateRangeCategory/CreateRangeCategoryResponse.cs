@@ -8,6 +8,10 @@ namespace Application.Features.Categories.Commands.CreateRangeCategory
     {
         public List<CategoryViewDto> CategoryViewDtos { get; set; }
 
+        public CreateRangeCategoryResponse()
+        {
+            
+        }
         public CreateRangeCategoryResponse(List<CategoryViewDto> categoryViewDtos)
         {
             CategoryViewDtos = categoryViewDtos;

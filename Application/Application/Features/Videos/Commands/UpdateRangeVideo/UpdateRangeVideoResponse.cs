@@ -7,6 +7,10 @@ namespace Application.Features.Videos.Commands.UpdateRangeVideo
     {
         public List<VideoViewDto> Items { get; set; }
 
+        public UpdateRangeVideoResponse()
+        {
+            
+        }
         public UpdateRangeVideoResponse(List<VideoViewDto> items)
         {
             Items = items;
