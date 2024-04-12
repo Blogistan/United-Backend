@@ -1,14 +1,16 @@
 ﻿using Application.Features.SiteUsers.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.SiteUsers.Commands.DeleteSiteUser
 {
-    public class DeleteSiteUserCommand : IRequest<DeleteSiteUserCommandResponse>
+    public class DeleteSiteUserCommand : IRequest<DeleteSiteUserCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin" };
 
         public class DeleteSiteUserCommandHandler : IRequestHandler<DeleteSiteUserCommand, DeleteSiteUserCommandResponse>
         {

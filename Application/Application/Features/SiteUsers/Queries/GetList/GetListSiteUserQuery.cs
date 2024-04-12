@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
 using Domain.Entities;
@@ -7,9 +8,10 @@ using MediatR;
 
 namespace Application.Features.SiteUsers.Queries.GetList
 {
-    public class GetListSiteUserQuery : IRequest<GetListSiteUserQueryResponse>
+    public class GetListSiteUserQuery : IRequest<GetListSiteUserQueryResponse>,ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin" };
 
         public GetListSiteUserQuery()
         {

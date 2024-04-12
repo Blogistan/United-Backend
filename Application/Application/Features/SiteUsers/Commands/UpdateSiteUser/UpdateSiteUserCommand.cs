@@ -1,19 +1,21 @@
 ﻿using Application.Features.SiteUsers.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Security.Hashing;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
 {
-    public class UpdateSiteUserCommand : IRequest<UpdateSiteUserCommandResponse>
+    public class UpdateSiteUserCommand : IRequest<UpdateSiteUserCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin" };w
 
         public UpdateSiteUserCommand()
         {

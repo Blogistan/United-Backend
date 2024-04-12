@@ -2,18 +2,21 @@
 using Application.Notifications.RegisterNotification;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Security.Hashing;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.SiteUsers.Commands.CreateSiteUser
 {
-    public class CreateSiteUserCommand : IRequest<CreateSiteUserResponse>
+    public class CreateSiteUserCommand : IRequest<CreateSiteUserResponse>, ISecuredRequest
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+
+        string[] ISecuredRequest.Roles => new string[] { "Admin"};
 
         public CreateSiteUserCommand()
         {
