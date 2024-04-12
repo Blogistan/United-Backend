@@ -1,6 +1,7 @@
 ﻿using Application.Features.SiteUsers.Commands.CreateSiteUser;
 using Application.Features.SiteUsers.Commands.DeleteSiteUser;
 using Application.Features.SiteUsers.Commands.UpdateSiteUser;
+using Application.Features.SiteUsers.Queries.GetById;
 using Application.Features.SiteUsers.Queries.GetList;
 using Core.Application.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,12 @@ namespace UnitedAPI.Controllers
         {
             GetListSiteUserQuery getListSiteUserQuery = new GetListSiteUserQuery(pageRequest);
             GetListSiteUserQueryResponse response = await Mediator.Send(getListSiteUserQuery);
+            return Ok(response);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetById([FromQuery] GetByIdSiteUserQuery getByIdSiteUserQuery)
+        {
+            GetByIdSiteUserQueryResponse response = await Mediator.Send(getByIdSiteUserQuery);
             return Ok(response);
         }
 

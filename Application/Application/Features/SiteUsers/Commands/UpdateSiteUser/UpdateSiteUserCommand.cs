@@ -15,7 +15,7 @@ namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        string[] ISecuredRequest.Roles => new string[] { "Admin" };w
+        string[] ISecuredRequest.Roles => new string[] { "Admin" };
 
         public UpdateSiteUserCommand()
         {

@@ -23,6 +23,8 @@ namespace Application.Features.SiteUsers.Profiles
 
             CreateMap<SiteUser, SiteUserListViewDto>().ReverseMap();
             CreateMap<IPaginate<SiteUser>, GetListSiteUserQueryResponse>().ReverseMap();
+
+
         }
     }
 }
