@@ -28,4 +28,10 @@
     <ProjectReference Include="..\corePackages\Core.Test\Core.Test\Core.Test.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Auth\Commands\" />
+    <Folder Include="Features\Auth\Commands\Login\" />
+    <Folder Include="Features\Users\Queries\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,9 @@
-﻿using AuthTest.Mocks.FakeDatas;
+﻿using Application.Features.SiteUsers.Commands.CreateSiteUser;
+using Application.Features.SiteUsers.Commands.DeleteSiteUser;
+using Application.Features.SiteUsers.Commands.UpdateSiteUser;
+using Application.Features.SiteUsers.Queries.GetById;
+using Application.Features.SiteUsers.Queries.GetList;
+using AuthTest.Mocks.FakeDatas;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthTest.DependencyResolvers
@@ -8,15 +13,13 @@ namespace AuthTest.DependencyResolvers
         public static void AddUserServices(this IServiceCollection services)
         {
             services.AddTransient<SiteUserFakeData>();
-
-            // To Do: SiteUser commands will be created.
-            //services.AddTransient<CreateUserCommand>();
-            //services.AddTransient<UpdateUserCommand>();
-            //services.AddTransient<DeleteUserCommand>();
-            //services.AddTransient<GetByIdUserQuery>();
-            //services.AddTransient<GetListUserQuery>();
-            //services.AddSingleton<CreateUserCommandValidator>();
-            //services.AddSingleton<UpdateUserCommandValidator>();
+            services.AddTransient<CreateSiteUserCommand>();
+            services.AddTransient<UpdateSiteUserCommand>();
+            services.AddTransient<DeleteSiteUserCommand>();
+            services.AddTransient<GetByIdSiteUserQuery>();
+            services.AddTransient<GetListSiteUserQuery>();
+            services.AddSingleton<CreateSiteUserCommandValidator>();
+            services.AddSingleton<UpdateSiteUserCommandValidator>();
         }
     }
 }
