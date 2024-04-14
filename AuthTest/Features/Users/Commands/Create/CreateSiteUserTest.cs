@@ -53,7 +53,7 @@ namespace AuthTest.Features.Users.Commands.Create
 
             #region Arrange
             CreateSiteUserResponse result = await createSiteUserCommandHandler.Handle(createSiteUserCommand, CancellationToken.None);
-            #region 
+            #endregion 
 
             #region Assert
 
@@ -78,7 +78,7 @@ namespace AuthTest.Features.Users.Commands.Create
 
             #region Assert
             Assert.ThrowsAsync<BusinessException>(Action);
-            #region
+            #endregion
 
         }
         [Fact]
@@ -95,7 +95,7 @@ namespace AuthTest.Features.Users.Commands.Create
 
             ValidationFailure? result = commandValidator.
                 Validate(createSiteUserCommand).Errors.FirstOrDefault(x => x.PropertyName == "Password" && x.ErrorCode == ValidationErrorCodes.MinimumLengthValidator);
-            #region
+            #endregion
 
             #region Assert
             Assert.Equal(ValidationErrorCodes.MinimumLengthValidator, result?.ErrorCode);
