@@ -8,7 +8,7 @@ using static Application.Features.SiteUsers.Commands.CreateSiteUser.CreateSiteUs
 
 namespace AuthTest.Features.Users.Commands.Create
 {
-    public class CreateSiteUserTest : UserMockRepository
+    public class CreateSiteUserTest : UserMockRepository, IClassFixture<Startup>
     {
         private readonly CreateSiteUserCommandValidator commandValidator;
         private readonly CreateSiteUserCommand createSiteUserCommand;
@@ -77,7 +77,7 @@ namespace AuthTest.Features.Users.Commands.Create
             #endregion
 
             #region Assert
-            Assert.ThrowsAsync<BusinessException>(Action);
+            await Assert.ThrowsAsync<BusinessException>(Action);
             #endregion
 
         }
