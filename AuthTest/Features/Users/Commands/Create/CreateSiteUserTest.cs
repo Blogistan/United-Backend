@@ -14,8 +14,10 @@ namespace AuthTest.Features.Users.Commands.Create
         private readonly CreateSiteUserCommand createSiteUserCommand;
         private readonly CreateSiteUserCommandHandler createSiteUserCommandHandler;
 
-        public CreateSiteUserTest(SiteUserFakeData siteUserFakeData, CreateSiteUserCommandValidator commandValidator, CreateSiteUserCommand createSiteUserCommand, CreateSiteUserCommandHandler createSiteUserCommandHandler, Startup startup) : base(siteUserFakeData)
+        public CreateSiteUserTest(SiteUserFakeData siteUserFakeData, CreateSiteUserCommandValidator commandValidator, CreateSiteUserCommand createSiteUserCommand, 
+            CreateSiteUserCommandHandler createSiteUserCommandHandler, Startup startup) : base(siteUserFakeData)
         {
+            
             this.commandValidator = commandValidator;
             this.createSiteUserCommand = createSiteUserCommand;
             this.createSiteUserCommandHandler = new CreateSiteUserCommandHandler(MockRepository.Object, Mapper, BusinessRules, MockMediator.Object);

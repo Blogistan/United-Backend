@@ -10,8 +10,6 @@ namespace AuthTest
         {
             services.AddUserServices();
             services.AddAuthServices();
-
-
         }
     }
 
