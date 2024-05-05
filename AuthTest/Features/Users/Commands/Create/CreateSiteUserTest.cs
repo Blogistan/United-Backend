@@ -33,13 +33,13 @@ namespace AuthTest.Features.Users.Commands.Create
             #endregion
 
             #region Arrange
-            ValidationFailure? result = commandValidator.Validate(createSiteUserCommand).Errors.FirstOrDefault(x => x.PropertyName == "Email" && x.ErrorCode == ValidationErrorCodes.NotEmptyValidator);
+            ValidationFailure? result = commandValidator.Validate(createSiteUserCommand).Errors.FirstOrDefault(x => x.PropertyName == "Email" && x.ErrorCode == ValidationErrorCodes.EmailValidator);
 
             #endregion
 
             #region Assert
 
-            Assert.Equal(ValidationErrorCodes.NotEmptyValidator, result?.ErrorCode);
+            Assert.Equal(ValidationErrorCodes.EmailValidator, result?.ErrorCode);
 
             #endregion
         }
@@ -69,7 +69,7 @@ namespace AuthTest.Features.Users.Commands.Create
             #region Act
             createSiteUserCommand.FirstName = "First";
             createSiteUserCommand.LastName = "Last";
-            createSiteUserCommand.Email = "test123@mailinator.com";
+            createSiteUserCommand.Email = "test@email.com";
             createSiteUserCommand.Password = "password";
             #endregion
 
