@@ -13,7 +13,7 @@ namespace AuthTest.Features.Users.Queries.GetById
         public GetByIdSiteUserQueryTest(SiteUserFakeData siteUserFakeData, GetByIdSiteUserQuery getByIdSiteUserQuery) : base(siteUserFakeData)
         {
             this.getByIdSiteUserQuery = getByIdSiteUserQuery;
-            this.getByIdSiteUserQueryHandler = new GetByIdSiteUserQueryHandler(MockRepository.Object, Mapper);
+            this.getByIdSiteUserQueryHandler = new GetByIdSiteUserQueryHandler(MockRepository.Object, Mapper,BusinessRules);
         }
         [Fact]
         public async Task GetByIdUserShouldSuccessfully()
