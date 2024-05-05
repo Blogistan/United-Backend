@@ -1,4 +1,4 @@
-﻿using Application.Features.Auth.Profiles;
+﻿using Application.Features.SiteUsers.Profiles;
 using Application.Features.SiteUsers.Rules;
 using Application.Services.Repositories;
 using AuthTest.Mocks.FakeDatas;

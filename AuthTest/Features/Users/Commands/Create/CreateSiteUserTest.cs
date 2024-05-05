@@ -14,8 +14,7 @@ namespace AuthTest.Features.Users.Commands.Create
         private readonly CreateSiteUserCommand createSiteUserCommand;
         private readonly CreateSiteUserCommandHandler createSiteUserCommandHandler;
 
-        public CreateSiteUserTest(SiteUserFakeData siteUserFakeData, CreateSiteUserCommandValidator commandValidator, CreateSiteUserCommand createSiteUserCommand, 
-            CreateSiteUserCommandHandler createSiteUserCommandHandler, Startup startup) : base(siteUserFakeData)
+        public CreateSiteUserTest(SiteUserFakeData siteUserFakeData, CreateSiteUserCommandValidator commandValidator, CreateSiteUserCommand createSiteUserCommand,Startup startup) : base(siteUserFakeData)
         {
             
             this.commandValidator = commandValidator;
@@ -28,7 +27,7 @@ namespace AuthTest.Features.Users.Commands.Create
         {
             #region Act
             createSiteUserCommand.FirstName = "First";
-            createSiteUserCommand.LastName = "Last";
+            createSiteUserCommand.LastName = "First";
             createSiteUserCommand.Email = "NotEmailFormat";
             createSiteUserCommand.Password = "password";
             #endregion
@@ -91,7 +90,7 @@ namespace AuthTest.Features.Users.Commands.Create
             createSiteUserCommand.FirstName = "First";
             createSiteUserCommand.LastName = "Last";
             createSiteUserCommand.Email = "NotEmailFormat";
-            createSiteUserCommand.Password = "password";
+            createSiteUserCommand.Password = "123";
             #endregion
 
             #region Assert

@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Application.Features.SiteUsers.Commands.CreateSiteUser
 {
-    public class CreateSiteUserCommand : IRequest<CreateSiteUserResponse>, ISecuredRequest
+    public class CreateSiteUserCommand : IRequest<CreateSiteUserResponse>,ISecuredRequest
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

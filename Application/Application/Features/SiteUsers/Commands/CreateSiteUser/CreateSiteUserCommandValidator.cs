@@ -10,7 +10,7 @@ namespace Application.Features.SiteUsers.Commands.CreateSiteUser
             RuleFor(x => x.LastName).NotEmpty();
             RuleFor(x => x.Email).NotEmpty();
             RuleFor(x => x.Password).MinimumLength(6).NotEmpty();
-            RuleFor(x => x.Email).EmailAddress().NotEmpty(); ;
+            RuleFor(x => x.Email).EmailAddress().NotEmpty();
         }
     }
 }

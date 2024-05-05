@@ -20,6 +20,7 @@ namespace AuthTest.DependencyResolvers
             services.AddTransient<GetListSiteUserQuery>();
             services.AddSingleton<CreateSiteUserCommandValidator>();
             services.AddSingleton<UpdateSiteUserCommandValidator>();
+            
         }
     }
 }

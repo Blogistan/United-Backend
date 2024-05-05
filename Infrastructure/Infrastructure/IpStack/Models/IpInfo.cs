@@ -25,7 +25,7 @@
     }
     public class Location
     {
-        public int Geoname_Id { get; set; }
+        public int geoname_id { get; set; } = 0;
         public string Capital { get; set; } = String.Empty;
         public List<Language> Languages { get; set; }
         public string Country_Flag { get; set; } = String.Empty;
