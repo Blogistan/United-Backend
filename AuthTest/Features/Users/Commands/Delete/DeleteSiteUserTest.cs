@@ -6,11 +6,11 @@ using static Application.Features.SiteUsers.Commands.DeleteSiteUser.DeleteSiteUs
 
 namespace AuthTest.Features.Users.Commands.Delete
 {
-    public class DeleteSiteUserTest : UserMockRepository
+    public class DeleteSiteUserTest : UserMockRepository,IClassFixture<Startup>
     {
         private readonly DeleteSiteUserCommandHandler deleteSiteUserCommandHandler;
         private readonly DeleteSiteUserCommand deleteSiteUserCommand;
-        public DeleteSiteUserTest(SiteUserFakeData userFakeData, DeleteSiteUserCommandHandler deleteSiteUserCommandHandler, DeleteSiteUserCommand deleteSiteUserCommand) : base(userFakeData)
+        public DeleteSiteUserTest(SiteUserFakeData userFakeData,DeleteSiteUserCommand deleteSiteUserCommand) : base(userFakeData)
         {
             this.deleteSiteUserCommandHandler = new DeleteSiteUserCommandHandler(MockRepository.Object, Mapper, BusinessRules);
             this.deleteSiteUserCommand = deleteSiteUserCommand;

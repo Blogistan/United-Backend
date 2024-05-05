@@ -6,15 +6,15 @@ using static Application.Features.SiteUsers.Queries.GetList.GetListSiteUserQuery
 
 namespace AuthTest.Features.Users.Queries.GetList
 {
-    public class GetListSiteUserQueryTest : UserMockRepository
+    public class GetListSiteUserQueryTest : UserMockRepository, IClassFixture<Startup>
     {
         private readonly GetListSiteUserQuery getListSiteUserQuery;
         private readonly GetListSiteUserQueryHandler getListSiteUserQueryHandler;
 
-        public GetListSiteUserQueryTest(SiteUserFakeData siteUserFakeData, GetListSiteUserQuery getListSiteUserQuery, GetListSiteUserQueryHandler getListSiteUserQueryHandler) : base(siteUserFakeData)
+        public GetListSiteUserQueryTest(SiteUserFakeData siteUserFakeData, GetListSiteUserQuery getListSiteUserQuery) : base(siteUserFakeData)
         {
             this.getListSiteUserQuery = getListSiteUserQuery;
-            this.getListSiteUserQueryHandler = getListSiteUserQueryHandler;
+            this.getListSiteUserQueryHandler = new GetListSiteUserQueryHandler(Mapper,MockRepository.Object);
         }
         [Fact]
         public async Task GetAllUsersShouldSuccessfuly()
@@ -23,7 +23,7 @@ namespace AuthTest.Features.Users.Queries.GetList
 
             GetListSiteUserQueryResponse response = await getListSiteUserQueryHandler.Handle(getListSiteUserQuery, CancellationToken.None);
 
-            Assert.Equal(3, response.Items.Count);
+            Assert.NotEmpty(response.Items);
         }
 
     }

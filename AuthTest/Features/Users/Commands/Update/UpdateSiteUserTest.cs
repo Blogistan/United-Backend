@@ -8,13 +8,13 @@ using static Application.Features.SiteUsers.Commands.UpdateSiteUser.UpdateSiteUs
 
 namespace AuthTest.Features.Users.Commands.Update
 {
-    public class UpdateSiteUserTest : UserMockRepository
+    public class UpdateSiteUserTest : UserMockRepository,IClassFixture<Startup>
     {
         private readonly UpdateSiteUserCommandValidator validator;
         private readonly UpdateSiteUserCommand updateSiteUserCommand;
         private readonly UpdateSiteUserCommandHandler updateSiteUserCommandHandler;
 
-        public UpdateSiteUserTest(SiteUserFakeData siteUserFakeData, UpdateSiteUserCommandValidator validator, UpdateSiteUserCommand updateSiteUserCommand, UpdateSiteUserCommandHandler updateSiteUserCommandHandler) : base(siteUserFakeData)
+        public UpdateSiteUserTest(SiteUserFakeData siteUserFakeData, UpdateSiteUserCommandValidator validator, UpdateSiteUserCommand updateSiteUserCommand) : base(siteUserFakeData)
         {
             this.validator = validator;
             this.updateSiteUserCommand = updateSiteUserCommand;

@@ -6,11 +6,11 @@ using static Application.Features.SiteUsers.Queries.GetById.GetByIdSiteUserQuery
 
 namespace AuthTest.Features.Users.Queries.GetById
 {
-    public class GetByIdSiteUserQueryTest : UserMockRepository
+    public class GetByIdSiteUserQueryTest : UserMockRepository,IClassFixture<Startup>
     {
         private readonly GetByIdSiteUserQuery getByIdSiteUserQuery;
         private readonly GetByIdSiteUserQueryHandler getByIdSiteUserQueryHandler;
-        public GetByIdSiteUserQueryTest(SiteUserFakeData siteUserFakeData, GetByIdSiteUserQuery getByIdSiteUserQuery, GetByIdSiteUserQueryHandler getByIdSiteUserQueryHandler) : base(siteUserFakeData)
+        public GetByIdSiteUserQueryTest(SiteUserFakeData siteUserFakeData, GetByIdSiteUserQuery getByIdSiteUserQuery) : base(siteUserFakeData)
         {
             this.getByIdSiteUserQuery = getByIdSiteUserQuery;
             this.getByIdSiteUserQueryHandler = new GetByIdSiteUserQueryHandler(MockRepository.Object, Mapper);
