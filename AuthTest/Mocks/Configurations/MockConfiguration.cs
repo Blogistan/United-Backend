@@ -2,7 +2,7 @@
 
 namespace AuthTest.Mocks.Configurations
 {
-    public class MockConfiguration
+    public static class MockConfiguration
     {
         public static IConfiguration GetMockConfiguration()
         {
