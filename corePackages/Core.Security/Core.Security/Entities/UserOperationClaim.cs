@@ -10,6 +10,10 @@ public class UserOperationClaim : Entity<int>
     public virtual User User { get; set; } = null!;
     public virtual OperationClaim OperationClaim { get; set; } = null!;
 
+    public UserOperationClaim()
+    {
+        
+    }
     public UserOperationClaim(int userId, int operationClaimId)
     {
         UserId = userId;
