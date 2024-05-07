@@ -24,12 +24,12 @@ namespace AuthTest.Features.Auth.Commands.Login
         private readonly LoginCommandHandler loginCommandHandler;
         private readonly LoginCommandValidator validationRules;
         private readonly IConfiguration configuration;
-        public LoginTest(LoginCommand loginCommand, LoginCommandHandler loginCommandHandler, LoginCommandValidator validationRules, IConfiguration configuration, RefreshTokenFakeData refreshTokenFakeData,
-            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData)
+        public LoginTest(RefreshTokenFakeData refreshTokenFakeData,
+            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData,UserOperationClaimFakeData userOperationClaimFakeData)
         {
-            
-            #region Mock Repositories
 
+            #region Mock Repositories
+            this.configuration = MockConfiguration.GetMockConfiguration();
             IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(operationClaimFakeData).GetOperationClaimRepostiory();
             IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData).GetRefreshTokenRepository();
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
@@ -50,16 +50,36 @@ namespace AuthTest.Features.Auth.Commands.Login
 
             #endregion
             HttpClient httpClient = new HttpClient();
-            IAuthService authService = new AuthService(tokenHelper,refreshTokenRepository,siteUserRepository,userEmailAuthenticatorRepository,userOperationClaimRepository,mailService,otpAuthenticatorHelper,emailAuthenticatorHelper,otpAuthenticatorRepository,httpClient,configuration);
+            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration);
             AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
+
             this.loginCommand = new LoginCommand();
-            this.loginCommandHandler = new LoginCommandHandler(authService,authBussinessRules,siteUserRepository);
             this.validationRules = new LoginCommandValidator();
-            this.configuration = MockConfiguration.GetMockConfiguration();
+            this.loginCommandHandler = new LoginCommandHandler(authService, authBussinessRules, siteUserRepository);
+
 
         }
+        [Fact]
+        public async Task SuccessfullLoginShouldReturnAccessToken()
+        {
+            // loginCommand.UserForLoginDto = new() { Email = "string@mailinator.com", Password = "string123" };
+            loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = "123456" };
 
+            LoginResponse loginResponse = await loginCommandHandler.Handle(loginCommand, CancellationToken.None);
+
+            Assert.NotNull(loginResponse.AccessToken.Token);
+        }
+        [Fact]
+        public async Task AccessTokenShouldHaveValidExpirationTime()
+        {
+            loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = "123456" };
+            LoginResponse loginResponse = await loginCommandHandler.Handle(loginCommand, CancellationToken.None);
+
+            TokenOptions? tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>();
+            bool tokenExpiresInTime = DateTime.Now.AddMinutes(tokenOptions.AccessTokenExpiration + 1) > loginResponse.AccessToken.Expiration;
+            Assert.True(tokenExpiresInTime, "Access token expiration time is invalid.");
+        }
     }
 }
 
