@@ -15,7 +15,6 @@ namespace Application.Features.SiteUsers.Commands.CreateSiteUser
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-
         string[] ISecuredRequest.Roles => new string[] { "Admin"};
 
         public CreateSiteUserCommand()
