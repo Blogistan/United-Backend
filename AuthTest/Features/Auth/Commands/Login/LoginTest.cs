@@ -15,6 +15,8 @@ using AutoMapper;
 using Application.Features.Auth.Profiles;
 using Application.Features.Auth.Rules;
 using Application.Services.Auth;
+using Core.CrossCuttingConcerns.Exceptions.Types;
+using FluentValidation.TestHelper;
 
 namespace AuthTest.Features.Auth.Commands.Login
 {
@@ -25,7 +27,7 @@ namespace AuthTest.Features.Auth.Commands.Login
         private readonly LoginCommandValidator validationRules;
         private readonly IConfiguration configuration;
         public LoginTest(RefreshTokenFakeData refreshTokenFakeData,
-            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData,UserOperationClaimFakeData userOperationClaimFakeData)
+            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData)
         {
 
             #region Mock Repositories
@@ -80,6 +82,39 @@ namespace AuthTest.Features.Auth.Commands.Login
             bool tokenExpiresInTime = DateTime.Now.AddMinutes(tokenOptions.AccessTokenExpiration + 1) > loginResponse.AccessToken.Expiration;
             Assert.True(tokenExpiresInTime, "Access token expiration time is invalid.");
         }
+        [Fact]
+        public async Task LoginWithWrongPasswordShouldThrowException()
+        {
+            loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = "123456" };
+            await Assert.ThrowsAsync<BusinessException>(async () =>
+            {
+                await loginCommandHandler.Handle(loginCommand, CancellationToken.None);
+            });
+        }
+        [Fact]
+        public async Task LoginWithWrongEmailShouldThrowException()
+        {
+            loginCommand.UserForLoginDto = new() { Email = "example213123@united.io", Password = "123456" };
+            await Assert.ThrowsAsync<BusinessException>(async () =>
+            {
+                await loginCommandHandler.Handle(loginCommand, CancellationToken.None);
+            });
+        }
+        [Fact]
+        public async Task LoginWithInvalidLengthPasswordShouldThrowException()
+        {
+            loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = "1" };
+            TestValidationResult<LoginCommand> testValidationResult = validationRules.TestValidate(loginCommand);
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.UserForLoginDto.Password);
+        }
+        [Fact]
+        public async Task LoginWithNullPasswordShouldThrowException()
+        {
+            loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = null! };
+            TestValidationResult<LoginCommand> testValidationResult = validationRules.TestValidate(loginCommand);
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.UserForLoginDto.Password);
+        }
+
     }
 }
 
