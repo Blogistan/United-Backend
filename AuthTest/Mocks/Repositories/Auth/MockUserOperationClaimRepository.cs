@@ -51,10 +51,10 @@ namespace AuthTest.Mocks.Repositories.Auth
                     CancellationToken cancellationToken
                     ) =>
                 {
-                    IPaginate<OperationClaim>? operationClaims = null;
+                    IPaginate<UserOperationClaim>? operationClaims = null;
                     if (predicate != null)
-                        operationClaims.Items.Add((OperationClaim)userOperationClaimFakeData.Data.Where(predicate.Compile()).Select(oc=>new OperationClaim { Id=oc.Id}));
-                    return operationClaims;
+                        operationClaims.Items.Add((UserOperationClaim)userOperationClaimFakeData.Data.Where(predicate.Compile()).Select(oc=>new UserOperationClaim { Id=oc.Id,OperationClaimId=oc.OperationClaimId}));
+                    return  operationClaims;
                 });
 
             //mockRepo
