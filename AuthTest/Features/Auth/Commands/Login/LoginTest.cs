@@ -32,7 +32,7 @@ namespace AuthTest.Features.Auth.Commands.Login
 
             #region Mock Repositories
             this.configuration = MockConfiguration.GetMockConfiguration();
-            IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(operationClaimFakeData).GetOperationClaimRepostiory();
+            IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData).GetOperationClaimRepostiory();
             IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData).GetRefreshTokenRepository();
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
             MockEmailAuthenticatorRepository.GetEmailAuthenticatorRepositoryMock();

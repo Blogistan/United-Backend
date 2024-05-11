@@ -9,9 +9,9 @@ namespace AuthTest.Mocks.FakeDatas
         {
             return new List<UserOperationClaim>
             {
-            new() { Id = 1,OperationClaimId=1,UserId=123 },
-            new() { Id = 2,OperationClaimId=2,UserId=123 },
-            new() { Id = 3,OperationClaimId=3,UserId=123 },
+            new() { Id = 1,OperationClaimId=1,UserId=SiteUserFakeData.Ids[0] },
+            new() { Id = 2,OperationClaimId=2,UserId=SiteUserFakeData.Ids[0] },
+            new() { Id = 3,OperationClaimId=3,UserId=SiteUserFakeData.Ids[1] },
 
             };
         }
