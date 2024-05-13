@@ -1,17 +1,10 @@
 ﻿using Application.Services.Repositories;
 using AuthTest.Mocks.FakeDatas;
 using Core.Persistence.Paging;
-using Core.Persistence.Repositories;
 using Core.Security.Entities;
-using Domain.Entities;
-using MailKit.Search;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
 
 namespace AuthTest.Mocks.Repositories.Auth
 {
@@ -51,10 +44,24 @@ namespace AuthTest.Mocks.Repositories.Auth
                     CancellationToken cancellationToken
                     ) =>
                 {
-                    IPaginate<UserOperationClaim>? operationClaims = null;
-                    if (predicate != null)
-                        operationClaims.Items.Add((UserOperationClaim)userOperationClaimFakeData.Data.Where(predicate.Compile()).Select(oc=>new UserOperationClaim { Id=oc.Id,OperationClaimId=oc.OperationClaimId}));
-                    return  operationClaims;
+
+                    //IPaginate<UserOperationClaim>? operationClaims = new Paginate<UserOperationClaim>();
+                    //if (predicate != null)
+                    //    operationClaims.Items.Add((UserOperationClaim)userOperationClaimFakeData.Data.Where(predicate.Compile()).Select(oc=>new UserOperationClaim { Id=oc.Id,OperationClaimId=oc.OperationClaimId}));
+                    //return  operationClaims;
+
+                    var query = userOperationClaimFakeData.Data.AsQueryable();
+                    if (include != null)
+                    {
+                        query = include(query);
+                    }
+                    
+                    IPaginate<UserOperationClaim>? operationClaims = new Paginate<UserOperationClaim>
+                    {
+                        Items = query.ToList()
+                    };
+                    return operationClaims;
+                    
                 });
 
             //mockRepo
