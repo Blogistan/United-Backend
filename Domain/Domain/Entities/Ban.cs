@@ -5,7 +5,7 @@ namespace Domain.Entities
     public class Ban : Entity<Guid>
     {
         public Guid ReportID { get; set; }
-        public int UserID { get; set; }
+        public int? UserID { get; set; }
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }
