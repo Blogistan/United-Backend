@@ -11,9 +11,11 @@ namespace AuthTest.Mocks.Repositories.Auth
     public class MockUserOperationClaimRepository
     {
         private readonly UserOperationClaimFakeData userOperationClaimFakeData;
-        public MockUserOperationClaimRepository(UserOperationClaimFakeData userOperationClaimFakeData)
+        private readonly OperationClaimFakeData operationClaimFakeData;
+        public MockUserOperationClaimRepository(UserOperationClaimFakeData userOperationClaimFakeData, OperationClaimFakeData operationClaimFakeData)
         {
             this.userOperationClaimFakeData = userOperationClaimFakeData;
+            this.operationClaimFakeData = operationClaimFakeData;
         }
 
         public IUserOperationClaimRepository GetOperationClaimRepostiory()
@@ -51,26 +53,38 @@ namespace AuthTest.Mocks.Repositories.Auth
                     //return  operationClaims;
 
                     var query = userOperationClaimFakeData.Data.AsQueryable();
+
+
+                    if (predicate!=null)
+                    {
+                        query.Where(predicate);
+                    }
+
                     if (include != null)
                     {
                         query = include(query);
                     }
-                    
-                    IPaginate<UserOperationClaim>? operationClaims = new Paginate<UserOperationClaim>
+                    // Converting to list to avoid expression tree issues
+                    var userOperationClaimList = query.ToList();
+
+                    //Manually include OperationClaim data
+                    foreach (var item in userOperationClaimList)
                     {
-                        Items = query.ToList()
+                        item.OperationClaim = operationClaimFakeData.Data.FirstOrDefault(oc=>oc.Id==item.OperationClaimId);
+                    }
+
+
+                    var paginatedResult = new Paginate<UserOperationClaim>
+                    {
+                        Items=query.ToList(),
+                        Index=index,
+                        Size=size,
+                        From=index*size,
+                        Count=query.Count()
                     };
-                    return operationClaims;
+                    return paginatedResult;
                     
                 });
-
-            //mockRepo
-            //.Setup(s => s.GetOperationClaimsByUserIdAsync(It.IsAny<int>()))
-            //.Returns(async (int userId) =>
-            //{
-            //    var claims = userOperationClaims.ToList();
-            //    return await Task.FromResult((IList<OperationClaim>)claims);
-            //});
 
             return mockRepo.Object;
 

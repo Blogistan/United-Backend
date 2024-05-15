@@ -32,7 +32,7 @@ namespace AuthTest.Features.Auth.Commands.Login
 
             #region Mock Repositories
             this.configuration = MockConfiguration.GetMockConfiguration();
-            IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData).GetOperationClaimRepostiory();
+            IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData,operationClaimFakeData).GetOperationClaimRepostiory();
             IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData).GetRefreshTokenRepository();
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
             MockEmailAuthenticatorRepository.GetEmailAuthenticatorRepositoryMock();
@@ -85,7 +85,7 @@ namespace AuthTest.Features.Auth.Commands.Login
         [Fact]
         public async Task LoginWithWrongPasswordShouldThrowException()
         {
-            loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = "123456" };
+            loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = "48946985146584" };
             await Assert.ThrowsAsync<BusinessException>(async () =>
             {
                 await loginCommandHandler.Handle(loginCommand, CancellationToken.None);
