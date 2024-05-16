@@ -27,7 +27,7 @@ namespace AuthTest.Features.Auth.Commands.Login
         private readonly LoginCommandValidator validationRules;
         private readonly IConfiguration configuration;
         public LoginTest(RefreshTokenFakeData refreshTokenFakeData,
-            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData)
+            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData,BanFakeData banFakeData)
         {
 
             #region Mock Repositories
@@ -37,7 +37,7 @@ namespace AuthTest.Features.Auth.Commands.Login
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
             MockEmailAuthenticatorRepository.GetEmailAuthenticatorRepositoryMock();
             IOtpAuthenticatorRepository otpAuthenticatorRepository = MockOtpAuthRepository.GetOtpAuthenticatorRepository();
-            ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData).GetSiteUserRepository();
+            ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData,banFakeData).GetSiteUserRepository();
             #endregion
 
             #region Mock Helpers
@@ -113,6 +113,17 @@ namespace AuthTest.Features.Auth.Commands.Login
             loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = null! };
             TestValidationResult<LoginCommand> testValidationResult = validationRules.TestValidate(loginCommand);
             testValidationResult.ShouldHaveValidationErrorFor(x => x.UserForLoginDto.Password);
+        }
+        [Fact]
+        public async Task LoginWithBannedUserShouldThrownException()
+        {
+            // loginCommand.UserForLoginDto = new() { Email = "string@mailinator.com", Password = "string123" };
+            loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = "123456" };
+            
+            await Assert.ThrowsAsync<BusinessException>(async () =>
+            {
+                LoginResponse loginResponse = await loginCommandHandler.Handle(loginCommand, CancellationToken.None);
+            });
         }
 
     }

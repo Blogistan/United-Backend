@@ -2,6 +2,7 @@
 using AuthTest.Mocks.FakeDatas;
 using Core.Security.Entities;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System.Linq.Expressions;
@@ -12,9 +13,11 @@ namespace AuthTest.Mocks.Repositories.Auth
     {
 
         private readonly SiteUserFakeData siteUserFakeData;
-        public MockUserRepository(SiteUserFakeData siteUserFakeData)
+        private readonly BanFakeData banFakeData;
+        public MockUserRepository(SiteUserFakeData siteUserFakeData, BanFakeData banFakeData)
         {
             this.siteUserFakeData = siteUserFakeData;
+            this.banFakeData = banFakeData;
         }
         public ISiteUserRepository GetSiteUserRepository()
         {
@@ -36,8 +39,12 @@ namespace AuthTest.Mocks.Repositories.Auth
                     ) =>
                 {
                     SiteUser? user = null;
+
                     if (predicate != null)
                         user = siteUserFakeData.Data.Where(predicate.Compile()).FirstOrDefault();
+
+                    user.Bans = banFakeData.Data.Where(x => x.UserID == user.Id).ToList();
+
                     return user;
                 });
 
