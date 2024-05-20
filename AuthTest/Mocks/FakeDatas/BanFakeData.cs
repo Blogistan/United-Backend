@@ -10,7 +10,7 @@ namespace AuthTest.Mocks.FakeDatas
             return new List<Ban>
             {
                 new(){Id=Guid.NewGuid(),UserID=123,IsPerma=true,BanDetail="Test ban",BanStartDate=DateTime.UtcNow,BanEndDate=DateTime.UtcNow.AddYears(1)},
-                new(){Id=Guid.NewGuid(),UserID=234,IsPerma=true,BanDetail="Test ban",BanStartDate=DateTime.UtcNow,BanEndDate=DateTime.UtcNow.AddYears(1)}
+                new(){Id=Guid.NewGuid(),UserID=234,IsPerma=false,BanDetail="Test ban",BanStartDate=DateTime.UtcNow,BanEndDate=DateTime.UtcNow.AddYears(1)}
             };
         }
     }
