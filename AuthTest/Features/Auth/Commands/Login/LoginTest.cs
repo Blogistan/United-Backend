@@ -27,17 +27,17 @@ namespace AuthTest.Features.Auth.Commands.Login
         private readonly LoginCommandValidator validationRules;
         private readonly IConfiguration configuration;
         public LoginTest(RefreshTokenFakeData refreshTokenFakeData,
-            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData,BanFakeData banFakeData)
+            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData)
         {
 
             #region Mock Repositories
             this.configuration = MockConfiguration.GetMockConfiguration();
-            IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData,operationClaimFakeData).GetOperationClaimRepostiory();
+            IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData, operationClaimFakeData).GetOperationClaimRepostiory();
             IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData).GetRefreshTokenRepository();
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
             MockEmailAuthenticatorRepository.GetEmailAuthenticatorRepositoryMock();
             IOtpAuthenticatorRepository otpAuthenticatorRepository = MockOtpAuthRepository.GetOtpAuthenticatorRepository();
-            ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData,banFakeData).GetSiteUserRepository();
+            ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData, banFakeData).GetSiteUserRepository();
             #endregion
 
             #region Mock Helpers
@@ -119,7 +119,16 @@ namespace AuthTest.Features.Auth.Commands.Login
         {
             // loginCommand.UserForLoginDto = new() { Email = "string@mailinator.com", Password = "string123" };
             loginCommand.UserForLoginDto = new() { Email = "example2@united.io", Password = "123456" };
-            
+
+            await Assert.ThrowsAsync<BusinessException>(async () =>
+            {
+                LoginResponse loginResponse = await loginCommandHandler.Handle(loginCommand, CancellationToken.None);
+            });
+        }
+        [Fact]
+        public async Task LoginWithtTimeOutedUserShouldThrownException()
+        {
+            loginCommand.UserForLoginDto = new() { Email = "example@united.io", Password = "123456" };
             await Assert.ThrowsAsync<BusinessException>(async () =>
             {
                 LoginResponse loginResponse = await loginCommandHandler.Handle(loginCommand, CancellationToken.None);
