@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Core.Security.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,7 +9,7 @@ namespace Persistance.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<SiteUser> builder)
         {
-            //builder.ToTable("Users");
+            builder.ToTable("Users");
 
         }
     }

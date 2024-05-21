@@ -99,19 +99,11 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    AuthenticatorType = table.Column<int>(type: "int", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: true),
@@ -121,11 +113,18 @@ namespace Persistance.Migrations
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreateUser = table.Column<int>(type: "int", nullable: false),
                     DeleteUser = table.Column<int>(type: "int", nullable: false),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                    UpdateUser = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    AuthenticatorType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,9 +168,9 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Blogs_User_WriterId",
+                        name: "FK_Blogs_Users_WriterId",
                         column: x => x.WriterId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -185,6 +184,7 @@ namespace Persistance.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ActivationKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    SiteUserId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -196,11 +196,10 @@ namespace Persistance.Migrations
                 {
                     table.PrimaryKey("PK_EmailAuthenticators", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmailAuthenticators_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_EmailAuthenticators_Users_SiteUserId",
+                        column: x => x.SiteUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -217,6 +216,7 @@ namespace Persistance.Migrations
                     OldPasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     NewPasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     NewPasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    SiteUserId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -228,11 +228,10 @@ namespace Persistance.Migrations
                 {
                     table.PrimaryKey("PK_ForgottenPasswords", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ForgottenPasswords_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_ForgottenPasswords_Users_SiteUserId",
+                        column: x => x.SiteUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -244,6 +243,7 @@ namespace Persistance.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     SecretKey = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    SiteUserId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -255,11 +255,10 @@ namespace Persistance.Migrations
                 {
                     table.PrimaryKey("PK_OtpAuthenticators", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OtpAuthenticators_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_OtpAuthenticators_Users_SiteUserId",
+                        column: x => x.SiteUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -276,6 +275,7 @@ namespace Persistance.Migrations
                     RevokedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReplacedByToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReasonRevoked = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SiteUserId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -287,11 +287,10 @@ namespace Persistance.Migrations
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshTokens_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_RefreshTokens_Users_SiteUserId",
+                        column: x => x.SiteUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -319,9 +318,9 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reports_User_UserID",
+                        name: "FK_Reports_Users_UserID",
                         column: x => x.UserID,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -334,6 +333,7 @@ namespace Persistance.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     OperationClaimId = table.Column<int>(type: "int", nullable: false),
+                    SiteUserId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -351,11 +351,10 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserOperationClaims_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_UserOperationClaims_Users_SiteUserId",
+                        column: x => x.SiteUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -375,9 +374,9 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Bookmarks_User_SiteUserId",
+                        name: "FK_Bookmarks_Users_SiteUserId",
                         column: x => x.SiteUserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -416,9 +415,9 @@ namespace Persistance.Migrations
                         principalTable: "Comments",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Comments_User_UserId",
+                        name: "FK_Comments_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -450,9 +449,9 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bans_User_UserID",
+                        name: "FK_Bans_Users_UserID",
                         column: x => x.UserID,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -549,24 +548,24 @@ namespace Persistance.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmailAuthenticators_UserId",
+                name: "IX_EmailAuthenticators_SiteUserId",
                 table: "EmailAuthenticators",
-                column: "UserId");
+                column: "SiteUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ForgottenPasswords_UserId",
+                name: "IX_ForgottenPasswords_SiteUserId",
                 table: "ForgottenPasswords",
-                column: "UserId");
+                column: "SiteUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OtpAuthenticators_UserId",
+                name: "IX_OtpAuthenticators_SiteUserId",
                 table: "OtpAuthenticators",
-                column: "UserId");
+                column: "SiteUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_UserId",
+                name: "IX_RefreshTokens_SiteUserId",
                 table: "RefreshTokens",
-                column: "UserId");
+                column: "SiteUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reports_ReportTypeID",
@@ -584,9 +583,9 @@ namespace Persistance.Migrations
                 column: "OperationClaimId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserOperationClaims_UserId",
+                name: "IX_UserOperationClaims_SiteUserId",
                 table: "UserOperationClaims",
-                column: "UserId");
+                column: "SiteUserId");
         }
 
         /// <inheritdoc />
@@ -635,7 +634,7 @@ namespace Persistance.Migrations
                 name: "Contents");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
         }
     }
 }

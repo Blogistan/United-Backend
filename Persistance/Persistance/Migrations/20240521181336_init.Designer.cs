@@ -12,7 +12,7 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20231110183959_init")]
+    [Migration("20240521181336_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Persistance.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "7.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -51,6 +51,9 @@ namespace Persistance.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("SiteUserId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -62,7 +65,7 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SiteUserId");
 
                     b.ToTable("EmailAuthenticators");
                 });
@@ -109,6 +112,9 @@ namespace Persistance.Migrations
                     b.Property<byte[]>("OldPasswordSalt")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int?>("SiteUserId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -120,7 +126,7 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SiteUserId");
 
                     b.ToTable("ForgottenPasswords");
                 });
@@ -187,6 +193,9 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int?>("SiteUserId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -198,7 +207,7 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SiteUserId");
 
                     b.ToTable("OtpAuthenticators");
                 });
@@ -242,6 +251,9 @@ namespace Persistance.Migrations
                     b.Property<string>("RevokedByIp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SiteUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -257,74 +269,9 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SiteUserId");
 
                     b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("Core.Security.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AuthenticatorType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CreateUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DeleteUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("UpdateUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Core.Security.Entities.UserOperationClaim", b =>
@@ -350,6 +297,9 @@ namespace Persistance.Migrations
                     b.Property<int>("OperationClaimId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SiteUserId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -363,7 +313,7 @@ namespace Persistance.Migrations
 
                     b.HasIndex("OperationClaimId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SiteUserId");
 
                     b.ToTable("UserOperationClaims");
                 });
@@ -407,7 +357,8 @@ namespace Persistance.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserID")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -933,65 +884,99 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.SiteUser", b =>
                 {
-                    b.HasBaseType("Core.Security.Entities.User");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthenticatorType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CreateUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DeleteUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool?>("IsVerified")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ProfileImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UpdateUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("VerifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasDiscriminator().HasValue("SiteUser");
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Core.Security.Entities.EmailAuthenticator", b =>
                 {
-                    b.HasOne("Core.Security.Entities.User", "User")
+                    b.HasOne("Domain.Entities.SiteUser", null)
                         .WithMany("EmailAuthenticators")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                        .HasForeignKey("SiteUserId");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.ForgotPassword", b =>
                 {
-                    b.HasOne("Core.Security.Entities.User", "User")
+                    b.HasOne("Domain.Entities.SiteUser", null)
                         .WithMany("ForgottenPasswords")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                        .HasForeignKey("SiteUserId");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OtpAuthenticator", b =>
                 {
-                    b.HasOne("Core.Security.Entities.User", "User")
+                    b.HasOne("Domain.Entities.SiteUser", null)
                         .WithMany("OtpAuthenticators")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                        .HasForeignKey("SiteUserId");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Core.Security.Entities.User", "User")
+                    b.HasOne("Domain.Entities.SiteUser", null)
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                        .HasForeignKey("SiteUserId");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.UserOperationClaim", b =>
@@ -1002,15 +987,11 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Security.Entities.User", "User")
+                    b.HasOne("Domain.Entities.SiteUser", null)
                         .WithMany("UserOperationClaims")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SiteUserId");
 
                     b.Navigation("OperationClaim");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Ban", b =>
@@ -1126,19 +1107,6 @@ namespace Persistance.Migrations
                     b.Navigation("UserOperationClaims");
                 });
 
-            modelBuilder.Entity("Core.Security.Entities.User", b =>
-                {
-                    b.Navigation("EmailAuthenticators");
-
-                    b.Navigation("ForgottenPasswords");
-
-                    b.Navigation("OtpAuthenticators");
-
-                    b.Navigation("RefreshTokens");
-
-                    b.Navigation("UserOperationClaims");
-                });
-
             modelBuilder.Entity("Domain.Entities.Blog", b =>
                 {
                     b.Navigation("Comments");
@@ -1179,7 +1147,17 @@ namespace Persistance.Migrations
 
                     b.Navigation("Bookmarks");
 
+                    b.Navigation("EmailAuthenticators");
+
+                    b.Navigation("ForgottenPasswords");
+
+                    b.Navigation("OtpAuthenticators");
+
+                    b.Navigation("RefreshTokens");
+
                     b.Navigation("Reports");
+
+                    b.Navigation("UserOperationClaims");
                 });
 #pragma warning restore 612, 618
         }
