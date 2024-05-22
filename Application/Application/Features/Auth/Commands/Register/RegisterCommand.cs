@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Rules;
+﻿using Application.Features.Auth.Dtos;
+using Application.Features.Auth.Rules;
 using Application.Notifications.RegisterNotification;
 using Application.Services.Auth;
 using Application.Services.Repositories;
@@ -13,7 +14,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.Register
 {
-    public class RegisterCommand : IRequest<RegisteredResponse>,ILoggableRequest
+    public class RegisterCommand : IRequest<RegisteredResponse>, ILoggableRequest
     {
         public UserForRegisterDto UserForRegisterDto { get; set; }
         public string IpAddress { get; set; } = string.Empty;
@@ -55,9 +56,11 @@ namespace Application.Features.Auth.Commands.Register
                 RefreshToken refreshToken = await authService.CreateRefreshToken(siteUser, request.IpAddress);
                 await authService.AddRefreshToken(refreshToken);
                 refreshToken.User = new User();
+
+
                 RegisteredResponse registeredResponse = new()
                 {
-                    AccessToken = accessToken,
+                    AccessToken = mapper.Map<AccessTokenDto>(accessToken),
                     RefreshToken = refreshToken
                 };
 

@@ -14,6 +14,7 @@ using Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand;
 using Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand;
 using Application.Services.Auth;
 using Core.Application.Dtos;
+using Core.Security.Entities;
 using Infrastructure.Dtos.Facebook;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -52,9 +53,8 @@ namespace UnitedAPI.Controllers
                 UserForRegisterDto = userForRegisterDto,
                 IpAddress = GetIpAddress()
             });
-
             SetRefreshTokenToCookie(registeredResponse.RefreshToken);
-            return Ok(registeredResponse);
+            return Ok(registeredResponse.AccessToken);
         }
 
         [HttpGet("RefreshToken")]
