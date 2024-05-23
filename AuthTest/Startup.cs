@@ -1,4 +1,5 @@
-﻿using AuthTest.DependencyResolvers;
+﻿using Application;
+using AuthTest.DependencyResolvers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthTest
@@ -10,6 +11,7 @@ namespace AuthTest
         {
             services.AddUserServices();
             services.AddAuthServices();
+            services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(Startup).Assembly));
         }
     }
 
