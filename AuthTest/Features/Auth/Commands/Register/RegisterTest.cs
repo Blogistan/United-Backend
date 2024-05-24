@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Commands.Register;
+﻿using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Profiles;
 using Application.Features.Auth.Rules;
 using Application.Services.Auth;
@@ -14,8 +15,10 @@ using Core.Security.EmailAuthenticator;
 using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
 using Core.Security.OtpAuthenticator.OtpNet;
+using FluentValidation.TestHelper;
 using MediatR;
 using Microsoft.Extensions.Configuration;
+using static Application.Features.Auth.Commands.Login.LoginCommand;
 using static Application.Features.Auth.Commands.Register.RegisterCommand;
 
 namespace AuthTest.Features.Auth.Commands.Register
@@ -64,24 +67,47 @@ namespace AuthTest.Features.Auth.Commands.Register
 
         }
         [Fact]
-        public async void RegisterWithExistsUserShouldThrownException()
+        public async Task RegisterWithExistsUserShouldThrownException()
         {
             registerCommand.UserForRegisterDto = new() { Email = "example@united.io", FirstName = "test", LastName = "test", Password = "123456" };
 
             await Assert.ThrowsAsync<BusinessException>(async () =>
             {
-               await registerCommandHandler.Handle(registerCommand, CancellationToken.None);
+                await registerCommandHandler.Handle(registerCommand, CancellationToken.None);
             });
         }
         [Fact]
-        public async void RegisterWithLessThanSixPasswordCharacters()
+        public async Task RegisterWithLessThanSixPasswordCharactersShouldReturnValidationExcepiton()
         {
             registerCommand.UserForRegisterDto = new() { Email = "example123123@united.io", FirstName = "test", LastName = "test", Password = "123" };
 
-            await Assert.ThrowsAsync<BusinessException>(async () =>
-            {
-                await registerCommandHandler.Handle(registerCommand, CancellationToken.None);
-            });
+            TestValidationResult<RegisterCommand> testValidationResult = validationRules.TestValidate(registerCommand);
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.UserForRegisterDto.Password);
+        }        
+        [Fact]
+        public async Task RegisterWithEmptyEmailReturnValidationExcepiton()
+        {
+            registerCommand.UserForRegisterDto = new() { Email = string.Empty, FirstName = "test", LastName = "test", Password = "123456" };
+
+            TestValidationResult<RegisterCommand> testValidationResult = validationRules.TestValidate(registerCommand);
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.UserForRegisterDto.Email);
+        }
+        [Fact]
+        public async Task RegisterWithEmptyFirstNameAndLastNameReturnValidationExcepiton()
+        {
+            registerCommand.UserForRegisterDto = new() { Email = "example123123@united.io", FirstName = string.Empty, LastName = string.Empty, Password = "123456" };
+
+            TestValidationResult<RegisterCommand> testValidationResult = validationRules.TestValidate(registerCommand);
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.UserForRegisterDto.FirstName);
+        }
+        [Fact]
+        public async Task SuccessfullLoginShouldReturnAccessToken()
+        {
+            registerCommand.UserForRegisterDto = new() { Email = string.Empty, FirstName = "test", LastName = "test", Password = "123456" };
+
+            RegisteredResponse registeredResponse = await registerCommandHandler.Handle(registerCommand, CancellationToken.None);
+
+            Assert.NotNull(registeredResponse.AccessToken.Token);
         }
 
 
