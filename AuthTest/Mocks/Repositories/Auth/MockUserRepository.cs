@@ -1,8 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AuthTest.Mocks.FakeDatas;
-using Core.Security.Entities;
 using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System.Linq.Expressions;
@@ -38,12 +36,13 @@ namespace AuthTest.Mocks.Repositories.Auth
                     CancellationToken cancellationToken
                     ) =>
                 {
-                    SiteUser? user = null;
+                    SiteUser user = new SiteUser();
 
                     if (predicate != null)
                         user = siteUserFakeData.Data.Where(predicate.Compile()).FirstOrDefault();
 
-                    user.Bans = banFakeData.Data.Where(x => x.UserID == user.Id).ToList();
+                    if(user!=null)
+                        user.Bans = banFakeData.Data.Where(x => x.UserID == user.Id).ToList();
 
                     return user;
                 });
