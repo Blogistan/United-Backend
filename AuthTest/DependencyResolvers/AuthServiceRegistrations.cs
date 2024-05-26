@@ -12,6 +12,7 @@ namespace AuthTest.DependencyResolvers
         {
             services.AddTransient<SiteUserFakeData>();
             services.AddTransient<OperationClaimFakeData>();
+            services.AddTransient<ForgotPasswordFakeData>();
             services.AddTransient<BanFakeData>();
             services.AddTransient<UserOperationClaimFakeData>();
             services.AddTransient<RefreshTokenFakeData>();
