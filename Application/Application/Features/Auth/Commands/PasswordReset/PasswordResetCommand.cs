@@ -27,7 +27,7 @@ namespace Application.Features.Auth.Commands.PasswordReset
             private readonly IMediator mediator;
 
 
-            public PasswordResetCommandHandler(IAuthService authService, ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IForgotPasswordRepository forgotPasswordRepository, IMailService mailService, IHttpContextAccessor httpContextAccessor, IMediator mediator)
+            public PasswordResetCommandHandler(IAuthService authService, ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IForgotPasswordRepository forgotPasswordRepository, IMailService mailService,  IMediator mediator)
             {
                 this.authService = authService;
                 this.siteUserRepository = siteUserRepository;
