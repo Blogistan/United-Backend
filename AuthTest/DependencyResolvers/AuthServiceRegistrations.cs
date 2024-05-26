@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Commands.Login;
+﻿using Application.Features.Auth.Commands.ForgetPassword;
+using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
 using AuthTest.Mocks.FakeDatas;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace AuthTest.DependencyResolvers
             services.AddTransient<RefreshTokenFakeData>();
             services.AddTransient<LoginCommand>();
             services.AddTransient<RegisterCommand>();
+            services.AddTransient<ForgetPasswordCommand>();
             
         }
     }
