@@ -5,12 +5,9 @@ using Application.Services.Repositories;
 using Core.Mailing;
 using Core.Security.Entities;
 using Core.Security.Hashing;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
-using System.Text;
 
 namespace Application.Features.Auth.Commands.PasswordReset
 {
