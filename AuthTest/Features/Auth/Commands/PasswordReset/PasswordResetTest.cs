@@ -14,6 +14,7 @@ using Core.Security.EmailAuthenticator;
 using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
 using Core.Security.OtpAuthenticator.OtpNet;
+using FluentValidation.TestHelper;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using static Application.Features.Auth.Commands.PasswordReset.PasswordResetCommand;
@@ -35,7 +36,7 @@ namespace AuthTest.Features.Auth.Commands.PasswordReset
             #region Mock Repositories
             this.configuration = MockConfiguration.GetMockConfiguration();
             IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData, operationClaimFakeData).GetOperationClaimRepostiory();
-            IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData).GetRefreshTokenRepository();
+            IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData,siteUserFakeData).GetRefreshTokenRepository();
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
             MockEmailAuthenticatorRepository.GetEmailAuthenticatorRepositoryMock();
             IOtpAuthenticatorRepository otpAuthenticatorRepository = MockOtpAuthRepository.GetOtpAuthenticatorRepository();
@@ -100,5 +101,17 @@ namespace AuthTest.Features.Auth.Commands.PasswordReset
                 await passwordResetCommandHandler.Handle(passwordResetCommand, CancellationToken.None);
             });
         }
+        [Fact]
+        public async  Task NewPasswordMustBeConfirmed()
+        {
+            passwordResetCommand.NewPassword = "123123123";
+            passwordResetCommand.NewPasswordConfirm = "1231231232323";
+            passwordResetCommand.ResetKey = "A2B2C3";
+
+            TestValidationResult<PasswordResetCommand> testValidationResult= validationRules.TestValidate<PasswordResetCommand>(passwordResetCommand);
+
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.NewPassword);
+        }
+            
     }
 }

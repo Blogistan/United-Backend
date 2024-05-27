@@ -36,7 +36,7 @@ namespace AuthTest.Features.Auth.Commands.Register
             #region Mock Repositories
             this.configuration = MockConfiguration.GetMockConfiguration();
             IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData, operationClaimFakeData).GetOperationClaimRepostiory();
-            IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData).GetRefreshTokenRepository();
+            IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData,siteUserFakeData).GetRefreshTokenRepository();
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
             MockEmailAuthenticatorRepository.GetEmailAuthenticatorRepositoryMock();
             IOtpAuthenticatorRepository otpAuthenticatorRepository = MockOtpAuthRepository.GetOtpAuthenticatorRepository();
