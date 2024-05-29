@@ -134,6 +134,15 @@ namespace AuthTest.Features.Auth.Commands.Login
                 LoginResponse loginResponse = await loginCommandHandler.Handle(loginCommand, CancellationToken.None);
             });
         }
+        [Fact]
+        public async Task LoginWithInvlaidEmailShouldThrowException()
+        {
+            loginCommand.UserForLoginDto = new() { Email = "example.united", Password = "123456" };
+
+            TestValidationResult<LoginCommand> testValidationResult = validationRules.TestValidate(loginCommand);
+
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.UserForLoginDto.Email);
+        }
 
     }
 }
