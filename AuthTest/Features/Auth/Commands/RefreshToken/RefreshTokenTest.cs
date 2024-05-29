@@ -1,5 +1,4 @@
-﻿using Application.Features.Auth.Commands.Login;
-using Application.Features.Auth.Commands.Refresh;
+﻿using Application.Features.Auth.Commands.Refresh;
 using Application.Features.Auth.Profiles;
 using Application.Features.Auth.Rules;
 using Application.Services.Auth;
@@ -18,7 +17,6 @@ using Core.Security.OtpAuthenticator.OtpNet;
 using FluentValidation.TestHelper;
 using MediatR;
 using Microsoft.Extensions.Configuration;
-using static Application.Features.Auth.Commands.Login.LoginCommand;
 using static Application.Features.Auth.Commands.Refresh.RefreshCommand;
 
 namespace AuthTest.Features.Auth.Commands.RefreshToken
