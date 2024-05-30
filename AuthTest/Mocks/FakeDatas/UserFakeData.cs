@@ -19,6 +19,7 @@ namespace AuthTest.Mocks.FakeDatas
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
+                DeletedDate=null
             },
             new SiteUser
             {
@@ -27,6 +28,7 @@ namespace AuthTest.Mocks.FakeDatas
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
+                DeletedDate=null
             },
             new SiteUser
             {
@@ -35,6 +37,7 @@ namespace AuthTest.Mocks.FakeDatas
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
+                DeletedDate=null
             }
             };
             return data;
