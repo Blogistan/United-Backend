@@ -1,8 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AuthTest.Mocks.FakeDatas;
 using Core.Security.Entities;
-using Core.Test.Application.FakeData;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System.Linq.Expressions;

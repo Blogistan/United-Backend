@@ -1,22 +1,22 @@
 ﻿using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Profiles;
+using Application.Features.Auth.Rules;
+using Application.Services.Auth;
 using Application.Services.Repositories;
 using AuthTest.Mocks.Configurations;
 using AuthTest.Mocks.FakeDatas;
 using AuthTest.Mocks.Repositories.Auth;
-using Core.Mailing.MailKitImplementations;
+using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
+using Core.Mailing.MailKitImplementations;
 using Core.Security.EmailAuthenticator;
 using Core.Security.JWT;
-using Core.Security.OtpAuthenticator.OtpNet;
 using Core.Security.OtpAuthenticator;
+using Core.Security.OtpAuthenticator.OtpNet;
+using FluentValidation.TestHelper;
 using Microsoft.Extensions.Configuration;
 using static Application.Features.Auth.Commands.Login.LoginCommand;
-using AutoMapper;
-using Application.Features.Auth.Profiles;
-using Application.Features.Auth.Rules;
-using Application.Services.Auth;
-using Core.CrossCuttingConcerns.Exceptions.Types;
-using FluentValidation.TestHelper;
 
 namespace AuthTest.Features.Auth.Commands.Login
 {

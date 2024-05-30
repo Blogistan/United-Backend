@@ -1,5 +1,4 @@
-﻿using Application;
-using AuthTest.DependencyResolvers;
+﻿using AuthTest.DependencyResolvers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthTest

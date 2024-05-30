@@ -1,10 +1,6 @@
-﻿using Application.Features.Auth.Profiles;
-using Application.Features.Auth.Rules;
-using Application.Services.Repositories;
+﻿using Application.Services.Repositories;
 using AuthTest.Mocks.FakeDatas;
 using Core.Security.Entities;
-using Core.Test.Application.Repositories;
-using MediatR;
 using Microsoft.EntityFrameworkCore.Query;
 using Moq;
 using System.Linq.Expressions;

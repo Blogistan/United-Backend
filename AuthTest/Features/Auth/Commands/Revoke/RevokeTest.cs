@@ -1,5 +1,4 @@
-﻿using Application.Features.Auth.Commands.Refresh;
-using Application.Features.Auth.Commands.Revoke;
+﻿using Application.Features.Auth.Commands.Revoke;
 using Application.Features.Auth.Profiles;
 using Application.Features.Auth.Rules;
 using Application.Services.Auth;
@@ -17,7 +16,6 @@ using Core.Security.OtpAuthenticator;
 using Core.Security.OtpAuthenticator.OtpNet;
 using MediatR;
 using Microsoft.Extensions.Configuration;
-using static Application.Features.Auth.Commands.Refresh.RefreshCommand;
 using static Application.Features.Auth.Commands.Revoke.RevokeCommand;
 
 namespace AuthTest.Features.Auth.Commands.Revoke
