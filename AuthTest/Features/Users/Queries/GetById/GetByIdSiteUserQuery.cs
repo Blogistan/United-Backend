@@ -22,7 +22,7 @@ namespace AuthTest.Features.Users.Queries.GetById
 
             GetByIdSiteUserQueryResponse response = await getByIdSiteUserQueryHandler.Handle(getByIdSiteUserQuery, CancellationToken.None);
 
-            Assert.Equal("test@mailinator.com", response.SiteUserListViewDto.Email);
+            Assert.Equal("example@united.io", response.SiteUserListViewDto.Email);
         }
         [Fact]
         public async Task UserIdNotExistsShouldReturnError()

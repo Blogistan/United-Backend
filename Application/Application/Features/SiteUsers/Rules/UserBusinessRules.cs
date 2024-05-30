@@ -23,7 +23,7 @@ namespace Application.Features.SiteUsers.Rules
         public async Task UserIdShouldBeExistsWhenSelected(int id)
         {
             bool doesExist = await siteUserRepository.AnyAsync(predicate: u => u.Id == id);
-            if (doesExist)
+            if (!doesExist)
                 throw new BusinessException(AuthBusinessMessage.UserNotFound);
         }
 
