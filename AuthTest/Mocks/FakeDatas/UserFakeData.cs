@@ -20,7 +20,8 @@ namespace AuthTest.Mocks.FakeDatas
                 PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
                 DeletedDate=null,
-                AuthenticatorType=Core.Security.Enums.AuthenticatorType.None
+                AuthenticatorType=Core.Security.Enums.AuthenticatorType.None,
+                IsActive=true
             },
             new SiteUser
             {
@@ -30,7 +31,9 @@ namespace AuthTest.Mocks.FakeDatas
                 PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
                 DeletedDate=null,
-                AuthenticatorType=Core.Security.Enums.AuthenticatorType.Email
+                AuthenticatorType=Core.Security.Enums.AuthenticatorType.Email,
+                IsActive=true
+
             },
             new SiteUser
             {
@@ -40,7 +43,8 @@ namespace AuthTest.Mocks.FakeDatas
                 PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
                 DeletedDate=null,
-                AuthenticatorType=Core.Security.Enums.AuthenticatorType.Otp
+                AuthenticatorType=Core.Security.Enums.AuthenticatorType.Otp,
+                IsActive=true
             }
             };
             return data;
