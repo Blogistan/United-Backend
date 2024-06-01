@@ -37,4 +37,8 @@
     <ProjectReference Include="..\corePackages\Core.Test\Core.Test\Core.Test.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Auth\Commands\EnableOtpAuthenticator\" />
+  </ItemGroup>
+
 </Project>

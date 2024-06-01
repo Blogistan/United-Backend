@@ -40,7 +40,7 @@ namespace AuthTest.Mocks.FakeDatas
                 PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
                 DeletedDate=null,
-                AuthenticatorType=Core.Security.Enums.AuthenticatorType.None
+                AuthenticatorType=Core.Security.Enums.AuthenticatorType.Otp
             }
             };
             return data;
