@@ -14,6 +14,7 @@ using Core.Security.EmailAuthenticator;
 using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
 using Core.Security.OtpAuthenticator.OtpNet;
+using FluentValidation.TestHelper;
 using Microsoft.Extensions.Configuration;
 using static Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand.EnableOtpAuthenticatorCommand;
 
@@ -101,6 +102,16 @@ namespace AuthTest.Features.Auth.Commands.EnableOtpAuthenticator
             {
                 await enableOtpAuthenticatorCommandHandler.Handle(enableOtpAuthenticatorCommand, CancellationToken.None);
             });
+        }
+        [Fact]
+        public async Task ThrowExceptionIfUserIDIsNull()
+        {
+            enableOtpAuthenticatorCommand.SecretKeyLabel = "Test";
+            enableOtpAuthenticatorCommand.SecretKeyIssuer = "TestIssuer";
+
+            TestValidationResult<EnableOtpAuthenticatorCommand> testValidationResult = validationRules.TestValidate(enableOtpAuthenticatorCommand);
+
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.UserID);
         }
 
     }
