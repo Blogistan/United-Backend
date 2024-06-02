@@ -39,7 +39,7 @@ namespace AuthTest.Mocks.Repositories.Auth
                     ForgotPassword forgotPassword = new ForgotPassword();
 
                     if (predicate != null)
-                        forgotPassword = forgotPasswordFakeData.Data.Where(predicate.Compile()).FirstOrDefault();
+                        forgotPassword = forgotPasswordFakeData.Data.FirstOrDefault(predicate.Compile());
 
                     if (forgotPassword != null)
                         forgotPassword.User = siteUserFakeData.Data.FirstOrDefault(x => x.Id == forgotPassword.UserId);
