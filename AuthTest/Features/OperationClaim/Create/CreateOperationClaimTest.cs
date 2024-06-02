@@ -1,7 +1,6 @@
-﻿using Application.Features.Auth.Commands.PasswordReset;
-using Application.Features.Auth.Rules;
+﻿using Application.Features.OperationClaims.Commands.CreateOperationClaim;
 using Application.Features.OperationClaims.Profiles;
-using Application.Features.OperationClaims.Commands.CreateOperationClaim;
+using Application.Features.OperationClaims.Rules;
 using Application.Services.Auth;
 using Application.Services.Repositories;
 using AuthTest.Mocks.Configurations;
@@ -9,18 +8,16 @@ using AuthTest.Mocks.FakeDatas;
 using AuthTest.Mocks.Repositories.Auth;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
+using Core.Mailing;
 using Core.Mailing.MailKitImplementations;
 using Core.Security.EmailAuthenticator;
 using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
 using Core.Security.OtpAuthenticator.OtpNet;
+using FluentValidation.TestHelper;
 using MediatR;
 using Microsoft.Extensions.Configuration;
-using static Application.Features.Auth.Commands.PasswordReset.PasswordResetCommand;
 using static Application.Features.OperationClaims.Commands.CreateOperationClaim.CreateOperationClaimCommand;
-using Core.Mailing;
-using Application.Features.OperationClaims.Rules;
-using FluentValidation.TestHelper;
 
 namespace AuthTest.Features.OperationClaim.Create
 {

@@ -37,4 +37,9 @@
     <ProjectReference Include="..\corePackages\Core.Test\Core.Test\Core.Test.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\OperationClaim\Delete\" />
+    <Folder Include="Features\OperationClaim\Update\" />
+  </ItemGroup>
+
 </Project>
