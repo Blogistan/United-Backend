@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Features.OperationClaims.Commands.UpdateOperationClaim
 {
-    public class UpdateOperationClaimCommand : IRequest<UpdateOperationClaimCommandResponse>,ISecuredRequest
+    public class UpdateOperationClaimCommand : IRequest<UpdateOperationClaimCommandResponse>, ISecuredRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -28,6 +28,7 @@ namespace Application.Features.OperationClaims.Commands.UpdateOperationClaim
 
             public async Task<UpdateOperationClaimCommandResponse> Handle(UpdateOperationClaimCommand request, CancellationToken cancellationToken)
             {
+                await operationClaimBusinessRules.OperationClaimCheckById(request.Id);
                 await operationClaimBusinessRules.BlogCannotBeDuplicatedWhenUpdated(request.Name);
                 var operationClaim = mapper.Map<OperationClaim>(request);
 
