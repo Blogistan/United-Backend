@@ -38,7 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\OperationClaim\Delete\" />
     <Folder Include="Features\OperationClaim\Update\" />
   </ItemGroup>
 
