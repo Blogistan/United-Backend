@@ -1,4 +1,4 @@
-﻿using Application.Features.OperationClaims.Commands.CreateOperationClaim;
+﻿using Application.Features.OperationClaims.Commands.UpdateOperationClaim;
 using Application.Features.OperationClaims.Profiles;
 using Application.Features.OperationClaims.Rules;
 using Application.Services.Auth;
@@ -17,23 +17,23 @@ using Core.Security.OtpAuthenticator.OtpNet;
 using FluentValidation.TestHelper;
 using MediatR;
 using Microsoft.Extensions.Configuration;
-using static Application.Features.OperationClaims.Commands.CreateOperationClaim.CreateOperationClaimCommand;
+using static Application.Features.OperationClaims.Commands.UpdateOperationClaim.UpdateOperationClaimCommand;
 
-namespace AuthTest.Features.OperationClaim.Create
+namespace AuthTest.Features.OperationClaim.Commands.Update
 {
-    public class CreateOperationClaimTest : IClassFixture<Startup>
+    public class UpdateOperationClaimTest : MockOperationClaimRepository,IClassFixture<Startup>
     {
-        private readonly CreateOperationClaimCommand createOperationClaimCommand;
-        private readonly CreateOperationClaimCommandHandler createOperationClaimCommandHandler;
-        private readonly CreateOperationClaimCommandValidator validationRules;
+        private readonly UpdateOperationClaimCommand updateOperationClaimCommand;
+        private readonly UpdateOperationClaimCommandHandler updateOperationClaimCommandHandler;
+        private readonly UpdateOperationClaimCommandValidator validationRules;
         private readonly IConfiguration configuration;
 
-        public CreateOperationClaimTest(RefreshTokenFakeData refreshTokenFakeData,
-           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, ForgotPasswordFakeData forgotPasswordFakeData, IMediator mediator)
+        public UpdateOperationClaimTest(RefreshTokenFakeData refreshTokenFakeData,
+           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, ForgotPasswordFakeData forgotPasswordFakeData, IMediator mediator):base(operationClaimFakeData)
         {
 
             #region Mock Repositories
-            this.configuration = MockConfiguration.GetMockConfiguration();
+            configuration = MockConfiguration.GetMockConfiguration();
             IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData, operationClaimFakeData).GetOperationClaimRepostiory();
             IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData, siteUserFakeData).GetRefreshTokenRepository();
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
@@ -41,7 +41,7 @@ namespace AuthTest.Features.OperationClaim.Create
             IOtpAuthenticatorRepository otpAuthenticatorRepository = MockOtpAuthRepository.GetOtpAuthenticatorRepository();
             ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData, banFakeData).GetSiteUserRepository();
             IForgotPasswordRepository forgotPasswordRepository = new MockForgotPasswordRepository(siteUserFakeData, forgotPasswordFakeData).GetForgotPasswordRepository();
-            IOperationClaimRepostiory operationClaimRepostiory = new MockOperationClaimRepository(operationClaimFakeData).GetOperationClaimRepostiory();
+            //IOperationClaimRepostiory operationClaimRepostiory = new MockOperationClaimRepository(operationClaimFakeData).GetOperationClaimRepostiory();
             #endregion
 
             #region Mock Helpers
@@ -57,33 +57,48 @@ namespace AuthTest.Features.OperationClaim.Create
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration);
-            OperationClaimBusinessRules operationClaimBusinessRules = new OperationClaimBusinessRules(operationClaimRepostiory);
+            OperationClaimBusinessRules operationClaimBusinessRules = new OperationClaimBusinessRules(MockRepository.Object);
 
-            this.createOperationClaimCommand = new CreateOperationClaimCommand();
-            this.validationRules = new CreateOperationClaimCommandValidator();
-            this.createOperationClaimCommandHandler = new CreateOperationClaimCommandHandler(operationClaimRepostiory, mapper, operationClaimBusinessRules);
+            updateOperationClaimCommand = new UpdateOperationClaimCommand();
+            validationRules = new UpdateOperationClaimCommandValidator();
+            updateOperationClaimCommandHandler = new UpdateOperationClaimCommandHandler(MockRepository.Object, mapper, operationClaimBusinessRules);
 
         }
         [Fact]
-        public async Task ThrowExcepitonIfOperationClaimNameEmpty()
+        public async Task OperationClaimIDShouldNotEmpty()
         {
-            createOperationClaimCommand.Name = string.Empty;
+            updateOperationClaimCommand.Name = "TEST";
+            TestValidationResult<UpdateOperationClaimCommand> testValidationResult = validationRules.TestValidate(updateOperationClaimCommand);
 
-            TestValidationResult<CreateOperationClaimCommand> testValidationResult = validationRules.TestValidate(createOperationClaimCommand);
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.Id);
+        }
+        [Fact]
+        public async Task OperationClaimNameShouldNotEmpty()
+        {
+            updateOperationClaimCommand.Id = 5465;
+            TestValidationResult<UpdateOperationClaimCommand> testValidationResult = validationRules.TestValidate(updateOperationClaimCommand);
 
             testValidationResult.ShouldHaveValidationErrorFor(x => x.Name);
         }
         [Fact]
-        public async Task OperationClaimCannotBeDuplicatedWhenInserted()
+        public async Task OperationClaimCheckById()
         {
-            createOperationClaimCommand.Name = "Moderator";
+            updateOperationClaimCommand.Id = 5465;
 
             await Assert.ThrowsAsync<BusinessException>(async () =>
             {
-                await createOperationClaimCommandHandler.Handle(createOperationClaimCommand, CancellationToken.None);
+                await updateOperationClaimCommandHandler.Handle(updateOperationClaimCommand, CancellationToken.None);
             });
         }
+        [Fact]
+        public async Task BlogCannotBeDuplicatedWhenUpdated()
+        {
+            updateOperationClaimCommand.Name = "Moderator";
 
-
+            await Assert.ThrowsAsync<BusinessException>(async () =>
+            {
+                await updateOperationClaimCommandHandler.Handle(updateOperationClaimCommand, CancellationToken.None);
+            });
+        }
     }
 }

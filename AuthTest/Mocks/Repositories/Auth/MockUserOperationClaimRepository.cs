@@ -55,7 +55,7 @@ namespace AuthTest.Mocks.Repositories.Auth
                     var query = userOperationClaimFakeData.Data.AsQueryable();
 
 
-                    if (predicate!=null)
+                    if (predicate != null)
                     {
                         query.Where(predicate);
                     }
@@ -70,24 +70,25 @@ namespace AuthTest.Mocks.Repositories.Auth
                     //Manually include OperationClaim data
                     foreach (var item in userOperationClaimList)
                     {
-                        item.OperationClaim = operationClaimFakeData.Data.FirstOrDefault(oc=>oc.Id==item.OperationClaimId);
+                        item.OperationClaim = operationClaimFakeData.Data.FirstOrDefault(oc => oc.Id == item.OperationClaimId);
                     }
 
 
                     var paginatedResult = new Paginate<UserOperationClaim>
                     {
-                        Items=query.ToList(),
-                        Index=index,
-                        Size=size,
-                        From=index*size,
-                        Count=query.Count()
+                        Items = query.ToList(),
+                        Index = index,
+                        Size = size,
+                        From = index * size,
+                        Count = query.Count()
                     };
                     return paginatedResult;
-                    
+
                 });
 
             return mockRepo.Object;
 
         }
+
     }
 }

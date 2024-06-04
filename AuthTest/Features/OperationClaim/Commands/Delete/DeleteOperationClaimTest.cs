@@ -19,9 +19,9 @@ using static Application.Features.OperationClaims.Commands.DeleteOperationClaim.
 using FluentValidation.TestHelper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 
-namespace AuthTest.Features.OperationClaim.Delete
+namespace AuthTest.Features.OperationClaim.Commands.Delete
 {
-    public class DeleteOperationClaimTest : IClassFixture<Startup>
+    public class DeleteOperationClaimTest : MockOperationClaimRepository,IClassFixture<Startup>
     {
         private readonly DeleteOperationClaimCommand deleteOperationClaimCommand;
         private readonly DeleteOperationClaimCommandHandler deleteOperationClaimCommandHandler;
@@ -29,11 +29,11 @@ namespace AuthTest.Features.OperationClaim.Delete
         private readonly IConfiguration configuration;
 
         public DeleteOperationClaimTest(RefreshTokenFakeData refreshTokenFakeData,
-           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, ForgotPasswordFakeData forgotPasswordFakeData, IMediator mediator)
+           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, ForgotPasswordFakeData forgotPasswordFakeData, IMediator mediator):base(operationClaimFakeData)
         {
 
             #region Mock Repositories
-            this.configuration = MockConfiguration.GetMockConfiguration();
+            configuration = MockConfiguration.GetMockConfiguration();
             IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData, operationClaimFakeData).GetOperationClaimRepostiory();
             IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData, siteUserFakeData).GetRefreshTokenRepository();
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
@@ -41,7 +41,7 @@ namespace AuthTest.Features.OperationClaim.Delete
             IOtpAuthenticatorRepository otpAuthenticatorRepository = MockOtpAuthRepository.GetOtpAuthenticatorRepository();
             ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData, banFakeData).GetSiteUserRepository();
             IForgotPasswordRepository forgotPasswordRepository = new MockForgotPasswordRepository(siteUserFakeData, forgotPasswordFakeData).GetForgotPasswordRepository();
-            IOperationClaimRepostiory operationClaimRepostiory = new MockOperationClaimRepository(operationClaimFakeData).GetOperationClaimRepostiory();
+            //IOperationClaimRepostiory operationClaimRepostiory = new MockOperationClaimRepository(operationClaimFakeData).GetOperationClaimRepostiory();
             #endregion
 
             #region Mock Helpers
@@ -57,11 +57,11 @@ namespace AuthTest.Features.OperationClaim.Delete
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration);
-            OperationClaimBusinessRules operationClaimBusinessRules = new OperationClaimBusinessRules(operationClaimRepostiory);
+            OperationClaimBusinessRules operationClaimBusinessRules = new OperationClaimBusinessRules(MockRepository.Object);
 
-            this.deleteOperationClaimCommand = new DeleteOperationClaimCommand();
-            this.validationRules = new DeleteOperationClaimCommandValidator();
-            this.deleteOperationClaimCommandHandler = new DeleteOperationClaimCommandHandler(operationClaimRepostiory, mapper, operationClaimBusinessRules);
+            deleteOperationClaimCommand = new DeleteOperationClaimCommand();
+            validationRules = new DeleteOperationClaimCommandValidator();
+            deleteOperationClaimCommandHandler = new DeleteOperationClaimCommandHandler(MockRepository.Object, mapper, operationClaimBusinessRules);
 
         }
         [Fact]
