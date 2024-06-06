@@ -7,7 +7,7 @@ using Core.CrossCuttingConcerns.Exceptions.Types;
 using FluentValidation.TestHelper;
 using static Application.Features.Categories.Commands.CreateCategory.CreateCategoryCommand;
 
-namespace AuthTest.Features.Categories.Create
+namespace AuthTest.Features.Categories.Commands.Create
 {
     public class CreateCategoryTest : CategoryMockRepository, IClassFixture<Startup>
     {
@@ -21,10 +21,10 @@ namespace AuthTest.Features.Categories.Create
             ICategoryRepository categoryRepository = MockRepository.Object;
             CategoryBusinessRules categoryBusinessRules = BusinessRules;
 
-            this.categoryFakeData = fakeData;
-            this.createCategoryCommand = new CreateCategoryCommand();
-            this.validationRules = new CreateCategoryValidator();
-            this.createCategoryCommandHandler = new CreateCategoryCommandHandler(categoryRepository, categoryBusinessRules);
+            categoryFakeData = fakeData;
+            createCategoryCommand = new CreateCategoryCommand();
+            validationRules = new CreateCategoryValidator();
+            createCategoryCommandHandler = new CreateCategoryCommandHandler(categoryRepository, categoryBusinessRules);
         }
         [Fact]
         public async Task ThrowExceptionIfCategoryNameEmpty()
