@@ -2,16 +2,16 @@
 
 namespace Application.Features.Bans.Commands.UpdateBan
 {
-    public class UpdateBanCommandValidator:AbstractValidator<UpdateBanCommand>
+    public class UpdateBanCommandValidator : AbstractValidator<UpdateBanCommand>
     {
         public UpdateBanCommandValidator()
         {
-            RuleFor(x => x.Id).NotNull();
-            RuleFor(x => x.UserId).NotNull();
+            RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.IsPerma).NotNull();
-            RuleFor(x => x.BanStartDate).NotNull();
-            RuleFor(x => x.BanEndDate).NotNull();
-            RuleFor(x => x.BanDetail).NotNull();
+            RuleFor(x => x.BanStartDate).NotEmpty();
+            RuleFor(x => x.BanEndDate).NotEmpty();
+            RuleFor(x => x.BanDetail).NotEmpty();
         }
     }
 }
