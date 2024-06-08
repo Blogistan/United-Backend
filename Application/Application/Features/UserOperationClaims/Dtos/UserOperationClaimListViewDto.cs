@@ -1,5 +1,4 @@
 ﻿using Application.Features.OperationClaims.Dtos;
-using Core.Security.Entities;
 
 namespace Application.Features.UserOperationClaims.Dtos
 {

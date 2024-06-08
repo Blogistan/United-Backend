@@ -2,7 +2,6 @@
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
-using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.ReportTypes.Commands.UpdateReportType

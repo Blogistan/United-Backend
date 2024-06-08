@@ -1,8 +1,6 @@
-﻿using Amazon.SecurityToken.Model;
-using Application.Features.Auth.Commands.Login;
+﻿using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Constants;
 using Application.Services.Repositories;
-using Azure;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
 using Core.Persistence.Paging;
@@ -20,7 +18,6 @@ using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using MongoDB.Driver.Core.WireProtocol.Messages;
 using OAuth;
 using System.Net;
 using System.Net.Http.Headers;

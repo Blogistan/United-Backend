@@ -1,6 +1,4 @@
-﻿using Application.Features.Categories.Dtos;
-
-namespace Application.Features.Videos.Dtos
+﻿namespace Application.Features.Videos.Dtos
 {
     public class VideoListDto
     {

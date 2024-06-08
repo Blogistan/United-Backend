@@ -1,5 +1,4 @@
-﻿using Application.Features.Categories.Dtos;
-using Application.Features.Videos.Dtos;
+﻿using Application.Features.Videos.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Requests;
