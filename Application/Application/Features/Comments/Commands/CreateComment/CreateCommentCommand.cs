@@ -37,7 +37,7 @@ namespace Application.Features.Comments.Commands.CreateComment
                     Likes = 0,
                     Dislikes = 0,
                     UserId = request!.UserId,
-                    CommentId = (int)request.CommentId
+                    CommentId = request.CommentId
                 };
 
                 await commentRepository.AddAsync(comment);
