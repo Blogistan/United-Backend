@@ -7,6 +7,7 @@ namespace Application.Features.Comments.Commands.UpdateComment
         public UpdateCommentsCommandValidator()
         {
             RuleFor(x => x.CommentContent).NotNull();
+            RuleFor(x => x.Id).NotNull();
         }
     }
 }

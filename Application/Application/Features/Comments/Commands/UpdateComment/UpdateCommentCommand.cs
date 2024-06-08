@@ -9,12 +9,10 @@ namespace Application.Features.Comments.Commands.UpdateComment
 {
     public class UpdateCommentCommand : IRequest<UpdateCommentResponse>, ISecuredRequest
     {
+        public int Id { get; set; }
         public int? UserId { get; set; }
-
         public string? GuestName { get; set; }
-
         public string CommentContent { get; set; }
-
         public int Likes { get; set; }
         public int Dislikes { get; set; }
         public int? ParentCommentId { get; set; }
@@ -34,7 +32,7 @@ namespace Application.Features.Comments.Commands.UpdateComment
 
             public async Task<UpdateCommentResponse> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
             {
-                var comment = await commentBusinessRules.CommentCheckById((int)request.CommentId);
+                var comment = await commentBusinessRules.CommentCheckById(request.Id);
 
                 comment.CommentContent = request.CommentContent;
 

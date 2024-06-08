@@ -7,6 +7,7 @@ namespace Application.Features.Comments.Commands.CreateComment
         public CreateCommentCommandValidator()
         {
             RuleFor(x=>x.CommentContent).NotNull();
+            RuleFor(x=>x.BlogId).NotNull();
             
         }
     }
