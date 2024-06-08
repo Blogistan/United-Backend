@@ -1,5 +1,4 @@
-﻿using Application.Features.Reports.Commands.DeleteReport;
-using Application.Features.ReportTypes.Commands.CreateReportType;
+﻿using Application.Features.ReportTypes.Commands.CreateReportType;
 using Application.Features.ReportTypes.Commands.DeleteReportType;
 using Application.Features.ReportTypes.Commands.UpdateReportType;
 using Application.Features.ReportTypes.Queries.GetListReportTypes;

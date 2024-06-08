@@ -14,7 +14,6 @@ using Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand;
 using Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand;
 using Application.Services.Auth;
 using Core.Application.Dtos;
-using Core.Security.Entities;
 using Infrastructure.Dtos.Facebook;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
