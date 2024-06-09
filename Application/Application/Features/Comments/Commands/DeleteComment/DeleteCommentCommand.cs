@@ -1,4 +1,5 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Comments.Rules;
+using Application.Services.Repositories;
 using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
@@ -15,14 +16,16 @@ namespace Application.Features.Comments.Commands.DeleteComment
         public class DeleteCommentCommandHandler:IRequestHandler<DeleteCommentCommand, DeleteCommentCommandResponse>
         {
             private readonly ICommentRepository commentRepository;
-            public DeleteCommentCommandHandler(ICommentRepository commentRepository)
+            private readonly CommentBusinessRules commentBusinessRules;
+            public DeleteCommentCommandHandler(ICommentRepository commentRepository, CommentBusinessRules commentBusinessRules)
             {
                 this.commentRepository = commentRepository;
+                this.commentBusinessRules = commentBusinessRules;
             }
 
             public async Task<DeleteCommentCommandResponse> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
             {
-                var comment = await commentRepository.GetAsync(x=>x.Id==request.Id);
+                var comment = await commentBusinessRules.CommentCheckById(request.Id);
 
 
                 Comment  deletedComments = await commentRepository.DeleteAsync(comment, request.Permanent);
