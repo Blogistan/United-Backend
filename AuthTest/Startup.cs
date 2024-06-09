@@ -10,6 +10,7 @@ namespace AuthTest
         {
             services.AddUserServices();
             services.AddAuthServices();
+            services.AddTestServices();
             services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(Startup).Assembly));
         }
     }
