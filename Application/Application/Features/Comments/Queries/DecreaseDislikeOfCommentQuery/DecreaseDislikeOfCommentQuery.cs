@@ -23,10 +23,7 @@ namespace Application.Features.Comments.Queries.DecreaseDislikeOfCommentQuery
 
             public async Task<DecreaseDislikeOfCommentCommentQueryResponse> Handle(DecreaseDislikeOfCommentQuery request, CancellationToken cancellationToken)
             {
-
                 var comment = await commentBusinessRules.CommentCheckById(request.CommentId);
-
-
                 comment.Likes -= 1;
 
                 var updatedComment = await commentRepository.UpdateAsync(comment);
