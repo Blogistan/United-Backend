@@ -1,26 +1,30 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Comments.Rules;
+using Application.Services.Repositories;
 using Core.Application.Pipelines.Authorization;
 using MediatR;
 
 namespace Application.Features.Comments.Queries.DecreaseDislikeOfCommentQuery
 {
-    public class DecreaseDislikeOfCommentQuery:IRequest<DecreaseDislikeOfCommentCommentQueryResponse>,ISecuredRequest
+    public class DecreaseDislikeOfCommentQuery : IRequest<DecreaseDislikeOfCommentCommentQueryResponse>, ISecuredRequest
     {
         public int CommentId { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "User" };
 
 
-        public class DecreaseDislikeOfCommentQueryHandler:IRequestHandler<DecreaseDislikeOfCommentQuery, DecreaseDislikeOfCommentCommentQueryResponse>
+        public class DecreaseDislikeOfCommentQueryHandler : IRequestHandler<DecreaseDislikeOfCommentQuery, DecreaseDislikeOfCommentCommentQueryResponse>
         {
             private readonly ICommentRepository commentRepository;
-            public DecreaseDislikeOfCommentQueryHandler(ICommentRepository commentRepository)
+            private readonly CommentBusinessRules commentBusinessRules;
+            public DecreaseDislikeOfCommentQueryHandler(ICommentRepository commentRepository, CommentBusinessRules commentBusinessRules)
             {
                 this.commentRepository = commentRepository;
+                this.commentBusinessRules = commentBusinessRules;
             }
 
             public async Task<DecreaseDislikeOfCommentCommentQueryResponse> Handle(DecreaseDislikeOfCommentQuery request, CancellationToken cancellationToken)
             {
-                var comment = await commentRepository.GetAsync(x => x.Id == request.CommentId);
+
+                var comment = await commentBusinessRules.CommentCheckById(request.CommentId);
 
 
                 comment.Likes -= 1;
