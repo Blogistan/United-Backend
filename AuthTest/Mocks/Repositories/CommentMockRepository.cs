@@ -61,6 +61,40 @@ namespace AuthTest.Mocks.Repositories
                     return paginateResult;
                 });
 
+
+
+        public static void SetupGetAsync(Mock<ICommentRepository> mockRepo, CommentFakeData commentFakeData, SiteUserFakeData siteUserFakeData) =>
+        mockRepo.Setup(s => s.GetAsync(
+                It.IsAny<Expression<Func<Comment, bool>>>(),
+                It.IsAny<Func<IQueryable<Comment>, IIncludableQueryable<Comment, object>>>(),
+                It.IsAny<bool>(),
+                It.IsAny<bool>(),
+                It.IsAny<CancellationToken>()
+                )).ReturnsAsync((
+                Expression<Func<Comment, bool>> expression,
+                Func<IQueryable<Comment>, IIncludableQueryable<Comment, object>> include,
+                bool withDeleted,
+                    bool enableTracking,
+                    CancellationToken cancellationToken
+                ) =>
+                {
+                    var query = commentFakeData.Data.AsQueryable();
+
+                    SiteUser siteUser = new SiteUser();
+
+                    if (include != null)
+                    {
+                        query = include(query);
+                    }
+
+                    var result = query.FirstOrDefault(expression.Compile());
+
+                    result.User = siteUserFakeData.Data.FirstOrDefault(x => x.Id == result.UserId);
+
+                    return result;
+
+                });
+
         public static void SetupAddAsync(Mock<ICommentRepository> mockRepo, CommentFakeData commentFakeData) =>
             mockRepo.Setup(s => s.AddAsync(It.IsAny<Comment>()))
             .ReturnsAsync((Comment comment) =>
@@ -100,6 +134,7 @@ namespace AuthTest.Mocks.Repositories
             SetupAddAsync(mockRepo, commentFakeData);
             SetupUpdateAsync(mockRepo, commentFakeData);
             SetupDeleteAsync(mockRepo, commentFakeData);
+            SetupGetAsync(mockRepo, commentFakeData, siteUserFakeData);
         }
         public static Mock<ICommentRepository> GetRepository(CommentFakeData commentFakeData, SiteUserFakeData siteUserFakeData)
         {
