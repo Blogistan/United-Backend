@@ -9,8 +9,8 @@ namespace AuthTest.Mocks.FakeDatas
         {
             return new List<Comment>
             {
-                new(){Id=1,BlogId=1,CommentContent="TEST COMMENT",UserId=1},
-                new(){Id=2,BlogId=1,CommentContent="TEST COMMENT1",UserId=2},
+                new(){Id=1,BlogId=1,CommentContent="TEST COMMENT",UserId=234},
+                new(){Id=2,BlogId=1,CommentContent="TEST COMMENT1",UserId=123},
                 new(){Id=3,BlogId=1,CommentContent="TEST COMMENT2",UserId=3},
 
             };
