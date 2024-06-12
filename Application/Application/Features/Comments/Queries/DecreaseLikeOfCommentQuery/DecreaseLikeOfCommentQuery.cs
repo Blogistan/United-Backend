@@ -1,27 +1,28 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Comments.Rules;
+using Application.Services.Repositories;
 using Core.Application.Pipelines.Authorization;
 using MediatR;
 
 namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
 {
-    public class DecreaseLikeOfCommentQuery:IRequest<DecreaseLikeOfCommentQueryResponse>,ISecuredRequest
+    public class DecreaseLikeOfCommentQuery : IRequest<DecreaseLikeOfCommentQueryResponse>, ISecuredRequest
     {
         public int CommentId { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "User" };
 
-        public class DecreaseLikeOfCommentQueryHandler:IRequestHandler<DecreaseLikeOfCommentQuery, DecreaseLikeOfCommentQueryResponse>
+        public class DecreaseLikeOfCommentQueryHandler : IRequestHandler<DecreaseLikeOfCommentQuery, DecreaseLikeOfCommentQueryResponse>
         {
             private readonly ICommentRepository commentRepository;
-            public DecreaseLikeOfCommentQueryHandler(ICommentRepository commentRepository)
+            private readonly CommentBusinessRules commentBusinessRules;
+            public DecreaseLikeOfCommentQueryHandler(ICommentRepository commentRepository, CommentBusinessRules commentBusinessRules)
             {
                 this.commentRepository = commentRepository;
+                this.commentBusinessRules = commentBusinessRules;
             }
 
             public async Task<DecreaseLikeOfCommentQueryResponse> Handle(DecreaseLikeOfCommentQuery request, CancellationToken cancellationToken)
             {
-                var comment = await commentRepository.GetAsync(x => x.Id == request.CommentId);
-
-
+                var comment = await commentBusinessRules.CommentCheckById(request.CommentId);
                 comment.Likes -= 1;
 
                 var updatedComment = await commentRepository.UpdateAsync(comment);
