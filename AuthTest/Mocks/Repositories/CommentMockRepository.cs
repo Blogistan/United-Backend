@@ -89,7 +89,8 @@ namespace AuthTest.Mocks.Repositories
 
                     var result = query.FirstOrDefault(expression.Compile());
 
-                    result.User = siteUserFakeData.Data.FirstOrDefault(x => x.Id == result.UserId);
+                    if (result != null)
+                        result.User = siteUserFakeData.Data.FirstOrDefault(x => x.Id == result.UserId);
 
                     return result;
 
