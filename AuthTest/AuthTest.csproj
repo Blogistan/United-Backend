@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Comment\Queries\IncreaseLikeOfComment\" />
+    <Folder Include="Features\Comment\Queries\" />
   </ItemGroup>
 
 </Project>

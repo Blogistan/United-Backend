@@ -1,29 +1,26 @@
-﻿using Application.Features.Comments.Rules;
-using Application.Services.Repositories;
+﻿using Application.Services.Repositories;
 using Core.Application.Pipelines.Authorization;
 using MediatR;
 
 namespace Application.Features.Comments.Queries.IncreaseDislikeOfCommentQuery
 {
-    public class IncreaseDislikeOfCommentQuery : IRequest<IncreaseDislikeOfCommentQueryResponse>, ISecuredRequest
+    public class IncreaseDislikeOfCommentQuery:IRequest<IncreaseDislikeOfCommentQueryResponse>,ISecuredRequest
     {
         public int CommentId { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "User" };
 
-        public class IncreaseDislikeOfCommentQueryHandler : IRequestHandler<IncreaseDislikeOfCommentQuery, IncreaseDislikeOfCommentQueryResponse>
+        public class IncreaseDislikeOfCommentQueryHandler:IRequestHandler<IncreaseDislikeOfCommentQuery, IncreaseDislikeOfCommentQueryResponse>
         {
             private readonly ICommentRepository commentRepository;
-            private readonly CommentBusinessRules commentBusinessRules;
 
-            public IncreaseDislikeOfCommentQueryHandler(ICommentRepository commentRepository, CommentBusinessRules commentBusinessRules)
+            public IncreaseDislikeOfCommentQueryHandler(ICommentRepository commentRepository)
             {
                 this.commentRepository = commentRepository;
-                this.commentBusinessRules = commentBusinessRules;
             }
 
             public async Task<IncreaseDislikeOfCommentQueryResponse> Handle(IncreaseDislikeOfCommentQuery request, CancellationToken cancellationToken)
             {
-                var comment = await commentBusinessRules.CommentCheckById(request.CommentId);
+                var comment = await commentRepository.GetAsync(x => x.Id == request.CommentId);
 
 
                 comment.Dislikes += 1;
@@ -42,6 +39,6 @@ namespace Application.Features.Comments.Queries.IncreaseDislikeOfCommentQuery
                 };
             }
         }
-
+           
     }
 }
