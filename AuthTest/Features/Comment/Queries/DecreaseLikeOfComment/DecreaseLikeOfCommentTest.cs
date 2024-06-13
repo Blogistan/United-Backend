@@ -17,7 +17,6 @@ namespace AuthTest.Features.Comment.Queries.DecreaseLikeOfComment
         private CommentFakeData _commentFakeData;
         private SiteUserFakeData _siteUserFakeData;
 
-
         public DecreaseLikeOfCommentTest(CommentFakeData commentFakeData, SiteUserFakeData siteUserFakeData)
         {
 
