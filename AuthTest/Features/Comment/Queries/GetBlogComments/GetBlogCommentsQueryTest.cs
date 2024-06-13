@@ -18,10 +18,8 @@ namespace AuthTest.Features.Comment.Queries.GetBlogComments
         private CommentFakeData _commentFakeData;
         private SiteUserFakeData _siteUserFakeData;
 
-
         public GetBlogCommentsQueryTest(CommentFakeData commentFakeData, SiteUserFakeData siteUserFakeData)
         {
-
             ICommentRepository commentRepository = CommentMockRepository.GetRepository(commentFakeData, siteUserFakeData).Object;
             CommentBusinessRules commentBusinessRules = new CommentBusinessRules(commentRepository);
 
