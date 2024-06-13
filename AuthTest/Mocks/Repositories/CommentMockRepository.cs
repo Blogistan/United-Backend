@@ -90,7 +90,11 @@ namespace AuthTest.Mocks.Repositories
                     var result = query.FirstOrDefault(expression.Compile());
 
                     if (result != null)
+                    {
                         result.User = siteUserFakeData.Data.FirstOrDefault(x => x.Id == result.UserId);
+                        result.CommentResponses = commentFakeData.Data.Where(x => x.CommentId == result.Id).ToList();
+                    }
+
 
                     return result;
 
