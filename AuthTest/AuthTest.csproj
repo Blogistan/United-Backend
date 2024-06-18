@@ -38,7 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Comment\Queries\" />
+    <Folder Include="Features\Contents\Commands\Create\" />
+    <Folder Include="Features\Contents\Commands\Delete\" />
+    <Folder Include="Features\Contents\Commands\Update\" />
+    <Folder Include="Features\Contents\Queries\" />
   </ItemGroup>
 
 </Project>
