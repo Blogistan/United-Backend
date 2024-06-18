@@ -9,7 +9,7 @@ namespace AuthTest.DependencyResolvers
         {
             services.AddTransient<CategoryFakeData>();
             services.AddTransient<CommentFakeData>();
-            services.AddTransient<CommentFakeData>();
+            services.AddTransient<ContentFakeData>();
         }
 
     }
