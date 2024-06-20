@@ -112,13 +112,21 @@ namespace AuthTest.Mocks.Repositories
                 }
             );
 
-        public static void GetContentMockRepository(Mock<IContentRepository> mockRepo, ContentFakeData contentFakeData)
+        public static void Build(Mock<IContentRepository> mockRepo, ContentFakeData contentFakeData)
         {
-            SetupAddAsync(mockRepo,contentFakeData);
+            SetupAddAsync(mockRepo, contentFakeData);
             SetupDeleteAsync(mockRepo, contentFakeData);
             SetupGetAsync(mockRepo, contentFakeData);
             SetupGetListAsync(mockRepo, contentFakeData);
             SetupUpdateAsync(mockRepo, contentFakeData);
+        }
+        public static Mock<IContentRepository> GetContentMockRepository(ContentFakeData contentFakeData)
+        {
+            var mockRepo = new Mock<IContentRepository>();
+
+            Build(mockRepo, contentFakeData);
+
+            return mockRepo;
         }
     }
 }
