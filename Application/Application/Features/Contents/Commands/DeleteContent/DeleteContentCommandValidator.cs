@@ -2,9 +2,9 @@
 
 namespace Application.Features.Contents.Commands.DeleteContent
 {
-    public class DeleteContentValidator:AbstractValidator<DeleteContentCommand>
+    public class DeleteContentCommandValidator:AbstractValidator<DeleteContentCommand>
     {
-        public DeleteContentValidator()
+        public DeleteContentCommandValidator()
         {
             RuleFor(x=>x.Id).NotEmpty();
         }
