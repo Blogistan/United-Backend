@@ -1,10 +1,11 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 
 namespace Application.Features.Contents.Rules
 {
-    public class ContentBusinessRules
+    public class ContentBusinessRules:BaseBusinessRules
     {
         public readonly IContentRepository contentRepository;
         public ContentBusinessRules(IContentRepository contentRepository)
