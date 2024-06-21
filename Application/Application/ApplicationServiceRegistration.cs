@@ -2,6 +2,7 @@
 using Application.Features.Blogs.Rules;
 using Application.Features.Categories.Rules;
 using Application.Features.Comments.Rules;
+using Application.Features.Contents.Rules;
 using Application.Features.OperationClaims.Rules;
 using Application.Features.Reports.Rules;
 using Application.Features.ReportTypes.Rules;
@@ -39,6 +40,7 @@ namespace Application
             services.AddScoped<BlogBusinessRules>();
             services.AddScoped<VideoBusinessRules>();
             services.AddScoped<CommentBusinessRules>();
+            services.AddScoped<ContentBusinessRules>();
             services.AddScoped<ReportBusinessRules>();
             services.AddScoped<ReportTypeBusinessRules>();
             services.AddScoped<OperationClaimBusinessRules>();

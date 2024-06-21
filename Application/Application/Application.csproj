@@ -24,7 +24,6 @@
     <Folder Include="Features\Categories\Models\" />
     <Folder Include="Features\Contents\Constants\" />
     <Folder Include="Features\Contents\Models\" />
-    <Folder Include="Features\Contents\Rules\" />
     <Folder Include="Features\OperationClaims\Constants\" />
     <Folder Include="Features\OperationClaims\Models\" />
     <Folder Include="Features\Reports\Constants\" />
