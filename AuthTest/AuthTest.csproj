@@ -37,11 +37,4 @@
     <ProjectReference Include="..\corePackages\Core.Test\Core.Test\Core.Test.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Contents\Commands\Create\" />
-    <Folder Include="Features\Contents\Commands\Delete\" />
-    <Folder Include="Features\Contents\Commands\Update\" />
-    <Folder Include="Features\Contents\Queries\" />
-  </ItemGroup>
-
 </Project>
