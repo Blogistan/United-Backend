@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Formatting.Json;
 using Serilog.Sinks.RabbitMQ;
-using Serilog.Sinks.RabbitMQ.Sinks.RabbitMQ;
 
 namespace Core.CrossCuttingConcerns.Logging.Serilog.Logger;
 
