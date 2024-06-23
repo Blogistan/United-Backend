@@ -4,6 +4,7 @@ using AuthTest.Mocks.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Test.Application.Constants;
 using FluentValidation.Results;
+using Moq;
 using static Application.Features.SiteUsers.Commands.CreateSiteUser.CreateSiteUserCommand;
 
 namespace AuthTest.Features.Users.Commands.Create
