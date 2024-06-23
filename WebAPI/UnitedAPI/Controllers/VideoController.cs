@@ -14,75 +14,77 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace UnitedAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class VideoController : BaseController
-    {
-        [HttpGet]
-        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
-        {
-            GetListVideoQuery getListVideoQuery = new()
-            {
-                PageRequest = pageRequest
-            };
-            VideoListDto videoListDto = await Mediator.Send(getListVideoQuery);
+    // It will be opened in future.
 
-            return Ok(videoListDto);
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetListDynamic([FromQuery] PageRequest pageRequest,[FromQuery] DynamicQuery dynamicQuery)
-        {
-            GetListVideoDynamicQuery  request = new()
-            {
-                PageRequest = pageRequest,
-                DynamicQuery=dynamicQuery
-            };
-            VideoListDto videoListDto = await Mediator.Send(request);
+    //[Route("api/[controller]/[action]")]
+    //[ApiController]
+    //public class VideoController : BaseController
+    //{
+    //    [HttpGet]
+    //    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+    //    {
+    //        GetListVideoQuery getListVideoQuery = new()
+    //        {
+    //            PageRequest = pageRequest
+    //        };
+    //        VideoListDto videoListDto = await Mediator.Send(getListVideoQuery);
 
-            return Ok(videoListDto);
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetById([FromQuery] GetVideoByIdQuery getVideoByIdQuery)
-        {
-            VideoViewDto videoViewDto = await Mediator.Send(getVideoByIdQuery);
+    //        return Ok(videoListDto);
+    //    }
+    //    [HttpGet]
+    //    public async Task<IActionResult> GetListDynamic([FromQuery] PageRequest pageRequest,[FromQuery] DynamicQuery dynamicQuery)
+    //    {
+    //        GetListVideoDynamicQuery  request = new()
+    //        {
+    //            PageRequest = pageRequest,
+    //            DynamicQuery=dynamicQuery
+    //        };
+    //        VideoListDto videoListDto = await Mediator.Send(request);
 
-            return Ok(videoViewDto);
-        }
-        [HttpPost]
-        public async Task<IActionResult> Add([FromBody]CreateVideoCommand createVideoCommand)
-        {
-            CreateVideoResponse response = await Mediator.Send(createVideoCommand);
-            return Ok(response);
-        }
-        [HttpPost]
-        public async Task<IActionResult> AddRange([FromBody] CreateRangeVideoCommand createRangeVideoCommand)
-        {
-            CreateRangeVideoResponse response = await Mediator.Send(createRangeVideoCommand);
-            return Ok(response);
-        }
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateVideoCommand updateVideoCommand)
-        {
-            UpdateVideoResponse response = await Mediator.Send(updateVideoCommand);
-            return Ok(response);
-        }
-        [HttpPut]
-        public async Task<IActionResult> UpdateRange([FromBody] UpdateRangeVideoCommand updateRangeVideoCommand)
-        {
-            UpdateRangeVideoResponse response = await Mediator.Send(updateRangeVideoCommand);
-            return Ok(response);
-        }
-        [HttpDelete]
-        public async Task<IActionResult> Delete(DeleteVideoCommand deleteVideoCommand)
-        {
-            DeleteVideoResponse response = await Mediator.Send(deleteVideoCommand);
-            return Ok(response);
-        }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteRange(DeleteRangeVideoCommand deleteRangeVideoCommand)
-        {
-            DeleteRangeVideoResponse response = await Mediator.Send(deleteRangeVideoCommand);
-            return Ok(response);
-        }
-    }
+    //        return Ok(videoListDto);
+    //    }
+    //    [HttpGet]
+    //    public async Task<IActionResult> GetById([FromQuery] GetVideoByIdQuery getVideoByIdQuery)
+    //    {
+    //        VideoViewDto videoViewDto = await Mediator.Send(getVideoByIdQuery);
+
+    //        return Ok(videoViewDto);
+    //    }
+    //    [HttpPost]
+    //    public async Task<IActionResult> Add([FromBody]CreateVideoCommand createVideoCommand)
+    //    {
+    //        CreateVideoResponse response = await Mediator.Send(createVideoCommand);
+    //        return Ok(response);
+    //    }
+    //    [HttpPost]
+    //    public async Task<IActionResult> AddRange([FromBody] CreateRangeVideoCommand createRangeVideoCommand)
+    //    {
+    //        CreateRangeVideoResponse response = await Mediator.Send(createRangeVideoCommand);
+    //        return Ok(response);
+    //    }
+    //    [HttpPut]
+    //    public async Task<IActionResult> Update([FromBody] UpdateVideoCommand updateVideoCommand)
+    //    {
+    //        UpdateVideoResponse response = await Mediator.Send(updateVideoCommand);
+    //        return Ok(response);
+    //    }
+    //    [HttpPut]
+    //    public async Task<IActionResult> UpdateRange([FromBody] UpdateRangeVideoCommand updateRangeVideoCommand)
+    //    {
+    //        UpdateRangeVideoResponse response = await Mediator.Send(updateRangeVideoCommand);
+    //        return Ok(response);
+    //    }
+    //    [HttpDelete]
+    //    public async Task<IActionResult> Delete(DeleteVideoCommand deleteVideoCommand)
+    //    {
+    //        DeleteVideoResponse response = await Mediator.Send(deleteVideoCommand);
+    //        return Ok(response);
+    //    }
+    //    [HttpDelete]
+    //    public async Task<IActionResult> DeleteRange(DeleteRangeVideoCommand deleteRangeVideoCommand)
+    //    {
+    //        DeleteRangeVideoResponse response = await Mediator.Send(deleteRangeVideoCommand);
+    //        return Ok(response);
+    //    }
+    //}
 }
