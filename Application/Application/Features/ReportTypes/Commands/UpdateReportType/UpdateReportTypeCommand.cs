@@ -13,12 +13,12 @@ namespace Application.Features.ReportTypes.Commands.UpdateReportType
         public string ReportTypeDescription { get; set; } = string.Empty;
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
-        public class UpdateReportCommandHandler:IRequestHandler<UpdateReportTypeCommand, UpdateReportTypeCommandResponse>
+        public class UpdateReportTypeCommandHandler:IRequestHandler<UpdateReportTypeCommand, UpdateReportTypeCommandResponse>
         {
             private readonly IReportTypeRepository reportTypeRepository;
             private readonly IMapper mapper;
             private readonly ReportTypeBusinessRules reportTypeBusinessRules;
-            public UpdateReportCommandHandler(IReportTypeRepository reportTypeRepository, IMapper mapper, ReportTypeBusinessRules reportTypeBusinessRules)
+            public UpdateReportTypeCommandHandler(IReportTypeRepository reportTypeRepository, IMapper mapper, ReportTypeBusinessRules reportTypeBusinessRules)
             {
                 this.reportTypeRepository = reportTypeRepository;
                 this.mapper = mapper;
