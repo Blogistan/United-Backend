@@ -36,4 +36,9 @@
     <ProjectReference Include="..\corePackages\Core.Test\Core.Test\Core.Test.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\ReportTypes\Command\" />
+    <Folder Include="Features\ReportTypes\Queries\" />
+  </ItemGroup>
+
 </Project>
