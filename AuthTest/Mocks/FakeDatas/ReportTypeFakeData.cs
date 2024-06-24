@@ -9,9 +9,9 @@ namespace AuthTest.Mocks.FakeDatas
         {
             return
             [
-                new(){Id=1,ReportTypeName="Rahatsız Edici Söylem"},
-                new(){Id=2,ReportTypeName="Aşağılama"},
-                new(){Id=3,ReportTypeName="Taciz"},
+                new(){Id=1,ReportTypeName="Rahatsız Edici Söylem",ReportTypeDescription="Test"},
+                new(){Id=2,ReportTypeName="Aşağılama",ReportTypeDescription="Test1"},
+                new(){Id=3,ReportTypeName="Taciz",ReportTypeDescription="Test2"},
             ];
         }
     }
