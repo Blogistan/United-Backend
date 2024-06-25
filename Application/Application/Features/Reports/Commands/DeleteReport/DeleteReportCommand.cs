@@ -10,12 +10,12 @@ namespace Application.Features.Reports.Commands.DeleteReport
         public Guid ReportID { get; set; }
 
 
-        public class DeleteReportCommandhandler : IRequestHandler<DeleteReportCommand, DeleteReportCommandResponse>
+        public class DeleteReportCommandHandler : IRequestHandler<DeleteReportCommand, DeleteReportCommandResponse>
         {
             private readonly IReportRepository reportRepository;
             private readonly IMapper mapper;
             private readonly ReportBusinessRules reportBusinessRules;
-            public DeleteReportCommandhandler(IReportRepository reportRepository, ReportBusinessRules reportBusinessRules, IMapper mapper)
+            public DeleteReportCommandHandler(IReportRepository reportRepository, ReportBusinessRules reportBusinessRules, IMapper mapper)
             {
                 this.reportRepository = reportRepository;
                 this.reportBusinessRules = reportBusinessRules;
