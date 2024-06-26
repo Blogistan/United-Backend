@@ -7,6 +7,10 @@ namespace Application.Features.Blogs.Commands.UpdateBlog
         public UpdateBlogCommandValidator()
         {
             RuleFor(x=>x.Id).NotEmpty();
+            RuleFor(x => x.Title).NotEmpty();
+            RuleFor(x => x.WriterId).NotEmpty();
+            RuleFor(x => x.BannerImageUrl).NotEmpty();
+            RuleFor(x => x.CategoryId).NotEmpty();
         }
     }
 }
