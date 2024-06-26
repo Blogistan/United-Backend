@@ -2,9 +2,9 @@
 
 namespace Application.Features.Blogs.Queries.GetListBlog
 {
-    public class GetListBlogValidator:AbstractValidator<GetListBlogQuery>
+    public class GetListBlogQueryValidator:AbstractValidator<GetListBlogQuery>
     {
-        public GetListBlogValidator()
+        public GetListBlogQueryValidator()
         {
             RuleFor(x=>x.PageRequest).NotEmpty();
         }
