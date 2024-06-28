@@ -13,7 +13,6 @@
     <Folder Include="Features\Bans\Models\" />
     <Folder Include="Features\Bans\Rules\" />
     <Folder Include="Features\Blogs\Models\" />
-    <Folder Include="Features\Blogs\Queries\DecreaseLovelyBlog\" />
     <Folder Include="Features\Bookmarks\Commands\" />
     <Folder Include="Features\Bookmarks\Constants\" />
     <Folder Include="Features\Bookmarks\Models\" />
