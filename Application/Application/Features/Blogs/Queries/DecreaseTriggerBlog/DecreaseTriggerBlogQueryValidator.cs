@@ -2,9 +2,9 @@
 
 namespace Application.Features.Blogs.Queries.DecreaseTriggerBlog
 {
-    public class DecreaseTriggerBlogQueryHandler : AbstractValidator<DecreaseTriggerBlogQuery>
+    public class DecreaseTriggerBlogQueryValidator : AbstractValidator<DecreaseTriggerBlogQuery>
     {
-        public DecreaseTriggerBlogQueryHandler()
+        public DecreaseTriggerBlogQueryValidator()
         {
             RuleFor(x => x.BlogId).NotEmpty();
         }
