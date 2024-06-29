@@ -1,7 +1,7 @@
-﻿using Application.Features.Blogs.Queries.SuprisedBlog;
-using Application.Features.Blogs.Queries.TriggerBlog;
+﻿using Application.Features.Blogs.Queries.TriggerBlog;
 using AuthTest.Mocks.FakeDatas;
 using AuthTest.Mocks.Repositories;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using FluentValidation.TestHelper;
 using static Application.Features.Blogs.Queries.TriggerBlog.TriggerBlogQuery;
 
@@ -33,6 +33,15 @@ namespace AuthTest.Features.Blogs.Queries.TriggerBlog
             var result = await _handler.Handle(_query, CancellationToken.None);
 
             Assert.Equal(1, result.ReactionSuprisedCount);
+        }
+        [Fact]
+        public async Task ThrowExceptionIfBlogNotExists()
+        {
+            _query.BlogId = 54165;
+            await Assert.ThrowsAsync<BusinessException>(async () =>
+            {
+                await _handler.Handle(_query, CancellationToken.None);
+            });
         }
     }
 }

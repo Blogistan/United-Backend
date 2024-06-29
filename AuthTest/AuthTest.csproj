@@ -37,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Blogs\Queries\BlogDetailById\" />
     <Folder Include="Features\Contents\Commands\Create\" />
   </ItemGroup>
 
