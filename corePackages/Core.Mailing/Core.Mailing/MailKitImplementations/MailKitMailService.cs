@@ -95,4 +95,9 @@ public class MailKitMailService : IMailService
 
         return result;
     }
+
+    public string LoadMailTemplate(string mailPath)
+    {
+        return File.ReadAllText(mailPath);
+    }
 }

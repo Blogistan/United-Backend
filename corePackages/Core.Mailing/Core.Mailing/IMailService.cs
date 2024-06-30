@@ -4,4 +4,5 @@ public interface IMailService
 {
     void SendMail(Mail mail);
     Task SendEmailAsync(Mail mail);
+    string LoadMailTemplate(string mailPath);
 }
