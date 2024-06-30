@@ -32,23 +32,23 @@ namespace Application.Features.Auth.Commands.ForgetPassword
 
             public async Task<Unit> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
             {
-                var user = await siteUserRepository.GetAsync(x => x.Email == request.Email && x.IsActive==true);
+                var user = await siteUserRepository.GetAsync(x => x.Email == request.Email && x.IsActive == true);
                 await authBussinessRules.UserShouldBeExist(user);
 
                 var key = await CreateResetKey();
                 await forgotPasswordRepository.AddAsync(new ForgotPassword
                 {
-                    ActivationKey=key,
-                    ExpireDate=DateTime.UtcNow.AddMinutes(15),
-                    IsVerified=false,
-                    UserId=user.Id,
+                    ActivationKey = key,
+                    ExpireDate = DateTime.UtcNow.AddMinutes(15),
+                    IsVerified = false,
+                    UserId = user.Id,
                 });
 
-                await SendForgotPasswordMail(user, request.PasswordResetUrl,key);
+                await SendForgotPasswordMail(user, request.PasswordResetUrl, key);
 
                 return Unit.Value;
             }
-            private async Task SendForgotPasswordMail(SiteUser siteUser, string passwordResetUrl,string resetKey)
+            private async Task SendForgotPasswordMail(SiteUser siteUser, string passwordResetUrl, string resetKey)
             {
                 List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
                 mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
@@ -57,16 +57,17 @@ namespace Application.Features.Auth.Commands.ForgetPassword
                 {
                     Subject = "Forgot Password",
                     ToList = mailboxAddresses,
-                    HtmlBody = $"Hi {siteUser.FirstName} {siteUser.LastName} " +
+                    TextBody = $"Hi {siteUser.FirstName} {siteUser.LastName} " +
                     $"Here is your password reset link " +
-                    $"{passwordResetUrl}?resetKey={resetKey}"
+                    $"{passwordResetUrl}?resetKey={resetKey}",
+                    HtmlBody = mailService.LoadMailTemplate("D:\\Workstation\\mvc\\LastDance\\C\\United\\United-Backend\\corePackages\\Core.Mailing\\Core.Mailing\\MailDesigns\\ForgotPasswordRequest\\ForgotPasswordRequest.html").Replace("RESET_LINK", $"{passwordResetUrl}?resetKey={resetKey}")
                 };
 
                 await mailService.SendEmailAsync(mail);
             }
             private async Task<string> CreateResetKey()
             {
-                 return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+                return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
             }
         }
     }
