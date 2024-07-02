@@ -427,7 +427,7 @@ namespace Persistance.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReportID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: true),
                     IsPerma = table.Column<bool>(type: "bit", nullable: false),
                     BanStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BanEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),

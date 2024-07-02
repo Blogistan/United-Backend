@@ -9,7 +9,6 @@ namespace Persistance.EntityConfigurations
         public void Configure(EntityTypeBuilder<SiteUser> builder)
         {
             builder.ToTable("Users");
-
         }
     }
 }

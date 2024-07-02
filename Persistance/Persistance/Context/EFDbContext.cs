@@ -33,7 +33,7 @@ namespace Persistance.Context
 
         public EFDbContext()
         {
-            
+
         }
         public EFDbContext(DbContextOptions dbContextOptions,
             IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : base(dbContextOptions)
@@ -55,7 +55,7 @@ namespace Persistance.Context
             var userId = httpContextAccessor.HttpContext.User.GetUserId() == null ? 0 : httpContextAccessor.HttpContext.User.GetUserId();
 
 
-            
+
             foreach (var item in entities)
             {
                 switch (item.State)
@@ -79,8 +79,9 @@ namespace Persistance.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<User>();
+            modelBuilder.Ignore<UserBase>();
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
         }
     }
 }
