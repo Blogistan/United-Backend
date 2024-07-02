@@ -8,7 +8,7 @@ public class OtpAuthenticator : Entity<int>
     public byte[] SecretKey { get; set; }
     public bool IsVerified { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public virtual UserBase User { get; set; } = null!;
 
     public OtpAuthenticator()
     {

@@ -14,7 +14,7 @@ namespace Application.Features.SiteUsers.Rules
         {
             this.siteUserRepository = siteUserRepository;
         }
-        public async Task UserShouldBeExistsWhenSelected(User? user)
+        public async Task UserShouldBeExistsWhenSelected(UserBase? user)
         {
             if (user == null)
                 throw new BusinessException(AuthBusinessMessage.UserNotFound);
@@ -27,7 +27,7 @@ namespace Application.Features.SiteUsers.Rules
                 throw new BusinessException(AuthBusinessMessage.UserNotFound);
         }
 
-        public async Task UserPasswordShouldBeMatched(User user, string password)
+        public async Task UserPasswordShouldBeMatched(UserBase user, string password)
         {
             if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 throw new BusinessException(AuthBusinessMessage.InvlaidPassword);

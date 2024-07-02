@@ -7,7 +7,7 @@ public class UserOperationClaim : Entity<int>
     public int UserId { get; set; }
     public int OperationClaimId { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public virtual UserBase User { get; set; } = null!;
     public virtual OperationClaim OperationClaim { get; set; } = null!;
 
     public UserOperationClaim()

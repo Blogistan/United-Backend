@@ -18,18 +18,18 @@ namespace Application.Features.Auth.Rules
         }
         public async Task UserEmailCannotBeDuplicatedWhenInserted(string email)
         {
-            User? user = await siteUserRepository.GetAsync(x => x.Email == email);
+            UserBase? user = await siteUserRepository.GetAsync(x => x.Email == email);
             if (user != null) throw new BusinessException(AuthBusinessMessage.UserEmailAlreadyExists);
 
         }
-        public Task UserShouldBeExist(User? user)
+        public Task UserShouldBeExist(UserBase? user)
         {
             if (user == null)
                 throw new BusinessException(AuthBusinessMessage.UserNotFound);
 
             return Task.CompletedTask;
         }
-        public Task UserPasswordShoudBeMatch(User user, string password)
+        public Task UserPasswordShoudBeMatch(UserBase user, string password)
         {
             bool result = HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt);
             if (result == false)
@@ -51,7 +51,7 @@ namespace Application.Features.Auth.Rules
 
             return Task.CompletedTask;
         }
-        public Task UserShouldNotBeHasAuthenticator(User user)
+        public Task UserShouldNotBeHasAuthenticator(UserBase user)
         {
             if (user.AuthenticatorType is not AuthenticatorType.None)
                 throw new BusinessException(AuthBusinessMessage.UserHasAuthenticator);

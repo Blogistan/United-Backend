@@ -3,7 +3,7 @@ using Core.Security.Enums;
 
 namespace Domain.Entities
 {
-    public class SiteUser : User
+    public class SiteUser : UserBase
     {
         public string? ProfileImageUrl { get; set; } = string.Empty;
         public string? Biography { get; set; } = string.Empty;

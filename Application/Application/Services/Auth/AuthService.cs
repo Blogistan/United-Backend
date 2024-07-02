@@ -72,7 +72,7 @@ namespace Application.Services.Auth
             return otpAuthenticatorHelper.ConvertSecretKeyToString(secretBtyes);
         }
 
-        public async Task<AccessToken> CreateAccessToken(User user)
+        public async Task<AccessToken> CreateAccessToken(UserBase user)
         {
             IPaginate<UserOperationClaim> paginate = await userOperationClaimRepository.GetListAsync(x => x.UserId == user.Id, include: x => x.Include(inc => inc.OperationClaim));
 
@@ -83,7 +83,7 @@ namespace Application.Services.Auth
 
         }
 
-        public async Task<EmailAuthenticator> CreateEmailAutenticator(User user)
+        public async Task<EmailAuthenticator> CreateEmailAutenticator(UserBase user)
         {
             return new EmailAuthenticator
             {
@@ -93,14 +93,14 @@ namespace Application.Services.Auth
             };
         }
 
-        public async Task<RefreshToken> CreateRefreshToken(User user, string IpAddress)
+        public async Task<RefreshToken> CreateRefreshToken(UserBase user, string IpAddress)
         {
             RefreshToken refreshToken = tokenHelper.CreateRefreshToken(user, IpAddress);
 
             return refreshToken;
         }
 
-        public async Task DeleteOldActiveRefreshTokens(User user)
+        public async Task DeleteOldActiveRefreshTokens(UserBase user)
         {
             ICollection<RefreshToken> oldActiveTokens = await refreshTokenRepository.GetAllOldActiveRefreshTokenAsync(user, tokenHelper.RefreshTokenTTLOption);
 
@@ -117,7 +117,7 @@ namespace Application.Services.Auth
             else await RevokeDescendantRefreshTokens(childRefreshToken, IpAddress, reason);
         }
 
-        public async Task<RefreshToken> RotateRefreshToken(User user, RefreshToken refreshToken, string ipAddress)
+        public async Task<RefreshToken> RotateRefreshToken(UserBase user, RefreshToken refreshToken, string ipAddress)
         {
             RefreshToken newToken = tokenHelper.CreateRefreshToken(user, ipAddress);
             await RevokeRefreshToken(refreshToken, ipAddress, "New Refresh Token Created. ", newToken.Token);
@@ -125,7 +125,7 @@ namespace Application.Services.Auth
             return newToken;
         }
 
-        public async Task SendAuthenticatorCode(User user)
+        public async Task SendAuthenticatorCode(UserBase user)
         {
             switch (user.AuthenticatorType)
             {
@@ -136,7 +136,7 @@ namespace Application.Services.Auth
             }
         }
         //This method could be updated.
-        private async Task SendAuthenticatorCodeWithEmail(User user)
+        private async Task SendAuthenticatorCodeWithEmail(UserBase user)
         {
             EmailAuthenticator emailAuthenticator = await emailAuthenticatorRepository.GetAsync(x => x.UserId == user.Id);
 
@@ -163,7 +163,7 @@ namespace Application.Services.Auth
 
         }
 
-        public async Task VerifyAuthenticatorCode(User user, string code)
+        public async Task VerifyAuthenticatorCode(UserBase user, string code)
         {
             switch (user.AuthenticatorType)
             {
@@ -186,7 +186,7 @@ namespace Application.Services.Auth
             refreshToken.ReplacedByToken = replacedByToken;
             await refreshTokenRepository.UpdateAsync(refreshToken);
         }
-        private async Task VerifyEmailAuthenticatorCode(User user, string code)
+        private async Task VerifyEmailAuthenticatorCode(UserBase user, string code)
         {
             EmailAuthenticator emailAuthenticator = await emailAuthenticatorRepository.GetAsync(x => x.UserId == user.Id);
 
@@ -194,7 +194,7 @@ namespace Application.Services.Auth
                 await Task.FromException(new BusinessException(AuthBusinessMessage.InvalidAuthenticatorCode));
             await emailAuthenticatorRepository.UpdateAsync(emailAuthenticator);
         }
-        private async Task VerifyEmailOtpAuthenticatorCode(User user, string codeToVerify)
+        private async Task VerifyEmailOtpAuthenticatorCode(UserBase user, string codeToVerify)
         {
             OtpAuthenticator otpAuthenticator = await otpAuthenticatorRepository.GetAsync(x => x.UserId == user.Id);
             bool result = await otpAuthenticatorHelper.VerifyCode(otpAuthenticator.SecretKey, codeToVerify);
@@ -203,7 +203,7 @@ namespace Application.Services.Auth
 
         }
 
-        public async Task<OtpAuthenticator> CreateOtpAuthenticator(User user) => new()
+        public async Task<OtpAuthenticator> CreateOtpAuthenticator(UserBase user) => new()
         {
             UserId = user.Id,
             SecretKey = await otpAuthenticatorHelper.GenerateSecretKey(),

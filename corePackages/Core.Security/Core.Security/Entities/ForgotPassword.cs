@@ -15,7 +15,7 @@ namespace Core.Security.Entities
         public byte[]? NewPasswordSalt { get; set; }
         public byte[]? NewPasswordHash { get; set; }
 
-        public virtual User User { get; set; } = null!;
+        public virtual UserBase User { get; set; } = null!;
 
         public ForgotPassword()
         {

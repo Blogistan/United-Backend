@@ -11,7 +11,7 @@ namespace Persistance.Repositories
         {
         }
 
-        public async Task<ICollection<OtpAuthenticator>> DeleteAllNonVerifiedAsync(User user)
+        public async Task<ICollection<OtpAuthenticator>> DeleteAllNonVerifiedAsync(UserBase user)
         {
             List<OtpAuthenticator> otpAuthenticators = Query().Where(x => x.IsVerified == false && x.UserId == user.Id).ToList();
 

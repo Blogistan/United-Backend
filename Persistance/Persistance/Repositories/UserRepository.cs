@@ -5,7 +5,7 @@ using Persistance.Context;
 
 namespace Persistance.Repositories
 {
-    public class UserRepository : EfRepositoryBase<User, int,EFDbContext>, IUserRepository
+    public class UserRepository : EfRepositoryBase<UserBase, int,EFDbContext>, IUserRepository
     {
         public UserRepository(EFDbContext context) : base(context)
         {

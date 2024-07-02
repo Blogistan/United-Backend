@@ -26,7 +26,7 @@ namespace Application.Notifications.PasswordChangedNotification
         {
             await SendPasswordChangeMail(notification.User);
         }
-        private async Task SendPasswordChangeMail(User siteUser)
+        private async Task SendPasswordChangeMail(UserBase siteUser)
         {
             List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
             mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
@@ -47,9 +47,7 @@ namespace Application.Notifications.PasswordChangedNotification
             {
                 Subject = "Password Changed",
                 ToList = mailboxAddresses,
-                HtmlBody = $"Hi {siteUser.FirstName} {siteUser.LastName} \n" +
-                $"Your password is changed  at, " +
-                $" {ipAddress} {browser}  /  {ipInfo.Country_Name} {ipInfo.Region_Name}"
+                HtmlBody = mailService.LoadMailTemplate("D:\\Workstation\\mvc\\LastDance\\C\\United\\United-Backend\\corePackages\\Core.Mailing\\Core.Mailing\\MailDesigns\\ForgotPasswordRequest\\PasswordChanced.html").Replace("FIRST_NAME", siteUser.FirstName).Replace("IP_ADDRESS", ipAddress).Replace("WEB_BROWSER", browser).Replace("IP_LOCATION", $"{ipInfo.Country_Name} {ipInfo.Region_Name}")
             };
 
             await mailService.SendEmailAsync(mail);

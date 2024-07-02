@@ -14,7 +14,7 @@ public class RefreshToken : Entity<int>
 
     public string? ReasonRevoked { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public virtual UserBase User { get; set; } = null!;
 
     public RefreshToken()
     {

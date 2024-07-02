@@ -11,7 +11,7 @@ namespace Persistance.Repositories
         {
         }
 
-        public async Task<ICollection<EmailAuthenticator>> DeleteAllNonVerifiedAsync(User user)
+        public async Task<ICollection<EmailAuthenticator>> DeleteAllNonVerifiedAsync(UserBase user)
         {
             List<EmailAuthenticator> userEmailAuthenticators = Query()
            .Where(uea => uea.UserId == user.Id && uea.IsVerified == false)
