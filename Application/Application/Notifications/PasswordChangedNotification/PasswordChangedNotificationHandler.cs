@@ -26,7 +26,7 @@ namespace Application.Notifications.PasswordChangedNotification
         {
             await SendPasswordChangeMail(notification.User);
         }
-        private async Task SendPasswordChangeMail(UserBase siteUser)
+        private async Task SendPasswordChangeMail(User siteUser)
         {
             List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
             mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));

@@ -12,7 +12,7 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20240702155411_init")]
+    [Migration("20240703135656_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -654,8 +654,6 @@ namespace Persistance.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Comments");
                 });
 
@@ -1075,12 +1073,6 @@ namespace Persistance.Migrations
                     b.HasOne("Domain.Entities.Comment", null)
                         .WithMany("CommentResponses")
                         .HasForeignKey("CommentId");
-
-                    b.HasOne("Domain.Entities.SiteUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>

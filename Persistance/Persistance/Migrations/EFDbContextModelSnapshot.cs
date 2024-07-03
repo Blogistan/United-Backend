@@ -651,8 +651,6 @@ namespace Persistance.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Comments");
                 });
 
@@ -1072,12 +1070,6 @@ namespace Persistance.Migrations
                     b.HasOne("Domain.Entities.Comment", null)
                         .WithMany("CommentResponses")
                         .HasForeignKey("CommentId");
-
-                    b.HasOne("Domain.Entities.SiteUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>

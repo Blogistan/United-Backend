@@ -6,24 +6,24 @@ namespace Application.Services.Auth
 {
     public interface IAuthService: IExternalAuthService
     {
-        Task<AccessToken> CreateAccessToken(UserBase user);
+        Task<AccessToken> CreateAccessToken(User user);
 
-        Task<RefreshToken> CreateRefreshToken(UserBase user, string IpAddress);
+        Task<RefreshToken> CreateRefreshToken(User user, string IpAddress);
 
         Task<RefreshToken> AddRefreshToken(RefreshToken refreshToken);
 
-        Task DeleteOldActiveRefreshTokens(UserBase user);
+        Task DeleteOldActiveRefreshTokens(User user);
 
         Task RevokeDescendantRefreshTokens(RefreshToken token, string IpAddress, string reason);
         public Task RevokeRefreshToken(RefreshToken refreshToken, string IpAddress, string reason, string? replacedByToken);
-        Task<RefreshToken> RotateRefreshToken(UserBase user, RefreshToken refreshToken, string ipAddress);
+        Task<RefreshToken> RotateRefreshToken(User user, RefreshToken refreshToken, string ipAddress);
 
-        Task<EmailAuthenticator> CreateEmailAutenticator(UserBase user);
+        Task<EmailAuthenticator> CreateEmailAutenticator(User user);
 
-        public Task<OtpAuthenticator> CreateOtpAuthenticator(UserBase user);
+        public Task<OtpAuthenticator> CreateOtpAuthenticator(User user);
         Task<string> ConvertOtpKeyToString(byte[] secretBtyes);
 
-        Task SendAuthenticatorCode(UserBase user);
-        Task VerifyAuthenticatorCode(UserBase user, string code);
+        Task SendAuthenticatorCode(User user);
+        Task VerifyAuthenticatorCode(User user, string code);
     }
 }

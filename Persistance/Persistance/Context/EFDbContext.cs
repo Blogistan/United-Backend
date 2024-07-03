@@ -79,7 +79,7 @@ namespace Persistance.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<UserBase>();
+            modelBuilder.Ignore<User>();
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         }

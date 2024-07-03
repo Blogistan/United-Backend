@@ -3,7 +3,7 @@ using Core.Security.Enums;
 
 namespace Core.Security.Entities;
 
-public abstract class UserBase : Entity<int>
+public class User : Entity<int>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -19,7 +19,7 @@ public abstract class UserBase : Entity<int>
     public virtual ICollection<OtpAuthenticator> OtpAuthenticators { get; set; } = null!;
     public virtual ICollection<ForgotPassword> ForgottenPasswords { get; set; } = null!;
 
-    public UserBase()
+    public User()
     {
         FirstName = string.Empty;
         LastName = string.Empty;
@@ -28,7 +28,7 @@ public abstract class UserBase : Entity<int>
         PasswordSalt = Array.Empty<byte>();
     }
 
-    public UserBase(
+    public User(
         string firstName,
         string lastName,
         string email,
@@ -47,7 +47,7 @@ public abstract class UserBase : Entity<int>
         AuthenticatorType = authenticatorType;
     }
 
-    public UserBase(
+    public User(
         int id,
         string firstName,
         string lastName,

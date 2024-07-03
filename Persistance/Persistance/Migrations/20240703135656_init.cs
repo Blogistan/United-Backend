@@ -414,11 +414,6 @@ namespace Persistance.Migrations
                         column: x => x.CommentId,
                         principalTable: "Comments",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Comments_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -541,11 +536,6 @@ namespace Persistance.Migrations
                 name: "IX_Comments_CommentId",
                 table: "Comments",
                 column: "CommentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_UserId",
-                table: "Comments",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailAuthenticators_SiteUserId",

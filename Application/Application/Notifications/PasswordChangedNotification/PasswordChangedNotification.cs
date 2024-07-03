@@ -5,6 +5,6 @@ namespace Application.Notifications.PasswordChangedNotification
 {
     public class PasswordChangedNotification:INotification
     {
-        public UserBase User { get; set; }
+        public User User { get; set; }
     }
 }

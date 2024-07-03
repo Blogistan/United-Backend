@@ -12,7 +12,7 @@ namespace Persistance.Repositories
         {
         }
 
-        public async Task<ICollection<RefreshToken>> GetAllOldActiveRefreshTokenAsync(UserBase user, int ttl)
+        public async Task<ICollection<RefreshToken>> GetAllOldActiveRefreshTokenAsync(User user, int ttl)
         {
             return await Query().Where(x => x.UserId == user.Id &&
             x.Revoked == null && x.Expires > DateTime.UtcNow && x.CreatedDate.AddMinutes(ttl) < DateTime.UtcNow).ToListAsync();

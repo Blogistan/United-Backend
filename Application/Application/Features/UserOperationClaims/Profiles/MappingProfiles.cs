@@ -16,24 +16,24 @@ namespace Application.Features.UserOperationClaims.Profiles
     {
         public MappingProfiles()
         {
-            CreateMap<SiteUser, UserOperationClaimListViewDto>().ForMember(opt => opt.UserID, src => src.MapFrom(x => x.Id))
+            CreateMap<User, UserOperationClaimListViewDto>().ForMember(opt => opt.UserID, src => src.MapFrom(x => x.Id))
                 .ForMember(opt => opt.UserName, src => src.MapFrom(x => x.FirstName + ' ' + x.LastName))
                 .ForMember(opt => opt.Claims, opt => opt.MapFrom(src => src.UserOperationClaims.Select(claim => claim.OperationClaim).ToList()))
                 .ReverseMap();
 
 
             CreateMap<UserOperationClaim, CreateUserOperationClaimCommand>().ReverseMap();
-            CreateMap<IPaginate<SiteUser>, CreateUserOperationClaimCommandResponse>().ReverseMap();
+            CreateMap<IPaginate<User>, CreateUserOperationClaimCommandResponse>().ReverseMap();
 
             CreateMap<UserOperationClaim, UpdateUserOperationClaimCommand>().ReverseMap();
-            CreateMap<IPaginate<SiteUser>, UpdateUserOperationClaimCommandResponse>().ReverseMap();
+            CreateMap<IPaginate<User>, UpdateUserOperationClaimCommandResponse>().ReverseMap();
 
             CreateMap<DeleteOperationClaimCommand, DeleteUserOperationClaimCommand>().ReverseMap();
-            CreateMap<IPaginate<SiteUser>, DeleteUserOperationClaimResponse>().ReverseMap();
+            CreateMap<IPaginate<User>, DeleteUserOperationClaimResponse>().ReverseMap();
 
 
-            CreateMap<IPaginate<SiteUser>, GetListUserOperationClaimQueryResponse>().ReverseMap();
-            CreateMap<IPaginate<SiteUser>, GetListUserOperationClaimDynamicQueryResponse>().ReverseMap();
+            CreateMap<IPaginate<User>, GetListUserOperationClaimQueryResponse>().ReverseMap();
+            CreateMap<IPaginate<User>, GetListUserOperationClaimDynamicQueryResponse>().ReverseMap();
         }
     }
 }

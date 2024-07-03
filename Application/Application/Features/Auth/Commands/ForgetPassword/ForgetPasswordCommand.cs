@@ -48,7 +48,7 @@ namespace Application.Features.Auth.Commands.ForgetPassword
 
                 return Unit.Value;
             }
-            private async Task SendForgotPasswordMail(SiteUser siteUser, string passwordResetUrl, string resetKey)
+            private async Task SendForgotPasswordMail(User siteUser, string passwordResetUrl, string resetKey)
             {
                 List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
                 mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));

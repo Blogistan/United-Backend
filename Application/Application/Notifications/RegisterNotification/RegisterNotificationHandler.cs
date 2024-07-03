@@ -19,7 +19,7 @@ namespace Application.Notifications.RegisterNotification
         {
             await SendInfoMailAsync(notification.SiteUser);
         }
-        public async Task SendInfoMailAsync(UserBase siteUser)
+        public async Task SendInfoMailAsync(User siteUser)
         {
             List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
             mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));

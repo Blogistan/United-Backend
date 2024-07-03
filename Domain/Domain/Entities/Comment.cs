@@ -1,4 +1,5 @@
 ﻿using Core.Persistence.Repositories;
+using Core.Security.Entities;
 
 namespace Domain.Entities
 {
@@ -18,7 +19,7 @@ namespace Domain.Entities
 
         public virtual ICollection<Comment>? CommentResponses { get; set; }
 
-        public virtual SiteUser User { get; set; }
+        public virtual User User { get; set; }
 
 
 
