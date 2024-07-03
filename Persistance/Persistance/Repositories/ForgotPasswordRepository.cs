@@ -10,5 +10,7 @@ namespace Persistance.Repositories
         public ForgotPasswordRepository(EFDbContext context) : base(context)
         {
         }
+
+
     }
 }

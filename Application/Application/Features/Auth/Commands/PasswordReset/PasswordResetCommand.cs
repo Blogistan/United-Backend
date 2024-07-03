@@ -5,15 +5,14 @@ using Application.Services.Repositories;
 using Core.Mailing;
 using Core.Security.Entities;
 using Core.Security.Hashing;
+using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Commands.PasswordReset
 {
     public class PasswordResetCommand : IRequest<Unit>
     {
-        public string ResetKey { get; set; }= string.Empty;
+        public string ResetKey { get; set; } = string.Empty;
 
         public string NewPassword { get; set; } = string.Empty;
         public string NewPasswordConfirm { get; set; } = string.Empty;
@@ -27,7 +26,7 @@ namespace Application.Features.Auth.Commands.PasswordReset
             private readonly IMediator mediator;
 
 
-            public PasswordResetCommandHandler(IAuthService authService, ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IForgotPasswordRepository forgotPasswordRepository, IMailService mailService,  IMediator mediator)
+            public PasswordResetCommandHandler(IAuthService authService, ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IForgotPasswordRepository forgotPasswordRepository, IMailService mailService, IMediator mediator)
             {
                 this.authService = authService;
                 this.siteUserRepository = siteUserRepository;
@@ -38,8 +37,8 @@ namespace Application.Features.Auth.Commands.PasswordReset
 
             public async Task<Unit> Handle(PasswordResetCommand request, CancellationToken cancellationToken)
             {
-                ForgotPassword forgotPassword = await forgotPasswordRepository.GetAsync(x => x.ActivationKey == request.ResetKey, x => x.Include(x => x.User));
-
+                ForgotPassword forgotPassword = await forgotPasswordRepository.GetAsync(x => x.ActivationKey == request.ResetKey);
+                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Id == forgotPassword.UserId);
                 await authBussinessRules.PasswordResetKeyShouldBeExists(forgotPassword);
 
                 await authBussinessRules.PasswordResetTokenShouldBeActive(forgotPassword);
@@ -50,16 +49,17 @@ namespace Application.Features.Auth.Commands.PasswordReset
 
                 forgotPassword.NewPasswordSalt = salt;
                 forgotPassword.NewPasswordHash = hash;
-                forgotPassword.OldPasswordSalt = forgotPassword.User.PasswordSalt;
-                forgotPassword.OldPasswordHash = forgotPassword.User.PasswordHash;
+                forgotPassword.OldPasswordSalt = siteUser.PasswordSalt;
+                forgotPassword.OldPasswordHash = siteUser.PasswordHash;
                 forgotPassword.IsVerified = true;
 
-                forgotPassword.User.PasswordSalt = salt;
-                forgotPassword.User.PasswordHash = hash;
+                siteUser.PasswordSalt = salt;
+                siteUser.PasswordHash = hash;
 
                 await forgotPasswordRepository.UpdateAsync(forgotPassword);
+                await siteUserRepository.UpdateAsync(siteUser);
 
-                await mediator.Publish(new PasswordChangedNotification() { User = forgotPassword.User });
+                await mediator.Publish(new PasswordChangedNotification() { User = siteUser });
 
                 return Unit.Value;
 

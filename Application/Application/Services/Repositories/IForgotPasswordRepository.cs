@@ -5,5 +5,6 @@ namespace Application.Services.Repositories
 {
     public interface IForgotPasswordRepository:IRepository<ForgotPassword,int>,IAsyncRepository<ForgotPassword,int>
     {
+      
     }
 }
