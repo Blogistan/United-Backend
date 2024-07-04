@@ -28,7 +28,7 @@ namespace Application.Notifications.RegisterNotification
             {
                 ToList = mailboxAddresses,
                 Subject = "Welcome To United !",
-                TextBody = $"Welcome to United {siteUser.FirstName} {siteUser.LastName} , We hope you learn and share new information , United team ."
+                HtmlBody=mailService.LoadMailTemplate("D:\\Workstation\\mvc\\LastDance\\C\\United\\United-Backend\\corePackages\\Core.Mailing\\Core.Mailing\\MailDesigns\\Registered\\Welcome.html")
             };
             await mailService.SendEmailAsync(mailData);
         }
