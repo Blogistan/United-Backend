@@ -33,7 +33,7 @@ namespace Application.Features.Auth.Rules
         {
             bool result = HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt);
             if (result == false)
-                throw new BusinessException(AuthBusinessMessage.InvlaidPassword);
+                throw new AuthorizationException(AuthBusinessMessage.InvlaidPassword);
 
             return Task.CompletedTask;
         }
