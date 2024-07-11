@@ -18,6 +18,10 @@ namespace Application.Features.Blogs.Commands.CreateBlog
         public int ShareCount { get; set; }
         public int ReadCount { get; set; }
 
+        public CreateBlogCommandResponse()
+        {
+            
+        }
         public CreateBlogCommandResponse(int ıd, string title, string categoryName, string bannerImageUrl, DateTime createdDate, int reactionSuprisedCount, int reactionLovelyCount, int reactionSadCount, int reactionKEKWCount, int reactionTriggeredCount, int shareCount, int readCount)
         {
             Id = ıd;
