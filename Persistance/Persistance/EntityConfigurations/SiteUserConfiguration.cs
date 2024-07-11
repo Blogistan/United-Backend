@@ -11,7 +11,7 @@ namespace Persistance.EntityConfigurations
         {
             byte[] hash, salt;
             HashingHelper.CreatePasswordHash("Admin123", out hash, out salt);
-            SiteUser[] siteUsers = { new(1, "Admin", "Admin", "esquetta@gmail.com", "", "", salt, hash, true, Core.Security.Enums.AuthenticatorType.None, new List<Blog>(), new List<Bookmark>()) };
+            SiteUser[] siteUsers = { new(1, "Admin", "Admin", "esquetta@gmail.com", "", "", salt, hash, true,true, Core.Security.Enums.AuthenticatorType.None, new List<Blog>(), new List<Bookmark>()) };
             builder.ToTable("Users");
             builder.HasData(siteUsers);
         }

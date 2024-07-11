@@ -18,7 +18,7 @@ namespace Domain.Entities
             Bookmarks = new HashSet<Bookmark>();
         }
         public SiteUser(int id, string firstName, string lastName, string email, string profileImageUrl, string biography, byte[] passwordSalt, byte[] passwordHash,
-                   bool isActive, AuthenticatorType authenticatorType, ICollection<Blog> blogs, ICollection<Bookmark> bookmarks) : this()
+                   bool isActive,bool isVerified, AuthenticatorType authenticatorType, ICollection<Blog> blogs, ICollection<Bookmark> bookmarks) : this()
         {
             Id = id;
             FirstName = firstName;
@@ -27,6 +27,7 @@ namespace Domain.Entities
             PasswordSalt = passwordSalt;
             PasswordHash = passwordHash;
             IsActive = isActive;
+            IsVerified = isVerified;
             AuthenticatorType = authenticatorType;
             Bookmarks = bookmarks;
             Blogs = blogs;

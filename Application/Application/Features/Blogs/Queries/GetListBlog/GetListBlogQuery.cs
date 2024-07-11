@@ -7,13 +7,14 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Application.Features.Blogs.Queries.GetListBlog
 {
-    public class GetListBlogQuery:IRequest<GetListBlogQueryResponse>,ISecuredRequest
+    public class GetListBlogQuery:IRequest<GetListBlogQueryResponse>/*,ISecuredRequest*/
     {
         public PageRequest PageRequest { get; set; }
 
-        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User", "Guest" };
+        //public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User", "Guest" };
 
         public class GetListBlogQueryHandler:IRequestHandler<GetListBlogQuery, GetListBlogQueryResponse>
         {
