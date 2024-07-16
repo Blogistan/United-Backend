@@ -151,11 +151,11 @@ namespace UnitedAPI.Controllers
         }
 
         [HttpPost("GoogleSignIn")]
-        public async Task<IActionResult> GoogleSignIn([FromBody] string token)
+        public async Task<IActionResult> GoogleSignIn([FromBody] GoogleSignInCommandRequest googleSignInCommandRequest)
         {
             GoogleSignInCommand googleSignInCommand = new GoogleSignInCommand()
             {
-                IdToken = token,
+                IdToken = googleSignInCommandRequest.IdToken,
                 IpAdress = GetIpAddress()
             };
             LoginResponse response = await Mediator.Send(googleSignInCommand);
