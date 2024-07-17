@@ -326,6 +326,34 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserLogins",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProviderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SiteUserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLogins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserLogins_Users_SiteUserId",
+                        column: x => x.SiteUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserOperationClaims",
                 columns: table => new
                 {
@@ -504,7 +532,7 @@ namespace Persistance.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AuthenticatorType", "Biography", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "Email", "FirstName", "IsActive", "IsVerified", "LastName", "PasswordHash", "PasswordSalt", "ProfileImageUrl", "UpdateUser", "UpdatedDate", "VerifiedAt" },
-                values: new object[] { 1, 0, "", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "esquetta@gmail.com", "Admin", true, null, "Admin", new byte[] { 254, 49, 133, 191, 241, 138, 230, 21, 52, 155, 76, 64, 1, 157, 115, 239, 54, 172, 193, 107, 182, 133, 17, 8, 100, 202, 181, 103, 247, 84, 14, 99, 32, 173, 255, 98, 170, 22, 229, 245, 210, 86, 222, 182, 175, 122, 222, 202, 120, 242, 54, 129, 182, 21, 123, 81, 51, 255, 8, 29, 94, 223, 94, 5 }, new byte[] { 90, 91, 8, 128, 156, 240, 73, 101, 104, 51, 76, 31, 163, 201, 206, 212, 11, 191, 246, 22, 210, 51, 15, 217, 109, 51, 11, 35, 249, 214, 77, 229, 75, 182, 164, 52, 161, 102, 185, 118, 107, 98, 1, 164, 198, 81, 160, 195, 9, 57, 205, 41, 231, 203, 8, 127, 182, 65, 80, 129, 102, 93, 130, 112, 128, 120, 182, 3, 169, 171, 252, 240, 91, 239, 42, 66, 90, 196, 244, 10, 191, 26, 2, 245, 178, 196, 170, 80, 156, 77, 172, 220, 116, 171, 7, 142, 156, 236, 16, 170, 143, 4, 45, 27, 9, 50, 111, 135, 136, 92, 101, 152, 40, 145, 202, 105, 56, 231, 56, 90, 19, 111, 24, 4, 3, 79, 16, 20 }, "", 0, null, null });
+                values: new object[] { 1, 0, "", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "esquetta@gmail.com", "Admin", true, true, "Admin", new byte[] { 117, 66, 201, 254, 92, 255, 62, 82, 54, 4, 83, 255, 68, 155, 236, 78, 87, 172, 9, 144, 147, 120, 222, 95, 99, 81, 54, 100, 242, 210, 120, 2, 10, 77, 231, 118, 164, 161, 33, 123, 79, 56, 201, 229, 237, 211, 76, 159, 234, 251, 37, 143, 72, 32, 0, 16, 251, 178, 71, 16, 19, 128, 59, 175 }, new byte[] { 35, 186, 87, 214, 204, 144, 163, 191, 115, 97, 250, 3, 237, 191, 200, 56, 88, 86, 84, 125, 156, 176, 176, 201, 114, 217, 245, 39, 190, 151, 236, 47, 216, 135, 108, 178, 169, 106, 107, 3, 184, 112, 172, 96, 51, 127, 195, 33, 210, 193, 63, 100, 4, 76, 142, 125, 100, 54, 178, 58, 162, 16, 200, 52, 45, 40, 234, 14, 77, 51, 206, 46, 116, 182, 197, 47, 45, 59, 184, 116, 98, 135, 51, 139, 179, 56, 191, 136, 130, 251, 106, 92, 151, 244, 195, 18, 184, 202, 249, 53, 197, 168, 23, 115, 172, 211, 143, 101, 212, 165, 117, 45, 130, 221, 194, 71, 82, 242, 178, 22, 11, 239, 138, 91, 248, 193, 107, 141 }, "", 0, null, null });
 
             migrationBuilder.InsertData(
                 table: "UserOperationClaims",
@@ -591,6 +619,11 @@ namespace Persistance.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserLogins_SiteUserId",
+                table: "UserLogins",
+                column: "SiteUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserOperationClaims_OperationClaimId",
                 table: "UserOperationClaims",
                 column: "OperationClaimId");
@@ -624,6 +657,9 @@ namespace Persistance.Migrations
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
+
+            migrationBuilder.DropTable(
+                name: "UserLogins");
 
             migrationBuilder.DropTable(
                 name: "UserOperationClaims");
