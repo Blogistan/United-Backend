@@ -26,7 +26,7 @@ namespace Application.Features.Auth.Commands.GithubSignIn
                 var info = await authService.GithubUserInfo(request.Token);
                 var user = await siteUserRepository.GetAsync(x => x.Email == info.email && x.IsActive == true);
 
-                var result = await authService.CreateUserExternalAsync(user, info.email, info.name, "", "", request.IpAddress);
+                var result = await authService.CreateUserExternalAsync(user, info.email, info.name, "", "", request.IpAddress,Core.Security.Enums.LoginProviderType.Github,info.node_id);
 
                 return new LoginResponse
                 {

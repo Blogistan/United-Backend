@@ -26,7 +26,7 @@ namespace Application.Features.Auth.Commands.FacebookSignIn
 
                 var user = await siteUserRepository.GetAsync(x => x.Email == info.Email &&  x.IsActive==true);
 
-                var result = await authService.CreateUserExternalAsync(user, info.Email, info.Name, "", "", request.IpAddress);
+                var result = await authService.CreateUserExternalAsync(user, info.Email, info.Name, "", "", request.IpAddress,Core.Security.Enums.LoginProviderType.Facebook,info.Id);
 
                 return new FacebookLoginResponse()
                 {

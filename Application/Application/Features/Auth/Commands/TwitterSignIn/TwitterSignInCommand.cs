@@ -28,7 +28,7 @@ namespace Application.Features.Auth.Commands.TwitterSignIn
                 var info = await authService.GetTwitterUserInfo(new OAuthResponse { Oauth_token = request.AccessToken, Oauth_token_secret = request.TokenSecret, Cookies = request.Cookies });
                 var user = await siteUserRepository.GetAsync(x => x.Email == info.email && x.IsActive == true);
 
-                var result = await authService.CreateUserExternalAsync(user, info.email, info.screen_name, "", "", request.IpAddress);
+                var result = await authService.CreateUserExternalAsync(user, info.email, info.screen_name, "", "", request.IpAddress,Core.Security.Enums.LoginProviderType.Twitter,info.id_str);
 
                 return new LoginResponse
                 {

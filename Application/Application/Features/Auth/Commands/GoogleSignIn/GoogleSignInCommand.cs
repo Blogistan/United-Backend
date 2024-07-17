@@ -16,18 +16,19 @@ namespace Application.Features.Auth.Commands.GoogleSignIn
         {
             private readonly ISiteUserRepository siteUserRepository;
             private readonly IAuthService authService;
-            public GoogleSignInCommandHandler(ISiteUserRepository siteUserRepository, IAuthService authService, IConfiguration configuration)
+
+            public GoogleSignInCommandHandler(ISiteUserRepository siteUserRepository, IAuthService authService)
             {
                 this.siteUserRepository = siteUserRepository;
                 this.authService = authService;
+
             }
 
             public async Task<LoginResponse> Handle(GoogleSignInCommand request, CancellationToken cancellationToken)
             {
                 var payload = await authService.GoogleSignIn(request.IdToken);
                 var user = await siteUserRepository.GetAsync(x => x.Email == payload.Email && x.IsActive == true);
-                var result = await authService.CreateUserExternalAsync(user, payload.Email, payload.Name, payload.FamilyName, payload.Picture, request.IpAdress);
-
+                var result = await authService.CreateUserExternalAsync(user, payload.Email, payload.Name, payload.FamilyName, payload.Picture, request.IpAdress,Core.Security.Enums.LoginProviderType.Google,payload.JwtId);
                 return new LoginResponse
                 {
                     AccessToken = result.AccessToken,
