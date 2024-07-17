@@ -22,6 +22,7 @@ namespace Persistance.Context
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<UserLogin> UserLogins { get; set; }
         public DbSet<EmailAuthenticator> EmailAuthenticators { get; set; }
         public DbSet<OtpAuthenticator> OtpAuthenticators { get; set; }
         public DbSet<ForgotPassword> ForgottenPasswords { get; set; }
