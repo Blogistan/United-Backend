@@ -6,6 +6,7 @@ using Core.Mailing;
 using Core.Persistence.Paging;
 using Core.Security.EmailAuthenticator;
 using Core.Security.Entities;
+using Core.Security.Enums;
 using Core.Security.JWT;
 using Core.Security.OtpAuthenticator;
 using Domain.Entities;
@@ -39,11 +40,12 @@ namespace Application.Services.Auth
         private readonly IOtpAuthenticatorRepository otpAuthenticatorRepository;
         private readonly HttpClient httpClient;
         private readonly IConfiguration configuration;
+        private readonly IUserLoginRepository userLoginRepository;
 
         public AuthService(ITokenHelper tokenHelper, IRefreshTokenRepository refreshTokenRepository, ISiteUserRepository siteUserRepository, IEmailAuthenticatorRepository emailAuthenticatorRepository, IUserOperationClaimRepository userOperationClaimRepository, IMailService mailService,
             IOtpAuthenticatorHelper otpAuthenticatorHelper,
             IEmailAuthenticatorHelper emailAuthenticatorHelper,
-            IOtpAuthenticatorRepository otpAuthenticatorRepository, HttpClient httpClient, IConfiguration configuration)
+            IOtpAuthenticatorRepository otpAuthenticatorRepository, HttpClient httpClient, IConfiguration configuration, IUserLoginRepository userLoginRepository)
         {
             this.tokenHelper = tokenHelper;
             this.mailService = mailService;
@@ -56,6 +58,7 @@ namespace Application.Services.Auth
             this.emailAuthenticatorHelper = emailAuthenticatorHelper;
             this.httpClient = httpClient;
             this.configuration = configuration;
+            this.userLoginRepository = userLoginRepository;
         }
 
 
@@ -210,7 +213,7 @@ namespace Application.Services.Auth
             IsVerified = false,
         };
 
-        public async Task<LoginResponseBase> CreateUserExternalAsync(User user, string email, string name, string surname, string picture, string ipAdress)
+        public async Task<LoginResponseBase> CreateUserExternalAsync(User user, string email, string name, string surname, string picture, string ipAdress, LoginProviderType loginProviderType,string providerKey)
         {
             bool result = user != null;
 
@@ -238,6 +241,19 @@ namespace Application.Services.Auth
 
                 loginResponse.RefreshToken = refreshToken;
                 loginResponse.AccessToken = accessToken;
+
+                switch (loginProviderType)
+                {
+                    case LoginProviderType.Google:
+                        await userLoginRepository.AddAsync(new UserLogin("GOOGLE", providerKey, "GOOGLE", createdUser.Id));                        break;
+                    case LoginProviderType.Facebook:
+                        await userLoginRepository.AddAsync(new UserLogin("FACEBOOK", providerKey, "FACEBOOK", createdUser.Id)); break;
+                    case LoginProviderType.Twitter:
+                        await userLoginRepository.AddAsync(new UserLogin("TWITTER", providerKey, "TWITTER", createdUser.Id)); break;
+                    case LoginProviderType.Github:
+                        await userLoginRepository.AddAsync(new UserLogin("GITHUB", providerKey, "GITHUB", createdUser.Id)); break;
+
+                }
             }
             else
             {
@@ -247,7 +263,22 @@ namespace Application.Services.Auth
 
                 loginResponse.RefreshToken = refreshToken;
                 loginResponse.AccessToken = accessToken;
+
+                switch (loginProviderType)
+                {
+                    case LoginProviderType.Google:
+                        await userLoginRepository.AddAsync(new UserLogin("GOOGLE", providerKey, "GOOGLE", user.Id)); break;
+                    case LoginProviderType.Facebook:
+                        await userLoginRepository.AddAsync(new UserLogin("FACEBOOK", providerKey, "FACEBOOK", user.Id)); break;
+                    case LoginProviderType.Twitter:
+                        await userLoginRepository.AddAsync(new UserLogin("TWITTER", providerKey, "TWITTER", user.Id)); break;
+                    case LoginProviderType.Github:
+                        await userLoginRepository.AddAsync(new UserLogin("GITHUB", providerKey, "GITHUB", user.Id)); break;
+
+                }
             }
+
+            
 
             return loginResponse;
         }
