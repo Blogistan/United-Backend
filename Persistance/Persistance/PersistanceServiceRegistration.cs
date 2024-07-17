@@ -27,6 +27,7 @@ namespace Persistance
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IReportTypeRepository, ReportTypeRepository>();
             services.AddScoped<IBanRepository, BanRepository>();
+            services.AddScoped<IUserLoginRepository, UserLoginRepository>();
             services.AddDbContext<EFDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("UnitedDb")));
 
             return services;
