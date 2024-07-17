@@ -1,4 +1,5 @@
 ﻿using Core.Security.Entities;
+using Core.Security.Enums;
 using Infrastructure.Dtos;
 using Infrastructure.Dtos.Facebook;
 using Infrastructure.Dtos.Github;
@@ -9,7 +10,7 @@ namespace Infrastructure
 {
     public interface IExternalAuthService
     {
-        Task<LoginResponseBase> CreateUserExternalAsync(User user, string email, string name, string? surname, string? picture, string ipAdress);
+        Task<LoginResponseBase> CreateUserExternalAsync(User user, string email, string name, string? surname, string? picture, string ipAdress,LoginProviderType loginProviderType,string providerKey);
         Task<Payload> GoogleSignIn(string idToken);
         Task<FacebookUserInfoResponse> FacebookSignIn(string authToken);
         Task<OAuthResponse> TwitterSignIn(OAuthCredentials oAuthCredentials);
