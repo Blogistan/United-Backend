@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using static Application.Features.OperationClaims.Commands.DeleteOperationClaim.DeleteOperationClaimCommand;
 using FluentValidation.TestHelper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
+using AuthTest.Mocks.Repositories;
 
 namespace AuthTest.Features.OperationClaim.Commands.Delete
 {
@@ -29,7 +30,7 @@ namespace AuthTest.Features.OperationClaim.Commands.Delete
         private readonly IConfiguration configuration;
 
         public DeleteOperationClaimTest(RefreshTokenFakeData refreshTokenFakeData,
-           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, ForgotPasswordFakeData forgotPasswordFakeData, IMediator mediator):base(operationClaimFakeData)
+           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, ForgotPasswordFakeData forgotPasswordFakeData, IMediator mediator,UserLoginFakeData userLoginFakeData):base(operationClaimFakeData)
         {
 
             #region Mock Repositories
@@ -42,6 +43,7 @@ namespace AuthTest.Features.OperationClaim.Commands.Delete
             ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData, banFakeData).GetSiteUserRepository();
             IForgotPasswordRepository forgotPasswordRepository = new MockForgotPasswordRepository(siteUserFakeData, forgotPasswordFakeData).GetForgotPasswordRepository();
             //IOperationClaimRepostiory operationClaimRepostiory = new MockOperationClaimRepository(operationClaimFakeData).GetOperationClaimRepostiory();
+            IUserLoginRepository userLoginRepository = MockUserLoginRepository.GetUserLoginRepository(userLoginFakeData).Object;
             #endregion
 
             #region Mock Helpers
@@ -56,7 +58,7 @@ namespace AuthTest.Features.OperationClaim.Commands.Delete
 
             #endregion
             HttpClient httpClient = new HttpClient();
-            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration);
+            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration, userLoginRepository);
             OperationClaimBusinessRules operationClaimBusinessRules = new OperationClaimBusinessRules(MockRepository.Object);
 
             deleteOperationClaimCommand = new DeleteOperationClaimCommand();

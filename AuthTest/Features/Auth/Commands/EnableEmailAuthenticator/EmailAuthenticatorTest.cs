@@ -5,6 +5,7 @@ using Application.Services.Auth;
 using Application.Services.Repositories;
 using AuthTest.Mocks.Configurations;
 using AuthTest.Mocks.FakeDatas;
+using AuthTest.Mocks.Repositories;
 using AuthTest.Mocks.Repositories.Auth;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
@@ -27,7 +28,7 @@ namespace AuthTest.Features.Auth.Commands.EnableEmailAuthenticator
         private readonly EnableEmailAuthenticatorCommandValidator validationRules;
         private readonly IConfiguration configuration;
         public EmailAuthenticatorTest(RefreshTokenFakeData refreshTokenFakeData,
-            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData)
+            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData,UserLoginFakeData userLoginFakeData)
         {
 
             #region Mock Repositories
@@ -38,6 +39,7 @@ namespace AuthTest.Features.Auth.Commands.EnableEmailAuthenticator
             MockEmailAuthenticatorRepository.GetEmailAuthenticatorRepositoryMock();
             IOtpAuthenticatorRepository otpAuthenticatorRepository = MockOtpAuthRepository.GetOtpAuthenticatorRepository();
             ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData, banFakeData).GetSiteUserRepository();
+            IUserLoginRepository userLoginRepository = MockUserLoginRepository.GetUserLoginRepository(userLoginFakeData).Object;
             #endregion
 
             #region Mock Helpers
@@ -52,7 +54,7 @@ namespace AuthTest.Features.Auth.Commands.EnableEmailAuthenticator
 
             #endregion
             HttpClient httpClient = new HttpClient();
-            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration);
+            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration, userLoginRepository);
             AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
 

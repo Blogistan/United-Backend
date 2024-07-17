@@ -5,6 +5,7 @@ using Application.Services.Auth;
 using Application.Services.Repositories;
 using AuthTest.Mocks.Configurations;
 using AuthTest.Mocks.FakeDatas;
+using AuthTest.Mocks.Repositories;
 using AuthTest.Mocks.Repositories.Auth;
 using AutoMapper;
 using Core.Mailing;
@@ -28,7 +29,7 @@ namespace AuthTest.Features.OperationClaim.Queries.GetList
         private readonly IConfiguration configuration;
 
         public GetListOperationClaimQueryTest(RefreshTokenFakeData refreshTokenFakeData,
-           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, ForgotPasswordFakeData forgotPasswordFakeData, IMediator mediator) : base(operationClaimFakeData)
+           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, ForgotPasswordFakeData forgotPasswordFakeData, IMediator mediator, UserLoginFakeData userLoginFakeData) : base(operationClaimFakeData)
         {
 
             #region Mock Repositories
@@ -41,6 +42,7 @@ namespace AuthTest.Features.OperationClaim.Queries.GetList
             ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData, banFakeData).GetSiteUserRepository();
             IForgotPasswordRepository forgotPasswordRepository = new MockForgotPasswordRepository(siteUserFakeData, forgotPasswordFakeData).GetForgotPasswordRepository();
             //IOperationClaimRepostiory operationClaimRepostiory = new MockOperationClaimRepository(operationClaimFakeData).GetOperationClaimRepostiory();
+            IUserLoginRepository userLoginRepository = MockUserLoginRepository.GetUserLoginRepository(userLoginFakeData).Object;
             #endregion
 
             #region Mock Helpers
@@ -55,7 +57,7 @@ namespace AuthTest.Features.OperationClaim.Queries.GetList
 
             #endregion
             HttpClient httpClient = new HttpClient();
-            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration);
+            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration, userLoginRepository);
             OperationClaimBusinessRules operationClaimBusinessRules = new OperationClaimBusinessRules(MockRepository.Object);
 
             getListOperationClaimQuery = new GetListOperationClaimQuery();
