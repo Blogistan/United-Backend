@@ -163,11 +163,11 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
         [HttpPost("FacebookSignIn")]
-        public async Task<IActionResult> FacbookSignIn([FromBody] string Token)
+        public async Task<IActionResult> FacbookSignIn([FromBody] FacebookSignInCommandRequest facebookSignInCommandRequest)
         {
             FacebookSignInCommand facebookSignInCommand = new()
             {
-                Token = Token,
+                Token = facebookSignInCommandRequest.Token,
                 IpAddress = GetIpAddress()
             };
 
