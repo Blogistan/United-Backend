@@ -17,5 +17,6 @@ namespace Infrastructure
         Task<TwitterUserInfo> GetTwitterUserInfo(OAuthResponse oAuthResponse);
         Task<string> GithubSignIn(string code);
         Task<GithubUserInfo> GithubUserInfo(string bearerToken);
+        Task<TwitterLoginLinkResponse> GetTwitterLoginUrl();
     }
 }
