@@ -1,5 +1,6 @@
 ﻿using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Constants;
+using Application.Features.Auth.Dtos;
 using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
@@ -213,7 +214,7 @@ namespace Application.Services.Auth
             IsVerified = false,
         };
 
-        public async Task<LoginResponseBase> CreateUserExternalAsync(User user, string email, string name, string surname, string picture, string ipAdress, LoginProviderType loginProviderType,string providerKey)
+        public async Task<LoginResponseBase> CreateUserExternalAsync(User user, string email, string name, string surname, string picture, string ipAdress, LoginProviderType loginProviderType, string providerKey)
         {
             bool result = user != null;
 
@@ -245,7 +246,7 @@ namespace Application.Services.Auth
                 switch (loginProviderType)
                 {
                     case LoginProviderType.Google:
-                        await userLoginRepository.AddAsync(new UserLogin("GOOGLE", providerKey, "GOOGLE", createdUser.Id));                        break;
+                        await userLoginRepository.AddAsync(new UserLogin("GOOGLE", providerKey, "GOOGLE", createdUser.Id)); break;
                     case LoginProviderType.Facebook:
                         await userLoginRepository.AddAsync(new UserLogin("FACEBOOK", providerKey, "FACEBOOK", createdUser.Id)); break;
                     case LoginProviderType.Twitter:
@@ -278,7 +279,7 @@ namespace Application.Services.Auth
                 }
             }
 
-            
+
 
             return loginResponse;
         }
@@ -317,6 +318,65 @@ namespace Application.Services.Auth
             }
             return userInfoResponse;
 
+        }
+        public async Task<TwitterLoginLinkResponse> GetTwitterLoginUrl()
+        {
+            string consumerKey = configuration["Authentication:Twitter:ConsumerAPIKey"];
+            string consumerSecret = configuration["Authentication:Twitter:ConsumerSecret"];
+
+            var oauth = new OAuthRequest
+            {
+                Method = "POST",
+                Type = OAuthRequestType.RequestToken,
+                SignatureMethod = OAuthSignatureMethod.HmacSha1,
+                ConsumerKey = consumerKey,
+                ConsumerSecret = consumerSecret,
+                RequestUrl = ExternalAPIUrls.TwitterRequestToken,
+                Version = "1.0"
+            };
+
+            var request = new HttpRequestMessage(HttpMethod.Post, oauth.RequestUrl);
+            request.Headers.Add("Authorization", oauth.GetAuthorizationHeader());
+
+            var handler = new HttpClientHandler();
+
+            using (HttpClient httpClient = new HttpClient(handler))
+            {
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    var oauthParameters = ParseOAuthResponse(responseContent);
+
+                    string oauthToken = oauthParameters["oauth_token"];
+                    string oauthTokenSecret = oauthParameters["oauth_token_secret"];
+                    string oauthCallbackConfirmed = oauthParameters["oauth_callback_confirmed"];
+
+                    return new TwitterLoginLinkResponse { LoginURL = $"https://api.twitter.com/oauth/authorize?oauth_token={oauthToken}&oauth_token_secret={oauthTokenSecret}&oauth_callback_confirmed={oauthCallbackConfirmed}" };
+                }
+                else
+                {
+                    throw new BusinessException("Error Code: " + response.StatusCode);
+                }
+            }
+        }
+
+        private Dictionary<string, string> ParseOAuthResponse(string response)
+        {
+            Dictionary<string, string> oauthParameters = new Dictionary<string, string>();
+            string[] parameters = response.Split('&');
+
+            foreach (var param in parameters)
+            {
+                string[] keyValue = param.Split('=');
+                if (keyValue.Length == 2)
+                {
+                    oauthParameters[keyValue[0]] = keyValue[1];
+                }
+            }
+
+            return oauthParameters;
         }
         public async Task<OAuthResponse> TwitterSignIn(OAuthCredentials oAuthCredentials)
         {
@@ -400,6 +460,7 @@ namespace Application.Services.Auth
                 RequestUrl = ExternalAPIUrls.TwitterUserInfo,
                 Version = "1.0"
             };
+
 
             var request = new HttpRequestMessage(HttpMethod.Get, oauth.RequestUrl);
             request.Headers.Add("Authorization", oauth.GetAuthorizationHeader());
