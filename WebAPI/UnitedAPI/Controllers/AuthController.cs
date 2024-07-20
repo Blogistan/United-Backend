@@ -15,6 +15,7 @@ using Application.Features.Auth.Commands.VerifyOtpAuthenticatorCommand;
 using Application.Services.Auth;
 using Core.Application.Dtos;
 using Infrastructure.Dtos.Facebook;
+using Infrastructure.Dtos.Twitter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using UnitedAPI.ValueObjects;
@@ -175,19 +176,20 @@ namespace UnitedAPI.Controllers
             return Ok(facebookLoginResponse);
         }
 
-        [HttpGet("TwitterSignIn")]
-        public async Task<IActionResult> TwitterSignIn(string oauth_token, string oauth_verifier)
+        [HttpPost("TwitterSignIn")]
+        public async Task<IActionResult> TwitterSignIn([FromBody] OAuthCredentials oAuthCredentials)
         {
 
-            var result = await authService.TwitterSignIn(new Infrastructure.Dtos.Twitter.OAuthCredentials()
-            {
-                Oauth_token = oauth_token,
-                Oauth_verifier = oauth_verifier
-            });
+            var result = await authService.TwitterSignIn(oAuthCredentials);
 
             LoginResponse loginResponse = await Mediator.Send(new TwitterSignInCommand { AccessToken = result.Oauth_token, TokenSecret = result.Oauth_token_secret, IpAddress = GetIpAddress(), Cookies = result.Cookies });
 
             return Ok(loginResponse);
+        }
+        [HttpGet("GetTwitterLoginLink")]
+        public async Task<IActionResult> GetTwitterLoginLink()
+        {
+            return Ok(await authService.GetTwitterLoginUrl());
         }
         [HttpPost("GithubSignIn")]
         public async Task<IActionResult> GithubSignIn([FromBody] GithubSignInCommandRequest githubSignInCommandRequest)
