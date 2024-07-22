@@ -53,7 +53,7 @@ namespace Application.Features.Auth.Commands.Register
                 await siteUserRepository.AddAsync(siteUser);
 
                 AccessToken accessToken = await authService.CreateAccessToken(siteUser);
-                RefreshToken refreshToken = await authService.CreateRefreshToken(siteUser, request.IpAddress);
+                RefreshToken refreshToken = authService.CreateRefreshToken(siteUser, request.IpAddress);
                 await authService.AddRefreshToken(refreshToken);
                 refreshToken.User = new User();
 

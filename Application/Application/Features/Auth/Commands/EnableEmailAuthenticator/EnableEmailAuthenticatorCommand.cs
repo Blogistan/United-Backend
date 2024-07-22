@@ -15,7 +15,7 @@ namespace Application.Features.Auth.Commands.EnableEmailAuthenticator
     public class EnableEmailAuthenticatorCommand : IRequest, ISecuredRequest
     {
         public int UserID { get; set; }
-        public string VerifyToEmail { get; set; }
+        public string VerifyToEmail { get; set; } = string.Empty;
 
         public string[] Roles => new string[] { "User" };
 

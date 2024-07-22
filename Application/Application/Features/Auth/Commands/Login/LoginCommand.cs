@@ -67,7 +67,7 @@ namespace Application.Features.Auth.Commands.Login
 
                 await authService.DeleteOldActiveRefreshTokens(siteUser);
 
-                RefreshToken refreshToken = await authService.CreateRefreshToken(siteUser, request.IpAddress);
+                RefreshToken refreshToken = authService.CreateRefreshToken(siteUser, request.IpAddress);
 
                 await authService.AddRefreshToken(refreshToken);
 

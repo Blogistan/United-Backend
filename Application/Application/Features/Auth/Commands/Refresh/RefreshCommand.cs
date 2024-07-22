@@ -39,7 +39,7 @@ namespace Application.Features.Auth.Commands.Refresh
                 await AuthBussinessRules.RefreshTokenShouldBeActive(refreshToken);
 
                 AccessToken createdAcccessToken = await authService.CreateAccessToken(refreshToken.User);
-                RefreshToken createdRefreshToken = await authService.CreateRefreshToken(refreshToken.User, request.IpAddress);
+                RefreshToken createdRefreshToken = authService.CreateRefreshToken(refreshToken.User, request.IpAddress);
 
                 RefreshedResponse refreshedResponse = new()
                 {
