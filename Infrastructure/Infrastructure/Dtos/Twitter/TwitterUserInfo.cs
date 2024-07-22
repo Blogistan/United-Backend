@@ -14,11 +14,11 @@
         public bool _protected { get; set; }
         public long followers_count { get; set; }
         public long friends_count { get; set; }
-        public long listed_count { get; set; }
-        public string created_at { get; set; }
+       public long listed_count { get; set; }
+        public string created_at { get; set; } = string.Empty;
         public long favourites_count { get; set; }
-        public object utc_offset { get; set; }
-        public object time_zone { get; set; }
+        public object utc_offset { get; set; } = string.Empty;
+        public object time_zone { get; set; } = string.Empty;
         public bool geo_enabled { get; set; }
         public bool verified { get; set; }
         public long statuses_count { get; set; }
@@ -28,8 +28,8 @@
         public bool is_translator { get; set; }
         public bool is_translation_enabled { get; set; }
         public string profile_background_color { get; set; } = string.Empty;
-        public object profile_background_image_url { get; set; }
-        public object profile_background_image_url_https { get; set; }
+        public object profile_background_image_url { get; set; } = string.Empty;
+        public object profile_background_image_url_https { get; set; } = string.Empty;
         public bool profile_background_tile { get; set; }
         public string profile_image_url { get; set; } = string.Empty;
         public string profile_image_url_https { get; set; } = string.Empty;
@@ -46,7 +46,7 @@
         public bool follow_request_sent { get; set; }
         public bool notifications { get; set; }
         public string translator_type { get; set; } = string.Empty;
-        public object[] withheld_in_countries { get; set; }
+        public object[]? withheld_in_countries { get; set; } 
         public bool suspended { get; set; }
         public bool needs_phone_verification { get; set; }
         public string email { get; set; } = string.Empty;
@@ -112,7 +112,7 @@
 
     public class Hashtag
     {
-        public string text { get; set; }
+        public string text { get; set; } = string.Empty;
         public int[] indices { get; set; }
     }
 

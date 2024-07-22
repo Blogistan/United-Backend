@@ -97,11 +97,11 @@ namespace Application.Services.Auth
             };
         }
 
-        public async Task<RefreshToken> CreateRefreshToken(User user, string IpAddress)
+        public RefreshToken CreateRefreshToken(User user, string IpAddress)
         {
             RefreshToken refreshToken = tokenHelper.CreateRefreshToken(user, IpAddress);
 
-            return refreshToken;
+            return  refreshToken;
         }
 
         public async Task DeleteOldActiveRefreshTokens(User user)
@@ -236,7 +236,7 @@ namespace Application.Services.Auth
 
                 var createdUser = await siteUserRepository.AddAsync(siteUser);
                 accessToken = await CreateAccessToken(siteUser);
-                refreshToken = await CreateRefreshToken(siteUser, ipAdress);
+                refreshToken =  CreateRefreshToken(siteUser, ipAdress);
 
                 await AddRefreshToken(refreshToken);
 
@@ -259,7 +259,7 @@ namespace Application.Services.Auth
             else
             {
                 accessToken = await CreateAccessToken(user);
-                refreshToken = await CreateRefreshToken(user, ipAdress);
+                refreshToken =  CreateRefreshToken(user, ipAdress);
                 await AddRefreshToken(refreshToken);
 
                 loginResponse.RefreshToken = refreshToken;

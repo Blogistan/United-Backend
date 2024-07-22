@@ -8,7 +8,7 @@ namespace Application.Services.Auth
     {
         Task<AccessToken> CreateAccessToken(User user);
 
-        Task<RefreshToken> CreateRefreshToken(User user, string IpAddress);
+        RefreshToken CreateRefreshToken(User user, string IpAddress);
 
         Task<RefreshToken> AddRefreshToken(RefreshToken refreshToken);
 
