@@ -5,12 +5,12 @@ namespace Application.Features.Blogs.Dtos
     public class BlogDetailDto
     {
         public int Id { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         public CategoryViewDto Category { get; set; }
-        public string WriterName { get; set; }
-        public string TitleContent { get; set; }
+        public string WriterName { get; set; } = string.Empty;
+        public string TitleContent { get; set; } = string.Empty;
         public string? ContentImageUrl { get; set; }
-        public string ContentPragraph { get; set; }
+        public string ContentPragraph { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public int ReactionSuprisedCount { get; set; }
         public int ReactionLovelyCount { get; set; }

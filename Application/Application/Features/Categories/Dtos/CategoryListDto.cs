@@ -8,7 +8,7 @@
     public class CategoryViewDto
     {
         public int Id { get; set; }
-        public string CategoryName { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
         public List<CategoryViewDto> SubCategories { get; set; }
     }
 }

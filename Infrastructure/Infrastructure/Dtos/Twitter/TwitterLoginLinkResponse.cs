@@ -2,6 +2,6 @@
 {
     public class TwitterLoginLinkResponse
     {
-        public string LoginURL { get; set; }
+        public string LoginURL { get; set; } = string.Empty;
     }
 }
