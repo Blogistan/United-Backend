@@ -31,8 +31,8 @@ namespace Application.Features.Auth.Commands.Refresh
 
             public async Task<RefreshedResponse> Handle(RefreshCommand request, CancellationToken cancellationToken)
             {
-                RefreshToken refreshToken = await refreshTokenRepository.GetAsync(rt => rt.Token == request.RefreshToken);
-                SiteUser? siteUser = await siteUserRepository.GetAsync(x => x.Id == refreshToken.UserId);
+                RefreshToken? refreshToken = await refreshTokenRepository.GetAsync(rt => rt.Token == request.RefreshToken);
+                SiteUser? siteUser = refreshToken != null ? await siteUserRepository.GetAsync(x => x.Id == refreshToken.UserId) : new SiteUser();
 
                 await AuthBussinessRules.RefreshTokenShouldBeExist(refreshToken);
 
