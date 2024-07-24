@@ -3,6 +3,7 @@ using Application.Services.Auth;
 using Application.Services.Repositories;
 using Core.Security.Entities;
 using Core.Security.JWT;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +31,8 @@ namespace Application.Features.Auth.Commands.Refresh
 
             public async Task<RefreshedResponse> Handle(RefreshCommand request, CancellationToken cancellationToken)
             {
-                RefreshToken refreshToken = await refreshTokenRepository.GetAsync(rt => rt.Token == request.RefreshToken, include: x => x.Include(x => x.User));
+                RefreshToken refreshToken = await refreshTokenRepository.GetAsync(rt => rt.Token == request.RefreshToken);
+                SiteUser? siteUser = await siteUserRepository.GetAsync(x => x.Id == refreshToken.UserId);
 
                 await AuthBussinessRules.RefreshTokenShouldBeExist(refreshToken);
 
@@ -38,8 +40,8 @@ namespace Application.Features.Auth.Commands.Refresh
                     await authService.RevokeDescendantRefreshTokens(refreshToken, request.IpAddress, $"Invalid token tried to use: {refreshToken.Token}");
                 await AuthBussinessRules.RefreshTokenShouldBeActive(refreshToken);
 
-                AccessToken createdAcccessToken = await authService.CreateAccessToken(refreshToken.User);
-                RefreshToken createdRefreshToken = authService.CreateRefreshToken(refreshToken.User, request.IpAddress);
+                AccessToken createdAcccessToken = await authService.CreateAccessToken(siteUser);
+                RefreshToken createdRefreshToken = authService.CreateRefreshToken(siteUser, request.IpAddress);
 
                 RefreshedResponse refreshedResponse = new()
                 {
