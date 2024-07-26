@@ -1,4 +1,5 @@
 ﻿using Application;
+using Core.CrossCuttingConcerns.Exceptions;
 using Core.Security;
 using Core.Security.Encryption;
 using Core.Security.JWT;
@@ -169,7 +170,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseRateLimiter();
 app.UseAuthorization();
