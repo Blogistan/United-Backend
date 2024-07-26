@@ -19,7 +19,7 @@ namespace Application.Features.Auth.Rules
         public async Task UserEmailCannotBeDuplicatedWhenInserted(string email)
         {
             User? user = await siteUserRepository.GetAsync(x => x.Email == email);
-            if (user != null) throw new BusinessException(AuthBusinessMessage.UserEmailAlreadyExists);
+            if (user != null) throw new ValidationException(AuthBusinessMessage.UserEmailAlreadyExists);
 
         }
         public Task UserShouldBeExist(User? user)
@@ -40,47 +40,47 @@ namespace Application.Features.Auth.Rules
         public Task RefreshTokenShouldBeExist(RefreshToken refreshToken)
         {
             if (refreshToken == null)
-                throw new BusinessException(AuthBusinessMessage.RefreshTokenNotFound);
+                throw new AuthorizationException(AuthBusinessMessage.RefreshTokenNotFound);
 
             return Task.CompletedTask;
         }
         public Task RefreshTokenShouldBeActive(RefreshToken refreshToken)
         {
             if (refreshToken.Revoked != null || refreshToken.Revoked == null && refreshToken.Expires < DateTime.UtcNow)
-                throw new BusinessException(AuthBusinessMessage.RefreshTokenNotActive);
+                throw new AuthorizationException(AuthBusinessMessage.RefreshTokenNotActive);
 
             return Task.CompletedTask;
         }
         public Task UserShouldNotBeHasAuthenticator(User user)
         {
             if (user.AuthenticatorType is not AuthenticatorType.None)
-                throw new BusinessException(AuthBusinessMessage.UserHasAuthenticator);
+                throw new AuthorizationException(AuthBusinessMessage.UserHasAuthenticator);
             return Task.CompletedTask;
         }
 
         public Task UserEmailAuthenticatorShouldBeExists(EmailAuthenticator? userEmailAuthenticator)
         {
             if (userEmailAuthenticator is null)
-                throw new BusinessException(AuthBusinessMessage.UserEmailAuthenticatorNotFound);
+                throw new AuthorizationException(AuthBusinessMessage.UserEmailAuthenticatorNotFound);
             return Task.CompletedTask;
         }
 
         public Task UserOtpAuthenticatorShouldBeExists(OtpAuthenticator userOtpAuthenticator)
         {
             if (userOtpAuthenticator is null)
-                throw new BusinessException(AuthBusinessMessage.UserOtpAuthenticatorNotFound);
+                throw new AuthorizationException(AuthBusinessMessage.UserOtpAuthenticatorNotFound);
             return Task.CompletedTask;
         }
         public Task PasswordResetKeyShouldBeExists(ForgotPassword forgotPassword)
         {
             if (forgotPassword is null)
-                throw new BusinessException("Invlaid Reset Token");
+                throw new AuthorizationException("Invlaid Reset Token");
             return Task.CompletedTask;
         }
         public Task PasswordResetTokenShouldBeActive(ForgotPassword forgotPassword)
         {
             if (forgotPassword.ExpireDate < DateTime.UtcNow)
-                throw new BusinessException("Password Reset Token not active");
+                throw new AuthorizationException("Password Reset Token not active");
 
             return Task.CompletedTask;
         }
@@ -90,7 +90,7 @@ namespace Application.Features.Auth.Rules
 
             var result = user?.Bans?.Any(x=>x.IsPerma==true)?? false;
             if (result)
-                throw new BusinessException(AuthBusinessMessage.UserPermaBanned);
+                throw new AuthorizationException(AuthBusinessMessage.UserPermaBanned);
         }
         public async Task IsUserTimeOut(int id)
         {
@@ -100,7 +100,7 @@ namespace Application.Features.Auth.Rules
             if (activeBan!=null)
             {
                 var daysUntilEnd = (int)(activeBan.BanEndDate - DateTime.Now).TotalDays;
-                throw new BusinessException($"Your account is banned , your ban ends  at {daysUntilEnd} days");
+                throw new AuthorizationException($"Your account is banned , your ban ends  at {daysUntilEnd} days");
             }
         }
 

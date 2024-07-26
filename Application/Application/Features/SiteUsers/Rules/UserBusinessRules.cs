@@ -17,34 +17,34 @@ namespace Application.Features.SiteUsers.Rules
         public async Task UserShouldBeExistsWhenSelected(User? user)
         {
             if (user == null)
-                throw new BusinessException(AuthBusinessMessage.UserNotFound);
+                throw new ValidationException(AuthBusinessMessage.UserNotFound);
         }
 
         public async Task UserIdShouldBeExistsWhenSelected(int id)
         {
             bool doesExist = await siteUserRepository.AnyAsync(predicate: u => u.Id == id);
             if (!doesExist)
-                throw new BusinessException(AuthBusinessMessage.UserNotFound);
+                throw new ValidationException(AuthBusinessMessage.UserNotFound);
         }
 
         public async Task UserPasswordShouldBeMatched(User user, string password)
         {
             if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                throw new BusinessException(AuthBusinessMessage.InvlaidPassword);
+                throw new AuthorizationException(AuthBusinessMessage.InvlaidPassword);
         }
 
         public async Task UserEmailShouldNotExistsWhenInsert(string email)
         {
             bool doesExists = await siteUserRepository.AnyAsync(predicate: u => u.Email == email);
             if (doesExists)
-                throw new BusinessException(AuthBusinessMessage.UserEmailAlreadyExists);
+                throw new ValidationException(AuthBusinessMessage.UserEmailAlreadyExists);
         }
 
         public async Task UserEmailShouldNotExistsWhenUpdate(int id, string email)
         {
             bool doesExists = await siteUserRepository.AnyAsync(predicate: u => u.Id != id && u.Email == email);
             if (doesExists)
-                throw new BusinessException(AuthBusinessMessage.UserNotFound);
+                throw new NotFoundException(AuthBusinessMessage.UserNotFound);
         }
     }
 }

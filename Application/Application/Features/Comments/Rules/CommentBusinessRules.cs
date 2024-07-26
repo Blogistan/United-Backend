@@ -17,7 +17,7 @@ namespace Application.Features.Comments.Rules
         {
             Comment comment = await commentRepository.GetAsync(x=>x.Id== commentId);
             if (comment is null)
-                throw new BusinessException("Comment is not exist");
+                throw new NotFoundException("Comment is not exist");
 
             return comment;
         }

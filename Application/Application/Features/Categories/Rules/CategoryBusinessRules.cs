@@ -18,7 +18,7 @@ namespace Application.Features.Categories.Rules
         {
             Category category = await categoryRepository.GetAsync(x => x.CategoryName == categoryName);
             if (category is not null)
-                throw new BusinessException("Category is exists.");
+                throw new ValidationException("Category is exists.");
         }
         public async Task CategoryCannotBeDuplicatedWhenInserted(List<CreateCategoryDto> createCategoryDtos)
         {
@@ -26,14 +26,14 @@ namespace Application.Features.Categories.Rules
             {
                 Category category = await categoryRepository.GetAsync(x => x.CategoryName==item.CategoryName);
                 if (category is not null)
-                    throw new BusinessException($"Category Name:{item.CategoryName} is exists.");
+                    throw new ValidationException($"Category Name:{item.CategoryName} is exists.");
             }
         }
         public async Task CategoryCannotBeDuplicatedWhenUpdated(string categoryName)
         {
             Category category = await categoryRepository.GetAsync(x => x.CategoryName == categoryName);
             if (category is not null)
-                throw new BusinessException("Category is exist");
+                throw new ValidationException("Category is exist");
         }
         public async Task CategoryCannotBeDuplicatedWhenUpdated(List<UpdateCategoryDto> updateCategoryDtos)
         {
@@ -41,14 +41,14 @@ namespace Application.Features.Categories.Rules
             {
                 Category category = await categoryRepository.GetAsync(x => x.CategoryName == item.CategoryName);
                 if (category is not null)
-                    throw new BusinessException($"Category Name:{item.CategoryName} is exists.");
+                    throw new ValidationException($"Category Name:{item.CategoryName} is exists.");
             }
         }
 
         public async Task<Category> CategoryCheckById(int id)
         {
             Category category = await categoryRepository.GetAsync(x => x.Id == id);
-            if (category == null) throw new BusinessException("Category is not exists.");
+            if (category == null) throw new NotFoundException("Category is not exists.");
 
             return category;
         }
@@ -59,7 +59,7 @@ namespace Application.Features.Categories.Rules
             foreach (var item in deleteRangeDtos)
             {
                 Category category = await categoryRepository.GetAsync(x => x.Id == item.Id);
-                if (category == null) throw new BusinessException($"Category Id:{item.Id} is not exists.");
+                if (category == null) throw new NotFoundException($"Category Id:{item.Id} is not exists.");
 
                 categories.Add(category);
             }

@@ -16,18 +16,18 @@ namespace Application.Features.UserOperationClaims.Rules
         {
             UserOperationClaim userOperationClaim = await userOperationClaimRepository.GetAsync(x => x.OperationClaimId == claim&&x.UserId==userID);
             if (userOperationClaim is not null)
-                throw new BusinessException("User Operation Claim is exists.");
+                throw new ValidationException("User Operation Claim is exists.");
         }
         public async Task UserOperationClaimCannotBeDuplicatedWhenUpdated(int userID, int claim)
         {
             UserOperationClaim userOperationClaim = await userOperationClaimRepository.GetAsync(x => x.OperationClaimId == claim && x.UserId == userID);
             if (userOperationClaim is not null)
-                throw new BusinessException("User Operation Claim is exist");
+                throw new ValidationException("User Operation Claim is exist");
         }
         public async Task<UserOperationClaim> UserOperationClaimCheckById(int userID, int claim)
         {
             UserOperationClaim userOperationClaim = await userOperationClaimRepository.GetAsync(x => x.OperationClaimId == claim && x.UserId == userID);
-            if (userOperationClaim == null) throw new BusinessException("User Operation Claim is not exists.");
+            if (userOperationClaim == null) throw new NotFoundException("User Operation Claim is not exists.");
 
             return userOperationClaim;
         }

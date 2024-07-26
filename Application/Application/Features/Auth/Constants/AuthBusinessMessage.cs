@@ -5,7 +5,7 @@
         public const string AuthenticatorCodeSubject = "You have to enter code for login - RentACar";
         public const string InvalidAuthenticatorCode = "Invlaid code.";
         public const string UserNotFound = "User not found.";
-        public const string InvlaidPassword = "Invlaid password";
+        public const string InvlaidPassword = "User email or password is invlaid";
         public const string ClickOnBelowLinkToVerifyEmail = "Please click below the link and verify your email.";
         public const string RefreshTokenNotFound = "Refresh token not found";
         public const string RefreshTokenNotActive = "Refresh Token not active";

@@ -17,7 +17,7 @@ namespace Application.Features.Reports.Rules
         {
             Report report = await reportRepository.GetAsync(x => x.Id == reportID);
             if (report is null)
-                throw new BusinessException("Report is not exist");
+                throw new NotFoundException("Report is not exist");
 
             return report;
         }

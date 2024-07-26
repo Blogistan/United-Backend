@@ -16,19 +16,19 @@ namespace Application.Features.ReportTypes.Rules
         {
             ReportType reportType = await reportTypeRepository.GetAsync(x => x.ReportTypeName == reporyTypeName);
             if (reportType is not null)
-                throw new BusinessException("ReportType is exists.");
+                throw new ValidationException("ReportType is exists.");
         }
         public async Task ReportTypeCannotBeDuplicatedWhenUpdated(string reporyTypeName)
         {
             ReportType reportType = await reportTypeRepository.GetAsync(x => x.ReportTypeName == reporyTypeName);
             if (reportType is not null)
-                throw new BusinessException("ReportType is exist");
+                throw new ValidationException("ReportType is exist");
         }
 
         public async Task<ReportType> ReportTypeCheckById(int id)
         {
             ReportType reportType = await reportTypeRepository.GetAsync(x => x.Id == id);
-            if (reportType == null) throw new BusinessException("ReportType is not exists.");
+            if (reportType == null) throw new NotFoundException("ReportType is not exists.");
 
             return reportType;
         }

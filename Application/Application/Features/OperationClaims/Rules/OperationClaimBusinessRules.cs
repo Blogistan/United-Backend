@@ -16,18 +16,18 @@ namespace Application.Features.OperationClaims.Rules
         {
             OperationClaim operationClaim = await operationClaimRepostiory.GetAsync(x => x.Name == name);
             if (operationClaim is not null)
-                throw new BusinessException("Operation Claim is exists.");
+                throw new ValidationException("Operation Claim is exists.");
         }
         public async Task BlogCannotBeDuplicatedWhenUpdated(string name)
         {
             OperationClaim operationClaim = await operationClaimRepostiory.GetAsync(x => x.Name == name);
             if (operationClaim is not null)
-                throw new BusinessException("Operation Claim is exists.");
+                throw new ValidationException("Operation Claim is exists.");
         }
         public async Task<OperationClaim> OperationClaimCheckById(int id)
         {
             OperationClaim operationClaim = await operationClaimRepostiory.GetAsync(x => x.Id == id);
-            if (operationClaim == null) throw new BusinessException("Operation Claim is not exists.");
+            if (operationClaim == null) throw new NotFoundException("Operation Claim is not exists.");
 
             return operationClaim;
         }

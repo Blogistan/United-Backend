@@ -17,7 +17,7 @@ namespace Application.Features.Contents.Rules
         {
             Content content = await contentRepository.GetAsync(x => x.Id == contentId);
             if (content is null)
-                throw new BusinessException("Content is not exist");
+                throw new NotFoundException("Content is not exist");
 
             return content;
         }
