@@ -24,11 +24,11 @@ public class AuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TReq
         if (userRoleClaims == null)
             throw new AuthorizationException("You are not authenticated.");
 
-        bool isNotMatchedAUserRoleClaimWithRequestRoles = userRoleClaims
+        bool isNotMatchedAUserRoleClaimWithRequestRoles = string.IsNullOrEmpty(userRoleClaims
             .FirstOrDefault(
                 userRoleClaim => userRoleClaim == GeneralOperationClaims.Admin || request.Roles.Any(role => role == userRoleClaim)
-            )
-            .IsNullOrEmpty();
+            ));
+
         if (isNotMatchedAUserRoleClaimWithRequestRoles)
             throw new AuthorizationException("You are not authorized.");
 
