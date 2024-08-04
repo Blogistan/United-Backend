@@ -152,7 +152,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidIssuer = tokenOptions.Issuer,
             ValidAudience = tokenOptions.Audience,
-            LifetimeValidator=(notbefore,expires,securityToken,validationParameter)=> expires!=null?expires>DateTime.Now:false
+            //LifetimeValidator=(notbefore,expires,securityToken,validationParameter)=> expires!=null?expires>DateTime.Now:false
             
             
         };
