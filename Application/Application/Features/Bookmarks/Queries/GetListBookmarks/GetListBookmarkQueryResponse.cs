@@ -6,6 +6,10 @@ namespace Application.Features.Bookmarks.Queries.GetListBookmarks
     public class GetListBookmarkQueryResponse:IResponse
     {
         public List<BlogListViewDto> Items { get; set; }
+        public GetListBookmarkQueryResponse()
+        {
+            
+        }
 
         public GetListBookmarkQueryResponse(List<BlogListViewDto> items)
         {
