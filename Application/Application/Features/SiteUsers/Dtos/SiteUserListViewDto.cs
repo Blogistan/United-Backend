@@ -9,6 +9,7 @@ namespace Application.Features.SiteUsers.Dtos
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public bool Status { get; set; }
+        public string? ProfileImageUrl { get; set; } = string.Empty;
 
         public SiteUserListViewDto()
         {
