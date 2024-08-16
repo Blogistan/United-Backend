@@ -32,6 +32,11 @@ namespace Application.Features.SiteUsers.Rules
             if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 throw new AuthorizationException(AuthBusinessMessage.InvlaidPassword);
         }
+        public async Task UserPasswordShouldBeMatchBeforeUpdate(User user, string password)
+        {
+            if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                throw new ValidationException("Invlaid password.");
+        }
 
         public async Task UserEmailShouldNotExistsWhenInsert(string email)
         {
