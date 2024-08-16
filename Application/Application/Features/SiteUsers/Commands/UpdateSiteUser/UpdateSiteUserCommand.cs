@@ -14,7 +14,8 @@ namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin" };
 
         public UpdateSiteUserCommand()
@@ -22,15 +23,16 @@ namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
             FirstName = string.Empty;
             LastName = string.Empty;
             Email = string.Empty;
-            Password = string.Empty;
+            OldPassword = string.Empty;
         }
-        public UpdateSiteUserCommand(int id, string firstname, string lastName, string email, string password)
+        public UpdateSiteUserCommand(int id, string firstname, string lastName, string email, string oldPassword,string newPassword)
         {
             Id = id;
             FirstName = firstname;
             LastName = lastName;
             Email = email;
-            Password = password;
+            OldPassword = oldPassword;
+            NewPassword = newPassword;
         }
 
         public class UpdateSiteUserCommandHandler : IRequestHandler<UpdateSiteUserCommand, UpdateSiteUserCommandResponse>
@@ -53,9 +55,11 @@ namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
                 await userBusinessRules.UserShouldBeExistsWhenSelected(siteUser);
                 await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(request.Id, request.Email);
 
+                await userBusinessRules.UserPasswordShouldBeMatched(siteUser, request.OldPassword);
+
                 siteUser = mapper.Map<SiteUser>(request);
 
-                HashingHelper.CreatePasswordHash(request.Password, passwordHash: out byte[] passwordHash, passwordSalt: out byte[] passwordSalt);
+                HashingHelper.CreatePasswordHash(request.NewPassword, passwordHash: out byte[] passwordHash, passwordSalt: out byte[] passwordSalt);
 
                 siteUser!.PasswordHash = passwordHash;
                 siteUser!.PasswordSalt = passwordSalt;
