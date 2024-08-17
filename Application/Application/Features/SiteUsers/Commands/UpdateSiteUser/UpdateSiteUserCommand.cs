@@ -8,14 +8,16 @@ using MediatR;
 
 namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
 {
-    public class UpdateSiteUserCommand : IRequest<UpdateSiteUserCommandResponse>,ISecuredRequest
+    public class UpdateSiteUserCommand : IRequest<UpdateSiteUserCommandResponse>, ISecuredRequest
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string OldPassword { get; set; }
-        public string NewPassword { get; set; }
+        public string Biography { get; set; }
+        public string? OldPassword { get; set; }
+        public string? NewPassword { get; set; }
+        public string ProfileImageUrl { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin" };
 
         public UpdateSiteUserCommand()
@@ -25,7 +27,7 @@ namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
             Email = string.Empty;
             OldPassword = string.Empty;
         }
-        public UpdateSiteUserCommand(int id, string firstname, string lastName, string email, string oldPassword,string newPassword)
+        public UpdateSiteUserCommand(int id, string firstname, string lastName, string email, string oldPassword, string newPassword)
         {
             Id = id;
             FirstName = firstname;
@@ -50,19 +52,29 @@ namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
 
             public async Task<UpdateSiteUserCommandResponse> Handle(UpdateSiteUserCommand request, CancellationToken cancellationToken)
             {
-                SiteUser? siteUser = await siteUserRepository.GetAsync(x => x.Id.Equals(request.Id), cancellationToken: cancellationToken,enableTracking:false);
+                SiteUser? siteUser = await siteUserRepository.GetAsync(x => x.Id.Equals(request.Id), cancellationToken: cancellationToken, enableTracking: false);
 
                 await userBusinessRules.UserShouldBeExistsWhenSelected(siteUser);
                 await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(request.Id, request.Email);
 
-                await userBusinessRules.UserPasswordShouldBeMatched(siteUser, request.OldPassword);
+                if (string.IsNullOrEmpty(request.OldPassword) && string.IsNullOrEmpty(request.NewPassword))
+                {
+                    siteUser!.FirstName = request.FirstName;
+                    siteUser!.LastName = request.LastName;
+                    siteUser!.Email = request.Email;
+                    siteUser!.ProfileImageUrl = request.ProfileImageUrl;
+                    siteUser!.Biography = request.Biography;
+                }
+                else
+                {
+                    await userBusinessRules.UserPasswordShouldBeMatchBeforeUpdate(siteUser, request.OldPassword);
+                    siteUser = mapper.Map<SiteUser>(request);
 
-                siteUser = mapper.Map<SiteUser>(request);
+                    HashingHelper.CreatePasswordHash(request.NewPassword, passwordHash: out byte[] passwordHash, passwordSalt: out byte[] passwordSalt);
 
-                HashingHelper.CreatePasswordHash(request.NewPassword, passwordHash: out byte[] passwordHash, passwordSalt: out byte[] passwordSalt);
-
-                siteUser!.PasswordHash = passwordHash;
-                siteUser!.PasswordSalt = passwordSalt;
+                    siteUser!.PasswordHash = passwordHash;
+                    siteUser!.PasswordSalt = passwordSalt;
+                }
 
                 await siteUserRepository.UpdateAsync(siteUser);
 
