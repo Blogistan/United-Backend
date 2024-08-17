@@ -35,7 +35,7 @@ namespace Application.Features.SiteUsers.Rules
         public async Task UserPasswordShouldBeMatchBeforeUpdate(User user, string password)
         {
             if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                throw new ValidationException("Invlaid password.");
+                throw new AuthorizationException("Invlaid password.");
         }
 
         public async Task UserEmailShouldNotExistsWhenInsert(string email)
