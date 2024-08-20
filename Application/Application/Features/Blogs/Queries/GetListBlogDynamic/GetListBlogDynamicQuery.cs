@@ -29,7 +29,8 @@ namespace Application.Features.Blogs.Queries.GetListBlogDynamic
 
             public async Task<GetListBlogDynamicQueryResponse> Handle(GetListBlogDynamicQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<Blog> paginate = await blogRepository.GetListByDynamicAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, dynamic: request.DynamicQuery, include: x => (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Blog, object>)x.Include(x => x.Category).Include(x => x.Writer).ThenInclude(x => x.Bans).Where(blog => blog.Writer != null && (blog.Writer.Bans == null || !blog.Writer.Bans.Any(ban => ban.IsPerma || (ban.BanEndDate != null && ban.BanEndDate < DateTime.UtcNow)))));
+                IPaginate<Blog> paginate = await blogRepository.GetListByDynamicAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, dynamic: request.DynamicQuery, include: x => x.Include(x => x.Category).Include(x => x.Writer).ThenInclude(x => x.Bans));
+
 
                 GetListBlogDynamicQueryResponse response = mapper.Map<GetListBlogDynamicQueryResponse>(paginate);
 
