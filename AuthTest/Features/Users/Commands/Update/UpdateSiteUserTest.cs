@@ -60,7 +60,7 @@ namespace AuthTest.Features.Users.Commands.Update
             updateSiteUserCommand.FirstName = "F";
             updateSiteUserCommand.LastName = "L";
             updateSiteUserCommand.Email = "test@email.com";
-            updateSiteUserCommand.Password = "password";
+            updateSiteUserCommand.NewPassword = "password";
             #endregion
 
             #region Arrange
@@ -79,7 +79,7 @@ namespace AuthTest.Features.Users.Commands.Update
             updateSiteUserCommand.FirstName = "F";
             updateSiteUserCommand.LastName = "L";
             updateSiteUserCommand.Email = "test@email.com";
-            updateSiteUserCommand.Password = "password";
+            updateSiteUserCommand.NewPassword = "password";
             #endregion
 
             #region Arrange
