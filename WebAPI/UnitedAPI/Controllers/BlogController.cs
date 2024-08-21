@@ -50,10 +50,9 @@ namespace UnitedAPI.Controllers
             GetListBlogQueryResponse response = await Mediator.Send(getListBlogQuery);
             return Ok(response);
         }
-        [HttpGet]
-        public async Task<IActionResult> GetListDynamic([FromQuery] PageRequest pageRequest, [FromQuery] DynamicQuery dynamicQuery)
+        [HttpPost]
+        public async Task<IActionResult> GetListDynamic([FromBody]GetListBlogDynamicQuery getListBlogDynamicQuery)
         {
-            GetListBlogDynamicQuery getListBlogDynamicQuery = new() { PageRequest = pageRequest,DynamicQuery=dynamicQuery };
             GetListBlogDynamicQueryResponse response = await Mediator.Send(getListBlogDynamicQuery);
             return Ok(response);
         }
