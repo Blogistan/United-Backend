@@ -36,6 +36,7 @@ namespace Application.Features.Blogs.Queries.BlogDetailById
                     Category = mapper.Map<CategoryViewDto>(blog.Category),
                     CreatedDate = blog.CreatedDate,
                     Title = blog.Title,
+                    BannerImageUrl = blog.BannerImageUrl,
                     WriterName = blog.Writer.FirstName + " " + blog.Writer.LastName,
                     ContentImageUrl = blog.Content.ContentImageUrl,
                     ContentPragraph = blog.Content.ContentPragraph,
