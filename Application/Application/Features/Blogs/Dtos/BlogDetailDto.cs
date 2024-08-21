@@ -6,6 +6,7 @@ namespace Application.Features.Blogs.Dtos
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
+        public string BannerImageUrl { get; set; } = string.Empty;
         public CategoryViewDto Category { get; set; }
         public string WriterName { get; set; } = string.Empty;
         public string TitleContent { get; set; } = string.Empty;
