@@ -8,24 +8,24 @@ using MediatR;
 
 namespace Application.Features.Blogs.Queries.DecreaseSuprisedBlog
 {
-    public class DecreaseSuprisedBlogQuery : IRequest<BlogListViewDto>,ISecuredRequest
+    public class DecreaseSurprisedBlogQuery : IRequest<BlogListViewDto>,ISecuredRequest
     {
         public int BlogId { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
 
-        public class DecreaseSuprisedBlogQueryHandler : IRequestHandler<DecreaseSuprisedBlogQuery, BlogListViewDto>
+        public class DecreaseSurprisedBlogQueryHandler : IRequestHandler<DecreaseSurprisedBlogQuery, BlogListViewDto>
         {
             private readonly IBlogRepository blogRepository;
             private readonly IMapper mapper;
             private readonly BlogBusinessRules blogBusinessRules;
-            public DecreaseSuprisedBlogQueryHandler(IBlogRepository blogRepository, IMapper mapper, BlogBusinessRules blogBusinessRules)
+            public DecreaseSurprisedBlogQueryHandler(IBlogRepository blogRepository, IMapper mapper, BlogBusinessRules blogBusinessRules)
             {
                 this.blogRepository = blogRepository;
                 this.mapper = mapper;
                 this.blogBusinessRules = blogBusinessRules;
             }
 
-            public async Task<BlogListViewDto> Handle(DecreaseSuprisedBlogQuery request, CancellationToken cancellationToken)
+            public async Task<BlogListViewDto> Handle(DecreaseSurprisedBlogQuery request, CancellationToken cancellationToken)
             {
                 var blog = await blogBusinessRules.BlogCheckById(request.BlogId);
 

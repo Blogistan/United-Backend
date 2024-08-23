@@ -8,12 +8,12 @@ using MediatR;
 
 namespace Application.Features.Blogs.Queries.SuprisedBlog
 {
-    public class SuprisedBlogQuery : IRequest<BlogListViewDto>,ISecuredRequest
+    public class SurprisedBlogQuery : IRequest<BlogListViewDto>,ISecuredRequest
     {
         public int BlogId { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
 
-        public class SuprisedBlogQueryHandler : IRequestHandler<SuprisedBlogQuery, BlogListViewDto>
+        public class SuprisedBlogQueryHandler : IRequestHandler<SurprisedBlogQuery, BlogListViewDto>
         {
             private readonly IBlogRepository blogRepository;
             private readonly IMapper mapper;
@@ -25,7 +25,7 @@ namespace Application.Features.Blogs.Queries.SuprisedBlog
                 this.blogBusinessRules = blogBusinessRules;
             }
 
-            public async Task<BlogListViewDto> Handle(SuprisedBlogQuery request, CancellationToken cancellationToken)
+            public async Task<BlogListViewDto> Handle(SurprisedBlogQuery request, CancellationToken cancellationToken)
             {
                 var blog = await blogBusinessRules.BlogCheckById(request.BlogId);
 

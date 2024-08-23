@@ -2,9 +2,9 @@
 
 namespace Application.Features.Blogs.Queries.DecreaseSuprisedBlog
 {
-    public class DecreaseSuprisedBlogQueryValidator : AbstractValidator<DecreaseSuprisedBlogQuery>
+    public class DecreaseSurprisedBlogQueryValidator : AbstractValidator<DecreaseSurprisedBlogQuery>
     {
-        public DecreaseSuprisedBlogQueryValidator()
+        public DecreaseSurprisedBlogQueryValidator()
         {
             RuleFor(x => x.BlogId).NotEmpty();
         }

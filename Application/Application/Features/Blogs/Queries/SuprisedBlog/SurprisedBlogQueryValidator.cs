@@ -2,9 +2,9 @@
 
 namespace Application.Features.Blogs.Queries.SuprisedBlog
 {
-    public class SuprisedBlogQueryValidator:AbstractValidator<SuprisedBlogQuery>
+    public class SurprisedBlogQueryValidator:AbstractValidator<SurprisedBlogQuery>
     {
-        public SuprisedBlogQueryValidator()
+        public SurprisedBlogQueryValidator()
         {
             RuleFor(x=>x.BlogId).NotEmpty();
         }
