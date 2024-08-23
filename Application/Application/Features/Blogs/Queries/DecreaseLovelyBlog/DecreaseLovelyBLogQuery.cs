@@ -2,17 +2,18 @@
 using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Blogs.Queries.DecreaseLovelyBlog
 {
-    public class DecreaseLovelyBLogQuery:IRequest<BlogListViewDto>
+    public class DecreaseLovelyBLogQuery : IRequest<BlogListViewDto>, ISecuredRequest
     {
         public int BlogId { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
 
-
-        public class DecreaseLovelyBLogQueryHandler:IRequestHandler<DecreaseLovelyBLogQuery,BlogListViewDto>
+        public class DecreaseLovelyBLogQueryHandler : IRequestHandler<DecreaseLovelyBLogQuery, BlogListViewDto>
         {
             private readonly IBlogRepository blogRepository;
             private readonly IMapper mapper;

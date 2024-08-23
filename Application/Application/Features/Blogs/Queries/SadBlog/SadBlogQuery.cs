@@ -2,14 +2,16 @@
 using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Blogs.Queries.SadBlog
 {
-    public class SadBlogQuery:IRequest<BlogListViewDto>
+    public class SadBlogQuery:IRequest<BlogListViewDto>,ISecuredRequest
     {
         public int BlogId { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
 
         public class SadBlogQueryHandler:IRequestHandler<SadBlogQuery, BlogListViewDto>
         {

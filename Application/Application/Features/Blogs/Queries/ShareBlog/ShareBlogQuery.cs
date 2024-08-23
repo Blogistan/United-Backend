@@ -2,14 +2,16 @@
 using Application.Features.Blogs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Blogs.Queries.ShareBlog
 {
-    public class ShareBlogQuery : IRequest<BlogListViewDto>
+    public class ShareBlogQuery : IRequest<BlogListViewDto>,ISecuredRequest
     {
         public int BlogId { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
         public class ShareBlogQueryHandler : IRequestHandler<ShareBlogQuery, BlogListViewDto>
         {
             private readonly IBlogRepository blogRepository;
