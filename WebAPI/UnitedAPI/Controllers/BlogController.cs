@@ -3,6 +3,10 @@ using Application.Features.Blogs.Commands.DeleteBlog;
 using Application.Features.Blogs.Commands.UpdateBlog;
 using Application.Features.Blogs.Dtos;
 using Application.Features.Blogs.Queries.BlogDetailById;
+using Application.Features.Blogs.Queries.DecreaseLovelyBlog;
+using Application.Features.Blogs.Queries.DecreaseSadBlog;
+using Application.Features.Blogs.Queries.DecreaseSuprisedBlog;
+using Application.Features.Blogs.Queries.DecreaseTriggerBlog;
 using Application.Features.Blogs.Queries.GetListBlog;
 using Application.Features.Blogs.Queries.GetListBlogDynamic;
 using Application.Features.Blogs.Queries.KEKWBlog;
@@ -51,7 +55,7 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<IActionResult> GetListDynamic([FromBody]GetListBlogDynamicQuery getListBlogDynamicQuery)
+        public async Task<IActionResult> GetListDynamic([FromBody] GetListBlogDynamicQuery getListBlogDynamicQuery)
         {
             GetListBlogDynamicQueryResponse response = await Mediator.Send(getListBlogDynamicQuery);
             return Ok(response);
@@ -96,8 +100,8 @@ namespace UnitedAPI.Controllers
         public async Task<IActionResult> BlogDetail([FromQuery] BlogDetailByIdQuery blogDetailByIdQuery)
         {
             BlogDetailDto response = await Mediator.Send(blogDetailByIdQuery);
-            return Ok(response); 
-                
+            return Ok(response);
+
         }
         [HttpGet]
         public async Task<IActionResult> MostReadedBlogs([FromQuery] MostReadedBlogQuery mostReadedBlogQuery)
@@ -112,6 +116,30 @@ namespace UnitedAPI.Controllers
             MostSharedBlogQueryResponse response = await Mediator.Send(mostSharedBlogQuery);
             return Ok(response);
 
+        }
+        [HttpPut]
+        public async Task<IActionResult> UnBlogTrigger([FromBody] DecreaseTriggerBlogQuery decreaseTriggerBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(decreaseTriggerBlogQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UnBlogSad([FromBody] DecreaseSadBlogQuery decreaseSadBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(decreaseSadBlogQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UnBlogLovely([FromBody] DecreaseLovelyBLogQuery decreaseLovelyBLogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(decreaseLovelyBLogQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UnBlogSuprise([FromBody] DecreaseSuprisedBlogQuery suprisedBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(suprisedBlogQuery);
+            return Ok(response);
         }
     }
 }
