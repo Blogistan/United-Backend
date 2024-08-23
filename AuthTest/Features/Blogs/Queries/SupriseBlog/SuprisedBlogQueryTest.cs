@@ -3,25 +3,25 @@ using AuthTest.Mocks.FakeDatas;
 using AuthTest.Mocks.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using FluentValidation.TestHelper;
-using static Application.Features.Blogs.Queries.SuprisedBlog.SuprisedBlogQuery;
+using static Application.Features.Blogs.Queries.SuprisedBlog.SurprisedBlogQuery;
 
 namespace AuthTest.Features.Blogs.Queries.SupriseBlog
 {
     public class SuprisedBlogQueryTest : BlogMockRepository, IClassFixture<Startup>
     {
-        private readonly SuprisedBlogQuery _query;
-        private readonly SuprisedBlogQueryValidator _validator;
+        private readonly SurprisedBlogQuery _query;
+        private readonly SurprisedBlogQueryValidator _validator;
         private readonly SuprisedBlogQueryHandler _handler;
         public SuprisedBlogQueryTest(BlogFakeData fakeData) : base(fakeData)
         {
-            this._query = new SuprisedBlogQuery();
-            this._validator = new SuprisedBlogQueryValidator();
+            this._query = new SurprisedBlogQuery();
+            this._validator = new SurprisedBlogQueryValidator();
             this._handler = new SuprisedBlogQueryHandler(MockRepository.Object, Mapper, BusinessRules);
         }
         [Fact]
         public async Task ThrowExceptionIfTitleIsEmpty()
         {
-            TestValidationResult<SuprisedBlogQuery> testValidationResult = _validator.TestValidate(_query);
+            TestValidationResult<SurprisedBlogQuery> testValidationResult = _validator.TestValidate(_query);
 
             testValidationResult.ShouldHaveValidationErrorFor(x => x.BlogId);
         }

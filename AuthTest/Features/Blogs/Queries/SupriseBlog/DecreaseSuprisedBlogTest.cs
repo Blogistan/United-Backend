@@ -3,25 +3,25 @@ using AuthTest.Mocks.FakeDatas;
 using AuthTest.Mocks.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using FluentValidation.TestHelper;
-using static Application.Features.Blogs.Queries.DecreaseSuprisedBlog.DecreaseSuprisedBlogQuery;
+using static Application.Features.Blogs.Queries.DecreaseSuprisedBlog.DecreaseSurprisedBlogQuery;
 
 namespace AuthTest.Features.Blogs.Queries.SupriseBlog
 {
     public class DecreaseSuprisedBlogTest : BlogMockRepository, IClassFixture<Startup>
     {
-        private readonly DecreaseSuprisedBlogQuery _query;
-        private readonly DecreaseSuprisedBlogQueryValidator _validator;
-        private readonly DecreaseSuprisedBlogQueryHandler _handler;
+        private readonly DecreaseSurprisedBlogQuery _query;
+        private readonly DecreaseSurprisedBlogQueryValidator _validator;
+        private readonly DecreaseSurprisedBlogQueryHandler _handler;
         public DecreaseSuprisedBlogTest(BlogFakeData fakeData) : base(fakeData)
         {
-            this._query = new DecreaseSuprisedBlogQuery();
-            this._validator = new DecreaseSuprisedBlogQueryValidator();
-            this._handler = new DecreaseSuprisedBlogQueryHandler(MockRepository.Object, Mapper, BusinessRules);
+            this._query = new DecreaseSurprisedBlogQuery();
+            this._validator = new DecreaseSurprisedBlogQueryValidator();
+            this._handler = new DecreaseSurprisedBlogQueryHandler(MockRepository.Object, Mapper, BusinessRules);
         }
         [Fact]
         public async Task ThrowExceptionIfTitleIsEmpty()
         {
-            TestValidationResult<DecreaseSuprisedBlogQuery> testValidationResult = _validator.TestValidate(_query);
+            TestValidationResult<DecreaseSurprisedBlogQuery> testValidationResult = _validator.TestValidate(_query);
 
             testValidationResult.ShouldHaveValidationErrorFor(x => x.BlogId);
         }
