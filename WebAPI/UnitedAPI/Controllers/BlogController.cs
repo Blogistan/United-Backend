@@ -3,6 +3,7 @@ using Application.Features.Blogs.Commands.DeleteBlog;
 using Application.Features.Blogs.Commands.UpdateBlog;
 using Application.Features.Blogs.Dtos;
 using Application.Features.Blogs.Queries.BlogDetailById;
+using Application.Features.Blogs.Queries.DecreaseKEKWBlog;
 using Application.Features.Blogs.Queries.DecreaseLovelyBlog;
 using Application.Features.Blogs.Queries.DecreaseSadBlog;
 using Application.Features.Blogs.Queries.DecreaseSuprisedBlog;
@@ -18,7 +19,6 @@ using Application.Features.Blogs.Queries.SadBlog;
 using Application.Features.Blogs.Queries.SuprisedBlog;
 using Application.Features.Blogs.Queries.TriggerBlog;
 using Core.Application.Requests;
-using Core.Persistence.Dynamic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace UnitedAPI.Controllers
@@ -139,6 +139,12 @@ namespace UnitedAPI.Controllers
         public async Task<IActionResult> UnBlogSuprise([FromBody] DecreaseSuprisedBlogQuery suprisedBlogQuery)
         {
             BlogListViewDto response = await Mediator.Send(suprisedBlogQuery);
+            return Ok(response);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UnBlogKekw([FromBody] DecreaseKEKWBlogQuery kEKWBlogQuery)
+        {
+            BlogListViewDto response = await Mediator.Send(kEKWBlogQuery);
             return Ok(response);
         }
     }
