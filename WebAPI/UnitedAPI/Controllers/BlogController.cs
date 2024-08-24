@@ -85,7 +85,7 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> BlogSuprise([FromBody] SurprisedBlogQuery suprisedBlogQuery)
+        public async Task<IActionResult> BlogSurprise([FromBody] SurprisedBlogQuery suprisedBlogQuery)
         {
             BlogListViewDto response = await Mediator.Send(suprisedBlogQuery);
             return Ok(response);
