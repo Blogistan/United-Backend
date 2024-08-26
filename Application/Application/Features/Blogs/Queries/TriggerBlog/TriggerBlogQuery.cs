@@ -28,7 +28,7 @@ namespace Application.Features.Blogs.Queries.TriggerBlog
             {
                 var blog = await blogBusinessRules.BlogCheckById(request.BlogId);
 
-                blog.ReactionSuprisedCount++;
+                blog.ReactionTriggeredCount++;
 
                 Blog updatedBlog = await blogRepository.UpdateAsync(blog);
 

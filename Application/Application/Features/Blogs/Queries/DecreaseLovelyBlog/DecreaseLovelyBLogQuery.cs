@@ -29,7 +29,7 @@ namespace Application.Features.Blogs.Queries.DecreaseLovelyBlog
             {
                 var blog = await blogBusinessRules.BlogCheckById(request.BlogId);
 
-                blog.ReactionLovelyCount--;
+                blog.ReactionLovelyCount = blog.ReactionLovelyCount == 0 ? 0 : blog.ReactionLovelyCount - 1;
 
                 Blog updatedBlog = await blogRepository.UpdateAsync(blog);
 

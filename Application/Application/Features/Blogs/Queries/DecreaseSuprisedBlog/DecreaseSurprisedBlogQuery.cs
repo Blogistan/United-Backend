@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Application.Features.Blogs.Queries.DecreaseSuprisedBlog
 {
-    public class DecreaseSurprisedBlogQuery : IRequest<BlogListViewDto>,ISecuredRequest
+    public class DecreaseSurprisedBlogQuery : IRequest<BlogListViewDto>, ISecuredRequest
     {
         public int BlogId { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
@@ -29,7 +29,8 @@ namespace Application.Features.Blogs.Queries.DecreaseSuprisedBlog
             {
                 var blog = await blogBusinessRules.BlogCheckById(request.BlogId);
 
-                blog.ReactionSuprisedCount--;
+                blog.ReactionSuprisedCount = blog.ReactionSuprisedCount == 0 ? 0 : blog.ReactionSuprisedCount - 1;
+
 
                 Blog updatedBlog = await blogRepository.UpdateAsync(blog);
 

@@ -8,12 +8,12 @@ using MediatR;
 
 namespace Application.Features.Blogs.Queries.DecreaseTriggerBlog
 {
-    public class DecreaseTriggerBlogQuery:IRequest<BlogListViewDto>,ISecuredRequest
+    public class DecreaseTriggerBlogQuery : IRequest<BlogListViewDto>, ISecuredRequest
     {
         public int BlogId { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
 
-        public class DecreaseTriggerBlogQueryHandler:IRequestHandler<DecreaseTriggerBlogQuery,BlogListViewDto>
+        public class DecreaseTriggerBlogQueryHandler : IRequestHandler<DecreaseTriggerBlogQuery, BlogListViewDto>
         {
             private readonly IBlogRepository blogRepository;
             private readonly IMapper mapper;
@@ -29,7 +29,7 @@ namespace Application.Features.Blogs.Queries.DecreaseTriggerBlog
             {
                 var blog = await blogBusinessRules.BlogCheckById(request.BlogId);
 
-                blog.ReactionTriggeredCount--;
+                blog.ReactionTriggeredCount = blog.ReactionTriggeredCount == 0 ? 0 : blog.ReactionTriggeredCount - 1;
 
                 Blog updatedBlog = await blogRepository.UpdateAsync(blog);
 

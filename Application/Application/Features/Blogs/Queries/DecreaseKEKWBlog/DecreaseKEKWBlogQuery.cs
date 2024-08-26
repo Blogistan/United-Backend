@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Application.Features.Blogs.Queries.DecreaseKEKWBlog
 {
-    public class DecreaseKEKWBlogQuery : IRequest<BlogListViewDto>,ISecuredRequest
+    public class DecreaseKEKWBlogQuery : IRequest<BlogListViewDto>, ISecuredRequest
     {
         public int BlogId { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger" };
@@ -29,7 +29,7 @@ namespace Application.Features.Blogs.Queries.DecreaseKEKWBlog
             {
                 var blog = await blogBusinessRules.BlogCheckById(request.BlogId);
 
-                blog.ReactionKEKWCount--;
+                blog.ReactionKEKWCount = blog.ReactionKEKWCount == 0 ? 0 : blog.ReactionKEKWCount - 1;
 
                 Blog updatedBlog = await blogRepository.UpdateAsync(blog);
 
