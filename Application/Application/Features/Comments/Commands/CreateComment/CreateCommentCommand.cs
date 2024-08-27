@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Comments.Commands.CreateComment
 {
-    public class CreateCommentCommand : IRequest<CreateCommentCommandResponse>, ISecuredRequest
+    public class CreateCommentCommand : IRequest<CreateCommentCommandResponse>
     {
         public int? UserId { get; set; }
 
@@ -17,7 +17,7 @@ namespace Application.Features.Comments.Commands.CreateComment
         public int? BlogId { get; set; }
         public int? CommentId { get; set; }
 
-        string[] ISecuredRequest.Roles => new string[] { "User" };
+        //string[] ISecuredRequest.Roles => new string[] { "User" };
 
         public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, CreateCommentCommandResponse>
         {

@@ -1,5 +1,7 @@
 ﻿using Application.Features.Comments.Dtos;
+using Application.Features.Comments.Queries.GetBlogCommentsQuery;
 using AutoMapper;
+using Core.Persistence.Paging;
 using Domain.Entities;
 
 namespace Application.Features.Comments.Profiles
@@ -16,6 +18,8 @@ namespace Application.Features.Comments.Profiles
                 .ForMember(opt => opt.Likes, src => src.MapFrom(x => x.Likes))
                 .ForMember(opt => opt.ProfileImageUrl, src => src.MapFrom(x => x.User.ProfileImageUrl))
                 .ForMember(opt => opt.CommentResponses, src => src.MapFrom(x => x.CommentResponses)).ReverseMap();
+
+            CreateMap<IPaginate<Comment>, GetBlogCommentsQueryResponse>().ReverseMap();
         }
     }
 }

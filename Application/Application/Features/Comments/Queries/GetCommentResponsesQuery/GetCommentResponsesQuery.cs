@@ -31,12 +31,9 @@ namespace Application.Features.Comments.Queries.GetCommentResponsesQuery
 
                 Comment comment = await commentRepository.GetAsync(x=>x.Id==request.CommentId,x=>x.Include(x=>x.CommentResponses).Include(x=>x.User));
 
-                CommentViewDto response = mapper.Map<CommentViewDto>(comment);
+                GetBlogCommentsQueryResponse response = mapper.Map<GetBlogCommentsQueryResponse>(comment);
 
-                return new GetBlogCommentsQueryResponse()
-                {
-                    commentViewDto = response
-                };
+                return response;
             }
         }
     }

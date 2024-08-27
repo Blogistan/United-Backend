@@ -1,18 +1,18 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Comments.Dtos;
 using Application.Features.Comments.Rules;
+using Application.Services.Repositories;
 using AutoMapper;
-using MediatR;
+using Core.Persistence.Paging;
 using Domain.Entities;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Application.Features.Comments.Dtos;
-using Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Comments.Queries.GetBlogCommentsQuery
 {
-    public class GetBlogCommentsQuery : IRequest<GetBlogCommentsQueryResponse>,ISecuredRequest
+    public class GetBlogCommentsQuery : IRequest<GetBlogCommentsQueryResponse>
     {
         public int BlogId { get; set; }
-        string[] ISecuredRequest.Roles => new string[] { "User" };
+        //string[] ISecuredRequest.Roles => new string[] { "User" };
 
         public class GetBlogCommentsQueryHandler : IRequestHandler<GetBlogCommentsQuery, GetBlogCommentsQueryResponse>
         {
@@ -30,14 +30,11 @@ namespace Application.Features.Comments.Queries.GetBlogCommentsQuery
             {
                 //await commentBusinessRules.CommentCheckById(request.CommentId);
 
-                Comment comment = await commentRepository.GetAsync(x => x.BlogId == request.BlogId, x => x.Include(x => x.User).Include(x => x.CommentResponses));
+                IPaginate<Comment> comment = await commentRepository.GetListAsync(x => x.BlogId == request.BlogId, include: x => x.Include(x => x.User).Include(x => x.CommentResponses));
 
-                CommentViewDto response = mapper.Map<CommentViewDto>(comment);
+                GetBlogCommentsQueryResponse response = mapper.Map<GetBlogCommentsQueryResponse>(comment);
 
-                return new GetBlogCommentsQueryResponse()
-                {
-                    commentViewDto = response
-                };
+                return response;
             }
         }
     }
