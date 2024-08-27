@@ -34,13 +34,15 @@ namespace Application.Features.Comments.Commands.DeleteComment
 
                 return new DeleteCommentCommandResponse
                 {
+                    Id = commentWithUser.Id,
                     BlogId = commentWithUser.BlogId,
                     CommentContent = commentWithUser.CommentContent,
+                    UserProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : "",
                     GuestName = commentWithUser.GuestName,
-                    UserName = $"{commentWithUser.User.FirstName} {commentWithUser.User.LastName}",
+                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : "",
                     Likes = commentWithUser.Likes,
                     Dislikes = commentWithUser.Dislikes,
-                    ParentCommentId=commentWithUser.CommentId
+                    ParentCommentId = commentWithUser.CommentId
                 };
             }
         }

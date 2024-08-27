@@ -40,9 +40,9 @@ namespace Application.Features.Comments.Commands.CreateComment
                     CommentId = request.CommentId
                 };
 
-                await commentRepository.AddAsync(comment);
+                var createdComment = await commentRepository.AddAsync(comment);
 
-                Comment commentWithUser = await commentRepository.GetAsync(x => x.UserId == request.UserId, x => x.Include(x => x.User));
+                Comment commentWithUser = await commentRepository.GetAsync(x => x.Id == createdComment.Id, x => x.Include(x => x.User));
 
 
                 return new CreateCommentCommandResponse
@@ -50,11 +50,12 @@ namespace Application.Features.Comments.Commands.CreateComment
                     Id = commentWithUser.Id,
                     BlogId = commentWithUser.BlogId,
                     CommentContent = commentWithUser.CommentContent,
+                    UserProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : "",
                     Dislikes = commentWithUser.Dislikes,
                     GuestName = commentWithUser.GuestName!,
                     Likes = commentWithUser.Likes,
                     ParentCommentId = commentWithUser.CommentId,
-                    UserName = $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}"
+                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : ""
                 };
 
             }
