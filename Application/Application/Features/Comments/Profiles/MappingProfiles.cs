@@ -16,6 +16,7 @@ namespace Application.Features.Comments.Profiles
                 .ForMember(opt => opt.GuestName, src => src.MapFrom(x => x.GuestName))
                 .ForMember(opt => opt.Dislikes, src => src.MapFrom(x => x.Dislikes))
                 .ForMember(opt => opt.Likes, src => src.MapFrom(x => x.Likes))
+                .ForMember(opt => opt.CreateDate, src => src.MapFrom(x => x.CreatedDate))
                 .ForMember(opt => opt.ProfileImageUrl, src => src.MapFrom(x => x.User.ProfileImageUrl))
                 .ForMember(opt => opt.CommentResponses, src => src.MapFrom(x => x.CommentResponses)).ReverseMap();
 

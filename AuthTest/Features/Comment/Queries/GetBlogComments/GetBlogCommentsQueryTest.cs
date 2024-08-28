@@ -51,7 +51,7 @@ namespace AuthTest.Features.Comment.Queries.GetBlogComments
 
             var result = await _handler.Handle(_query, CancellationToken.None);
 
-            Assert.NotNull(result.commentViewDto);
+            Assert.NotNull(result.Items);
         }
     }
 }
