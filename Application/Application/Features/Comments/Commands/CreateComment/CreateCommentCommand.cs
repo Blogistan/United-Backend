@@ -1,5 +1,4 @@
 ﻿using Application.Services.Repositories;
-using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -50,12 +49,14 @@ namespace Application.Features.Comments.Commands.CreateComment
                     Id = commentWithUser.Id,
                     BlogId = commentWithUser.BlogId,
                     CommentContent = commentWithUser.CommentContent,
-                    UserProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : "",
+                    ProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : null,
                     Dislikes = commentWithUser.Dislikes,
                     GuestName = commentWithUser.GuestName!,
                     Likes = commentWithUser.Likes,
-                    ParentCommentId = commentWithUser.CommentId,
-                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : ""
+                    CommentId = commentWithUser.CommentId,
+                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : null,
+                    CreateDate = commentWithUser.CreatedDate,
+                    CommentResponses = new List<Dtos.CommentViewDto>()
                 };
 
             }
