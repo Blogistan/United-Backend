@@ -2,6 +2,7 @@
 using Application.Services.Repositories;
 using Core.Application.Pipelines.Authorization;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
 {
@@ -23,19 +24,24 @@ namespace Application.Features.Comments.Queries.DecreaseLikeOfCommentQuery
             public async Task<DecreaseLikeOfCommentQueryResponse> Handle(DecreaseLikeOfCommentQuery request, CancellationToken cancellationToken)
             {
                 var comment = await commentBusinessRules.CommentCheckById(request.CommentId);
-                comment.Likes -= 1;
+                comment.Likes = comment.Likes == 0 ? 0 : comment.Likes - 1;
 
                 var updatedComment = await commentRepository.UpdateAsync(comment);
+                var commentWithUser = await commentRepository.GetAsync(x => x.Id == updatedComment.Id, x => x.Include(x => x.User));
 
                 return new DecreaseLikeOfCommentQueryResponse
                 {
-                    Id = updatedComment.Id,
-                    BlogId = updatedComment.BlogId,
-                    CommentContent = updatedComment.CommentContent,
-                    Dislikes = updatedComment.Dislikes,
-                    GuestName = updatedComment.GuestName,
-                    Likes = updatedComment.Likes,
-                    UserName = $"{updatedComment.User.FirstName} {updatedComment.User.LastName}"
+                    Id = commentWithUser.Id,
+                    BlogId = commentWithUser.BlogId,
+                    CommentContent = commentWithUser.CommentContent,
+                    ProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : null,
+                    Dislikes = commentWithUser.Dislikes,
+                    GuestName = commentWithUser.GuestName!,
+                    Likes = commentWithUser.Likes,
+                    CommentId = commentWithUser.CommentId,
+                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : null,
+                    CreateDate = commentWithUser.CreatedDate,
+                    CommentResponses = new List<Dtos.CommentViewDto>()
                 };
             }
         }
