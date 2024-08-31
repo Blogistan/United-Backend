@@ -1,4 +1,5 @@
-﻿using Core.Application.Responses;
+﻿using Application.Features.Comments.Dtos;
+using Core.Application.Responses;
 
 namespace Application.Features.Comments.Queries.IncreaseLikeOfCommentQuery
 {
@@ -6,29 +7,22 @@ namespace Application.Features.Comments.Queries.IncreaseLikeOfCommentQuery
     {
         public int Id { get; set; }
         public int? BlogId { get; set; }
+        public int? CommentId { get; set; }
         public string? UserName { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string ProfileImageUrl { get; set; }
         public string? GuestName { get; set; }
-        public string CommentContent { get; set; }
+        public string CommentContent { get; set; } = string.Empty;
         public int Likes { get; set; }
         public int Dislikes { get; set; }
-        public int? ParentCommentId { get; set; }
+        public List<CommentViewDto> CommentResponses { get; set; }
 
 
         public IncreaseLikeOfCommentQueryResponse()
         {
-            
+
         }
-        public IncreaseLikeOfCommentQueryResponse(int id, int? blogId, string? userName, string? guestName, string commentContent, int likes, int dislikes, int? parentCommentId)
-        {
-            this.Id = id;
-            BlogId = blogId;
-            UserName = userName;
-            GuestName = guestName;
-            CommentContent = commentContent;
-            Likes = likes;
-            Dislikes = dislikes;
-            ParentCommentId = parentCommentId;
-        }
+
 
     }
 }

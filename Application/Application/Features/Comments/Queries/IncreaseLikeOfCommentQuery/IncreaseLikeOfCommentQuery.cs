@@ -1,15 +1,16 @@
 ﻿using Application.Services.Repositories;
 using Core.Application.Pipelines.Authorization;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Comments.Queries.IncreaseLikeOfCommentQuery
 {
-    public class IncreaseLikeOfCommentQuery:IRequest<IncreaseLikeOfCommentQueryResponse>,ISecuredRequest
+    public class IncreaseLikeOfCommentQuery : IRequest<IncreaseLikeOfCommentQueryResponse>, ISecuredRequest
     {
         public int CommentId { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "User" };
 
-        public class IncreaseLikeOfCommentQueryHandler:IRequestHandler<IncreaseLikeOfCommentQuery, IncreaseLikeOfCommentQueryResponse>
+        public class IncreaseLikeOfCommentQueryHandler : IRequestHandler<IncreaseLikeOfCommentQuery, IncreaseLikeOfCommentQueryResponse>
         {
             private readonly ICommentRepository commentRepository;
             public IncreaseLikeOfCommentQueryHandler(ICommentRepository commentRepository)
@@ -19,22 +20,27 @@ namespace Application.Features.Comments.Queries.IncreaseLikeOfCommentQuery
 
             public async Task<IncreaseLikeOfCommentQueryResponse> Handle(IncreaseLikeOfCommentQuery request, CancellationToken cancellationToken)
             {
-                var comment = await commentRepository.GetAsync(x=>x.Id==request.CommentId);
+                var comment = await commentRepository.GetAsync(x => x.Id == request.CommentId);
 
 
-                comment.Likes += 1;
+                comment.Likes++;
 
                 var updatedComment = await commentRepository.UpdateAsync(comment);
+                var commentWithUser = await commentRepository.GetAsync(x => x.Id == updatedComment.Id, x => x.Include(x => x.User));
 
                 return new IncreaseLikeOfCommentQueryResponse
                 {
-                    Id = updatedComment.Id,
-                    BlogId = updatedComment.BlogId,
-                    CommentContent = updatedComment.CommentContent,
-                    Dislikes = updatedComment.Dislikes,
-                    GuestName = updatedComment.GuestName,
-                    Likes = updatedComment.Likes,
-                    UserName = $"{updatedComment.User.FirstName} {updatedComment.User.LastName}"
+                    Id = commentWithUser.Id,
+                    BlogId = commentWithUser.BlogId,
+                    CommentContent = commentWithUser.CommentContent,
+                    ProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : null,
+                    Dislikes = commentWithUser.Dislikes,
+                    GuestName = commentWithUser.GuestName!,
+                    Likes = commentWithUser.Likes,
+                    CommentId = commentWithUser.CommentId,
+                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : null,
+                    CreateDate = commentWithUser.CreatedDate,
+                    CommentResponses = new List<Dtos.CommentViewDto>()
                 };
             }
         }
