@@ -8,10 +8,10 @@ using MediatR;
 
 namespace Application.Features.SiteUsers.Queries.GetById
 {
-    public class GetByIdSiteUserQuery : IRequest<GetByIdSiteUserQueryResponse>,ISecuredRequest
+    public class GetByIdSiteUserQuery : IRequest<GetByIdSiteUserQueryResponse>
     {
         public int Id { get; set; }
-        string[] ISecuredRequest.Roles => new string[] { "Admin" };
+        //string[] ISecuredRequest.Roles => new string[] { "Admin" };
 
 
         public class GetByIdSiteUserQueryHandler : IRequestHandler<GetByIdSiteUserQuery, GetByIdSiteUserQueryResponse>

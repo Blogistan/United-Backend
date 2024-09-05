@@ -27,13 +27,15 @@ namespace Application.Features.Auth.Commands.Register
             private readonly IAuthService authService;
             private readonly IMapper mapper;
             private readonly IMediator mediator;
-            public RegisterCommandHandler(ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IAuthService authService, IMapper mapper, IMediator mediator)
+            private readonly IUserOperationClaimRepository userOperationClaimRepository;
+            public RegisterCommandHandler(ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IAuthService authService, IMapper mapper, IMediator mediator, IUserOperationClaimRepository userOperationClaimRepository)
             {
                 this.mapper = mapper;
                 this.siteUserRepository = siteUserRepository;
                 this.authBussinessRules = authBussinessRules;
                 this.authService = authService;
                 this.mediator = mediator;
+                this.userOperationClaimRepository = userOperationClaimRepository;
             }
 
             public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -50,10 +52,10 @@ namespace Application.Features.Auth.Commands.Register
                 siteUser.IsActive = true;
                 siteUser.IsVerified = false;
 
-                await siteUserRepository.AddAsync(siteUser);
-
-                AccessToken accessToken = await authService.CreateAccessToken(siteUser);
-                RefreshToken refreshToken = authService.CreateRefreshToken(siteUser, request.IpAddress);
+                var createdUser= await siteUserRepository.AddAsync(siteUser);
+                await userOperationClaimRepository.AddAsync(new UserOperationClaim { UserId = createdUser.Id, OperationClaimId = 3 });
+                AccessToken accessToken = await authService.CreateAccessToken(createdUser);
+                RefreshToken refreshToken = authService.CreateRefreshToken(createdUser, request.IpAddress);
                 await authService.AddRefreshToken(refreshToken);
                 refreshToken.User = new User();
 
@@ -64,7 +66,7 @@ namespace Application.Features.Auth.Commands.Register
                     RefreshToken = refreshToken
                 };
 
-                await mediator.Publish(new RegisteredNotification() { SiteUser = siteUser });
+                await mediator.Publish(new RegisteredNotification() { SiteUser = createdUser });
 
                 return registeredResponse;
 
