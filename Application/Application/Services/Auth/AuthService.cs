@@ -232,7 +232,7 @@ namespace Application.Services.Auth
                     Email = email,
                     IsVerified = false,
                     ProfileImageUrl = picture,
-                    IsActive = true,
+                    IsActive = true,                  
                 };
 
                 var createdUser = await siteUserRepository.AddAsync(siteUser);
