@@ -57,7 +57,7 @@ namespace Application.Features.Auth.Commands.Register
                 AccessToken accessToken = await authService.CreateAccessToken(createdUser);
                 RefreshToken refreshToken = authService.CreateRefreshToken(createdUser, request.IpAddress);
                 await authService.AddRefreshToken(refreshToken);
-                refreshToken.User = new User();
+                refreshToken.User = createdUser;
 
 
                 RegisteredResponse registeredResponse = new()

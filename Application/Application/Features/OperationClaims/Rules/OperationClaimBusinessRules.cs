@@ -2,10 +2,11 @@
 using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Security.Entities;
+using Domain.Entities;
 
 namespace Application.Features.OperationClaims.Rules
 {
-    public class OperationClaimBusinessRules: BaseBusinessRules
+    public class OperationClaimBusinessRules : BaseBusinessRules
     {
         private readonly IOperationClaimRepostiory operationClaimRepostiory;
         public OperationClaimBusinessRules(IOperationClaimRepostiory operationClaimRepostiory)
@@ -16,13 +17,18 @@ namespace Application.Features.OperationClaims.Rules
         {
             OperationClaim operationClaim = await operationClaimRepostiory.GetAsync(x => x.Name == name);
             if (operationClaim is not null)
-                throw new ValidationException("Operation Claim is exists.");
+            {
+                throw new ValidationException(new List<ValidationExceptionModel> { new ValidationExceptionModel { Property = "Operation Claim", Errors = new List<string> { "Operation Claim is exists." } } });
+            }
+
         }
         public async Task BlogCannotBeDuplicatedWhenUpdated(string name)
         {
             OperationClaim operationClaim = await operationClaimRepostiory.GetAsync(x => x.Name == name);
             if (operationClaim is not null)
-                throw new ValidationException("Operation Claim is exists.");
+            {
+                throw new ValidationException(new List<ValidationExceptionModel> { new ValidationExceptionModel { Property = "Operation Claim", Errors = new List<string> { "Operation Claim is exists." } } });
+            }
         }
         public async Task<OperationClaim> OperationClaimCheckById(int id)
         {

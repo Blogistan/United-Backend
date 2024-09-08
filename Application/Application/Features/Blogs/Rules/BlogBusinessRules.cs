@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.Features.Blogs.Rules
 {
-    public class BlogBusinessRules:BaseBusinessRules
+    public class BlogBusinessRules : BaseBusinessRules
     {
 
         private readonly IBlogRepository blogRepository;
@@ -15,20 +15,27 @@ namespace Application.Features.Blogs.Rules
         }
         public async Task BlogCannotBeDuplicatedWhenInserted(string title)
         {
-            Blog blog = await blogRepository.GetAsync(x => x.Title==title);
-            if (blog is not null)
-                throw new ValidationException("Blog is exists.");
+            Blog blog = await blogRepository.GetAsync(x => x.Title == title);
+            if (blog != null)
+            {
+                throw new ValidationException(new List<ValidationExceptionModel> { new ValidationExceptionModel { Property = "Blog", Errors = new List<string> { "Blog already exists" } } });
+            }
         }
         public async Task BlogCannotBeDuplicatedWhenUpdated(string title)
         {
             Blog blog = await blogRepository.GetAsync(x => x.Title == title);
             if (blog is not null)
-                throw new ValidationException("Blog is exist");
+            {
+                throw new ValidationException(new List<ValidationExceptionModel> { new ValidationExceptionModel { Property = "Blog", Errors = new List<string> { "Blog already exists" } } });
+            }
         }
         public async Task<Blog> BlogCheckById(int id)
         {
             Blog blog = await blogRepository.GetAsync(x => x.Id == id);
-            if (blog == null) throw new NotFoundException("Blog is not exists.");
+            if (blog == null)
+            {
+                throw new ValidationException(new List<ValidationExceptionModel> { new ValidationExceptionModel { Property = "Blog", Errors = new List<string> { "Blog is not  exists" } } });
+            }
 
             return blog;
         }

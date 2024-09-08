@@ -17,14 +17,19 @@ namespace Application.Features.SiteUsers.Rules
         public async Task UserShouldBeExistsWhenSelected(User? user)
         {
             if (user == null)
-                throw new ValidationException(AuthBusinessMessage.UserNotFound);
+            {
+                throw new ValidationException(new List<ValidationExceptionModel> { new ValidationExceptionModel { Property = "User", Errors = new List<string> { AuthBusinessMessage.UserNotFound } } });
+            }
         }
 
         public async Task UserIdShouldBeExistsWhenSelected(int id)
         {
             bool doesExist = await siteUserRepository.AnyAsync(predicate: u => u.Id == id);
+
             if (!doesExist)
-                throw new ValidationException(AuthBusinessMessage.UserNotFound);
+            {
+                throw new ValidationException(new List<ValidationExceptionModel> { new ValidationExceptionModel { Property = "User", Errors = new List<string> { AuthBusinessMessage.UserNotFound } } });
+            }
         }
 
         public async Task UserPasswordShouldBeMatched(User user, string password)
@@ -41,8 +46,12 @@ namespace Application.Features.SiteUsers.Rules
         public async Task UserEmailShouldNotExistsWhenInsert(string email)
         {
             bool doesExists = await siteUserRepository.AnyAsync(predicate: u => u.Email == email);
+
             if (doesExists)
-                throw new ValidationException(AuthBusinessMessage.UserEmailAlreadyExists);
+            {
+                throw new ValidationException(new List<ValidationExceptionModel> { new ValidationExceptionModel { Property = "User Email", Errors = new List<string> { AuthBusinessMessage.UserEmailAlreadyExists } } });
+            }
+
         }
 
         public async Task UserEmailShouldNotExistsWhenUpdate(int id, string email)

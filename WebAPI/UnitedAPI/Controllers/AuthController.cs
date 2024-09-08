@@ -54,7 +54,7 @@ namespace UnitedAPI.Controllers
                 IpAddress = GetIpAddress()
             });
             SetRefreshTokenToCookie(registeredResponse.RefreshToken);
-            return Ok(registeredResponse.AccessToken);
+            return Ok(registeredResponse);
         }
 
         [HttpGet("RefreshToken")]
