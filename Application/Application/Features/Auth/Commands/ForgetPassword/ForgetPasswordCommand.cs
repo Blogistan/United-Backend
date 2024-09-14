@@ -2,13 +2,10 @@
 using Application.Services.Repositories;
 using Core.Mailing;
 using Core.Security.Entities;
-using Domain.Entities;
 using MediatR;
 using MimeKit;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
-using System.Web;
 
 namespace Application.Features.Auth.Commands.ForgetPassword
 {
@@ -60,7 +57,7 @@ namespace Application.Features.Auth.Commands.ForgetPassword
                     TextBody = $"Hi {siteUser.FirstName} {siteUser.LastName} " +
                     $"Here is your password reset link " +
                     $"{passwordResetUrl}?resetKey={resetKey}",
-                    HtmlBody = mailService.LoadMailTemplate("D:\\Workstation\\mvc\\LastDance\\C\\United\\United-Backend\\corePackages\\Core.Mailing\\Core.Mailing\\MailDesigns\\ForgotPasswordRequest\\ForgotPasswordRequest.html").Replace("RESET_LINK", $"{passwordResetUrl}?resetKey={resetKey}")
+                    HtmlBody = mailService.LoadMailTemplate("D:\\Workstation\\mvc\\LastDance\\C\\United\\United-Backend\\corePackages\\Core.Mailing\\Core.Mailing\\MailDesigns\\ForgotPasswordRequest\\ForgotPasswordRequest.html").Replace("RESET_LINK", $"{passwordResetUrl}/resetKey={resetKey}")
                 };
 
                 await mailService.SendEmailAsync(mail);

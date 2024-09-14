@@ -134,11 +134,11 @@ namespace UnitedAPI.Controllers
             return Ok();
         }
         [HttpPost("ForgetPassword")]
-        public async Task<IActionResult> ForgetPassword(string email)
+        public async Task<IActionResult> ForgetPassword([FromBody] ForgotPasswordCommandRequest forgotPasswordCommandRequest)
         {
             ForgetPasswordCommand forgetPasswordCommand = new()
             {
-                Email = email,
+                Email = forgotPasswordCommandRequest.Email,
                 PasswordResetUrl = webApiConfigurations.PasswordResetUrl
             };
             var result = await Mediator.Send(forgetPasswordCommand);
