@@ -6,6 +6,7 @@
         public string Title { get; set; } = string.Empty;
         public string CategoryName { get; set; } = string.Empty;
         public string BannerImageUrl { get; set; } = string.Empty;
+        public int WriterId { get; set; }
         public string WriterName { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public int ReactionSuprisedCount { get; set; }
