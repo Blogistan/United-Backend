@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Core.Persistence.Paging;
@@ -9,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Reports.Queries.GetListReportDynamic
 {
-    public class GetListReportDynamicQuery : IRequest<GetListReportDynamicQueryResponse>
+    public class GetListReportDynamicQuery : IRequest<GetListReportDynamicQueryResponse>,ISecuredRequest
     {
         public DynamicQuery DynamicQuery { get; set; }
         public PageRequest PageRequest { get; set; }
-
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class GetListReportDynamicQueryHandler : IRequestHandler<GetListReportDynamicQuery, GetListReportDynamicQueryResponse>
         {

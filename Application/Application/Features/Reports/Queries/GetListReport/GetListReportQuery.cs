@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
 using Domain.Entities;
@@ -8,9 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Reports.Queries.GetListReport
 {
-    public class GetListReportQuery : IRequest<GetListReportQueryResponse>
+    public class GetListReportQuery : IRequest<GetListReportQueryResponse>,ISecuredRequest 
     {
         public PageRequest PageRequest { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 
         public class GetListReportQueryHandler : IRequestHandler<GetListReportQuery, GetListReportQueryResponse>
         {
