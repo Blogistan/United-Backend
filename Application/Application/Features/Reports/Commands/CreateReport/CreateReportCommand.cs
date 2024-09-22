@@ -1,16 +1,18 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Reports.Commands.CreateReport
 {
-    public class CreateReportCommand : IRequest<CreateReportCommandResponse>
+    public class CreateReportCommand : IRequest<CreateReportCommandResponse>, ISecuredRequest
     {
         public int ReportTypeID { get; set; }
         public string ReportDescription { get; set; } = string.Empty;
         public int UserID { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator","User" };
 
         public class CreateReportCommandHandler : IRequestHandler<CreateReportCommand, CreateReportCommandResponse>
         {
@@ -28,20 +30,20 @@ namespace Application.Features.Reports.Commands.CreateReport
                 {
                     ReportTypeID = request.ReportTypeID,
                     ReportDescription = request.ReportDescription,
-                    UserID=request.UserID
+                    UserID = request.UserID
 
                 };
 
                 var createdReport = await reportRepository.AddAsync(report);
 
-                var reportResult = await reportRepository.GetAsync(x => x.Id == report.Id, include: x => x.Include(x => x.ReportType).Include(x=>x.User));
+                var reportResult = await reportRepository.GetAsync(x => x.Id == report.Id, include: x => x.Include(x => x.ReportType).Include(x => x.User));
 
                 CreateReportCommandResponse createReportCommandResponse = new()
                 {
                     Id = reportResult.Id,
                     ReportType = reportResult.ReportType.ReportTypeName,
                     ReportDescription = reportResult.ReportDescription,
-                    UserName=reportResult.User.FirstName+' '+reportResult.User.LastName
+                    UserName = reportResult.User.FirstName + ' ' + reportResult.User.LastName
                 };
 
                 return createReportCommandResponse;
