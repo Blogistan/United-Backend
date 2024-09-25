@@ -331,18 +331,11 @@ namespace Persistance.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("User");
 
-                    b.HasDiscriminator<string>("UserType").HasValue("User");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Core.Security.Entities.UserLogin", b =>
@@ -922,16 +915,11 @@ namespace Persistance.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ReportTypeID");
 
                     b.HasIndex("UserID");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Reports");
                 });
@@ -1045,8 +1033,6 @@ namespace Persistance.Migrations
 
                     b.ToTable("Users", (string)null);
 
-                    b.HasDiscriminator().HasValue("SiteUser");
-
                     b.HasData(
                         new
                         {
@@ -1059,8 +1045,8 @@ namespace Persistance.Migrations
                             FirstName = "Admin",
                             IsActive = true,
                             LastName = "Admin",
-                            PasswordHash = new byte[] { 194, 135, 197, 103, 36, 243, 186, 74, 78, 246, 235, 118, 162, 22, 93, 195, 219, 123, 124, 214, 25, 78, 64, 128, 141, 165, 67, 190, 143, 209, 67, 61, 90, 217, 127, 123, 54, 151, 33, 218, 11, 20, 176, 66, 85, 64, 101, 234, 133, 193, 3, 107, 167, 19, 52, 62, 224, 173, 163, 31, 110, 208, 37, 217 },
-                            PasswordSalt = new byte[] { 174, 194, 183, 186, 89, 253, 37, 214, 70, 124, 15, 122, 5, 183, 214, 159, 81, 121, 43, 238, 147, 163, 199, 113, 229, 40, 234, 150, 16, 73, 24, 30, 35, 81, 7, 173, 102, 44, 178, 45, 221, 194, 38, 42, 182, 190, 121, 51, 73, 138, 184, 23, 56, 38, 206, 96, 75, 111, 127, 122, 223, 55, 160, 173, 46, 100, 84, 113, 246, 189, 214, 124, 216, 104, 236, 234, 218, 92, 126, 155, 21, 173, 106, 172, 132, 209, 207, 139, 143, 113, 82, 22, 153, 250, 119, 191, 69, 68, 238, 229, 156, 173, 166, 23, 220, 214, 17, 107, 13, 59, 103, 64, 206, 231, 236, 224, 127, 243, 65, 6, 125, 19, 167, 246, 219, 143, 50, 154 },
+                            PasswordHash = new byte[] { 85, 37, 35, 87, 67, 29, 20, 190, 210, 182, 125, 50, 220, 98, 122, 23, 97, 27, 15, 152, 12, 58, 197, 109, 234, 2, 86, 8, 3, 83, 177, 57, 203, 210, 220, 239, 67, 58, 8, 142, 22, 190, 55, 162, 8, 233, 51, 137, 24, 185, 195, 41, 50, 109, 46, 216, 192, 193, 222, 203, 94, 205, 125, 167 },
+                            PasswordSalt = new byte[] { 75, 181, 209, 106, 147, 133, 207, 45, 1, 194, 238, 86, 148, 204, 76, 102, 40, 6, 214, 31, 98, 6, 24, 192, 141, 190, 41, 151, 148, 242, 44, 42, 105, 39, 78, 104, 175, 251, 29, 59, 155, 0, 119, 33, 8, 73, 172, 71, 138, 126, 41, 224, 121, 157, 140, 160, 98, 42, 138, 173, 23, 142, 32, 193, 198, 62, 168, 202, 149, 44, 21, 28, 38, 132, 72, 85, 253, 35, 240, 125, 34, 194, 41, 177, 229, 18, 189, 167, 10, 23, 20, 237, 215, 106, 48, 247, 178, 20, 172, 224, 210, 223, 227, 72, 29, 179, 201, 26, 89, 242, 184, 176, 62, 176, 149, 141, 203, 144, 32, 108, 52, 161, 153, 157, 28, 53, 93, 86 },
                             UpdateUser = 0,
                             Biography = "",
                             IsVerified = true,
@@ -1238,21 +1224,24 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.SiteUser", null)
+                    b.HasOne("Domain.Entities.SiteUser", "User")
                         .WithMany("Reports")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.SiteUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ReportType");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SiteUser", b =>
+                {
+                    b.HasOne("Core.Security.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.SiteUser", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>

@@ -80,14 +80,11 @@ namespace Persistance.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .ToTable("Users") // Use one table for both
-                .HasDiscriminator<string>("UserType")
-                .HasValue<User>("User")
-                .HasValue<SiteUser>("SiteUser");
+            // Ignore the base User class to prevent table creation for it
+            modelBuilder.Ignore<User>();
 
             // Configure the relationships
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<SiteUser>()
                 .HasMany(u => u.UserOperationClaims)
                 .WithOne()
                 .HasForeignKey(uoc => uoc.UserId)
@@ -95,36 +92,31 @@ namespace Persistance.Context
 
             modelBuilder.Entity<SiteUser>()
                 .HasMany(su => su.Blogs)
-                .WithOne()
+                .WithOne(b => b.Writer)
                 .HasForeignKey(b => b.WriterId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SiteUser>()
                 .HasMany(su => su.Bookmarks)
-                .WithOne()
+                .WithOne(bm => bm.SiteUser)
                 .HasForeignKey(bm => bm.SiteUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Similar configuration for other relationships
             modelBuilder.Entity<SiteUser>()
                 .HasMany(su => su.Bans)
-                .WithOne()
+                .WithOne(b => b.User)
                 .HasForeignKey(b => b.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SiteUser>()
                 .HasMany(su => su.Reports)
-                .WithOne()
+                .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Blog>()
-            .HasOne(b => b.Writer)
-            .WithMany(w => w.Blogs)
-            .HasForeignKey(b => b.WriterId);
-
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
         }
+
+
     }
 }
