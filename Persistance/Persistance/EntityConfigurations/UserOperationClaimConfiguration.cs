@@ -10,6 +10,11 @@ namespace Persistance.EntityConfigurations
         {
             UserOperationClaim[] userOperationClaims = { new(1, 1, 1), new(2, 1, 2) };
 
+            builder.HasOne(uoc => uoc.User)
+            .WithMany(u => u.UserOperationClaims)
+            .HasForeignKey(uoc => uoc.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasData(userOperationClaims);
         }
     }

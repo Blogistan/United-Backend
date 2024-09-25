@@ -63,7 +63,7 @@ namespace AuthTest.Features.Auth.Commands.Register
             this.mediator = mediator;
             this.registerCommand = new RegisterCommand();
             this.validationRules = new RegisterCommandValidator();
-            this.registerCommandHandler = new RegisterCommandHandler(siteUserRepository, authBussinessRules, authService, mapper, mediator);
+            this.registerCommandHandler = new RegisterCommandHandler(siteUserRepository, authBussinessRules, authService, mapper, mediator,userOperationClaimRepository);
 
         }
         [Fact]

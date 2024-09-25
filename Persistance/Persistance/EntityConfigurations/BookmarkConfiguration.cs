@@ -8,21 +8,19 @@ namespace Persistance.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Bookmark> builder)
         {
-            builder.HasNoKey();
-            builder.HasKey(x => new
-            {
-                x.SiteUserId,
-                x.BlogId
-            });
+            // Define composite key
+            builder.HasKey(x => new { x.SiteUserId, x.BlogId });
+
+            // Configure relationships
             builder.HasOne(bc => bc.SiteUser)
                 .WithMany(b => b.Bookmarks)
                 .HasForeignKey(bc => bc.SiteUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(bc => bc.Blog)
-            .WithMany(c => c.FavoritedUsers)
-            .HasForeignKey(bc => bc.BlogId)
-            .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(c => c.FavoritedUsers)
+                .HasForeignKey(bc => bc.BlogId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

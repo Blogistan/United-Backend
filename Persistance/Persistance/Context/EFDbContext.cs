@@ -80,7 +80,49 @@ namespace Persistance.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<User>();
+            modelBuilder.Entity<User>()
+                .ToTable("Users") // Use one table for both
+                .HasDiscriminator<string>("UserType")
+                .HasValue<User>("User")
+                .HasValue<SiteUser>("SiteUser");
+
+            // Configure the relationships
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.UserOperationClaims)
+                .WithOne()
+                .HasForeignKey(uoc => uoc.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SiteUser>()
+                .HasMany(su => su.Blogs)
+                .WithOne()
+                .HasForeignKey(b => b.WriterId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SiteUser>()
+                .HasMany(su => su.Bookmarks)
+                .WithOne()
+                .HasForeignKey(bm => bm.SiteUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Similar configuration for other relationships
+            modelBuilder.Entity<SiteUser>()
+                .HasMany(su => su.Bans)
+                .WithOne()
+                .HasForeignKey(b => b.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SiteUser>()
+                .HasMany(su => su.Reports)
+                .WithOne()
+                .HasForeignKey(r => r.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Blog>()
+            .HasOne(b => b.Writer)
+            .WithMany(w => w.Blogs)
+            .HasForeignKey(b => b.WriterId);
+
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         }
