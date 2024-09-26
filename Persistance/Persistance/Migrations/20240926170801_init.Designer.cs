@@ -12,7 +12,7 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20240717121502_init")]
+    [Migration("20240926170801_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -51,9 +51,6 @@ namespace Persistance.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SiteUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -65,7 +62,7 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SiteUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("EmailAuthenticators");
                 });
@@ -112,9 +109,6 @@ namespace Persistance.Migrations
                     b.Property<byte[]>("OldPasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("SiteUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -126,7 +120,7 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SiteUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ForgottenPasswords");
                 });
@@ -213,9 +207,6 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("SiteUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -227,7 +218,7 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SiteUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("OtpAuthenticators");
                 });
@@ -271,9 +262,6 @@ namespace Persistance.Migrations
                     b.Property<string>("RevokedByIp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SiteUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -289,12 +277,71 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SiteUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Core.Security.Entities.UserLogins", b =>
+            modelBuilder.Entity("Core.Security.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthenticatorType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreateUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DeleteUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("UpdateUser")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("Core.Security.Entities.UserLogin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -335,9 +382,12 @@ namespace Persistance.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("SiteUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserLogins");
                 });
@@ -365,9 +415,6 @@ namespace Persistance.Migrations
                     b.Property<int>("OperationClaimId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SiteUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UpdateUser")
                         .HasColumnType("int");
 
@@ -381,7 +428,7 @@ namespace Persistance.Migrations
 
                     b.HasIndex("OperationClaimId");
 
-                    b.HasIndex("SiteUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserOperationClaims");
 
@@ -441,20 +488,20 @@ namespace Persistance.Migrations
                     b.Property<Guid>("ReportID")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("SiteUserID")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("UpdateUser")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ReportID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("SiteUserID");
 
                     b.ToTable("Bans");
                 });
@@ -744,6 +791,8 @@ namespace Persistance.Migrations
 
                     b.HasIndex("CommentId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Comments");
                 });
 
@@ -971,128 +1020,96 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.SiteUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AuthenticatorType")
-                        .HasColumnType("int");
+                    b.HasBaseType("Core.Security.Entities.User");
 
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CreateUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DeleteUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<bool?>("IsVerified")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ProfileImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UpdateUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("VerifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("SiteUsers", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             AuthenticatorType = 0,
-                            Biography = "",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
                             Email = "esquetta@gmail.com",
                             FirstName = "Admin",
                             IsActive = true,
-                            IsVerified = true,
                             LastName = "Admin",
-                            PasswordHash = new byte[] { 117, 66, 201, 254, 92, 255, 62, 82, 54, 4, 83, 255, 68, 155, 236, 78, 87, 172, 9, 144, 147, 120, 222, 95, 99, 81, 54, 100, 242, 210, 120, 2, 10, 77, 231, 118, 164, 161, 33, 123, 79, 56, 201, 229, 237, 211, 76, 159, 234, 251, 37, 143, 72, 32, 0, 16, 251, 178, 71, 16, 19, 128, 59, 175 },
-                            PasswordSalt = new byte[] { 35, 186, 87, 214, 204, 144, 163, 191, 115, 97, 250, 3, 237, 191, 200, 56, 88, 86, 84, 125, 156, 176, 176, 201, 114, 217, 245, 39, 190, 151, 236, 47, 216, 135, 108, 178, 169, 106, 107, 3, 184, 112, 172, 96, 51, 127, 195, 33, 210, 193, 63, 100, 4, 76, 142, 125, 100, 54, 178, 58, 162, 16, 200, 52, 45, 40, 234, 14, 77, 51, 206, 46, 116, 182, 197, 47, 45, 59, 184, 116, 98, 135, 51, 139, 179, 56, 191, 136, 130, 251, 106, 92, 151, 244, 195, 18, 184, 202, 249, 53, 197, 168, 23, 115, 172, 211, 143, 101, 212, 165, 117, 45, 130, 221, 194, 71, 82, 242, 178, 22, 11, 239, 138, 91, 248, 193, 107, 141 },
-                            ProfileImageUrl = "",
-                            UpdateUser = 0
+                            PasswordHash = new byte[] { 26, 88, 192, 201, 109, 67, 123, 242, 144, 158, 226, 20, 99, 193, 86, 137, 6, 111, 160, 110, 84, 118, 241, 228, 154, 35, 38, 52, 134, 119, 42, 194, 123, 50, 23, 46, 49, 1, 23, 178, 33, 60, 155, 165, 62, 137, 96, 233, 4, 231, 47, 99, 157, 119, 13, 90, 170, 102, 89, 165, 206, 138, 41, 147 },
+                            PasswordSalt = new byte[] { 219, 26, 142, 180, 205, 96, 246, 3, 186, 191, 1, 142, 113, 95, 130, 16, 55, 200, 84, 210, 55, 83, 1, 182, 175, 128, 121, 88, 118, 41, 52, 173, 120, 47, 42, 207, 243, 47, 202, 148, 247, 194, 169, 168, 246, 132, 73, 150, 122, 11, 38, 183, 39, 67, 252, 148, 161, 8, 230, 218, 99, 186, 252, 61, 76, 210, 125, 157, 1, 153, 87, 26, 79, 53, 19, 140, 86, 83, 232, 27, 59, 13, 37, 176, 211, 32, 27, 154, 226, 206, 120, 100, 100, 138, 108, 144, 68, 64, 11, 9, 89, 180, 229, 120, 71, 8, 246, 210, 90, 52, 34, 255, 156, 200, 224, 126, 174, 27, 107, 104, 122, 36, 137, 65, 47, 80, 230, 197 },
+                            UpdateUser = 0,
+                            Biography = "",
+                            IsVerified = true,
+                            ProfileImageUrl = ""
                         });
                 });
 
             modelBuilder.Entity("Core.Security.Entities.EmailAuthenticator", b =>
                 {
-                    b.HasOne("Domain.Entities.SiteUser", null)
+                    b.HasOne("Core.Security.Entities.User", "User")
                         .WithMany("EmailAuthenticators")
-                        .HasForeignKey("SiteUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.ForgotPassword", b =>
                 {
-                    b.HasOne("Domain.Entities.SiteUser", null)
+                    b.HasOne("Core.Security.Entities.User", "User")
                         .WithMany("ForgottenPasswords")
-                        .HasForeignKey("SiteUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.OtpAuthenticator", b =>
                 {
-                    b.HasOne("Domain.Entities.SiteUser", null)
+                    b.HasOne("Core.Security.Entities.User", "User")
                         .WithMany("OtpAuthenticators")
-                        .HasForeignKey("SiteUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Domain.Entities.SiteUser", null)
+                    b.HasOne("Core.Security.Entities.User", "User")
                         .WithMany("RefreshTokens")
-                        .HasForeignKey("SiteUserId");
-                });
-
-            modelBuilder.Entity("Core.Security.Entities.UserLogins", b =>
-                {
-                    b.HasOne("Domain.Entities.SiteUser", null)
-                        .WithMany("UserLogins")
-                        .HasForeignKey("SiteUserId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Security.Entities.UserLogin", b =>
+                {
+                    b.HasOne("Core.Security.Entities.User", "User")
+                        .WithMany("UserLogins")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.UserOperationClaim", b =>
@@ -1103,11 +1120,15 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.SiteUser", null)
+                    b.HasOne("Core.Security.Entities.User", "User")
                         .WithMany("UserOperationClaims")
-                        .HasForeignKey("SiteUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OperationClaim");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Ban", b =>
@@ -1120,8 +1141,8 @@ namespace Persistance.Migrations
 
                     b.HasOne("Domain.Entities.SiteUser", "User")
                         .WithMany("Bans")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("SiteUserID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Report");
 
@@ -1166,7 +1187,7 @@ namespace Persistance.Migrations
                     b.HasOne("Domain.Entities.SiteUser", "SiteUser")
                         .WithMany("Bookmarks")
                         .HasForeignKey("SiteUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Blog");
@@ -1190,6 +1211,12 @@ namespace Persistance.Migrations
                     b.HasOne("Domain.Entities.Comment", null)
                         .WithMany("CommentResponses")
                         .HasForeignKey("CommentId");
+
+                    b.HasOne("Domain.Entities.SiteUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
@@ -1211,8 +1238,32 @@ namespace Persistance.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.SiteUser", b =>
+                {
+                    b.HasOne("Core.Security.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.SiteUser", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
                 {
+                    b.Navigation("UserOperationClaims");
+                });
+
+            modelBuilder.Entity("Core.Security.Entities.User", b =>
+                {
+                    b.Navigation("EmailAuthenticators");
+
+                    b.Navigation("ForgottenPasswords");
+
+                    b.Navigation("OtpAuthenticators");
+
+                    b.Navigation("RefreshTokens");
+
+                    b.Navigation("UserLogins");
+
                     b.Navigation("UserOperationClaims");
                 });
 
@@ -1256,19 +1307,7 @@ namespace Persistance.Migrations
 
                     b.Navigation("Bookmarks");
 
-                    b.Navigation("EmailAuthenticators");
-
-                    b.Navigation("ForgottenPasswords");
-
-                    b.Navigation("OtpAuthenticators");
-
-                    b.Navigation("RefreshTokens");
-
                     b.Navigation("Reports");
-
-                    b.Navigation("UserLogins");
-
-                    b.Navigation("UserOperationClaims");
                 });
 #pragma warning restore 612, 618
         }

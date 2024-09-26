@@ -80,39 +80,8 @@ namespace Persistance.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Ignore the base User class to prevent table creation for it
-            modelBuilder.Ignore<User>();
 
-            // Configure the relationships
-            modelBuilder.Entity<SiteUser>()
-                .HasMany(u => u.UserOperationClaims)
-                .WithOne()
-                .HasForeignKey(uoc => uoc.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<SiteUser>()
-                .HasMany(su => su.Blogs)
-                .WithOne(b => b.Writer)
-                .HasForeignKey(b => b.WriterId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<SiteUser>()
-                .HasMany(su => su.Bookmarks)
-                .WithOne(bm => bm.SiteUser)
-                .HasForeignKey(bm => bm.SiteUserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<SiteUser>()
-                .HasMany(su => su.Bans)
-                .WithOne(b => b.User)
-                .HasForeignKey(b => b.UserID)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<SiteUser>()
-                .HasMany(su => su.Reports)
-                .WithOne(r => r.User)
-                .HasForeignKey(r => r.UserID)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<SiteUser>().ToTable("SiteUsers");
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }

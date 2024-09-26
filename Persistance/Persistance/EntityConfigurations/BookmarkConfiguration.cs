@@ -15,12 +15,12 @@ namespace Persistance.EntityConfigurations
             builder.HasOne(bc => bc.SiteUser)
                 .WithMany(b => b.Bookmarks)
                 .HasForeignKey(bc => bc.SiteUserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(bc => bc.Blog)
                 .WithMany(c => c.FavoritedUsers)
                 .HasForeignKey(bc => bc.BlogId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

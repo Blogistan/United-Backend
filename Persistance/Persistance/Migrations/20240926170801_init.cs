@@ -99,32 +99,228 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsVerified = table.Column<bool>(type: "bit", nullable: true),
-                    VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    AuthenticatorType = table.Column<int>(type: "int", nullable: false)
+                    AuthenticatorType = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmailAuthenticators",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ActivationKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailAuthenticators", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmailAuthenticators_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ForgottenPasswords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ActivationKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OldPasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    OldPasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    NewPasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    NewPasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForgottenPasswords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ForgottenPasswords_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OtpAuthenticators",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    SecretKey = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OtpAuthenticators", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OtpAuthenticators_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Revoked = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RevokedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReplacedByToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReasonRevoked = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SiteUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Biography = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: true),
+                    VerifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SiteUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SiteUsers_User_Id",
+                        column: x => x.Id,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLogins",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProviderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SiteUserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLogins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserLogins_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserOperationClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    OperationClaimId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserOperationClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserOperationClaims_OperationClaims_OperationClaimId",
+                        column: x => x.OperationClaimId,
+                        principalTable: "OperationClaims",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserOperationClaims_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,129 +364,11 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Blogs_Users_WriterId",
+                        name: "FK_Blogs_SiteUsers_WriterId",
                         column: x => x.WriterId,
-                        principalTable: "Users",
+                        principalTable: "SiteUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmailAuthenticators",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ActivationKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
-                    SiteUserId = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmailAuthenticators", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EmailAuthenticators_Users_SiteUserId",
-                        column: x => x.SiteUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ForgottenPasswords",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ActivationKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
-                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OldPasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    OldPasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    NewPasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    NewPasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    SiteUserId = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ForgottenPasswords", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ForgottenPasswords_Users_SiteUserId",
-                        column: x => x.SiteUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OtpAuthenticators",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    SecretKey = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
-                    SiteUserId = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OtpAuthenticators", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OtpAuthenticators_Users_SiteUserId",
-                        column: x => x.SiteUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RefreshTokens",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Revoked = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RevokedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReplacedByToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReasonRevoked = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SiteUserId = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RefreshTokens_Users_SiteUserId",
-                        column: x => x.SiteUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -318,71 +396,11 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reports_Users_UserID",
+                        name: "FK_Reports_SiteUsers_UserID",
                         column: x => x.UserID,
-                        principalTable: "Users",
+                        principalTable: "SiteUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserLogins",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProviderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SiteUserId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserLogins", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserLogins_Users_SiteUserId",
-                        column: x => x.SiteUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserOperationClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    OperationClaimId = table.Column<int>(type: "int", nullable: false),
-                    SiteUserId = table.Column<int>(type: "int", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreateUser = table.Column<int>(type: "int", nullable: false),
-                    DeleteUser = table.Column<int>(type: "int", nullable: false),
-                    UpdateUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserOperationClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserOperationClaims_OperationClaims_OperationClaimId",
-                        column: x => x.OperationClaimId,
-                        principalTable: "OperationClaims",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserOperationClaims_Users_SiteUserId",
-                        column: x => x.SiteUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -402,11 +420,11 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Bookmarks_Users_SiteUserId",
+                        name: "FK_Bookmarks_SiteUsers_SiteUserId",
                         column: x => x.SiteUserId,
-                        principalTable: "Users",
+                        principalTable: "SiteUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -442,6 +460,11 @@ namespace Persistance.Migrations
                         column: x => x.CommentId,
                         principalTable: "Comments",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Comments_SiteUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "SiteUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -450,7 +473,7 @@ namespace Persistance.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReportID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: true),
+                    SiteUserID = table.Column<int>(type: "int", nullable: true),
                     IsPerma = table.Column<bool>(type: "bit", nullable: false),
                     BanStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BanEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -472,11 +495,11 @@ namespace Persistance.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bans_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
+                        name: "FK_Bans_SiteUsers_SiteUserID",
+                        column: x => x.SiteUserID,
+                        principalTable: "SiteUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -530,17 +553,22 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "AuthenticatorType", "Biography", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "Email", "FirstName", "IsActive", "IsVerified", "LastName", "PasswordHash", "PasswordSalt", "ProfileImageUrl", "UpdateUser", "UpdatedDate", "VerifiedAt" },
-                values: new object[] { 1, 0, "", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "esquetta@gmail.com", "Admin", true, true, "Admin", new byte[] { 117, 66, 201, 254, 92, 255, 62, 82, 54, 4, 83, 255, 68, 155, 236, 78, 87, 172, 9, 144, 147, 120, 222, 95, 99, 81, 54, 100, 242, 210, 120, 2, 10, 77, 231, 118, 164, 161, 33, 123, 79, 56, 201, 229, 237, 211, 76, 159, 234, 251, 37, 143, 72, 32, 0, 16, 251, 178, 71, 16, 19, 128, 59, 175 }, new byte[] { 35, 186, 87, 214, 204, 144, 163, 191, 115, 97, 250, 3, 237, 191, 200, 56, 88, 86, 84, 125, 156, 176, 176, 201, 114, 217, 245, 39, 190, 151, 236, 47, 216, 135, 108, 178, 169, 106, 107, 3, 184, 112, 172, 96, 51, 127, 195, 33, 210, 193, 63, 100, 4, 76, 142, 125, 100, 54, 178, 58, 162, 16, 200, 52, 45, 40, 234, 14, 77, 51, 206, 46, 116, 182, 197, 47, 45, 59, 184, 116, 98, 135, 51, 139, 179, 56, 191, 136, 130, 251, 106, 92, 151, 244, 195, 18, 184, 202, 249, 53, 197, 168, 23, 115, 172, 211, 143, 101, 212, 165, 117, 45, 130, 221, 194, 71, 82, 242, 178, 22, 11, 239, 138, 91, 248, 193, 107, 141 }, "", 0, null, null });
+                table: "User",
+                columns: new[] { "Id", "AuthenticatorType", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "Email", "FirstName", "IsActive", "LastName", "PasswordHash", "PasswordSalt", "UpdateUser", "UpdatedDate" },
+                values: new object[] { 1, 0, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "esquetta@gmail.com", "Admin", true, "Admin", new byte[] { 26, 88, 192, 201, 109, 67, 123, 242, 144, 158, 226, 20, 99, 193, 86, 137, 6, 111, 160, 110, 84, 118, 241, 228, 154, 35, 38, 52, 134, 119, 42, 194, 123, 50, 23, 46, 49, 1, 23, 178, 33, 60, 155, 165, 62, 137, 96, 233, 4, 231, 47, 99, 157, 119, 13, 90, 170, 102, 89, 165, 206, 138, 41, 147 }, new byte[] { 219, 26, 142, 180, 205, 96, 246, 3, 186, 191, 1, 142, 113, 95, 130, 16, 55, 200, 84, 210, 55, 83, 1, 182, 175, 128, 121, 88, 118, 41, 52, 173, 120, 47, 42, 207, 243, 47, 202, 148, 247, 194, 169, 168, 246, 132, 73, 150, 122, 11, 38, 183, 39, 67, 252, 148, 161, 8, 230, 218, 99, 186, 252, 61, 76, 210, 125, 157, 1, 153, 87, 26, 79, 53, 19, 140, 86, 83, 232, 27, 59, 13, 37, 176, 211, 32, 27, 154, 226, 206, 120, 100, 100, 138, 108, 144, 68, 64, 11, 9, 89, 180, 229, 120, 71, 8, 246, 210, 90, 52, 34, 255, 156, 200, 224, 126, 174, 27, 107, 104, 122, 36, 137, 65, 47, 80, 230, 197 }, 0, null });
+
+            migrationBuilder.InsertData(
+                table: "SiteUsers",
+                columns: new[] { "Id", "Biography", "IsVerified", "ProfileImageUrl", "VerifiedAt" },
+                values: new object[] { 1, "", true, "", null });
 
             migrationBuilder.InsertData(
                 table: "UserOperationClaims",
-                columns: new[] { "Id", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "OperationClaimId", "SiteUserId", "UpdateUser", "UpdatedDate", "UserId" },
+                columns: new[] { "Id", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "OperationClaimId", "UpdateUser", "UpdatedDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 1, null, 0, null, 1 },
-                    { 2, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 2, null, 0, null, 1 }
+                    { 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 1, 0, null, 1 },
+                    { 2, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 2, 0, null, 1 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -549,9 +577,9 @@ namespace Persistance.Migrations
                 column: "ReportID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bans_UserID",
+                name: "IX_Bans_SiteUserID",
                 table: "Bans",
-                column: "UserID");
+                column: "SiteUserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Blogs_CategoryId",
@@ -589,24 +617,29 @@ namespace Persistance.Migrations
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmailAuthenticators_SiteUserId",
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailAuthenticators_UserId",
                 table: "EmailAuthenticators",
-                column: "SiteUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ForgottenPasswords_SiteUserId",
+                name: "IX_ForgottenPasswords_UserId",
                 table: "ForgottenPasswords",
-                column: "SiteUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OtpAuthenticators_SiteUserId",
+                name: "IX_OtpAuthenticators_UserId",
                 table: "OtpAuthenticators",
-                column: "SiteUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_SiteUserId",
+                name: "IX_RefreshTokens_UserId",
                 table: "RefreshTokens",
-                column: "SiteUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reports_ReportTypeID",
@@ -619,9 +652,9 @@ namespace Persistance.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLogins_SiteUserId",
+                name: "IX_UserLogins_UserId",
                 table: "UserLogins",
-                column: "SiteUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserOperationClaims_OperationClaimId",
@@ -629,9 +662,9 @@ namespace Persistance.Migrations
                 column: "OperationClaimId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserOperationClaims_SiteUserId",
+                name: "IX_UserOperationClaims_UserId",
                 table: "UserOperationClaims",
-                column: "SiteUserId");
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -683,7 +716,10 @@ namespace Persistance.Migrations
                 name: "Contents");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "SiteUsers");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }
