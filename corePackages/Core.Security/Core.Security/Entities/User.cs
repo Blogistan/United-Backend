@@ -43,7 +43,7 @@ public abstract class User : Entity<int>
         Email = email;
         PasswordSalt = passwordSalt;
         PasswordHash = passwordHash;
-        IsActive = IsActive;
+        IsActive = isActive;
         AuthenticatorType = authenticatorType;
     }
 
