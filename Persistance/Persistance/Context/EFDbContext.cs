@@ -80,7 +80,7 @@ namespace Persistance.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Ignore<User>();
             modelBuilder.Entity<SiteUser>().ToTable("SiteUsers");
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
