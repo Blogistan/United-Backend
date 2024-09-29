@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Core.Persistence.Repositories;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,10 +9,13 @@ namespace Persistance.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Ban> builder)
         {
-            builder
-                .HasOne(x => x.User)
-                .WithMany(x=>x.Bans)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(b => b.Report)
+                .WithMany(r => r.Bans)
+            .HasForeignKey(b => b.ReportID);
+
+            builder.HasOne(b => b.User)
+                .WithMany(u => u.Bans)
+                .HasForeignKey(b => b.UserID);
         }
     }
 }

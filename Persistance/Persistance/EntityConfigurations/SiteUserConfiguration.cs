@@ -1,8 +1,6 @@
-﻿using Core.Security.Hashing;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 
 namespace Persistance.EntityConfigurations
 {
@@ -10,23 +8,13 @@ namespace Persistance.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<SiteUser> builder)
         {
-            byte[] hash, salt;
-            HashingHelper.CreatePasswordHash("Admin123", out hash, out salt);
+
             SiteUser[] siteUsers =
             {
-                new(1, "Admin", "Admin", "esquetta@gmail.com", "", "",
-                salt, hash, true, true, Core.Security.Enums.AuthenticatorType.None,
-                 new List<Blog>(), new List<Bookmark>())
+                new(1,1,"https://res.cloudinary.com/db4z2k45t/image/upload/v1723911498/file_cq8ff5.png","Test Bio",true,new List<Blog>(),new List<Bookmark>())
             };
 
-
-            // Configure the relationships
-            builder
-                .HasMany(u => u.UserOperationClaims)
-                .WithOne()
-                .HasForeignKey(uoc => uoc.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+           
             builder
                 .HasMany(su => su.Blogs)
                 .WithOne(b => b.Writer)
@@ -41,17 +29,17 @@ namespace Persistance.EntityConfigurations
 
             builder
                 .HasMany(su => su.Bans)
-                .WithOne(b => b.User)
-                .HasForeignKey(b => b.UserID)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(b => b.SiteUser)
+                .HasForeignKey(b => b.SiteUserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasMany(su => su.Reports)
-                .WithOne(r => r.User)
-                .HasForeignKey(r => r.UserID)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(r => r.SiteUser)
+                .HasForeignKey(r => r.SiteUserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Ensure it's mapped to the same table as User
+           
             
 
             // Seed data for SiteUser
