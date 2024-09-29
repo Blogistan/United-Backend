@@ -38,16 +38,16 @@ namespace Application.Features.Comments.Commands.UpdateComment
 
                 Comment updatedComment = await commentRepository.UpdateAsync(comment);
 
-                Comment commentWithUser = await commentRepository.GetAsync(x => x.UserId == request.UserId, x => x.Include(x => x.User));
+                Comment commentWithUser = await commentRepository.GetAsync(x => x.SiteUserId == request.UserId, x => x.Include(x => x.SiteUser).ThenInclude(x=>x.User));
 
                 return new UpdateCommentResponse
                 {
                     Id = commentWithUser.Id,
                     BlogId = commentWithUser.BlogId,
                     CommentContent = commentWithUser.CommentContent,
-                    UserProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : "",
+                    UserProfileImageUrl = commentWithUser.SiteUserId != null ? commentWithUser.SiteUser.ProfileImageUrl : "",
                     GuestName = commentWithUser.GuestName,
-                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : "",
+                    UserName = commentWithUser.SiteUser.User != null ? $"{commentWithUser.SiteUser.User!.FirstName} {commentWithUser.SiteUser.User!.LastName}" : "",
                     Likes = commentWithUser.Likes,
                     Dislikes = commentWithUser.Dislikes,
                     ParentCommentId = commentWithUser.CommentId

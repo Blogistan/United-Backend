@@ -28,19 +28,19 @@ namespace Application.Features.Comments.Queries.DecreaseDislikeOfCommentQuery
                 comment.Dislikes = comment.Dislikes == 0 ? 0 : comment.Dislikes - 1;
 
                 var updatedComment = await commentRepository.UpdateAsync(comment);
-                var commentWithUser = await commentRepository.GetAsync(x => x.Id == updatedComment.Id, x => x.Include(x => x.User));
+                var commentWithUser = await commentRepository.GetAsync(x => x.Id == updatedComment.Id, x => x.Include(x => x.SiteUser).ThenInclude(x=>x.User));
 
                 return new DecreaseDislikeOfCommentCommentQueryResponse
                 {
                     Id = commentWithUser.Id,
                     BlogId = commentWithUser.BlogId,
                     CommentContent = commentWithUser.CommentContent,
-                    ProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : null,
+                    ProfileImageUrl = commentWithUser.SiteUser != null ? commentWithUser.SiteUser.ProfileImageUrl : null,
                     Dislikes = commentWithUser.Dislikes,
                     GuestName = commentWithUser.GuestName!,
                     Likes = commentWithUser.Likes,
                     CommentId = commentWithUser.CommentId,
-                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : null,
+                    UserName = commentWithUser.SiteUser.User != null ? $"{commentWithUser.SiteUser.User!.FirstName} {commentWithUser.SiteUser.User!.LastName}" : null,
                     CreateDate = commentWithUser.CreatedDate,
                     CommentResponses = new List<Dtos.CommentViewDto>()
                 };

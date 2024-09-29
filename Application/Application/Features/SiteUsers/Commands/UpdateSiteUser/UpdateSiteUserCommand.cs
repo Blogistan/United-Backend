@@ -5,6 +5,7 @@ using Core.Application.Pipelines.Authorization;
 using Core.Security.Hashing;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
 {
@@ -52,28 +53,28 @@ namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
 
             public async Task<UpdateSiteUserCommandResponse> Handle(UpdateSiteUserCommand request, CancellationToken cancellationToken)
             {
-                SiteUser? siteUser = await siteUserRepository.GetAsync(x => x.Id.Equals(request.Id), cancellationToken: cancellationToken, enableTracking: false);
+                SiteUser? siteUser = await siteUserRepository.GetAsync(x => x.Id.Equals(request.Id), cancellationToken: cancellationToken, enableTracking: false,include:x=>x.Include(x=>x.User));
 
-                await userBusinessRules.UserShouldBeExistsWhenSelected(siteUser);
+                await userBusinessRules.UserShouldBeExistsWhenSelected(siteUser.User);
                 await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(request.Id, request.Email);
 
                 if (string.IsNullOrEmpty(request.OldPassword) && string.IsNullOrEmpty(request.NewPassword))
                 {
-                    siteUser!.FirstName = request.FirstName;
-                    siteUser!.LastName = request.LastName;
-                    siteUser!.Email = request.Email;
+                    siteUser!.User.FirstName = request.FirstName;
+                    siteUser!.User.LastName = request.LastName;
+                    siteUser!.User.Email = request.Email;
                     siteUser!.ProfileImageUrl = request.ProfileImageUrl;
                     siteUser!.Biography = request.Biography;
                 }
                 else
                 {
-                    await userBusinessRules.UserPasswordShouldBeMatchBeforeUpdate(siteUser, request.OldPassword);
+                    await userBusinessRules.UserPasswordShouldBeMatchBeforeUpdate(siteUser.User, request.OldPassword);
                     siteUser = mapper.Map<SiteUser>(request);
 
                     HashingHelper.CreatePasswordHash(request.NewPassword, passwordHash: out byte[] passwordHash, passwordSalt: out byte[] passwordSalt);
 
-                    siteUser!.PasswordHash = passwordHash;
-                    siteUser!.PasswordSalt = passwordSalt;
+                    siteUser!.User.PasswordHash = passwordHash;
+                    siteUser!.User.PasswordSalt = passwordSalt;
                 }
 
                 await siteUserRepository.UpdateAsync(siteUser);

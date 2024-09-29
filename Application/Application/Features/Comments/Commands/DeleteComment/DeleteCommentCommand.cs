@@ -30,16 +30,16 @@ namespace Application.Features.Comments.Commands.DeleteComment
 
                 Comment  deletedComments = await commentRepository.DeleteAsync(comment, request.Permanent);
 
-                Comment commentWithUser = await commentRepository.GetAsync(x => x.Id==request.Id,x=>x.Include(x=>x.User));
+                Comment commentWithUser = await commentRepository.GetAsync(x => x.Id==request.Id,x=>x.Include(x=>x.SiteUser).ThenInclude(x=>x.User));
 
                 return new DeleteCommentCommandResponse
                 {
                     Id = commentWithUser.Id,
                     BlogId = commentWithUser.BlogId,
                     CommentContent = commentWithUser.CommentContent,
-                    UserProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : "",
+                    UserProfileImageUrl = commentWithUser.SiteUser != null ? commentWithUser.SiteUser.ProfileImageUrl : "",
                     GuestName = commentWithUser.GuestName,
-                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : "",
+                    UserName = commentWithUser.SiteUser.User != null ? $"{commentWithUser.SiteUser.User!.FirstName} {commentWithUser.SiteUser.User!.LastName}" : "",
                     Likes = commentWithUser.Likes,
                     Dislikes = commentWithUser.Dislikes,
                     ParentCommentId = commentWithUser.CommentId

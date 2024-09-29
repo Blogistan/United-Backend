@@ -10,9 +10,11 @@ namespace Application.Features.SiteUsers.Rules
     public class UserBusinessRules : BaseBusinessRules
     {
         private readonly ISiteUserRepository siteUserRepository;
-        public UserBusinessRules(ISiteUserRepository siteUserRepository)
+        private readonly IUserRepository userRepository;
+        public UserBusinessRules(ISiteUserRepository siteUserRepository, IUserRepository userRepository)
         {
             this.siteUserRepository = siteUserRepository;
+            this.userRepository = userRepository;
         }
         public async Task UserShouldBeExistsWhenSelected(User? user)
         {
@@ -45,7 +47,7 @@ namespace Application.Features.SiteUsers.Rules
 
         public async Task UserEmailShouldNotExistsWhenInsert(string email)
         {
-            bool doesExists = await siteUserRepository.AnyAsync(predicate: u => u.Email == email);
+            bool doesExists = await userRepository.AnyAsync(predicate: u => u.Email == email);
 
             if (doesExists)
             {
@@ -56,7 +58,7 @@ namespace Application.Features.SiteUsers.Rules
 
         public async Task UserEmailShouldNotExistsWhenUpdate(int id, string email)
         {
-            bool doesExists = await siteUserRepository.AnyAsync(predicate: u => u.Id != id && u.Email == email);
+            bool doesExists = await userRepository.AnyAsync(predicate: u => u.Id != id && u.Email == email);
             if (doesExists)
                 throw new NotFoundException(AuthBusinessMessage.UserNotFound);
         }

@@ -29,7 +29,7 @@ namespace Application.Features.Comments.Queries.GetCommentResponsesQuery
             {
                 await CommentBusinessRules.CommentCheckById(request.CommentId);
 
-                Comment comment = await commentRepository.GetAsync(x=>x.Id==request.CommentId,x=>x.Include(x=>x.CommentResponses).Include(x=>x.User));
+                Comment comment = await commentRepository.GetAsync(x=>x.Id==request.CommentId,x=>x.Include(x=>x.CommentResponses).Include(x=>x.SiteUser).ThenInclude(x=>x.User));
 
                 GetBlogCommentsQueryResponse response = mapper.Map<GetBlogCommentsQueryResponse>(comment);
 

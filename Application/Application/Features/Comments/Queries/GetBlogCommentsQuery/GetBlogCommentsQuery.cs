@@ -30,7 +30,7 @@ namespace Application.Features.Comments.Queries.GetBlogCommentsQuery
             {
                 //await commentBusinessRules.CommentCheckById(request.CommentId);
 
-                IPaginate<Comment> comment = await commentRepository.GetListAsync(x => x.BlogId == request.BlogId, include: x => x.Include(x => x.User).Include(x => x.CommentResponses).ThenInclude(x=>x.CommentResponses));
+                IPaginate<Comment> comment = await commentRepository.GetListAsync(x => x.BlogId == request.BlogId, include: x => x.Include(x => x.SiteUser).ThenInclude(x=>x.User).Include(x => x.CommentResponses).ThenInclude(x=>x.CommentResponses));
 
                 GetBlogCommentsQueryResponse response = mapper.Map<GetBlogCommentsQueryResponse>(comment);
 

@@ -35,13 +35,13 @@ namespace Application.Features.Comments.Commands.CreateComment
                     GuestName = request!.GuestName,
                     Likes = 0,
                     Dislikes = 0,
-                    UserId = request!.UserId,
+                    SiteUserId = request!.UserId,
                     CommentId = request.CommentId
                 };
 
                 var createdComment = await commentRepository.AddAsync(comment);
 
-                Comment commentWithUser = await commentRepository.GetAsync(x => x.Id == createdComment.Id, x => x.Include(x => x.User));
+                Comment commentWithUser = await commentRepository.GetAsync(x => x.Id == createdComment.Id, x => x.Include(x => x.SiteUser).ThenInclude(x=>x.User));
 
 
                 return new CreateCommentCommandResponse
@@ -49,12 +49,12 @@ namespace Application.Features.Comments.Commands.CreateComment
                     Id = commentWithUser.Id,
                     BlogId = commentWithUser.BlogId,
                     CommentContent = commentWithUser.CommentContent,
-                    ProfileImageUrl = commentWithUser.User != null ? commentWithUser.User.ProfileImageUrl : null,
+                    ProfileImageUrl = commentWithUser.SiteUser != null ? commentWithUser.SiteUser.ProfileImageUrl : null,
                     Dislikes = commentWithUser.Dislikes,
                     GuestName = commentWithUser.GuestName!,
                     Likes = commentWithUser.Likes,
                     CommentId = commentWithUser.CommentId,
-                    UserName = commentWithUser.User != null ? $"{commentWithUser.User!.FirstName} {commentWithUser.User!.LastName}" : null,
+                    UserName = commentWithUser.SiteUser.User != null ? $"{commentWithUser.SiteUser.User!.FirstName} {commentWithUser.SiteUser.User!.LastName}" : null,
                     CreateDate = commentWithUser.CreatedDate,
                     CommentResponses = new List<Dtos.CommentViewDto>()
                 };
