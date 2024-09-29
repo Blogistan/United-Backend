@@ -4,7 +4,7 @@ namespace Domain.Entities
 {
     public class Comment : Entity<int>
     {
-        public int? UserId { get; set; }
+        public int? SiteUserId { get; set; }
 
         public string? GuestName { get; set; } = String.Empty;
 
@@ -18,7 +18,7 @@ namespace Domain.Entities
 
         public virtual ICollection<Comment>? CommentResponses { get; set; }
 
-        public virtual SiteUser User { get; set; }
+        public virtual SiteUser SiteUser { get; set; }
 
 
 
@@ -35,7 +35,7 @@ namespace Domain.Entities
             this.GuestName = guestName;
             this.CommentContent = commentContent;
             this.CommentResponses = commentsResponsers;
-            this.UserId = userId;
+            this.SiteUserId = userId;
         }
     }
 }
