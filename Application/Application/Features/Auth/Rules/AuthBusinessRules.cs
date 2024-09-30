@@ -11,14 +11,15 @@ namespace Application.Features.Auth.Rules
 {
     public class AuthBussinessRules : BaseBusinessRules
     {
+        private readonly IUserRepository userRepository;
         private readonly ISiteUserRepository siteUserRepository;
-        public AuthBussinessRules(ISiteUserRepository siteUserRepository)
+        public AuthBussinessRules(IUserRepository userRepository)
         {
-            this.siteUserRepository = siteUserRepository;
+            this.userRepository = userRepository;
         }
         public async Task UserEmailCannotBeDuplicatedWhenInserted(string email)
         {
-            User? user = await siteUserRepository.GetAsync(x => x.Email == email);
+            User? user = await userRepository.GetAsync(x => x.Email == email);
             if (user != null)
             {
                 throw new ValidationException(new List<ValidationExceptionModel> { new ValidationExceptionModel { Property = "Email", Errors = new List<string> { AuthBusinessMessage.UserEmailAlreadyExists } } });
@@ -89,7 +90,7 @@ namespace Application.Features.Auth.Rules
         }
         public async Task IsUserActive(int id)
         {
-            var user = await siteUserRepository.GetAsync(x => x.Id == id && x.IsActive == false, include: x => x.Include(x => x.Bans));
+            var user = await siteUserRepository.GetAsync(x => x.Id == id && x.User.IsActive == false, include: x => x.Include(x => x.Bans).Include(x=>x.User));
 
             var result = user?.Bans?.Any(x => x.IsPerma == true) ?? false;
             if (result)

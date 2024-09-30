@@ -40,7 +40,7 @@ namespace AuthTest.Mocks.Repositories
                     {
                         foreach (var item in commentFakeData.Data)
                         {
-                            item.User = siteUserFakeData.Data.FirstOrDefault(s => s.Id == item.UserId);
+                            item.SiteUser = siteUserFakeData.Data.FirstOrDefault(s => s.Id == item.SiteUserId);
                         }
 
 
@@ -91,7 +91,7 @@ namespace AuthTest.Mocks.Repositories
 
                     if (result != null)
                     {
-                        result.User = siteUserFakeData.Data.FirstOrDefault(x => x.Id == result.UserId);
+                        result.SiteUser = siteUserFakeData.Data.FirstOrDefault(x => x.Id == result.SiteUserId);
                         result.CommentResponses = commentFakeData.Data.Where(x => x.CommentId == result.Id).ToList();
                     }
 

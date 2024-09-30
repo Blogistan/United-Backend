@@ -55,12 +55,12 @@ namespace AuthTest.Features.Auth.Commands.Login
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration,userLoginRepository);
-            AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
+            //AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
 
             this.loginCommand = new LoginCommand();
             this.validationRules = new LoginCommandValidator();
-            this.loginCommandHandler = new LoginCommandHandler(authService, authBussinessRules, siteUserRepository);
+            //this.loginCommandHandler = new LoginCommandHandler(authService, authBussinessRules, siteUserRepository);
 
 
         }

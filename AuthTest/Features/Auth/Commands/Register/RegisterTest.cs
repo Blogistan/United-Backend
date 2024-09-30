@@ -58,12 +58,12 @@ namespace AuthTest.Features.Auth.Commands.Register
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration,userLoginRepository);
-            AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
+            //AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
             this.mediator = mediator;
             this.registerCommand = new RegisterCommand();
             this.validationRules = new RegisterCommandValidator();
-            this.registerCommandHandler = new RegisterCommandHandler(siteUserRepository, authBussinessRules, authService, mapper, mediator,userOperationClaimRepository);
+            //this.registerCommandHandler = new RegisterCommandHandler(siteUserRepository, authBussinessRules, authService, mapper, mediator,userOperationClaimRepository);
 
         }
         [Fact]

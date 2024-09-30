@@ -4,7 +4,6 @@ using AutoMapper;
 using Core.Application.Dtos;
 using Core.Security.Entities;
 using Core.Security.JWT;
-using Domain.Entities;
 
 namespace Application.Features.Auth.Profiles
 {
@@ -12,7 +11,7 @@ namespace Application.Features.Auth.Profiles
     {
         public MappingProfiles()
         {
-            CreateMap<SiteUser, UserForRegisterDto>().ReverseMap();
+            CreateMap<User, UserForRegisterDto>().ReverseMap();
 
             CreateMap<AccessToken, AccessTokenDto>().ReverseMap();
             CreateMap<RefreshToken, RefreshTokenDto>().ReverseMap();

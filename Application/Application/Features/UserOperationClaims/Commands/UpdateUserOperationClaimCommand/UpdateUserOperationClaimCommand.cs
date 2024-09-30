@@ -21,13 +21,13 @@ namespace Application.Features.UserOperationClaims.Commands.UpdateUserOperationC
             private readonly IUserOperationClaimRepository userOperationClaimRepository;
             private readonly IMapper mapper;
             private readonly UserOperationClaimBusinessRules userOperationClaimBusinessRules;
-            private readonly ISiteUserRepository siteUserRepository;
-            public UpdateUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, UserOperationClaimBusinessRules userOperationClaimBusinessRules, IMapper mapper, ISiteUserRepository siteUserRepository)
+            private readonly IUserRepository userRepository;
+            public UpdateUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, UserOperationClaimBusinessRules userOperationClaimBusinessRules, IMapper mapper, IUserRepository userRepository)
             {
                 this.userOperationClaimRepository = userOperationClaimRepository;
                 this.userOperationClaimBusinessRules = userOperationClaimBusinessRules;
                 this.mapper = mapper;
-                this.siteUserRepository = siteUserRepository;
+                this.userRepository = userRepository;
             }
 
             public async Task<UpdateUserOperationClaimCommandResponse> Handle(UpdateUserOperationClaimCommand request, CancellationToken cancellationToken)
@@ -37,7 +37,7 @@ namespace Application.Features.UserOperationClaims.Commands.UpdateUserOperationC
 
                 var createdUserClaim = await userOperationClaimRepository.UpdateAsync(userClaim);
 
-                IPaginate<SiteUser> paginate = await siteUserRepository.GetListAsync(predicate: x => x.Id == request.UserId, include: include =>
+                IPaginate<User> paginate = await userRepository.GetListAsync(predicate: x => x.Id == request.UserId, include: include =>
                 include.Include(x => x.UserOperationClaims).ThenInclude(x => x.OperationClaim));
 
                 var response = mapper.Map<UpdateUserOperationClaimCommandResponse>(paginate);

@@ -11,11 +11,11 @@ namespace Persistance.EntityConfigurations
         {
             builder.HasOne(b => b.Report)
                 .WithMany(r => r.Bans)
-            .HasForeignKey(b => b.ReportID);
+            .HasForeignKey(b => b.ReportId);
 
-            builder.HasOne(b => b.User)
+            builder.HasOne(b => b.SiteUser)
                 .WithMany(u => u.Bans)
-                .HasForeignKey(b => b.UserID);
+                .HasForeignKey(b => b.SiteUserId);
         }
     }
 }

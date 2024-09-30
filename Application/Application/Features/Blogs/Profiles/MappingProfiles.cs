@@ -20,26 +20,26 @@ namespace Application.Features.Blogs.Profiles
             CreateMap<UpdateBlogCommand, Blog>().ReverseMap();
 
             CreateMap<Blog, CreateBlogCommandResponse>().ForMember(opt => opt.CategoryName, src => src.MapFrom(x => x.Category.CategoryName))
-                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.FirstName + ' ' + x.Writer.LastName))
+                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.User.FirstName + ' ' + x.Writer.User.LastName))
                 .ReverseMap();
 
             CreateMap<Blog, DeleteBlogCommandResponse>().ForMember(opt => opt.CategoryName, src => src.MapFrom(x => x.Category.CategoryName))
-                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.FirstName + ' ' + x.Writer.LastName))
+                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.User.FirstName + ' ' + x.Writer.User.LastName))
                 .ReverseMap();
 
             CreateMap<Blog, UpdateBlogCommand>().ReverseMap();
             CreateMap<Blog, UpdateBlogCommandResponse>().ReverseMap();
 
             CreateMap<Blog, BlogListViewDto>().ForMember(opt => opt.CategoryName, src => src.MapFrom(x => x.Category.CategoryName))
-                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.FirstName + ' ' + x.Writer.LastName))
+                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.User.FirstName + ' ' + x.Writer.User.LastName))
                 .ReverseMap();
 
             CreateMap<Blog, MostReadedBlogDto>().ForMember(opt => opt.CategoryName, src => src.MapFrom(x => x.Category.CategoryName))
-                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.FirstName + ' ' + x.Writer.LastName))
+                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.User.FirstName + ' ' + x.Writer.User.LastName))
                 .ReverseMap();
 
             CreateMap<Blog, MostSharedBlogDto>().ForMember(opt => opt.CategoryName, src => src.MapFrom(x => x.Category.CategoryName))
-                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.FirstName + ' ' + x.Writer.LastName))
+                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.User.FirstName + ' ' + x.Writer.User.LastName))
                 .ReverseMap();
 
             CreateMap<IPaginate<Blog>, GetListBlogQueryResponse>().ReverseMap();

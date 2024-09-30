@@ -7,6 +7,7 @@ using Core.Security.Entities;
 using Core.Security.Hashing;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Commands.PasswordReset
 {
@@ -38,7 +39,7 @@ namespace Application.Features.Auth.Commands.PasswordReset
             public async Task<Unit> Handle(PasswordResetCommand request, CancellationToken cancellationToken)
             {
                 ForgotPassword forgotPassword = await forgotPasswordRepository.GetAsync(x => x.ActivationKey == request.ResetKey);
-                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Id == forgotPassword.UserId);
+                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Id == forgotPassword.UserId,include: x=>x.Include(u=>u.User));
                 await authBussinessRules.PasswordResetKeyShouldBeExists(forgotPassword);
 
                 await authBussinessRules.PasswordResetTokenShouldBeActive(forgotPassword);
@@ -49,17 +50,17 @@ namespace Application.Features.Auth.Commands.PasswordReset
 
                 forgotPassword.NewPasswordSalt = salt;
                 forgotPassword.NewPasswordHash = hash;
-                forgotPassword.OldPasswordSalt = siteUser.PasswordSalt;
-                forgotPassword.OldPasswordHash = siteUser.PasswordHash;
+                forgotPassword.OldPasswordSalt = siteUser.User.PasswordSalt;
+                forgotPassword.OldPasswordHash = siteUser.User.PasswordHash;
                 forgotPassword.IsVerified = true;
 
-                siteUser.PasswordSalt = salt;
-                siteUser.PasswordHash = hash;
+                siteUser.User.PasswordSalt = salt;
+                siteUser.User.PasswordHash = hash;
 
                 await forgotPasswordRepository.UpdateAsync(forgotPassword);
                 await siteUserRepository.UpdateAsync(siteUser);
 
-                await mediator.Publish(new PasswordChangedNotification() { User = siteUser });
+                await mediator.Publish(new PasswordChangedNotification() { User = siteUser.User });
 
                 return Unit.Value;
 

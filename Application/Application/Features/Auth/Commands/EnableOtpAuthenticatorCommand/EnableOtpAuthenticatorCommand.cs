@@ -18,28 +18,28 @@ namespace Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand
         {
             private AuthBussinessRules AuthBussinessRules;
             private IOtpAuthenticatorRepository otpAuthenticatorRepository;
-            private ISiteUserRepository siteUserRepository;
+            private IUserRepository userRepository;
             private IAuthService authService;
-            public EnableOtpAuthenticatorCommandHandler(AuthBussinessRules authBussinessRules, IOtpAuthenticatorRepository otpAuthenticatorRepository, ISiteUserRepository siteUserRepository, IAuthService authService)
+            public EnableOtpAuthenticatorCommandHandler(AuthBussinessRules authBussinessRules, IOtpAuthenticatorRepository otpAuthenticatorRepository, IUserRepository userRepository, IAuthService authService)
             {
                 this.authService = authService;
                 this.AuthBussinessRules = authBussinessRules;
                 this.otpAuthenticatorRepository = otpAuthenticatorRepository;
-                this.siteUserRepository = siteUserRepository;
+                this.userRepository = userRepository;
             }
 
 
             public async Task<EnabledOtpAuthenticatorResponse> Handle(EnableOtpAuthenticatorCommand request, CancellationToken cancellationToken)
             {
-                User? siteUser = await siteUserRepository.GetAsync(x => x.Id == request.UserID && x.IsActive==true);
+                User? user = await userRepository.GetAsync(x => x.Id == request.UserID && x.IsActive==true);
 
-                await AuthBussinessRules.UserShouldBeExist(siteUser);
-                await AuthBussinessRules.UserShouldNotBeHasAuthenticator(siteUser);
+                await AuthBussinessRules.UserShouldBeExist(user);
+                await AuthBussinessRules.UserShouldNotBeHasAuthenticator(user);
 
-                await otpAuthenticatorRepository.DeleteAllNonVerifiedAsync(siteUser);
+                await otpAuthenticatorRepository.DeleteAllNonVerifiedAsync(user);
 
 
-                OtpAuthenticator token = await authService.CreateOtpAuthenticator(siteUser);
+                OtpAuthenticator token = await authService.CreateOtpAuthenticator(user);
 
                 await otpAuthenticatorRepository.AddAsync(token);
 

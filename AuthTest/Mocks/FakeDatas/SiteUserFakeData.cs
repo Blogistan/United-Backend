@@ -15,36 +15,21 @@ namespace AuthTest.Mocks.FakeDatas
                 new SiteUser
             {
                 Id = Ids[0],
-                Email = "example@united.io",
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
-                DeletedDate=null,
-                AuthenticatorType=Core.Security.Enums.AuthenticatorType.None,
-                IsActive=true
+                DeletedDate=null
             },
             new SiteUser
             {
                 Id = Ids[1],
-                Email = "example2@united.io",
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
                 DeletedDate=null,
-                AuthenticatorType=Core.Security.Enums.AuthenticatorType.Email,
-                IsActive=true
 
             },
             new SiteUser
             {
                 Id = Ids[2],
-                Email = "example3@united.io",
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
                 CreatedDate = DateTime.Now,
                 DeletedDate=null,
-                AuthenticatorType=Core.Security.Enums.AuthenticatorType.Otp,
-                IsActive=true
             }
             };
             return data;

@@ -25,7 +25,7 @@ namespace Application.Features.Bans.Queries.GetListBans
             public async Task<GetListBansQueryResponse> Handle(GetListBansQuery request, CancellationToken cancellationToken)
             {
                 IPaginate<Ban> paginate = await banRepository.GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize
-                    , include: x => x.Include(x => x.User).Include(x => x.Report));
+                    , include: x => x.Include(x => x.SiteUser).ThenInclude(x=>x.User).Include(x => x.Report));
 
                 var result = mapper.Map<GetListBansQueryResponse>(paginate);
 

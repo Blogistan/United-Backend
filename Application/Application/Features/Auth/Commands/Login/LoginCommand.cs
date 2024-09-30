@@ -17,20 +17,20 @@ namespace Application.Features.Auth.Commands.Login
 
         public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
         {
-            private readonly ISiteUserRepository siteUserRepository;
+            private readonly IUserRepository userRepository;
             private readonly AuthBussinessRules authBussinessRules;
             private readonly IAuthService authService;
 
-            public LoginCommandHandler(IAuthService authService, AuthBussinessRules authBussinessRules, ISiteUserRepository siteUserRepository)
+            public LoginCommandHandler(IAuthService authService, AuthBussinessRules authBussinessRules, IUserRepository userRepository)
             {
                 this.authService = authService;
                 this.authBussinessRules = authBussinessRules;
-                this.siteUserRepository = siteUserRepository;
+                this.userRepository = userRepository;
             }
 
             public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
-                User siteUser = await siteUserRepository.GetAsync(x => x.Email == request.UserForLoginDto.Email);
+                User siteUser = await userRepository.GetAsync(x => x.Email == request.UserForLoginDto.Email);
 
 
                 await authBussinessRules.UserShouldBeExist(siteUser);

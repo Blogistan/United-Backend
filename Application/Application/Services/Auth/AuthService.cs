@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using OAuth;
+using Serilog.Sinks.Graylog.Core.Extensions;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
@@ -226,19 +227,17 @@ namespace Application.Services.Auth
             if (user == null)
             {
                 SiteUser siteUser = new()
-                {
-                    FirstName = name,
-                    LastName = surname,
-                    Email = email,
+                {                   
                     IsVerified = false,
                     ProfileImageUrl = picture,
-                    IsActive = true,                  
+                    User=new User(name,surname,email,null,null,true,AuthenticatorType.None)
                 };
 
-                var createdUser = await siteUserRepository.AddAsync(siteUser);
-                await userOperationClaimRepository.AddAsync(new UserOperationClaim { UserId = createdUser.Id, OperationClaimId = 3 });
-                accessToken = await CreateAccessToken(siteUser);
-                refreshToken = CreateRefreshToken(siteUser, ipAdress);
+                var createdSiteUser = await siteUserRepository.AddAsync(siteUser);
+                var createdUser=await siteUserRepository.GetAsync(x=>x.Id==createdSiteUser.Id,include:x=>x.Include(x=>x.User));
+                await userOperationClaimRepository.AddAsync(new UserOperationClaim { UserId = createdUser.User.Id, OperationClaimId = 3 });
+                accessToken = await CreateAccessToken(createdUser.User);
+                refreshToken = CreateRefreshToken(createdUser.User, ipAdress);
 
                 await AddRefreshToken(refreshToken);
 

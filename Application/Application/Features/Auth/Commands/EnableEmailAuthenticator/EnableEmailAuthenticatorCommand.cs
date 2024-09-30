@@ -23,24 +23,24 @@ namespace Application.Features.Auth.Commands.EnableEmailAuthenticator
         {
             private readonly IAuthService authService;
             private readonly IEmailAuthenticatorRepository emailAuthenticatorRepository;
-            private readonly ISiteUserRepository siteUserRepository;
+            private readonly IUserRepository userRepository;
             private readonly AuthBussinessRules authBussinessRules;
             private readonly IMailService mailService;
 
 
             public EnableEmailAuthenticatorCommandHandler(IAuthService authService, IMailService mailService
-                , IEmailAuthenticatorRepository emailAuthenticatorRepository, ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules)
+                , IEmailAuthenticatorRepository emailAuthenticatorRepository, IUserRepository userRepository, AuthBussinessRules authBussinessRules)
             {
                 this.authBussinessRules = authBussinessRules;
                 this.emailAuthenticatorRepository = emailAuthenticatorRepository;
                 this.authService = authService;
-                this.siteUserRepository = siteUserRepository;
+                this.userRepository = userRepository;
                 this.mailService = mailService;
             }
 
             public async Task Handle(EnableEmailAuthenticatorCommand request, CancellationToken cancellationToken)
             {
-                User? siteUser = await siteUserRepository.GetAsync(x => x.Id == request.UserID && x.IsActive == true);
+                User? siteUser = await userRepository.GetAsync(x => x.Id == request.UserID && x.IsActive == true);
 
                 await authBussinessRules.UserShouldBeExist(siteUser);
 

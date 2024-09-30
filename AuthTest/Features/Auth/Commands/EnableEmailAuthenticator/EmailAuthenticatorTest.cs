@@ -55,12 +55,12 @@ namespace AuthTest.Features.Auth.Commands.EnableEmailAuthenticator
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration, userLoginRepository);
-            AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
+            //AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
 
             this.enableEmailAuthenticatorCommand = new EnableEmailAuthenticatorCommand();
             this.validationRules = new EnableEmailAuthenticatorCommandValidator();
-            this.enableEmailAuthenticatorCommandHandler = new EnableEmailAuthenticatorCommandHandler(authService, mailService, userEmailAuthenticatorRepository, siteUserRepository, authBussinessRules);
+            //this.enableEmailAuthenticatorCommandHandler = new EnableEmailAuthenticatorCommandHandler(authService, mailService, userEmailAuthenticatorRepository, siteUserRepository, authBussinessRules);
         }
         [Fact]
         public async Task UserShouldBeExitst()

@@ -34,7 +34,7 @@ namespace Application.Features.Reports.Commands.DeleteReport
                 {
                     Id = deletedReport.Id,
                     ReportDescription = deletedReport.ReportDescription,
-                    ReportType = deletedReport.ReportTypeID
+                    ReportType = deletedReport.ReportTypeId
                 };
             }
         }

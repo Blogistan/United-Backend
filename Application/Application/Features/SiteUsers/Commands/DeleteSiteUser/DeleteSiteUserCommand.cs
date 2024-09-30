@@ -29,7 +29,7 @@ namespace Application.Features.SiteUsers.Commands.DeleteSiteUser
             {
                 SiteUser? siteUser = await siteUserRepository.GetAsync(x => x.Id.Equals(request.Id));
 
-                await userBusinessRules.UserShouldBeExistsWhenSelected(siteUser);
+                await userBusinessRules.UserShouldBeExistsWhenSelected(siteUser.User);
 
                 await siteUserRepository.DeleteAsync(siteUser);
 

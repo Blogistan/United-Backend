@@ -3,6 +3,7 @@ using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Persistence.Paging;
+using Core.Security.Entities;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,13 +21,13 @@ namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationC
             private readonly IUserOperationClaimRepository userOperationClaimRepository;
             private readonly IMapper mapper;
             private readonly UserOperationClaimBusinessRules businessRules;
-            private readonly ISiteUserRepository siteUserRepository;
-            public DeleteUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper, UserOperationClaimBusinessRules businessRules, ISiteUserRepository siteUserRepository)
+            private readonly IUserRepository userRepository;
+            public DeleteUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper, UserOperationClaimBusinessRules businessRules, IUserRepository userRepository)
             {
                 this.userOperationClaimRepository = userOperationClaimRepository;
                 this.mapper = mapper;
                 this.businessRules = businessRules;
-                this.siteUserRepository = siteUserRepository;
+                this.userRepository = userRepository;
             }
 
             public async Task<DeleteUserOperationClaimResponse> Handle(DeleteUserOperationClaimCommand request, CancellationToken cancellationToken)
@@ -35,7 +36,7 @@ namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationC
                 var deletedOperationClaim = await userOperationClaimRepository.DeleteAsync(claim,true);
                 //var response = mapper.Map<DeleteUserOperationClaimResponse>(deletedOperationClaim);
 
-                IPaginate<SiteUser> paginate = await siteUserRepository.GetListAsync(predicate: x => x.Id == request.UserId, include: include => 
+                IPaginate<User> paginate = await userRepository.GetListAsync(predicate: x => x.Id == request.UserId, include: include => 
                 include.Include(x => x.UserOperationClaims).ThenInclude(x => x.OperationClaim));
 
                 var response = mapper.Map<DeleteUserOperationClaimResponse>(paginate);

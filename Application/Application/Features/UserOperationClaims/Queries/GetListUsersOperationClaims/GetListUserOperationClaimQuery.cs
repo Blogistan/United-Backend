@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
+using Core.Security.Entities;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +17,12 @@ namespace Application.Features.UserOperationClaims.Queries.GetListUsersOperation
         {
             private readonly IMapper mapper;
             private readonly IUserOperationClaimRepository userOperationClaimRepository;
-            private readonly ISiteUserRepository siteUserRepository;
-            public GetListUserOperationClaimQueryHandler(IMapper mapper, IUserOperationClaimRepository userOperationClaimRepository, ISiteUserRepository siteUserRepository)
+            private readonly IUserRepository userRepository;
+            public GetListUserOperationClaimQueryHandler(IMapper mapper, IUserOperationClaimRepository userOperationClaimRepository, IUserRepository userRepository)
             {
                 this.mapper = mapper;
                 this.userOperationClaimRepository = userOperationClaimRepository;
-                this.siteUserRepository = siteUserRepository;
+                this.userRepository = userRepository;
             }
 
             public async Task<GetListUserOperationClaimQueryResponse> Handle(GetListUserOperationClaimQuery request, CancellationToken cancellationToken)
@@ -29,7 +30,7 @@ namespace Application.Features.UserOperationClaims.Queries.GetListUsersOperation
                 //IPaginate<UserOperationClaim> paginate = await userOperationClaimRepository.GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: include => include.Include(x => x.OperationClaim).Include(x => x.User));
 
 
-                IPaginate<SiteUser> paginate = await siteUserRepository.GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: include=>include.Include(x=>x.UserOperationClaims).ThenInclude(x => x.OperationClaim));
+                IPaginate<User> paginate = await userRepository.GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: include=>include.Include(x=>x.UserOperationClaims).ThenInclude(x => x.OperationClaim));
 
                 var response = mapper.Map<GetListUserOperationClaimQueryResponse>(paginate);
                 

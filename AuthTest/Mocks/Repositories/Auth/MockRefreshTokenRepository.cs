@@ -44,8 +44,8 @@ namespace AuthTest.Mocks.Repositories.Auth
                     if (predicate != null)
                         refreshToken = refreshTokenFakeData.Data.Where(predicate.Compile()).FirstOrDefault();
 
-                    if (refreshToken != null)
-                        refreshToken.User = siteUserFakeData.Data.FirstOrDefault(x => x.Id == refreshToken.UserId);
+                    //if (refreshToken != null)
+                    //    refreshToken.User = siteUserFakeData.Data.FirstOrDefault(x => x.Id == refreshToken.UserId);
 
                     return refreshToken;
                 });

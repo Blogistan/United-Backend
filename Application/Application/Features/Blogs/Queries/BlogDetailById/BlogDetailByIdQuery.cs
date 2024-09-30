@@ -37,7 +37,7 @@ namespace Application.Features.Blogs.Queries.BlogDetailById
                     CreatedDate = blog.CreatedDate,
                     Title = blog.Title,
                     BannerImageUrl = blog.BannerImageUrl,
-                    WriterName = blog.Writer.FirstName + " " + blog.Writer.LastName,
+                    WriterName = blog.Writer.User.FirstName + " " + blog.Writer.User.LastName,
                     ContentImageUrl = blog.Content.ContentImageUrl,
                     ContentPragraph = blog.Content.ContentPragraph,
                     ReactionKEKWCount = blog.ReactionKEKWCount,

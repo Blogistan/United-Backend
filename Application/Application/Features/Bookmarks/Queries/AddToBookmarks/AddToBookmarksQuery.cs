@@ -30,7 +30,7 @@ namespace Application.Features.Bookmarks.Queries.AddToBookmarks
                 await blogBusinessRules.BlogCheckById(request.BlogId);
                 SiteUser user = await siteUserRepository.GetAsync(x => x.Id == request.UserId, x => x.Include(x => x.Bookmarks));
 
-                await authBussinessRules.UserShouldBeExist(user);
+                await authBussinessRules.UserShouldBeExist(user.User);
 
                 Bookmark bookmark = new()
                 {

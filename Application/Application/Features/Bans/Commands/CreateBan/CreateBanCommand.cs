@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Bans.Commands.CreateBan
 {
@@ -32,9 +33,9 @@ namespace Application.Features.Bans.Commands.CreateBan
 
                 Ban AddedBan = await banRepository.AddAsync(ban);
 
-                var user = await siteUserRepository.GetAsync(x => x.Id == AddedBan.UserID);
+                var user = await siteUserRepository.GetAsync(x => x.Id == AddedBan.SiteUserId,include:x=>x.Include(x=>x.User));
                 if (request.IsPerma)
-                    user.IsActive = false;
+                    user.User.IsActive = false;
 
                 await siteUserRepository.UpdateAsync(user);
 

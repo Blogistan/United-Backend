@@ -1,6 +1,7 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Bans.Commands.DeleteBan
 {
@@ -24,8 +25,8 @@ namespace Application.Features.Bans.Commands.DeleteBan
             {
                 var ban = await banRepository.GetAsync(x => x.Id == request.ReportID);
 
-                var user = await siteUserRepository.GetAsync(x => x.Id == ban.UserID);
-                user.IsActive = true;
+                var user = await siteUserRepository.GetAsync(x => x.Id == ban.SiteUserId,include:x=>x.Include(x=>x.User));
+                user.User.IsActive = true;
                 await siteUserRepository.UpdateAsync(user);
                 var deletedBan = await banRepository.DeleteAsync(ban);
 

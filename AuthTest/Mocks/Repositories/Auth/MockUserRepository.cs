@@ -42,7 +42,7 @@ namespace AuthTest.Mocks.Repositories.Auth
                         user = siteUserFakeData.Data.Where(predicate.Compile()).FirstOrDefault();
 
                     if(user!=null)
-                        user.Bans = banFakeData.Data.Where(x => x.UserID == user.Id).ToList();
+                        user.Bans = banFakeData.Data.Where(x => x.SiteUserId == user.Id).ToList();
 
                     return user;
                 });

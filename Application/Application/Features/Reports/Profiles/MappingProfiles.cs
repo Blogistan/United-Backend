@@ -12,7 +12,7 @@ namespace Application.Features.Reports.Profiles
         public MappingProfiles()
         {
             CreateMap<Report, ReportListViewDto>().ForMember(opt=>opt.ReportType,src=>src.MapFrom(x=>x.ReportType.ReportTypeName))
-                .ForMember(opt=>opt.UserName,src=>src.MapFrom(x=>x.User.FirstName+' '+x.User.LastName)).ReverseMap();
+                .ForMember(opt=>opt.UserName,src=>src.MapFrom(x=>x.SiteUser.User.FirstName+' '+ x.SiteUser.User.LastName)).ReverseMap();
 
             CreateMap<IPaginate<Report>, GetListReportQueryResponse>().ReverseMap();
             CreateMap<IPaginate<Report>, GetListReportDynamicQueryResponse>().ReverseMap();

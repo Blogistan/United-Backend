@@ -40,8 +40,8 @@ namespace Application.Features.Auth.Commands.Refresh
                     await authService.RevokeDescendantRefreshTokens(refreshToken, request.IpAddress, $"Invalid token tried to use: {refreshToken.Token}");
                 await AuthBussinessRules.RefreshTokenShouldBeActive(refreshToken);
 
-                AccessToken createdAcccessToken = await authService.CreateAccessToken(siteUser);
-                RefreshToken createdRefreshToken = authService.CreateRefreshToken(siteUser, request.IpAddress);
+                AccessToken createdAcccessToken = await authService.CreateAccessToken(siteUser.User);
+                RefreshToken createdRefreshToken = authService.CreateRefreshToken(siteUser.User, request.IpAddress);
 
                 RefreshedResponse refreshedResponse = new()
                 {

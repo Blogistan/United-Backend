@@ -59,12 +59,12 @@ namespace AuthTest.Features.Auth.Commands.PasswordReset
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration,userLoginRepository);
-            AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
+            //AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
             this.mediator = mediator;
             this.passwordResetCommand = new PasswordResetCommand();
             this.validationRules = new PasswordResetCommandValidator();
-            this.passwordResetCommandHandler = new PasswordResetCommandHandler(authService, siteUserRepository, authBussinessRules, forgotPasswordRepository, mailService, mediator);
+            //this.passwordResetCommandHandler = new PasswordResetCommandHandler(authService, siteUserRepository, authBussinessRules, forgotPasswordRepository, mailService, mediator);
 
         }
         [Fact]

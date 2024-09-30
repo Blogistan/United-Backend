@@ -19,7 +19,7 @@ namespace Application.Features.Bookmarks.Profiles
                 .ForMember(opt => opt.ReactionTriggeredCount, src => src.MapFrom(x => x.Blog.ReactionTriggeredCount))
                 .ForMember(opt => opt.Title, src => src.MapFrom(x => x.Blog.Title))
                 .ForMember(opt => opt.ShareCount, src => src.MapFrom(x => x.Blog.ShareCount))
-                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Blog.Writer.FirstName + ' ' + x.Blog.Writer.LastName))
+                .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Blog.Writer.User.FirstName + ' ' + x.Blog.Writer.User.LastName))
                 .ForMember(opt => opt.CategoryName, src => src.MapFrom(x => x.Blog.Category.CategoryName)).ReverseMap();
 
 

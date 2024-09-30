@@ -23,12 +23,13 @@ namespace Application.Features.Auth.Commands.Register
         public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisteredResponse>
         {
             private readonly ISiteUserRepository siteUserRepository;
+            private readonly IUserRepository userRepository;
             private readonly AuthBussinessRules authBussinessRules;
             private readonly IAuthService authService;
             private readonly IMapper mapper;
             private readonly IMediator mediator;
             private readonly IUserOperationClaimRepository userOperationClaimRepository;
-            public RegisterCommandHandler(ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IAuthService authService, IMapper mapper, IMediator mediator, IUserOperationClaimRepository userOperationClaimRepository)
+            public RegisterCommandHandler(ISiteUserRepository siteUserRepository, AuthBussinessRules authBussinessRules, IAuthService authService, IMapper mapper, IMediator mediator, IUserOperationClaimRepository userOperationClaimRepository, IUserRepository userRepository)
             {
                 this.mapper = mapper;
                 this.siteUserRepository = siteUserRepository;
@@ -36,6 +37,7 @@ namespace Application.Features.Auth.Commands.Register
                 this.authService = authService;
                 this.mediator = mediator;
                 this.userOperationClaimRepository = userOperationClaimRepository;
+                this.userRepository = userRepository;
             }
 
             public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -47,17 +49,17 @@ namespace Application.Features.Auth.Commands.Register
 
                 SiteUser siteUser = mapper.Map<SiteUser>(request.UserForRegisterDto);
 
-                siteUser.PasswordHash = hash;
-                siteUser.PasswordSalt = salt;
-                siteUser.IsActive = true;
+                siteUser.User.PasswordHash = hash;
+                siteUser.User.PasswordSalt = salt;
+                siteUser.User.IsActive = true;
                 siteUser.IsVerified = false;
 
                 var createdUser= await siteUserRepository.AddAsync(siteUser);
-                await userOperationClaimRepository.AddAsync(new UserOperationClaim { UserId = createdUser.Id, OperationClaimId = 3 });
-                AccessToken accessToken = await authService.CreateAccessToken(createdUser);
-                RefreshToken refreshToken = authService.CreateRefreshToken(createdUser, request.IpAddress);
+                await userOperationClaimRepository.AddAsync(new UserOperationClaim { UserId = createdUser.UserId, OperationClaimId = 3 });
+                AccessToken accessToken = await authService.CreateAccessToken(createdUser.User);
+                RefreshToken refreshToken = authService.CreateRefreshToken(createdUser.User, request.IpAddress);
                 await authService.AddRefreshToken(refreshToken);
-                refreshToken.User = createdUser;
+                refreshToken.User = createdUser.User;
 
 
                 RegisteredResponse registeredResponse = new()
@@ -66,7 +68,7 @@ namespace Application.Features.Auth.Commands.Register
                     RefreshToken = refreshToken
                 };
 
-                await mediator.Publish(new RegisteredNotification() { SiteUser = createdUser });
+                await mediator.Publish(new RegisteredNotification() { SiteUser = createdUser.User });
 
                 return registeredResponse;
 

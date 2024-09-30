@@ -15,13 +15,13 @@ namespace Application.Features.Auth.Commands.ForgetPassword
         public string PasswordResetUrl { get; set; }
         public class ForgetPasswordCommandHandler : IRequestHandler<ForgetPasswordCommand, Unit>
         {
-            private readonly ISiteUserRepository siteUserRepository;
+            private readonly IUserRepository userRepository;
             private readonly IMailService mailService;
             private readonly AuthBussinessRules authBussinessRules;
             private readonly IForgotPasswordRepository forgotPasswordRepository;
-            public ForgetPasswordCommandHandler(ISiteUserRepository siteUserRepository, IMailService mailService, AuthBussinessRules authBussinessRules, IForgotPasswordRepository forgotPasswordRepository)
+            public ForgetPasswordCommandHandler(IUserRepository userRepository, IMailService mailService, AuthBussinessRules authBussinessRules, IForgotPasswordRepository forgotPasswordRepository)
             {
-                this.siteUserRepository = siteUserRepository;
+                this.userRepository = userRepository;
                 this.mailService = mailService;
                 this.authBussinessRules = authBussinessRules;
                 this.forgotPasswordRepository = forgotPasswordRepository;
@@ -29,7 +29,7 @@ namespace Application.Features.Auth.Commands.ForgetPassword
 
             public async Task<Unit> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
             {
-                var user = await siteUserRepository.GetAsync(x => x.Email == request.Email && x.IsActive == true);
+                var user = await userRepository.GetAsync(x => x.Email == request.Email && x.IsActive == true);
                 await authBussinessRules.UserShouldBeExist(user);
 
                 var key = await CreateResetKey();

@@ -57,12 +57,12 @@ namespace AuthTest.Features.Auth.Commands.Revoke
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration,userLoginRepository);
-            AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
+            //AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
             this.mediator = mediator;
             this.revokeCommand = new RevokeCommand();
             this.validationRules = new RevokeCommandValidator();
-            this.revokeCommandHandler = new RevokeCommandHandler(refreshTokenRepository,authBussinessRules,authService,mapper);
+            //this.revokeCommandHandler = new RevokeCommandHandler(refreshTokenRepository,authBussinessRules,authService,mapper);
 
         }
         [Fact]

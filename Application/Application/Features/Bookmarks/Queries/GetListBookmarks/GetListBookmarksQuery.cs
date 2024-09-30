@@ -30,7 +30,7 @@ namespace Application.Features.Bookmarks.Queries.GetListBookmarks
                 var user = await siteUserRepository.GetAsync(x => x.Id == request.UserId, x => x.Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Category).Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Category)
                 .Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Writer)
              );
-                await authBussinessRules.UserShouldBeExist(user);
+                await authBussinessRules.UserShouldBeExist(user.User);
 
               
                 var response = mapper.Map<GetListBookmarkQueryResponse>(user);

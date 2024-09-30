@@ -43,12 +43,12 @@ namespace AuthTest.Mocks.Repositories
                     {
                         foreach (var item in banFakeData.Data)
                         {
-                            item.User = siteUserFakeData.Data.FirstOrDefault(s => s.Id == item.UserID);
+                            item.SiteUser = siteUserFakeData.Data.FirstOrDefault(s => s.Id == item.SiteUserId);
                         }
 
                         foreach (var item in banFakeData.Data)
                         {
-                            item.Report = reportFakeData.Data.LastOrDefault(r => r.UserID == item.UserID);
+                            item.Report = reportFakeData.Data.LastOrDefault(r => r.SiteUserId == item.SiteUserId);
                         }
                     }
 

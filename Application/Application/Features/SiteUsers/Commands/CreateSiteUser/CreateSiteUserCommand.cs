@@ -55,13 +55,13 @@ namespace Application.Features.SiteUsers.Commands.CreateSiteUser
                     passwordHash: out byte[] passwordHash,
                     passwordSalt: out byte[] passwordSalt
                 );
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
+                //user.PasswordHash = passwordHash;
+                //user.PasswordSalt = passwordSalt;
                 SiteUser createdUser = await siteUserRepository.AddAsync(user);
 
                 CreateSiteUserResponse response = mapper.Map<CreateSiteUserResponse>(createdUser);
 
-                await mediator.Publish(new RegisteredNotification() { SiteUser = createdUser });
+                await mediator.Publish(new RegisteredNotification() { SiteUser = createdUser.User });
 
                 return response;
             }

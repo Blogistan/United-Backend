@@ -14,17 +14,17 @@ namespace Application.Features.Auth.Commands.GithubSignIn
         public class GithubSignInCommandHandler:IRequestHandler<GithubSignInCommand,LoginResponse>
         {
             private IAuthService authService;
-            private ISiteUserRepository siteUserRepository;
-            public GithubSignInCommandHandler(IAuthService authService, ISiteUserRepository siteUserRepository)
+            private IUserRepository userRepository;
+            public GithubSignInCommandHandler(IAuthService authService, IUserRepository userRepository)
             {
                 this.authService = authService;
-                this.siteUserRepository = siteUserRepository;
+                this.userRepository = userRepository;
             }
 
             public async Task<LoginResponse> Handle(GithubSignInCommand request, CancellationToken cancellationToken)
             {
                 var info = await authService.GithubUserInfo(request.Token);
-                var user = await siteUserRepository.GetAsync(x => x.Email == info.email && x.IsActive == true);
+                var user = await userRepository.GetAsync(x => x.Email == info.email && x.IsActive == true);
 
                 var result = await authService.CreateUserExternalAsync(user, info.email, info.name, "", info.avatar_url, request.IpAddress,Core.Security.Enums.LoginProviderType.Github,info.node_id);
 

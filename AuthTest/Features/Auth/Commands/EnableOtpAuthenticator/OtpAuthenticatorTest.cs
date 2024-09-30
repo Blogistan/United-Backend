@@ -55,12 +55,12 @@ namespace AuthTest.Features.Auth.Commands.EnableOtpAuthenticator
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration,userLoginRepository);
-            AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
+            //AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
 
             this.enableOtpAuthenticatorCommand = new EnableOtpAuthenticatorCommand();
             this.validationRules = new EnableOtpAuthenticatorCommandValidator();
-            this.enableOtpAuthenticatorCommandHandler = new EnableOtpAuthenticatorCommandHandler(authBussinessRules, otpAuthenticatorRepository, siteUserRepository, authService);
+            //this.enableOtpAuthenticatorCommandHandler = new EnableOtpAuthenticatorCommandHandler(authBussinessRules, otpAuthenticatorRepository, siteUserRepository, authService);
         }
         [Fact]
         public async Task UserShouldBeExists()

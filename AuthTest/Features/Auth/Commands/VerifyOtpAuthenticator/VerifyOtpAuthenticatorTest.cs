@@ -32,6 +32,7 @@ namespace AuthTest.Features.Auth.Commands.VerifyOtpAuthenticator
 
             #region Mock Repositories
             this.configuration = MockConfiguration.GetMockConfiguration();
+            //IUserRepository userRepository = new UserMockRepository(siteUserFakeData).MockRepository.Object;
             IUserOperationClaimRepository userOperationClaimRepository = new MockUserOperationClaimRepository(userOperationClaimFakeData, operationClaimFakeData).GetOperationClaimRepostiory();
             IRefreshTokenRepository refreshTokenRepository = new MockRefreshTokenRepository(refreshTokenFakeData, siteUserFakeData).GetRefreshTokenRepository();
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
@@ -54,12 +55,12 @@ namespace AuthTest.Features.Auth.Commands.VerifyOtpAuthenticator
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration,userLoginRepository);
-            AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
+            //AuthBussinessRules authBussinessRules = new AuthBussinessRules(userRepository);
 
 
             this.verifyOtpAuthenticatorCommand = new VerifyOtpAuthenticatorCommand();
             this.validationRules = new VerifyOtpAuthenticatorCommandValidator();
-            this.verifyOtpAuthenticatorCommandHandler = new VerifyOtpAuthenticatorCommandHandler(otpAuthenticatorRepository, authBussinessRules, authService);
+            //this.verifyOtpAuthenticatorCommandHandler = new VerifyOtpAuthenticatorCommandHandler(otpAuthenticatorRepository, authBussinessRules, authService);
         }
         [Fact]
         public async Task ThrowExceptionIfUserIDIsEmpty()

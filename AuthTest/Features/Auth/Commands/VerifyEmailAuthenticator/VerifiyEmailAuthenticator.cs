@@ -55,12 +55,12 @@ namespace AuthTest.Features.Auth.Commands.VerifyEmailAuthenticator
             #endregion
             HttpClient httpClient = new HttpClient();
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration, userLoginRepository);
-            AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
+            //AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
 
             this.verifyEmailAuthenticatorCommand = new VerifyEmailAuthenticatorCommand();
             this.validationRules = new VerifyEmailAuthenticatorCommandValidator();
-            this.verifyEmailAuthenticatorCommandHandler = new VerifyEmailAuthenticatorCommandHandler(userEmailAuthenticatorRepository, authBussinessRules);
+            //this.verifyEmailAuthenticatorCommandHandler = new VerifyEmailAuthenticatorCommandHandler(userEmailAuthenticatorRepository, authBussinessRules);
         }
         [Fact]
         public async Task ThrowExcepitonIfActivationKeyEmpty()

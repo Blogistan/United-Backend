@@ -15,7 +15,7 @@ namespace Application.Features.Bans.Profiles
         public MappingProfiles()
         {
             CreateMap<Ban, BanListViewDto>().ForMember(opt => opt.Id, src => src.MapFrom(src => src.Id))
-                .ForMember(opt => opt.UserName, src => src.MapFrom(src => src.User.FirstName + ' ' + src.User.LastName))
+                .ForMember(opt => opt.UserName, src => src.MapFrom(src => src.SiteUser.User.FirstName + ' ' + src.SiteUser.User.FirstName))
                 .ForMember(opt => opt.IsPerma, src => src.MapFrom(src => src.IsPerma))
                 .ForMember(opt => opt.BanStartDate, src => src.MapFrom(src => src.BanStartDate))
                 .ForMember(opt => opt.BanEndDate, src => src.MapFrom(src => src.BanEndDate))
@@ -27,7 +27,7 @@ namespace Application.Features.Bans.Profiles
 
             CreateMap<Ban, CreateBanCommand>().ReverseMap();
             CreateMap<Ban, CreateBanCommandResponse>().ForMember(opt => opt.Id, src => src.MapFrom(src => src.Id))
-                .ForMember(opt => opt.UserName, src => src.MapFrom(src => src.User.FirstName + ' ' + src.User.LastName))
+                .ForMember(opt => opt.UserName, src => src.MapFrom(src => src.SiteUser.User.FirstName + ' ' + src.SiteUser.User.LastName))
                 .ForMember(opt => opt.IsPerma, src => src.MapFrom(src => src.IsPerma))
                 .ForMember(opt => opt.BanStartDate, src => src.MapFrom(src => src.BanStartDate))
                 .ForMember(opt => opt.BanEndDate, src => src.MapFrom(src => src.BanEndDate))
@@ -36,7 +36,7 @@ namespace Application.Features.Bans.Profiles
 
 
             CreateMap<Ban, DeleteBanCommandResponse>().ForMember(opt => opt.Id, src => src.MapFrom(src => src.Id))
-               .ForMember(opt => opt.UserName, src => src.MapFrom(src => src.User.FirstName + ' ' + src.User.LastName))
+               .ForMember(opt => opt.UserName, src => src.MapFrom(src => src.SiteUser.User.FirstName + ' ' + src.SiteUser.User.LastName))
                .ForMember(opt => opt.IsPerma, src => src.MapFrom(src => src.IsPerma))
                .ForMember(opt => opt.BanStartDate, src => src.MapFrom(src => src.BanStartDate))
                .ForMember(opt => opt.BanEndDate, src => src.MapFrom(src => src.BanEndDate))
@@ -44,8 +44,8 @@ namespace Application.Features.Bans.Profiles
                .ReverseMap();
 
             CreateMap<Ban, UpdateBanCommand>().ForMember(opt => opt.Id, src => src.MapFrom(src => src.Id))
-                .ForMember(opt => opt.ReportID, src => src.MapFrom(src => src.ReportID))
-               .ForMember(opt => opt.UserId, src => src.MapFrom(src => src.UserID))
+                .ForMember(opt => opt.ReportID, src => src.MapFrom(src => src.ReportId))
+               .ForMember(opt => opt.UserId, src => src.MapFrom(src => src.SiteUserId))
                .ForMember(opt => opt.IsPerma, src => src.MapFrom(src => src.IsPerma))
                .ForMember(opt => opt.BanStartDate, src => src.MapFrom(src => src.BanStartDate))
                .ForMember(opt => opt.BanEndDate, src => src.MapFrom(src => src.BanEndDate))
