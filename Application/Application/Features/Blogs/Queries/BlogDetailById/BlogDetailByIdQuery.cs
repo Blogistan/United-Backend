@@ -28,7 +28,7 @@ namespace Application.Features.Blogs.Queries.BlogDetailById
             {
                 await blogBusinessRules.BlogCheckById(request.BlogId);
 
-                var blog = await blogRepository.GetAsync(x => x.Id == request.BlogId, x => x.Include(x => x.Writer).Include(x => x.Content).Include(x => x.Category).ThenInclude(x => x.SubCategories));
+                var blog = await blogRepository.GetAsync(x => x.Id == request.BlogId, x => x.Include(x => x.Writer).ThenInclude(x=>x.User).Include(x => x.Content).Include(x => x.Category).ThenInclude(x => x.SubCategories));
 
                 BlogDetailDto blogDetailDto = new()
                 {
