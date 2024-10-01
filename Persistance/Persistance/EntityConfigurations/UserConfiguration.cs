@@ -26,6 +26,8 @@ namespace Persistance.EntityConfigurations
             {
                 new(1,"Admin","Admin","esquetta@gmail.com",salt,hash,true,Core.Security.Enums.AuthenticatorType.None)
             };
+
+            builder.HasData(users);
         }
     }
 }
