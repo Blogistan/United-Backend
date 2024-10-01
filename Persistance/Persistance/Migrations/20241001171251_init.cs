@@ -560,6 +560,11 @@ namespace Persistance.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "AuthenticatorType", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "Email", "FirstName", "IsActive", "LastName", "PasswordHash", "PasswordSalt", "UpdateUser", "UpdatedDate" },
+                values: new object[] { 1, 0, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "esquetta@gmail.com", "Admin", true, "Admin", new byte[] { 20, 220, 22, 102, 157, 128, 236, 161, 234, 57, 166, 240, 52, 120, 49, 3, 198, 222, 46, 74, 114, 146, 113, 39, 5, 195, 147, 167, 58, 49, 211, 175, 136, 91, 205, 170, 245, 41, 173, 111, 75, 145, 220, 73, 96, 239, 85, 140, 47, 243, 186, 128, 19, 78, 171, 6, 95, 235, 52, 52, 68, 53, 2, 140 }, new byte[] { 54, 199, 230, 174, 91, 121, 150, 196, 145, 174, 113, 242, 42, 26, 160, 94, 218, 145, 237, 98, 228, 98, 186, 252, 131, 227, 193, 180, 44, 102, 71, 176, 127, 114, 230, 43, 244, 124, 38, 174, 145, 31, 66, 154, 254, 215, 131, 125, 92, 224, 7, 225, 61, 19, 25, 255, 40, 148, 57, 109, 140, 159, 95, 181, 193, 213, 100, 58, 138, 150, 142, 208, 227, 220, 21, 175, 46, 97, 5, 251, 193, 106, 82, 54, 220, 29, 80, 127, 183, 15, 167, 106, 215, 204, 152, 56, 171, 64, 160, 176, 23, 213, 118, 82, 190, 129, 35, 254, 200, 157, 114, 107, 132, 11, 157, 189, 75, 209, 241, 13, 24, 227, 51, 59, 182, 204, 203, 0 }, 0, null });
+
+            migrationBuilder.InsertData(
                 table: "SiteUsers",
                 columns: new[] { "Id", "Biography", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "IsVerified", "ProfileImageUrl", "UpdateUser", "UpdatedDate", "UserId", "VerifiedAt" },
                 values: new object[] { 1, "Test Bio", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, true, "https://res.cloudinary.com/db4z2k45t/image/upload/v1723911498/file_cq8ff5.png", 0, null, 1, null });
