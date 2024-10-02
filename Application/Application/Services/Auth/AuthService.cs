@@ -230,7 +230,7 @@ namespace Application.Services.Auth
                 {                   
                     IsVerified = false,
                     ProfileImageUrl = picture,
-                    User=new User(name,surname,email,null,null,true,AuthenticatorType.None)
+                    User=new User(name,surname,email, new byte[0], new byte[0], true,AuthenticatorType.None)
                 };
 
                 var createdSiteUser = await siteUserRepository.AddAsync(siteUser);

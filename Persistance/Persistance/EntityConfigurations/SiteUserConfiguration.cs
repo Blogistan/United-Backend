@@ -40,9 +40,7 @@ namespace Persistance.EntityConfigurations
                 .OnDelete(DeleteBehavior.Restrict);
 
            
-            
-
-            // Seed data for SiteUser
+         
             builder.HasData(siteUsers);
         }
 

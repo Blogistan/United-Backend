@@ -7,7 +7,7 @@ namespace Core.Security.Entities
         public string ProviderName { get; set; }
         public string ProviderKey { get; set; }
         public string ProviderDisplayName { get; set; }
-        public int SiteUserId { get; set; }
+        public int UserId { get; set; }
         public virtual User User { get; set; } = null!;
 
         public UserLogin()
@@ -19,14 +19,14 @@ namespace Core.Security.Entities
             this.ProviderName = providerName;
             this.ProviderKey = providerKey;
             this.ProviderDisplayName = providerDisplayName;
-            this.SiteUserId = userID;
+            this.UserId = userID;
         }
         public UserLogin(int id, string providerName, string providerKey, string providerDisplayName, int userID) : base(id)
         {
             this.ProviderName = providerName;
             this.ProviderKey = providerKey;
             this.ProviderDisplayName = providerDisplayName;
-            this.SiteUserId = userID;
+            this.UserId = userID;
         }
     }
 }
