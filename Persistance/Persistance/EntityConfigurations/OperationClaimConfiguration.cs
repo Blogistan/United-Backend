@@ -8,7 +8,7 @@ namespace Persistance.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<OperationClaim> builder)
         {
-            OperationClaim[] operationClaims = { new(1, "Admin"), new(2, "Moderator") };
+            OperationClaim[] operationClaims = { new(1, "Admin"), new(2, "Moderator"),new(3,"User") };
 
             builder.HasData(operationClaims);
         }

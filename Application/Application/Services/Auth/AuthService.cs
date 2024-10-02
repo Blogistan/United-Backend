@@ -226,11 +226,23 @@ namespace Application.Services.Auth
 
             if (user == null)
             {
+
+                User createUser = new User()
+                {
+                    FirstName = name,
+                    LastName = surname,
+                    Email = email,
+                    PasswordHash = new byte[0],
+                    PasswordSalt = new byte[0],
+                    AuthenticatorType = AuthenticatorType.None,
+                    IsActive=true
+                };
+
                 SiteUser siteUser = new()
                 {                   
                     IsVerified = false,
                     ProfileImageUrl = picture,
-                    User=new User(name,surname,email, new byte[0], new byte[0], true,AuthenticatorType.None)
+                    User= createUser
                 };
 
                 var createdSiteUser = await siteUserRepository.AddAsync(siteUser);
