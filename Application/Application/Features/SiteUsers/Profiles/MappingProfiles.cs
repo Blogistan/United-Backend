@@ -21,7 +21,14 @@ namespace Application.Features.SiteUsers.Profiles
             CreateMap<SiteUser, UpdateSiteUserCommand>().ReverseMap();
             CreateMap<SiteUser, UpdateSiteUserCommandResponse>().ReverseMap();
 
-            CreateMap<SiteUser, SiteUserListViewDto>().ReverseMap();
+            CreateMap<SiteUser, SiteUserListViewDto>().ForMember(opt => opt.FirstName, src => src.MapFrom(x => x.User.FirstName))
+                .ForMember(opt => opt.LastName, src => src.MapFrom(x => x.User.LastName))
+                .ForMember(opt => opt.Email, src => src.MapFrom(x => x.User.Email))
+                .ForMember(opt => opt.IsVerified, src => src.MapFrom(x => x.IsVerified))
+                .ForMember(opt => opt.Biography, src => src.MapFrom(x => x.Biography))
+                .ForMember(opt => opt.ProfileImageUrl, src => src.MapFrom(x => x.ProfileImageUrl))
+                .ForMember(opt => opt.Id, src => src.MapFrom(x => x.Id))
+                .ReverseMap();
             CreateMap<IPaginate<SiteUser>, GetListSiteUserQueryResponse>().ReverseMap();
 
 
