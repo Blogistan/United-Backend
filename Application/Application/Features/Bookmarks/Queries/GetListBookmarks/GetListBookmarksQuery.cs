@@ -27,8 +27,8 @@ namespace Application.Features.Bookmarks.Queries.GetListBookmarks
 
             public async Task<GetListBookmarkQueryResponse> Handle(GetListBookmarksQuery request, CancellationToken cancellationToken)
             {
-                var user = await siteUserRepository.GetAsync(x => x.Id == request.UserId, x => x.Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Category).Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Category)
-                .Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Writer)
+                var user = await siteUserRepository.GetAsync(x => x.UserId == request.UserId, x => x.Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Category).Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Category)
+                .Include(x => x.Bookmarks).ThenInclude(x => x.Blog).ThenInclude(x => x.Writer).Include(x=>x.User)
              );
                 await authBussinessRules.UserShouldBeExist(user.User);
 

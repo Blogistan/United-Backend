@@ -28,7 +28,7 @@ namespace Application.Features.Bookmarks.Queries.AddToBookmarks
             public async Task<bool> Handle(AddToBookmarksQuery request, CancellationToken cancellationToken)
             {
                 await blogBusinessRules.BlogCheckById(request.BlogId);
-                SiteUser user = await siteUserRepository.GetAsync(x => x.Id == request.UserId, x => x.Include(x => x.Bookmarks));
+                SiteUser user = await siteUserRepository.GetAsync(x => x.UserId == request.UserId, x => x.Include(x => x.Bookmarks).Include(x=>x.User));
 
                 await authBussinessRules.UserShouldBeExist(user.User);
 

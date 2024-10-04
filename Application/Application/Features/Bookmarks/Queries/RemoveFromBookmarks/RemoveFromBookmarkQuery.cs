@@ -29,7 +29,7 @@ namespace Application.Features.Bookmarks.Queries.RemoveFromBookmarks
             public async Task<bool> Handle(RemoveFromBookmarkQuery request, CancellationToken cancellationToken)
             {
                 await blogBusinessRules.BlogCheckById(request.BlogId);
-                SiteUser user = await siteUserRepository.GetAsync(x => x.Id == request.UserId, x => x.Include(x => x.Bookmarks));
+                SiteUser user = await siteUserRepository.GetAsync(x => x.UserId == request.UserId, x => x.Include(x => x.Bookmarks).Include(x => x.User));
 
                 await authBussinessRules.UserShouldBeExist(user.User);
 
