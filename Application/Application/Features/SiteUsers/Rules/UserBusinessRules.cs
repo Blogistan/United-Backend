@@ -26,7 +26,7 @@ namespace Application.Features.SiteUsers.Rules
 
         public async Task UserIdShouldBeExistsWhenSelected(int id)
         {
-            bool doesExist = await siteUserRepository.AnyAsync(predicate: u => u.Id == id);
+            bool doesExist = await siteUserRepository.AnyAsync(predicate: u => u.UserId == id);
 
             if (!doesExist)
             {

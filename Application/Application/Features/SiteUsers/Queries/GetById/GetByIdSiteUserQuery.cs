@@ -2,9 +2,9 @@
 using Application.Features.SiteUsers.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
-using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.SiteUsers.Queries.GetById
 {
@@ -29,7 +29,7 @@ namespace Application.Features.SiteUsers.Queries.GetById
             public async Task<GetByIdSiteUserQueryResponse> Handle(GetByIdSiteUserQuery request, CancellationToken cancellationToken)
             {
                 await userBusinessRules.UserIdShouldBeExistsWhenSelected(request.Id);
-                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.Id.Equals(request.Id));
+                SiteUser siteUser = await siteUserRepository.GetAsync(x => x.UserId.Equals(request.Id),include:x=>x.Include(x=>x.User));
                 SiteUserListViewDto siteUserListViewDto = mapper.Map<SiteUserListViewDto>(siteUser);
 
                 GetByIdSiteUserQueryResponse response = new() { SiteUserListViewDto = siteUserListViewDto };
