@@ -19,7 +19,7 @@ namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
         public string? OldPassword { get; set; }
         public string? NewPassword { get; set; }
         public string ProfileImageUrl { get; set; }
-        string[] ISecuredRequest.Roles => new string[] { "Admin" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin","User" };
 
         public UpdateSiteUserCommand()
         {
@@ -56,7 +56,7 @@ namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
                 SiteUser? siteUser = await siteUserRepository.GetAsync(x => x.Id.Equals(request.Id), cancellationToken: cancellationToken, enableTracking: false,include:x=>x.Include(x=>x.User));
 
                 await userBusinessRules.UserShouldBeExistsWhenSelected(siteUser.User);
-                await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(request.Id, request.Email);
+                await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(siteUser.User.Id, request.Email);
 
                 if (string.IsNullOrEmpty(request.OldPassword) && string.IsNullOrEmpty(request.NewPassword))
                 {
