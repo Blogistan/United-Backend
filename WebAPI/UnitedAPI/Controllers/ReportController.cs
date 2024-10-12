@@ -11,20 +11,19 @@ namespace UnitedAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ReportController:BaseController
+    public class ReportController : BaseController
     {
 
         [HttpGet]
-        public async  Task<IActionResult> GetListReport([FromQuery] PageRequest pageRequest)
+        public async Task<IActionResult> GetListReport([FromQuery] PageRequest pageRequest)
         {
             GetListReportQuery getListReportQuery = new() { PageRequest = pageRequest };
             GetListReportQueryResponse response = await Mediator.Send(getListReportQuery);
             return Ok(response);
         }
-        [HttpGet]
-        public async Task<IActionResult> GetListDynamicReport([FromQuery] PageRequest pageRequest, [FromQuery] DynamicQuery dynamicQuery)
+        [HttpPost]
+        public async Task<IActionResult> GetListDynamicReport([FromBody] GetListReportDynamicQuery getListReportDynamicQuery)
         {
-            GetListReportDynamicQuery getListReportDynamicQuery = new() { PageRequest = pageRequest,DynamicQuery=dynamicQuery };
             GetListReportDynamicQueryResponse response = await Mediator.Send(getListReportDynamicQuery);
             return Ok(response);
         }

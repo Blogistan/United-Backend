@@ -28,7 +28,7 @@ namespace Application.Features.Reports.Queries.GetListReportDynamic
 
             public async Task<GetListReportDynamicQueryResponse> Handle(GetListReportDynamicQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<Report> paginate = await reportRepository.GetListByDynamicAsync(request.DynamicQuery, index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: x => x.Include(x => x.ReportType).Include(x => x.SiteUser));
+                IPaginate<Report> paginate = await reportRepository.GetListByDynamicAsync(request.DynamicQuery, index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: x => x.Include(x => x.ReportType).Include(x => x.SiteUser).ThenInclude(x=>x.User));
 
                 GetListReportDynamicQueryResponse getListReportDynamicQueryResponse = mapper.Map<GetListReportDynamicQueryResponse>(paginate);
 
