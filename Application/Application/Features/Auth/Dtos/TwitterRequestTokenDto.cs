@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.Auth.Dtos
 {
-    public class TwitterRequestTokenDto
+    public record TwitterRequestTokenDto
     {
         public string oauth_token { get; set; } = string.Empty;
         public string oauth_token_secret { get; set; } = string.Empty;

@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.Blogs.Dtos
 {
-    public class MostReadedBlogDto
+    public record MostReadedBlogDto
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;

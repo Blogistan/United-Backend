@@ -2,7 +2,7 @@
 
 namespace Application.Features.Blogs.Dtos
 {
-    public class BlogDetailDto
+    public record BlogDetailDto
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;

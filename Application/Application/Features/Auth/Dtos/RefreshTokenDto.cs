@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.Auth.Dtos
 {
-    public class RefreshTokenDto
+    public record RefreshTokenDto
     {
         public int UserId { get; set; }
         public string Token { get; set; } = string.Empty;

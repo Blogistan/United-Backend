@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.ReportTypes.Dtos
 {
-    public class ReportTypeListViewDto
+    public record ReportTypeListViewDto
     {
         public int Id { get; set; }
         public string ReportTypeName { get; set; } = string.Empty;

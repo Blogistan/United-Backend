@@ -2,7 +2,7 @@
 
 namespace Application.Features.SiteUsers.Dtos
 {
-    public class SiteUserListViewDto : IDto
+    public record SiteUserListViewDto : IDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; } = string.Empty;

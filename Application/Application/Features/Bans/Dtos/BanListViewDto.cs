@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.Bans.Dtos
 {
-    public class BanListViewDto
+    public record BanListViewDto
     {
         public Guid Id { get; set; }
         public string UserName { get; set; } = string.Empty;

@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.Contents.Dtos
 {
-    public class ContentListViewDto
+    public record ContentListViewDto
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;

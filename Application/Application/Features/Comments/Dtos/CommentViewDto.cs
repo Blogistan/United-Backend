@@ -1,6 +1,6 @@
 ﻿namespace Application.Features.Comments.Dtos
 {
-    public class CommentViewDto
+    public record CommentViewDto
     {
         public int Id { get; set; }
         public int? BlogId { get; set; }
