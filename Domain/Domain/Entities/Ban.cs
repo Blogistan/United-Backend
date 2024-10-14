@@ -3,9 +3,9 @@ using Core.Security.Entities;
 
 namespace Domain.Entities
 {
-    public class Ban : Entity<Guid>
+    public class Ban : Entity<int>
     {
-        public Guid ReportId { get; set; }
+        public int ReportId { get; set; }
         public int? SiteUserId { get; set; }
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }
@@ -19,7 +19,7 @@ namespace Domain.Entities
         {
 
         }
-        public Ban(Guid id, int userID, Guid repotId, bool isPerma, DateTime banStartDate, DateTime BanEndDate, string? bandDetail) : this()
+        public Ban(int id, int userID, int repotId, bool isPerma, DateTime banStartDate, DateTime BanEndDate, string? bandDetail) : this()
         {
             this.Id = id;
             this.SiteUserId = userID;

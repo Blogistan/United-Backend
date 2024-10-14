@@ -3,7 +3,7 @@ using Core.Security.Entities;
 
 namespace Domain.Entities
 {
-    public class Report : Entity<Guid>
+    public class Report : Entity<int>
     {
         public int ReportTypeId { get; set; }
         public int SiteUserId { get; set; }
@@ -17,7 +17,7 @@ namespace Domain.Entities
         {
             
         }
-        public Report(Guid id,int userID,int reprotTypeID):this()
+        public Report(int id,int userID,int reprotTypeID):this()
         {
             this.Id = id;
             this.SiteUserId = userID;
