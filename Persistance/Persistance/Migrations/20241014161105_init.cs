@@ -279,7 +279,6 @@ namespace Persistance.Migrations
                     ProviderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SiteUserId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -383,16 +382,17 @@ namespace Persistance.Migrations
                 name: "Reports",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ReportTypeId = table.Column<int>(type: "int", nullable: false),
                     SiteUserId = table.Column<int>(type: "int", nullable: false),
                     ReportDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreateUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DeleteUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdateUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -478,8 +478,9 @@ namespace Persistance.Migrations
                 name: "Bans",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReportId = table.Column<int>(type: "int", nullable: false),
                     SiteUserId = table.Column<int>(type: "int", nullable: true),
                     IsPerma = table.Column<bool>(type: "bit", nullable: false),
                     BanStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -488,9 +489,9 @@ namespace Persistance.Migrations
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreateUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DeleteUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdateUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreateUser = table.Column<int>(type: "int", nullable: false),
+                    DeleteUser = table.Column<int>(type: "int", nullable: false),
+                    UpdateUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -519,12 +520,12 @@ namespace Persistance.Migrations
                     { 3, null, "Yazılım", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
                     { 4, null, "Oyun", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
                     { 5, null, "Mobil Oyun", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
-                    { 7, null, "Yaşam", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
-                    { 8, null, "Sektörel", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
-                    { 9, null, "Otomobil", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
-                    { 10, null, "Yapay Zeka", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
-                    { 11, null, "Sinema ve Dizi", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
-                    { 12, null, "Bilim", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null }
+                    { 6, null, "Yaşam", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
+                    { 7, null, "Sektörel", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
+                    { 8, null, "Otomobil", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
+                    { 9, null, "Yapay Zeka", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
+                    { 10, null, "Sinema ve Dizi", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null },
+                    { 11, null, "Bilim", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, 0, null }
                 });
 
             migrationBuilder.InsertData(
@@ -544,7 +545,8 @@ namespace Persistance.Migrations
                 values: new object[,]
                 {
                     { 1, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Admin", 0, null },
-                    { 2, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Moderator", 0, null }
+                    { 2, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "Moderator", 0, null },
+                    { 3, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "User", 0, null }
                 });
 
             migrationBuilder.InsertData(
@@ -562,7 +564,7 @@ namespace Persistance.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AuthenticatorType", "CreateUser", "CreatedDate", "DeleteUser", "DeletedDate", "Email", "FirstName", "IsActive", "LastName", "PasswordHash", "PasswordSalt", "UpdateUser", "UpdatedDate" },
-                values: new object[] { 1, 0, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "esquetta@gmail.com", "Admin", true, "Admin", new byte[] { 20, 220, 22, 102, 157, 128, 236, 161, 234, 57, 166, 240, 52, 120, 49, 3, 198, 222, 46, 74, 114, 146, 113, 39, 5, 195, 147, 167, 58, 49, 211, 175, 136, 91, 205, 170, 245, 41, 173, 111, 75, 145, 220, 73, 96, 239, 85, 140, 47, 243, 186, 128, 19, 78, 171, 6, 95, 235, 52, 52, 68, 53, 2, 140 }, new byte[] { 54, 199, 230, 174, 91, 121, 150, 196, 145, 174, 113, 242, 42, 26, 160, 94, 218, 145, 237, 98, 228, 98, 186, 252, 131, 227, 193, 180, 44, 102, 71, 176, 127, 114, 230, 43, 244, 124, 38, 174, 145, 31, 66, 154, 254, 215, 131, 125, 92, 224, 7, 225, 61, 19, 25, 255, 40, 148, 57, 109, 140, 159, 95, 181, 193, 213, 100, 58, 138, 150, 142, 208, 227, 220, 21, 175, 46, 97, 5, 251, 193, 106, 82, 54, 220, 29, 80, 127, 183, 15, 167, 106, 215, 204, 152, 56, 171, 64, 160, 176, 23, 213, 118, 82, 190, 129, 35, 254, 200, 157, 114, 107, 132, 11, 157, 189, 75, 209, 241, 13, 24, 227, 51, 59, 182, 204, 203, 0 }, 0, null });
+                values: new object[] { 1, 0, 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, "esquetta@gmail.com", "Admin", true, "Admin", new byte[] { 88, 169, 245, 200, 26, 134, 220, 225, 193, 249, 23, 41, 117, 43, 69, 184, 39, 210, 9, 113, 136, 193, 150, 30, 77, 121, 235, 60, 59, 122, 226, 180, 135, 205, 113, 79, 25, 221, 39, 42, 3, 42, 143, 17, 238, 35, 208, 162, 74, 56, 202, 52, 129, 205, 191, 185, 58, 104, 155, 200, 170, 138, 25, 91 }, new byte[] { 36, 251, 56, 166, 58, 111, 82, 244, 25, 55, 64, 48, 203, 211, 79, 218, 135, 102, 147, 138, 40, 52, 133, 20, 12, 90, 224, 83, 122, 8, 10, 179, 59, 212, 31, 197, 1, 46, 1, 137, 217, 63, 11, 222, 128, 228, 250, 175, 160, 20, 10, 117, 24, 78, 243, 54, 44, 189, 84, 62, 18, 178, 175, 105, 97, 70, 96, 253, 36, 2, 196, 113, 204, 119, 142, 240, 24, 251, 235, 43, 81, 87, 226, 14, 133, 73, 41, 11, 80, 186, 23, 157, 92, 110, 152, 138, 19, 31, 141, 68, 105, 153, 119, 83, 103, 223, 17, 125, 53, 143, 3, 19, 127, 20, 70, 99, 167, 197, 39, 227, 70, 23, 159, 246, 150, 246, 103, 237 }, 0, null });
 
             migrationBuilder.InsertData(
                 table: "SiteUsers",

@@ -12,8 +12,8 @@ using Persistance.Context;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(EFDbContext))]
-    [Migration("20241002163403_update")]
-    partial class update
+    [Migration("20241014161105_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,6 +176,15 @@ namespace Persistance.Migrations
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DeleteUser = 0,
                             Name = "Moderator",
+                            UpdateUser = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreateUser = 0,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeleteUser = 0,
+                            Name = "User",
                             UpdateUser = 0
                         });
                 });
@@ -363,8 +372,8 @@ namespace Persistance.Migrations
                             FirstName = "Admin",
                             IsActive = true,
                             LastName = "Admin",
-                            PasswordHash = new byte[] { 126, 46, 232, 174, 23, 229, 84, 62, 149, 25, 126, 131, 170, 202, 93, 66, 116, 132, 67, 170, 8, 216, 135, 32, 139, 223, 38, 139, 245, 199, 19, 77, 3, 66, 11, 232, 30, 169, 109, 52, 49, 198, 237, 134, 60, 128, 188, 166, 153, 185, 21, 232, 157, 221, 18, 69, 74, 232, 23, 47, 238, 228, 154, 22 },
-                            PasswordSalt = new byte[] { 104, 239, 166, 148, 168, 77, 78, 216, 24, 236, 3, 220, 121, 228, 204, 2, 111, 33, 15, 1, 82, 52, 208, 143, 107, 134, 205, 226, 168, 128, 101, 200, 214, 210, 84, 231, 21, 255, 83, 242, 143, 75, 19, 243, 130, 8, 98, 17, 188, 165, 30, 249, 188, 100, 249, 177, 63, 63, 3, 253, 191, 244, 208, 28, 88, 205, 196, 141, 149, 80, 229, 68, 97, 14, 188, 147, 2, 204, 84, 89, 83, 249, 108, 174, 23, 177, 135, 242, 68, 30, 243, 92, 174, 137, 142, 1, 162, 94, 239, 150, 61, 98, 96, 149, 191, 18, 84, 213, 81, 149, 0, 96, 28, 144, 127, 2, 216, 71, 138, 247, 28, 55, 52, 18, 42, 194, 162, 232 },
+                            PasswordHash = new byte[] { 88, 169, 245, 200, 26, 134, 220, 225, 193, 249, 23, 41, 117, 43, 69, 184, 39, 210, 9, 113, 136, 193, 150, 30, 77, 121, 235, 60, 59, 122, 226, 180, 135, 205, 113, 79, 25, 221, 39, 42, 3, 42, 143, 17, 238, 35, 208, 162, 74, 56, 202, 52, 129, 205, 191, 185, 58, 104, 155, 200, 170, 138, 25, 91 },
+                            PasswordSalt = new byte[] { 36, 251, 56, 166, 58, 111, 82, 244, 25, 55, 64, 48, 203, 211, 79, 218, 135, 102, 147, 138, 40, 52, 133, 20, 12, 90, 224, 83, 122, 8, 10, 179, 59, 212, 31, 197, 1, 46, 1, 137, 217, 63, 11, 222, 128, 228, 250, 175, 160, 20, 10, 117, 24, 78, 243, 54, 44, 189, 84, 62, 18, 178, 175, 105, 97, 70, 96, 253, 36, 2, 196, 113, 204, 119, 142, 240, 24, 251, 235, 43, 81, 87, 226, 14, 133, 73, 41, 11, 80, 186, 23, 157, 92, 110, 152, 138, 19, 31, 141, 68, 105, 153, 119, 83, 103, 223, 17, 125, 53, 143, 3, 19, 127, 20, 70, 99, 167, 197, 39, 227, 70, 23, 159, 246, 150, 246, 103, 237 },
                             UpdateUser = 0
                         });
                 });
@@ -482,9 +491,11 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Ban", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BanDetail")
                         .HasColumnType("nvarchar(max)");
@@ -495,14 +506,14 @@ namespace Persistance.Migrations
                     b.Property<DateTime>("BanStartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CreateUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeleteUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("DeleteUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
@@ -510,14 +521,14 @@ namespace Persistance.Migrations
                     b.Property<bool>("IsPerma")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("ReportId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ReportId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("SiteUserId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UpdateUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UpdateUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -708,7 +719,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 6,
                             CategoryName = "Yaşam",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -717,7 +728,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 8,
+                            Id = 7,
                             CategoryName = "Sektörel",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -726,7 +737,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 9,
+                            Id = 8,
                             CategoryName = "Otomobil",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -735,7 +746,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 10,
+                            Id = 9,
                             CategoryName = "Yapay Zeka",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -744,7 +755,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 11,
+                            Id = 10,
                             CategoryName = "Sinema ve Dizi",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -753,7 +764,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 12,
+                            Id = 11,
                             CategoryName = "Bilim",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -911,18 +922,20 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("CreateUser")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreateUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeleteUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("DeleteUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
@@ -937,8 +950,8 @@ namespace Persistance.Migrations
                     b.Property<int>("SiteUserId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UpdateUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UpdateUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");

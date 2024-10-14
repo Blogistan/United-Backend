@@ -369,8 +369,8 @@ namespace Persistance.Migrations
                             FirstName = "Admin",
                             IsActive = true,
                             LastName = "Admin",
-                            PasswordHash = new byte[] { 28, 221, 238, 245, 75, 65, 174, 19, 237, 61, 214, 100, 45, 66, 157, 34, 44, 204, 1, 157, 254, 42, 33, 58, 184, 223, 59, 230, 179, 195, 168, 83, 102, 129, 223, 131, 238, 12, 14, 42, 100, 251, 101, 237, 169, 19, 155, 234, 102, 237, 48, 62, 48, 234, 90, 20, 91, 56, 163, 83, 136, 116, 173, 221 },
-                            PasswordSalt = new byte[] { 160, 143, 32, 102, 139, 148, 158, 21, 0, 130, 124, 159, 22, 75, 135, 213, 14, 191, 85, 66, 5, 122, 49, 85, 244, 136, 42, 209, 38, 126, 242, 139, 191, 32, 107, 187, 137, 72, 131, 98, 74, 86, 87, 239, 1, 18, 213, 224, 39, 84, 166, 52, 118, 209, 78, 233, 116, 119, 18, 60, 60, 115, 184, 71, 54, 55, 3, 65, 104, 31, 147, 63, 58, 179, 175, 230, 76, 243, 99, 214, 7, 222, 203, 159, 229, 240, 7, 225, 15, 29, 36, 71, 228, 227, 11, 74, 155, 94, 2, 222, 59, 45, 231, 78, 193, 124, 248, 143, 87, 231, 104, 169, 38, 191, 97, 82, 158, 91, 209, 216, 226, 72, 148, 164, 187, 250, 210, 54 },
+                            PasswordHash = new byte[] { 88, 169, 245, 200, 26, 134, 220, 225, 193, 249, 23, 41, 117, 43, 69, 184, 39, 210, 9, 113, 136, 193, 150, 30, 77, 121, 235, 60, 59, 122, 226, 180, 135, 205, 113, 79, 25, 221, 39, 42, 3, 42, 143, 17, 238, 35, 208, 162, 74, 56, 202, 52, 129, 205, 191, 185, 58, 104, 155, 200, 170, 138, 25, 91 },
+                            PasswordSalt = new byte[] { 36, 251, 56, 166, 58, 111, 82, 244, 25, 55, 64, 48, 203, 211, 79, 218, 135, 102, 147, 138, 40, 52, 133, 20, 12, 90, 224, 83, 122, 8, 10, 179, 59, 212, 31, 197, 1, 46, 1, 137, 217, 63, 11, 222, 128, 228, 250, 175, 160, 20, 10, 117, 24, 78, 243, 54, 44, 189, 84, 62, 18, 178, 175, 105, 97, 70, 96, 253, 36, 2, 196, 113, 204, 119, 142, 240, 24, 251, 235, 43, 81, 87, 226, 14, 133, 73, 41, 11, 80, 186, 23, 157, 92, 110, 152, 138, 19, 31, 141, 68, 105, 153, 119, 83, 103, 223, 17, 125, 53, 143, 3, 19, 127, 20, 70, 99, 167, 197, 39, 227, 70, 23, 159, 246, 150, 246, 103, 237 },
                             UpdateUser = 0
                         });
                 });
@@ -488,9 +488,11 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Ban", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BanDetail")
                         .HasColumnType("nvarchar(max)");
@@ -501,14 +503,14 @@ namespace Persistance.Migrations
                     b.Property<DateTime>("BanStartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CreateUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeleteUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("DeleteUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
@@ -516,14 +518,14 @@ namespace Persistance.Migrations
                     b.Property<bool>("IsPerma")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("ReportId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ReportId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("SiteUserId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UpdateUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UpdateUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -714,7 +716,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 6,
                             CategoryName = "Yaşam",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -723,7 +725,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 8,
+                            Id = 7,
                             CategoryName = "Sektörel",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -732,7 +734,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 9,
+                            Id = 8,
                             CategoryName = "Otomobil",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -741,7 +743,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 10,
+                            Id = 9,
                             CategoryName = "Yapay Zeka",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -750,7 +752,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 11,
+                            Id = 10,
                             CategoryName = "Sinema ve Dizi",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -759,7 +761,7 @@ namespace Persistance.Migrations
                         },
                         new
                         {
-                            Id = 12,
+                            Id = 11,
                             CategoryName = "Bilim",
                             CreateUser = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -917,18 +919,20 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("CreateUser")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreateUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeleteUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("DeleteUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
@@ -943,8 +947,8 @@ namespace Persistance.Migrations
                     b.Property<int>("SiteUserId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UpdateUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UpdateUser")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
