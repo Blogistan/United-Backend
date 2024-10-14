@@ -5,7 +5,7 @@ using Persistance.Context;
 
 namespace Persistance.Repositories
 {
-    public class BanRepository : EfRepositoryBase<Ban, Guid, EFDbContext>, IBanRepository
+    public class BanRepository : EfRepositoryBase<Ban, int, EFDbContext>, IBanRepository
     {
         public BanRepository(EFDbContext context) : base(context)
         {

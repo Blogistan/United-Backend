@@ -5,7 +5,7 @@ using Persistance.Context;
 
 namespace Persistance.Repositories
 {
-    public class ReportRepository : EfRepositoryBase<Report, Guid, EFDbContext>,IReportRepository
+    public class ReportRepository : EfRepositoryBase<Report, int, EFDbContext>,IReportRepository
     {
         public ReportRepository(EFDbContext context) : base(context)
         {

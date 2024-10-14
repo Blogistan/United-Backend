@@ -7,7 +7,7 @@ namespace Application.Features.Bans.Commands.DeleteBan
 {
     public class DeleteBanCommand : IRequest<DeleteBanCommandResponse>
     {
-        public Guid ReportID { get; set; }
+        public int ReportID { get; set; }
 
         public class DeleteBanCommandHandler : IRequestHandler<DeleteBanCommand, DeleteBanCommandResponse>
         {

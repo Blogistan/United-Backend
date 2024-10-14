@@ -4,7 +4,7 @@ namespace Application.Features.Reports.Commands.CreateReport
 {
     public class CreateReportCommandResponse:IResponse
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string UserName { get; set; }
         public string ReportType { get; set; } = string.Empty;
         public string ReportDescription { get; set; } = string.Empty;
@@ -13,7 +13,7 @@ namespace Application.Features.Reports.Commands.CreateReport
         {
             
         }
-        public CreateReportCommandResponse(Guid id, string userName, string reportType, string reportDescription)
+        public CreateReportCommandResponse(int id, string userName, string reportType, string reportDescription)
         {
             Id = id;
             UserName = userName;

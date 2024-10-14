@@ -3,6 +3,7 @@ using AuthTest.Mocks.FakeDatas;
 using AuthTest.Mocks.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using FluentValidation.TestHelper;
+using System.Security.Cryptography;
 using static Application.Features.Reports.Commands.DeleteReport.DeleteReportCommand;
 
 namespace AuthTest.Features.Reports.Commands.Delete
@@ -28,7 +29,7 @@ namespace AuthTest.Features.Reports.Commands.Delete
         [Fact]
         public async Task ThrowExceptionIfReportNotExists()
         {
-            this._command.ReportID = Guid.NewGuid();
+            this._command.ReportID =RandomNumberGenerator.GetInt32(10);
             await Assert.ThrowsAsync<BusinessException>(async () =>
             {
                 await _handler.Handle(_command, CancellationToken.None);

@@ -8,7 +8,7 @@ using MediatR;
 
 namespace AuthTest.Mocks.Repositories
 {
-    public class ReportMockRepository : BaseMockRepository<IReportRepository, Report, Guid, MappingProfiles, ReportBusinessRules, ReportFakeData, IMediator>
+    public class ReportMockRepository : BaseMockRepository<IReportRepository, Report, int, MappingProfiles, ReportBusinessRules, ReportFakeData, IMediator>
     {
         public ReportMockRepository(ReportFakeData fakeData) : base(fakeData)
         {

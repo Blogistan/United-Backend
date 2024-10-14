@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Application.Services.Repositories
 {
-    public interface IReportRepository:IRepository<Report,Guid>, IAsyncRepository<Report, Guid>
+    public interface IReportRepository:IRepository<Report,int>, IAsyncRepository<Report, int>
     {
     }
 }

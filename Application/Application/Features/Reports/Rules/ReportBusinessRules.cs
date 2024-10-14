@@ -13,7 +13,7 @@ namespace Application.Features.Reports.Rules
             this.reportRepository = reportRepository;
         }
 
-        public async Task<Report> ReportCheckById(Guid reportID)
+        public async Task<Report> ReportCheckById(int reportID)
         {
             Report report = await reportRepository.GetAsync(x => x.Id == reportID);
             if (report is null)

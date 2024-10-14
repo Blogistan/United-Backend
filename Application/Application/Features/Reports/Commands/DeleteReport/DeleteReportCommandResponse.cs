@@ -4,7 +4,7 @@ namespace Application.Features.Reports.Commands.DeleteReport
 {
     public class DeleteReportCommandResponse:IResponse
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public int ReportType { get; set; } 
         public string ReportDescription { get; set; } = string.Empty;
 
@@ -12,7 +12,7 @@ namespace Application.Features.Reports.Commands.DeleteReport
         {
             
         }
-        public DeleteReportCommandResponse(Guid id, int reportType, string reportDescription)
+        public DeleteReportCommandResponse(int id, int reportType, string reportDescription)
         {
             Id = id;
             ReportType = reportType;

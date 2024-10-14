@@ -12,6 +12,7 @@ namespace Application.Features.Reports.Commands.CreateReport
         public int ReportTypeID { get; set; }
         public string ReportDescription { get; set; } = string.Empty;
         public int UserID { get; set; }
+        public int CreateUser { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator","User" };
 
         public class CreateReportCommandHandler : IRequestHandler<CreateReportCommand, CreateReportCommandResponse>
@@ -30,7 +31,8 @@ namespace Application.Features.Reports.Commands.CreateReport
                 {
                     ReportTypeId = request.ReportTypeID,
                     ReportDescription = request.ReportDescription,
-                    SiteUserId = request.UserID
+                    SiteUserId = request.UserID,
+                    CreateUser=request.CreateUser
 
                 };
 

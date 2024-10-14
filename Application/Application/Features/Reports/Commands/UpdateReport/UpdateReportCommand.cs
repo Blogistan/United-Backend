@@ -9,7 +9,7 @@ namespace Application.Features.Reports.Commands.UpdateReport
     public class UpdateReportCommand : IRequest<UpdateReportCommandResponse>,ISecuredRequest
 
     {
-        public Guid ReportID { get; set; }
+        public int ReportID { get; set; }
         public string ReportDescription { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator" };
 

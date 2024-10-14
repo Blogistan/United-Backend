@@ -31,6 +31,7 @@ namespace UnitedAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateReport([FromBody] CreateReportCommand createReportCommand)
         {
+            createReportCommand.CreateUser = GetUserIdFromToken();
             CreateReportCommandResponse response = await Mediator.Send(createReportCommand);
             return Ok(response);
         }

@@ -4,7 +4,7 @@ namespace Application.Features.Reports.Commands.UpdateReport
 {
     public class UpdateReportCommandResponse:IResponse
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string ReportDescription { get; set; } = string.Empty;
 
 
@@ -12,7 +12,7 @@ namespace Application.Features.Reports.Commands.UpdateReport
         {
             
         }
-        public UpdateReportCommandResponse(Guid id, string reportDescription)
+        public UpdateReportCommandResponse(int id, string reportDescription)
         {
             Id = id;
             ReportDescription = reportDescription;
