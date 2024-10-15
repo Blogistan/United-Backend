@@ -2,7 +2,7 @@
 {
     public record ReportListViewDto
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public ReportUserListViewDto User { get; set; }
         public string ReportType { get; set; } = string.Empty;
         public string ReportDescription { get; set; } = string.Empty;
