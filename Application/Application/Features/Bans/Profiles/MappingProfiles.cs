@@ -15,7 +15,6 @@ namespace Application.Features.Bans.Profiles
         public MappingProfiles()
         {
             CreateMap<Ban, BanListViewDto>().ForMember(opt => opt.Id, src => src.MapFrom(src => src.Id))
-                .ForMember(opt => opt.UserName, src => src.MapFrom(src => src.SiteUser.User.FirstName + ' ' + src.SiteUser.User.FirstName))
                 .ForMember(opt => opt.IsPerma, src => src.MapFrom(src => src.IsPerma))
                 .ForMember(opt => opt.BanStartDate, src => src.MapFrom(src => src.BanStartDate))
                 .ForMember(opt => opt.BanEndDate, src => src.MapFrom(src => src.BanEndDate))

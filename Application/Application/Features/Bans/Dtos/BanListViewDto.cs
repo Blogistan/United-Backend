@@ -1,9 +1,11 @@
-﻿namespace Application.Features.Bans.Dtos
+﻿using Application.Features.SiteUsers.Dtos;
+
+namespace Application.Features.Bans.Dtos
 {
     public record BanListViewDto
     {
-        public Guid Id { get; set; }
-        public string UserName { get; set; } = string.Empty;
+        public int Id { get; set; }
+        public SiteUserListViewDto User { get; set; }
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }

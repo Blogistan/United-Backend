@@ -4,15 +4,15 @@ namespace Application.Features.Bans.Commands.UpdateBan
 {
     public class UpdateBanCommandResponse:IResponse
     {
-        public Guid Id { get; set; }
-        public Guid ReportID { get; set; }
+        public int Id { get; set; }
+        public int ReportID { get; set; }
         public string UserName { get; set; } = string.Empty;
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }
         public string? BanDetail { get; set; } = string.Empty;
 
-        public UpdateBanCommandResponse(Guid id, string userName, bool isPerma, DateTime banStartDate, DateTime banEndDate, string? banDetail)
+        public UpdateBanCommandResponse(int id, string userName, bool isPerma, DateTime banStartDate, DateTime banEndDate, string? banDetail)
         {
             this.Id = id;
             this.UserName = userName;

@@ -8,8 +8,8 @@ namespace Application.Features.Bans.Commands.UpdateBan
 {
     public  class UpdateBanCommand:IRequest<UpdateBanCommandResponse>
     {
-        public Guid Id { get; set; }
-        public Guid ReportID { get; set; }
+        public int Id { get; set; }
+        public int ReportID { get; set; }
         public int UserId { get; set; }
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }
