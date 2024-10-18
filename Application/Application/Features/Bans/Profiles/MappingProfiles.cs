@@ -19,6 +19,11 @@ namespace Application.Features.Bans.Profiles
                 .ForMember(opt => opt.BanStartDate, src => src.MapFrom(src => src.BanStartDate))
                 .ForMember(opt => opt.BanEndDate, src => src.MapFrom(src => src.BanEndDate))
                 .ForMember(opt => opt.BanDetail, src => src.MapFrom(src => src.BanDetail))
+                .ForPath(opt => opt.User.FirstName, src => src.MapFrom(x => x.SiteUser.User.FirstName))
+                .ForPath(opt => opt.User.LastName, src => src.MapFrom(x => x.SiteUser.User.LastName))
+                 .ForPath(opt => opt.User.Id, src => src.MapFrom(x => x.SiteUser.User.Id))
+                 .ForPath(opt => opt.User.Biography, src => src.MapFrom(x => x.SiteUser.Biography))
+                 .ForPath(opt => opt.User.IsVerified, src => src.MapFrom(x => x.SiteUser.IsVerified))
                 .ReverseMap();
 
             CreateMap<IPaginate<Ban>, GetListBansQueryResponse>().ReverseMap();
@@ -26,7 +31,11 @@ namespace Application.Features.Bans.Profiles
 
             CreateMap<Ban, CreateBanCommand>().ReverseMap();
             CreateMap<Ban, CreateBanCommandResponse>().ForMember(opt => opt.Id, src => src.MapFrom(src => src.Id))
-                .ForMember(opt => opt.UserName, src => src.MapFrom(src => src.SiteUser.User.FirstName + ' ' + src.SiteUser.User.LastName))
+                 .ForPath(opt => opt.User.FirstName, src => src.MapFrom(x => x.SiteUser.User.FirstName))
+                .ForPath(opt => opt.User.LastName, src => src.MapFrom(x => x.SiteUser.User.LastName))
+                 .ForPath(opt => opt.User.Id, src => src.MapFrom(x => x.SiteUser.User.Id))
+                 .ForPath(opt => opt.User.Biography, src => src.MapFrom(x => x.SiteUser.Biography))
+                 .ForPath(opt => opt.User.IsVerified, src => src.MapFrom(x => x.SiteUser.IsVerified))
                 .ForMember(opt => opt.IsPerma, src => src.MapFrom(src => src.IsPerma))
                 .ForMember(opt => opt.BanStartDate, src => src.MapFrom(src => src.BanStartDate))
                 .ForMember(opt => opt.BanEndDate, src => src.MapFrom(src => src.BanEndDate))

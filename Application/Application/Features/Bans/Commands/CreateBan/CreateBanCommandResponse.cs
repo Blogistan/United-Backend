@@ -1,20 +1,21 @@
-﻿using Core.Application.Responses;
+﻿using Application.Features.SiteUsers.Dtos;
+using Core.Application.Responses;
 
 namespace Application.Features.Bans.Commands.CreateBan
 {
     public class CreateBanCommandResponse : IResponse
     {
         public int Id { get; set; }
-        public string UserName { get; set; } = string.Empty;
+        public SiteUserListViewDto User { get; set; }
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }
         public string? BanDetail { get; set; } = string.Empty;
 
-        public CreateBanCommandResponse(int id, string userName, bool isPerma, DateTime banStartDate, DateTime banEndDate, string? banDetail)
+        public CreateBanCommandResponse(int id, SiteUserListViewDto userName, bool isPerma, DateTime banStartDate, DateTime banEndDate, string? banDetail)
         {
             this.Id = id;
-            this.UserName = userName;
+            this.User = userName;
             this.IsPerma = isPerma;
             this.BanStartDate = banStartDate;
             this.BanEndDate = banEndDate;

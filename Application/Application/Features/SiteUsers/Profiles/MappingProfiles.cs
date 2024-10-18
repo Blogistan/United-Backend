@@ -29,6 +29,7 @@ namespace Application.Features.SiteUsers.Profiles
                 .ForMember(opt => opt.ProfileImageUrl, src => src.MapFrom(x => x.ProfileImageUrl))
                 .ForMember(opt => opt.Id, src => src.MapFrom(x => x.Id))
                 .ReverseMap();
+
             CreateMap<IPaginate<SiteUser>, GetListSiteUserQueryResponse>().ReverseMap();
 
 

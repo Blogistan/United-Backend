@@ -13,9 +13,10 @@ namespace Application.Features.Auth.Rules
     {
         private readonly IUserRepository userRepository;
         private readonly ISiteUserRepository siteUserRepository;
-        public AuthBussinessRules(IUserRepository userRepository)
+        public AuthBussinessRules(IUserRepository userRepository, ISiteUserRepository siteUserRepository)
         {
             this.userRepository = userRepository;
+            this.siteUserRepository = siteUserRepository;
         }
         public async Task UserEmailCannotBeDuplicatedWhenInserted(string email)
         {
