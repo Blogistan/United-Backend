@@ -6,6 +6,7 @@ using AuthTest.Mocks.FakeDatas;
 using AuthTest.Mocks.Repositories;
 using AutoMapper;
 using FluentValidation.TestHelper;
+using System.Security.Cryptography;
 using static Application.Features.Bans.Commands.UpdateBan.UpdateBanCommand;
 
 namespace AuthTest.Features.Auth.Bans.Commands.Update
@@ -40,7 +41,7 @@ namespace AuthTest.Features.Auth.Bans.Commands.Update
             updateBanCommand.BanStartDate = DateTime.UtcNow;
             updateBanCommand.BanEndDate = DateTime.UtcNow.AddDays(14);
             updateBanCommand.IsPerma = false;
-            updateBanCommand.ReportID = Guid.NewGuid();
+            updateBanCommand.ReportID = RandomNumberGenerator.GetInt32(10);
 
             TestValidationResult<UpdateBanCommand> testValidationResult = validationRules.TestValidate(updateBanCommand);
             testValidationResult.ShouldHaveValidationErrorFor(x => x.UserId);
@@ -51,7 +52,7 @@ namespace AuthTest.Features.Auth.Bans.Commands.Update
             updateBanCommand.UserId = 1;
             updateBanCommand.BanEndDate = DateTime.UtcNow.AddDays(14);
             updateBanCommand.IsPerma = false;
-            updateBanCommand.ReportID = Guid.NewGuid();
+            updateBanCommand.ReportID = RandomNumberGenerator.GetInt32(10);
             updateBanCommand.BanDetail = "TEST";
 
             TestValidationResult<UpdateBanCommand> testValidationResult = validationRules.TestValidate(updateBanCommand);
@@ -63,7 +64,7 @@ namespace AuthTest.Features.Auth.Bans.Commands.Update
             updateBanCommand.UserId = 1;
             updateBanCommand.BanStartDate = DateTime.UtcNow.AddDays(14);
             updateBanCommand.IsPerma = false;
-            updateBanCommand.ReportID = Guid.NewGuid();
+            updateBanCommand.ReportID = RandomNumberGenerator.GetInt32(10);
             updateBanCommand.BanDetail = "TEST";
 
             TestValidationResult<UpdateBanCommand> testValidationResult = validationRules.TestValidate(updateBanCommand);
@@ -75,7 +76,7 @@ namespace AuthTest.Features.Auth.Bans.Commands.Update
             updateBanCommand.UserId = 1;
             updateBanCommand.BanStartDate = DateTime.UtcNow.AddDays(14);
             updateBanCommand.BanEndDate = DateTime.UtcNow.AddDays(19);
-            updateBanCommand.ReportID = Guid.NewGuid();
+            updateBanCommand.ReportID = RandomNumberGenerator.GetInt32(10);
             updateBanCommand.BanDetail = "TEST";
 
             TestValidationResult<UpdateBanCommand> testValidationResult = validationRules.TestValidate(updateBanCommand);
@@ -84,7 +85,7 @@ namespace AuthTest.Features.Auth.Bans.Commands.Update
         [Fact]
         public async Task ThrowExceptionIfReportIDIsEmpty()
         {
-            updateBanCommand.Id = Guid.NewGuid();
+            updateBanCommand.Id = RandomNumberGenerator.GetInt32(10);
             updateBanCommand.UserId = 1;
             updateBanCommand.BanStartDate = DateTime.UtcNow.AddDays(14);
             updateBanCommand.BanEndDate = DateTime.UtcNow.AddDays(19);

@@ -6,7 +6,7 @@ namespace Application.Features.Bans.Commands.CreateBan
     {
         public CreateBanCommandValidator()
         {
-            RuleFor(x=>x.UserID).NotEmpty();
+            RuleFor(x=>x.SiteUserId).NotEmpty();
             RuleFor(x=>x.IsPerma).NotNull();
             RuleFor(x=>x.BanStartDate).NotEmpty();
             RuleFor(x=>x.BanEndDate).NotEmpty();

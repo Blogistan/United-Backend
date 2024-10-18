@@ -8,7 +8,7 @@ namespace Application.Features.Bans.Commands.CreateBan
 {
     public class CreateBanCommand : IRequest<CreateBanCommandResponse>
     {
-        public int UserID { get; set; }
+        public int SiteUserId { get; set; }
         public int ReportID { get; set; }
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }

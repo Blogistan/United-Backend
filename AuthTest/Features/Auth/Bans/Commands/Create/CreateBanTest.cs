@@ -5,6 +5,7 @@ using AuthTest.Mocks.FakeDatas;
 using AuthTest.Mocks.Repositories;
 using AutoMapper;
 using FluentValidation.TestHelper;
+using System.Security.Cryptography;
 using static Application.Features.Bans.Commands.CreateBan.CreateBanCommand;
 
 namespace AuthTest.Features.Auth.Bans.Commands.Create
@@ -39,18 +40,18 @@ namespace AuthTest.Features.Auth.Bans.Commands.Create
             createBanCommand.BanStartDate = DateTime.UtcNow;
             createBanCommand.BanEndDate = DateTime.UtcNow.AddDays(14);
             createBanCommand.IsPerma = false;
-            createBanCommand.ReportID = Guid.NewGuid();
+            createBanCommand.ReportID = RandomNumberGenerator.GetInt32(10);
 
             TestValidationResult<CreateBanCommand> testValidationResult = validationRules.TestValidate(createBanCommand);
-            testValidationResult.ShouldHaveValidationErrorFor(x => x.UserID);
+            testValidationResult.ShouldHaveValidationErrorFor(x => x.SiteUserId);
         }
         [Fact]
         public async Task ThrowExceptionIfBanStartDateIsEmpty()
         {
-            createBanCommand.UserID = 1;
+            createBanCommand.SiteUserId = 1;
             createBanCommand.BanEndDate = DateTime.UtcNow.AddDays(14);
             createBanCommand.IsPerma = false;
-            createBanCommand.ReportID = Guid.NewGuid();
+            createBanCommand.ReportID = RandomNumberGenerator.GetInt32(10);
             createBanCommand.BanDetail = "TEST";
 
             TestValidationResult<CreateBanCommand> testValidationResult = validationRules.TestValidate(createBanCommand);
@@ -59,10 +60,10 @@ namespace AuthTest.Features.Auth.Bans.Commands.Create
         [Fact]
         public async Task ThrowExceptionIfBanStartEndIsEmpty()
         {
-            createBanCommand.UserID = 1;
+            createBanCommand.SiteUserId = 1;
             createBanCommand.BanStartDate = DateTime.UtcNow.AddDays(14);
             createBanCommand.IsPerma = false;
-            createBanCommand.ReportID = Guid.NewGuid();
+            createBanCommand.ReportID = RandomNumberGenerator.GetInt32(10);
             createBanCommand.BanDetail = "TEST";
 
             TestValidationResult<CreateBanCommand> testValidationResult = validationRules.TestValidate(createBanCommand);
@@ -71,10 +72,10 @@ namespace AuthTest.Features.Auth.Bans.Commands.Create
         [Fact]
         public async Task ThrowExceptionIfPermaIsEmpty()
         {
-            createBanCommand.UserID = 1;
+            createBanCommand.SiteUserId = 1;
             createBanCommand.BanStartDate = DateTime.UtcNow.AddDays(14);
             createBanCommand.BanEndDate = DateTime.UtcNow.AddDays(19);
-            createBanCommand.ReportID = Guid.NewGuid();
+            createBanCommand.ReportID = RandomNumberGenerator.GetInt32(10);
             createBanCommand.BanDetail = "TEST";
 
             TestValidationResult<CreateBanCommand> testValidationResult = validationRules.TestValidate(createBanCommand);
@@ -83,7 +84,7 @@ namespace AuthTest.Features.Auth.Bans.Commands.Create
         [Fact]
         public async Task ThrowExceptionIfReportIDIsEmpty()
         {
-            createBanCommand.UserID = 1;
+            createBanCommand.SiteUserId = 1;
             createBanCommand.BanStartDate = DateTime.UtcNow.AddDays(14);
             createBanCommand.BanEndDate = DateTime.UtcNow.AddDays(19);
             createBanCommand.IsPerma = false;
