@@ -20,10 +20,9 @@ namespace UnitedAPI.Controllers
             GetListBansQueryResponse response = await Mediator.Send(getListBansQuery);
             return Ok(response);
         }
-        [HttpGet]
-        public async Task<IActionResult> GetListDynamicReport([FromQuery] PageRequest pageRequest, [FromQuery] DynamicQuery dynamicQuery)
+        [HttpPost]
+        public async Task<IActionResult> GetListDynamicBan([FromBody] GetListBansDynamicQuery getListBansDynamicQuery)
         {
-            GetListBansDynamicQuery getListBansDynamicQuery = new() { PageRequest = pageRequest, DynamicQuery = dynamicQuery };
             GetListBansDynamicQueryResponse response = await Mediator.Send(getListBansDynamicQuery);
             return Ok(response);
         }
