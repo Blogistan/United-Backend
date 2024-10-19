@@ -15,7 +15,7 @@ namespace Application.Features.Reports.Profiles
                 .ForMember(opt => opt.ReportType, src => src.MapFrom(x => x.ReportType.ReportTypeName))
                 .ForPath(opt => opt.User.UserName, src => src.MapFrom(x => x.SiteUser.User.FirstName + ' ' + x.SiteUser.User.LastName))
                 .ForPath(opt => opt.User.UserEmail, src => src.MapFrom(x => x.SiteUser.User.Email))
-                 .ForPath(opt => opt.User.UserId, src => src.MapFrom(x => x.SiteUser.User.Id))
+                 .ForPath(opt => opt.User.UserId, src => src.MapFrom(x => x.SiteUser.Id))
                     .ReverseMap();
 
 
