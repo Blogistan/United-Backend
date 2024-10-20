@@ -28,19 +28,19 @@ namespace UnitedAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateReport([FromBody] CreateBanCommand createBanCommand)
+        public async Task<IActionResult> CreateBan([FromBody] CreateBanCommand createBanCommand)
         {
             CreateBanCommandResponse response = await Mediator.Send(createBanCommand);
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateReport([FromBody] UpdateBanCommand updateBanCommand)
+        public async Task<IActionResult> UpdateBan([FromBody] UpdateBanCommand updateBanCommand)
         {
             UpdateBanCommandResponse response = await Mediator.Send(updateBanCommand);
             return Ok(response);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteReport([FromBody] DeleteBanCommand deleteBanCommand)
+        public async Task<IActionResult> DeleteBan([FromBody] DeleteBanCommand deleteBanCommand)
         {
             DeleteBanCommandResponse response = await Mediator.Send(deleteBanCommand);
             return Ok(response);
