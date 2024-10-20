@@ -1,10 +1,12 @@
-﻿namespace Application.Features.Reports.Dtos
+﻿using Application.Features.ReportTypes.Dtos;
+
+namespace Application.Features.Reports.Dtos
 {
     public record ReportListViewDto
     {
         public int Id { get; set; }
         public ReportUserListViewDto User { get; set; }
-        public string ReportType { get; set; } = string.Empty;
+        public ReportTypeListViewDto ReportType { get; set; } 
         public string ReportDescription { get; set; } = string.Empty;
     }
     public record ReportUserListViewDto
