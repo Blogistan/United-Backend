@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
 using Domain.Entities;
@@ -8,9 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Bans.Queries.GetListBans
 {
-    public class GetListBansQuery : IRequest<GetListBansQueryResponse>
+    public class GetListBansQuery : IRequest<GetListBansQueryResponse>,ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
+        public string[] Roles => ["Admin", "Moderator"];
 
         public class GetListBansQueryHandler : IRequestHandler<GetListBansQuery, GetListBansQueryResponse>
         {

@@ -1,12 +1,13 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Bans.Commands.UpdateBan
 {
-    public  class UpdateBanCommand:IRequest<UpdateBanCommandResponse>
+    public  class UpdateBanCommand:IRequest<UpdateBanCommandResponse>,ISecuredRequest
     {
         public int Id { get; set; }
         public int ReportID { get; set; }
@@ -15,6 +16,7 @@ namespace Application.Features.Bans.Commands.UpdateBan
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }
         public string? BanDetail { get; set; } = string.Empty;
+        public string[] Roles => ["Admin", "Moderator"];
 
         public class UpdateBanCommandHandler:IRequestHandler<UpdateBanCommand, UpdateBanCommandResponse>
         {

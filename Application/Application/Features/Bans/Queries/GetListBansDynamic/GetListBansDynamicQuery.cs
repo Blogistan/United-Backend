@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Core.Persistence.Paging;
@@ -9,10 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Bans.Queries.GetListBansDynamic
 {
-    public class GetListBansDynamicQuery : IRequest<GetListBansDynamicQueryResponse>
+    public class GetListBansDynamicQuery : IRequest<GetListBansDynamicQueryResponse>, ISecuredRequest
     {
         public DynamicQuery DynamicQuery { get; set; }
         public PageRequest PageRequest { get; set; }
+        public string[] Roles => ["Admin", "Moderator"];
 
         public class GetListBansDynamicQueryHandler : IRequestHandler<GetListBansDynamicQuery, GetListBansDynamicQueryResponse>
         {

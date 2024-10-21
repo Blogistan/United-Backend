@@ -1,13 +1,16 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Bans.Commands.DeleteBan
 {
-    public class DeleteBanCommand : IRequest<DeleteBanCommandResponse>
+    public class DeleteBanCommand : IRequest<DeleteBanCommandResponse>,ISecuredRequest
     {
         public int ReportID { get; set; }
+        private int MyProperty { get; set; }
+        public string[] Roles => ["Admin", "Moderator"];
 
         public class DeleteBanCommandHandler : IRequestHandler<DeleteBanCommand, DeleteBanCommandResponse>
         {
