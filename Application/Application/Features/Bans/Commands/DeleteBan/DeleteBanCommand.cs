@@ -10,7 +10,7 @@ namespace Application.Features.Bans.Commands.DeleteBan
     {
         public int ReportID { get; set; }
         private int MyProperty { get; set; }
-        public string[] Roles => ["Admin", "Moderator"];
+        string[] ISecuredRequest.Roles => ["Admin", "Moderator"];
 
         public class DeleteBanCommandHandler : IRequestHandler<DeleteBanCommand, DeleteBanCommandResponse>
         {

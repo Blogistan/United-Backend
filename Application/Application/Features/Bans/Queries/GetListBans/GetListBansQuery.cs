@@ -12,7 +12,7 @@ namespace Application.Features.Bans.Queries.GetListBans
     public class GetListBansQuery : IRequest<GetListBansQueryResponse>,ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
-        public string[] Roles => ["Admin", "Moderator"];
+        string[] ISecuredRequest.Roles  => ["Admin", "Moderator"];
 
         public class GetListBansQueryHandler : IRequestHandler<GetListBansQuery, GetListBansQueryResponse>
         {

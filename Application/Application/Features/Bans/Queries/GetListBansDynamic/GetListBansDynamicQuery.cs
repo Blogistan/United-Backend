@@ -14,7 +14,7 @@ namespace Application.Features.Bans.Queries.GetListBansDynamic
     {
         public DynamicQuery DynamicQuery { get; set; }
         public PageRequest PageRequest { get; set; }
-        public string[] Roles => ["Admin", "Moderator"];
+        string[] ISecuredRequest.Roles => ["Admin", "Moderator"];
 
         public class GetListBansDynamicQueryHandler : IRequestHandler<GetListBansDynamicQuery, GetListBansDynamicQueryResponse>
         {

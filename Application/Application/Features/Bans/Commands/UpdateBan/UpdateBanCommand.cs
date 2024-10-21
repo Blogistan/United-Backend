@@ -16,7 +16,7 @@ namespace Application.Features.Bans.Commands.UpdateBan
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }
         public string? BanDetail { get; set; } = string.Empty;
-        public string[] Roles => ["Admin", "Moderator"];
+        string[] ISecuredRequest.Roles => ["Admin", "Moderator"];
 
         public class UpdateBanCommandHandler:IRequestHandler<UpdateBanCommand, UpdateBanCommandResponse>
         {
