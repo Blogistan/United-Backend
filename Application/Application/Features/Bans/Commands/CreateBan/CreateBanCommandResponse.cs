@@ -3,7 +3,7 @@ using Core.Application.Responses;
 
 namespace Application.Features.Bans.Commands.CreateBan
 {
-    public class CreateBanCommandResponse : IResponse
+    public record CreateBanCommandResponse : IResponse
     {
         public int Id { get; set; }
         public SiteUserListViewDto User { get; set; }

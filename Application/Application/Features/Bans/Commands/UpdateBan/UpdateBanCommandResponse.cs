@@ -2,7 +2,7 @@
 
 namespace Application.Features.Bans.Commands.UpdateBan
 {
-    public class UpdateBanCommandResponse:IResponse
+    public record UpdateBanCommandResponse :IResponse
     {
         public int Id { get; set; }
         public int ReportID { get; set; }

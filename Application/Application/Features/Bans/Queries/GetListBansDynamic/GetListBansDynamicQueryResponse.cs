@@ -3,7 +3,7 @@ using Core.Application.Responses;
 
 namespace Application.Features.Bans.Queries.GetListBansDynamic
 {
-    public class GetListBansDynamicQueryResponse : IResponse
+    public record GetListBansDynamicQueryResponse : IResponse
     {
         public List<BanListViewDto> Items { get; set; }
 

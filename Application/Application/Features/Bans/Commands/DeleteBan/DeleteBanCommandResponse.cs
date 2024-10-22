@@ -2,16 +2,16 @@
 
 namespace Application.Features.Bans.Commands.DeleteBan
 {
-    public class DeleteBanCommandResponse:IResponse
+    public record DeleteBanCommandResponse :IResponse
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string UserName { get; set; } = string.Empty;
         public bool IsPerma { get; set; }
         public DateTime BanStartDate { get; set; }
         public DateTime BanEndDate { get; set; }
         public string? BanDetail { get; set; } = string.Empty;
 
-        public DeleteBanCommandResponse(Guid id, string userName, bool isPerma, DateTime banStartDate, DateTime banEndDate, string? banDetail)
+        public DeleteBanCommandResponse(int id, string userName, bool isPerma, DateTime banStartDate, DateTime banEndDate, string? banDetail)
         {
             this.Id = id;
             this.UserName = userName;
