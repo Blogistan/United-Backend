@@ -27,7 +27,7 @@ namespace Application.Features.Auth.Commands.GoogleSignIn
             public async Task<LoginResponse> Handle(GoogleSignInCommand request, CancellationToken cancellationToken)
             {
                 var payload = await authService.GoogleSignIn(request.IdToken);
-                var user = await userRepository.GetAsync(x => x.Email == payload.Email && x.IsActive == true);
+                var user = await userRepository.GetAsync(x => x.Email == payload.Email);
                 var result = await authService.CreateUserExternalAsync(user, payload.Email, payload.Name, payload.FamilyName, payload.Picture, request.IpAdress,Core.Security.Enums.LoginProviderType.Google,payload.JwtId);
                 return new LoginResponse
                 {

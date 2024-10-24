@@ -2,7 +2,7 @@
 {
     public static class AuthBusinessMessage
     {
-        public const string AuthenticatorCodeSubject = "You have to enter code for login - RentACar";
+        public const string AuthenticatorCodeSubject = "You have to enter code for login";
         public const string InvalidAuthenticatorCode = "Invlaid code.";
         public const string UserNotFound = "User not found.";
         public const string InvlaidPassword = "User email or password is invlaid";
