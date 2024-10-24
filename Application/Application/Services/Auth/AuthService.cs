@@ -1,6 +1,6 @@
 ﻿using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Constants;
-using Application.Features.Auth.Dtos;
+using Application.Features.Auth.Rules;
 using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Mailing;
@@ -21,7 +21,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using OAuth;
-using Serilog.Sinks.Graylog.Core.Extensions;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
@@ -43,11 +42,12 @@ namespace Application.Services.Auth
         private readonly HttpClient httpClient;
         private readonly IConfiguration configuration;
         private readonly IUserLoginRepository userLoginRepository;
+        private readonly AuthBussinessRules authBussinessRules;
 
         public AuthService(ITokenHelper tokenHelper, IRefreshTokenRepository refreshTokenRepository, ISiteUserRepository siteUserRepository, IEmailAuthenticatorRepository emailAuthenticatorRepository, IUserOperationClaimRepository userOperationClaimRepository, IMailService mailService,
             IOtpAuthenticatorHelper otpAuthenticatorHelper,
             IEmailAuthenticatorHelper emailAuthenticatorHelper,
-            IOtpAuthenticatorRepository otpAuthenticatorRepository, HttpClient httpClient, IConfiguration configuration, IUserLoginRepository userLoginRepository)
+            IOtpAuthenticatorRepository otpAuthenticatorRepository, HttpClient httpClient, IConfiguration configuration, IUserLoginRepository userLoginRepository, AuthBussinessRules authBussinessRules)
         {
             this.tokenHelper = tokenHelper;
             this.mailService = mailService;
@@ -61,6 +61,7 @@ namespace Application.Services.Auth
             this.httpClient = httpClient;
             this.configuration = configuration;
             this.userLoginRepository = userLoginRepository;
+            this.authBussinessRules = authBussinessRules;
         }
 
 
@@ -235,18 +236,18 @@ namespace Application.Services.Auth
                     PasswordHash = new byte[0],
                     PasswordSalt = new byte[0],
                     AuthenticatorType = AuthenticatorType.None,
-                    IsActive=true
+                    IsActive = true
                 };
 
                 SiteUser siteUser = new()
-                {                   
+                {
                     IsVerified = false,
                     ProfileImageUrl = picture,
-                    User= createUser
+                    User = createUser
                 };
 
                 var createdSiteUser = await siteUserRepository.AddAsync(siteUser);
-                var createdUser=await siteUserRepository.GetAsync(x=>x.Id==createdSiteUser.Id,include:x=>x.Include(x=>x.User));
+                var createdUser = await siteUserRepository.GetAsync(x => x.Id == createdSiteUser.Id, include: x => x.Include(x => x.User));
                 await userOperationClaimRepository.AddAsync(new UserOperationClaim { UserId = createdUser.User.Id, OperationClaimId = 3 });
                 accessToken = await CreateAccessToken(createdUser.User);
                 refreshToken = CreateRefreshToken(createdUser.User, ipAdress);
@@ -271,6 +272,10 @@ namespace Application.Services.Auth
             }
             else
             {
+                await authBussinessRules.IsUserActive(user.Id);
+
+                await authBussinessRules.IsUserTimeOut(user.Id);
+
                 accessToken = await CreateAccessToken(user);
                 refreshToken = CreateRefreshToken(user, ipAdress);
                 await AddRefreshToken(refreshToken);
