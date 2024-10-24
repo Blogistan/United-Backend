@@ -2,7 +2,7 @@
 
 namespace Application.Features.ReportTypes.Commands.DeleteReportType
 {
-    public class DeleteReportTypeCommandResponse:IResponse
+    public record DeleteReportTypeCommandResponse :IResponse
     {
         public int Id { get; set; }
         public string ReportTypeName { get; set; } = string.Empty;

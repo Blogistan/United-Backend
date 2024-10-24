@@ -2,7 +2,7 @@
 
 namespace Application.Features.Categories.Commands.CreateCategory
 {
-    public class CreateCategoryResponse:IResponse
+    public record CreateCategoryResponse :IResponse
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }

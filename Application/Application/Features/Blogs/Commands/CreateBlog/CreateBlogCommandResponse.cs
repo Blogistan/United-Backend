@@ -2,7 +2,7 @@
 
 namespace Application.Features.Blogs.Commands.CreateBlog
 {
-    public class CreateBlogCommandResponse:IResponse
+    public record CreateBlogCommandResponse:IResponse
     {
         public int Id { get; set; }
         public string Title { get; set; }

@@ -3,7 +3,7 @@ using Core.Application.Responses;
 
 namespace Application.Features.ReportTypes.Queries.GetListReportTypes
 {
-    public class GetListReportTypeQueryResponse:IResponse
+    public record GetListReportTypeQueryResponse :IResponse
     {
         public List<ReportTypeListViewDto> Items { get; set; }
 

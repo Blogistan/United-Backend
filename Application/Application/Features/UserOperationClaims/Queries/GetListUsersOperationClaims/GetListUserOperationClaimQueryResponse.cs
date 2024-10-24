@@ -3,7 +3,7 @@ using Core.Application.Responses;
 
 namespace Application.Features.UserOperationClaims.Queries.GetListUsersOperationClaims
 {
-    public class GetListUserOperationClaimQueryResponse:IResponse
+    public record GetListUserOperationClaimQueryResponse :IResponse
     {
         public List<UserOperationClaimListViewDto> Items { get; set; }
 

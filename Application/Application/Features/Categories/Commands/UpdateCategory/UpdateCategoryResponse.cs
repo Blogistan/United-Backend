@@ -2,7 +2,7 @@
 
 namespace Application.Features.Categories.Commands.UpdateCategory
 {
-    public class UpdateCategoryResponse:IResponse
+    public record UpdateCategoryResponse :IResponse
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }

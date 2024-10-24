@@ -2,7 +2,7 @@
 
 namespace Application.Features.SiteUsers.Commands.UpdateSiteUser
 {
-    public class UpdateSiteUserCommandResponse:IResponse
+    public record UpdateSiteUserCommandResponse :IResponse
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

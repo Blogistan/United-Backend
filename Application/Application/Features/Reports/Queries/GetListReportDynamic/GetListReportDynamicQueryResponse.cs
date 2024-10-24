@@ -3,7 +3,7 @@ using Core.Application.Responses;
 
 namespace Application.Features.Reports.Queries.GetListReportDynamic
 {
-    public class GetListReportDynamicQueryResponse:IResponse
+    public record GetListReportDynamicQueryResponse :IResponse
     {
         public IList<ReportListViewDto> Items { get; set; }
 

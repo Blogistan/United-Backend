@@ -2,7 +2,7 @@
 
 namespace Application.Features.SiteUsers.Queries.GetById
 {
-    public class GetByIdSiteUserQueryResponse
+    public record GetByIdSiteUserQueryResponse
     {
         public SiteUserListViewDto SiteUserListViewDto { get; set; }
     }

@@ -2,7 +2,7 @@
 
 namespace Application.Features.Comments.Commands.DeleteComment
 {
-    public class DeleteCommentCommandResponse : IResponse
+    public record DeleteCommentCommandResponse : IResponse
     {
         public int Id { get; set; }
         public int? BlogId { get; set; }

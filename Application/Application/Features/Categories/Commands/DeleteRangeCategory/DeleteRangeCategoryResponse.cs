@@ -3,7 +3,7 @@ using Core.Application.Responses;
 
 namespace Application.Features.Categories.Commands.DeleteRangeCategory
 {
-    public class DeleteRangeCategoryResponse:IResponse
+    public record DeleteRangeCategoryResponse :IResponse
     {
         public List<CategoryViewDto> CategoryViewDtos { get; set; }
 

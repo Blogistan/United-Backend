@@ -2,7 +2,7 @@
 
 namespace Application.Features.Contents.Commands.UpdateContent
 {
-    public class UpdateContentCommandResponse : IResponse
+    public record UpdateContentCommandResponse : IResponse
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;

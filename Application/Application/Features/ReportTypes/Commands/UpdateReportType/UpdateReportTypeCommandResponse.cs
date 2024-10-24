@@ -2,7 +2,7 @@
 
 namespace Application.Features.ReportTypes.Commands.UpdateReportType
 {
-    public class UpdateReportTypeCommandResponse:IResponse
+    public record UpdateReportTypeCommandResponse :IResponse
     {
         public int Id { get; set; }
         public string ReportTypeName { get; set; } = string.Empty;

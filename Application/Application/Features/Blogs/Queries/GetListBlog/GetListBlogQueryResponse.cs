@@ -3,7 +3,7 @@ using Core.Application.Responses;
 
 namespace Application.Features.Blogs.Queries.GetListBlog
 {
-    public class GetListBlogQueryResponse:IResponse
+    public record GetListBlogQueryResponse :IResponse
     {
         public List<BlogListViewDto> Items { get; set; }
 

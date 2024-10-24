@@ -2,7 +2,7 @@
 
 namespace Application.Features.SiteUsers.Commands.DeleteSiteUser
 {
-    public class DeleteSiteUserCommandResponse:IResponse
+    public record DeleteSiteUserCommandResponse :IResponse
     {
         public int Id { get; set; }
     }

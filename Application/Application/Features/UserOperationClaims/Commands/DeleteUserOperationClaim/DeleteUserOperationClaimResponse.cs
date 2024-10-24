@@ -3,7 +3,7 @@ using Core.Application.Responses;
 
 namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationClaim
 {
-    public class DeleteUserOperationClaimResponse:IResponse
+    public record DeleteUserOperationClaimResponse :IResponse
     {
         public List<UserOperationClaimListViewDto> Items { get; set; }
 

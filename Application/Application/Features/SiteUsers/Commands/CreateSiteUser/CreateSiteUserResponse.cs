@@ -2,7 +2,7 @@
 
 namespace Application.Features.SiteUsers.Commands.CreateSiteUser
 {
-    public class CreateSiteUserResponse : IResponse
+    public record CreateSiteUserResponse : IResponse
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

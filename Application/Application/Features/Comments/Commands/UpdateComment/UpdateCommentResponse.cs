@@ -2,7 +2,7 @@
 
 namespace Application.Features.Comments.Commands.UpdateComment
 {
-    public class UpdateCommentResponse:IResponse
+    public record UpdateCommentResponse :IResponse
     {
         public int Id { get; set; }
         public string? UserName { get; set; }

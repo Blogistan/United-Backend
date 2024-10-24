@@ -2,7 +2,7 @@
 
 namespace Application.Features.Reports.Commands.CreateReport
 {
-    public class CreateReportCommandResponse:IResponse
+    public record CreateReportCommandResponse :IResponse
     {
         public int Id { get; set; }
         public string UserName { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Application.Features.OperationClaims.Commands.DeleteOperationClaim
 {
-    public class DeleteOperationClaimResponse:IResponse
+    public record DeleteOperationClaimResponse :IResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }

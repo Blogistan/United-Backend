@@ -2,7 +2,7 @@
 
 namespace Application.Features.Categories.Commands.DeleteCategory
 {
-    public class DeleteCategoryResponse:IResponse
+    public record DeleteCategoryResponse :IResponse
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }

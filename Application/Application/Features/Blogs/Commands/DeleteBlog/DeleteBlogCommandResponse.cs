@@ -2,7 +2,7 @@
 
 namespace Application.Features.Blogs.Commands.DeleteBlog
 {
-    public class DeleteBlogCommandResponse:IResponse
+    public record DeleteBlogCommandResponse :IResponse
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;

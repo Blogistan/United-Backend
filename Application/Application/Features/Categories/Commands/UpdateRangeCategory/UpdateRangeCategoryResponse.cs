@@ -3,7 +3,7 @@ using Core.Application.Responses;
 
 namespace Application.Features.Categories.Commands.UpdateRangeCategory
 {
-    public class UpdateRangeCategoryResponse:IResponse
+    public record UpdateRangeCategoryResponse :IResponse
     {
         public List<CategoryViewDto> CategoryViewDtos { get; set; }
 

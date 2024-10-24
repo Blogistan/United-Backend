@@ -2,7 +2,7 @@
 
 namespace Application.Features.ReportTypes.Commands.CreateReportType
 {
-    public class CreateReportTypeCommandResponse:IResponse
+    public record CreateReportTypeCommandResponse :IResponse
     {
         public int Id { get; set; }
         public string ReportTypeName { get; set; } = string.Empty;

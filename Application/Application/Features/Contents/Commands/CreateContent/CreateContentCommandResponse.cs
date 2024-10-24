@@ -2,7 +2,7 @@
 
 namespace Application.Features.Contents.Commands.CreateContent
 {
-    public class CreateContentCommandResponse : IResponse
+    public record CreateContentCommandResponse : IResponse
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;

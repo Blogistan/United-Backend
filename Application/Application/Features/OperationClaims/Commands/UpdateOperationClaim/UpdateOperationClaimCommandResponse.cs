@@ -2,7 +2,7 @@
 
 namespace Application.Features.OperationClaims.Commands.UpdateOperationClaim
 {
-    public class UpdateOperationClaimCommandResponse : IResponse
+    public record UpdateOperationClaimCommandResponse : IResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }

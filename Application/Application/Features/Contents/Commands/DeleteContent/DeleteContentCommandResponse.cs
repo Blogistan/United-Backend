@@ -2,7 +2,7 @@
 
 namespace Application.Features.Contents.Commands.DeleteContent
 {
-    public class DeleteContentCommandResponse:IResponse
+    public record DeleteContentCommandResponse :IResponse
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
