@@ -58,8 +58,9 @@ namespace AuthTest.Features.Auth.Commands.RefreshToken
 
             #endregion
             HttpClient httpClient = new HttpClient();
+            AuthBussinessRules authBussinessRules = new AuthBussinessRules(,siteUserRepository);
             IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration,userLoginRepository);
-            //AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
+            
 
             this.mediator = mediator;
             this.refreshCommand = new RefreshCommand();

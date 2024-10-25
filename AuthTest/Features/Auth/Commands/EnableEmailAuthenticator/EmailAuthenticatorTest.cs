@@ -28,7 +28,7 @@ namespace AuthTest.Features.Auth.Commands.EnableEmailAuthenticator
         private readonly EnableEmailAuthenticatorCommandValidator validationRules;
         private readonly IConfiguration configuration;
         public EmailAuthenticatorTest(RefreshTokenFakeData refreshTokenFakeData,
-            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData,UserLoginFakeData userLoginFakeData)
+            SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData,UserLoginFakeData userLoginFakeData, AuthBussinessRules authBussinessRules)
         {
 
             #region Mock Repositories
@@ -54,7 +54,7 @@ namespace AuthTest.Features.Auth.Commands.EnableEmailAuthenticator
 
             #endregion
             HttpClient httpClient = new HttpClient();
-            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration, userLoginRepository);
+            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration, userLoginRepository, authBussinessRules);
             //AuthBussinessRules authBussinessRules = new AuthBussinessRules(siteUserRepository);
 
 

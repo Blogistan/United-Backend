@@ -19,6 +19,7 @@ using static Application.Features.OperationClaims.Commands.DeleteOperationClaim.
 using FluentValidation.TestHelper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using AuthTest.Mocks.Repositories;
+using Application.Features.Auth.Rules;
 
 namespace AuthTest.Features.OperationClaim.Commands.Delete
 {
