@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Bans.Commands.CreateBan
 {
-    public class CreateBanCommand : IRequest<CreateBanCommandResponse>,ISecuredRequest
+    public class CreateBanCommand : IRequest<CreateBanCommandResponse>, ISecuredRequest
     {
         public int SiteUserId { get; set; }
         public int ReportID { get; set; }
@@ -42,8 +42,17 @@ namespace Application.Features.Bans.Commands.CreateBan
 
                 await siteUserRepository.UpdateAsync(user);
                 var createdBan = await banRepository.GetAsync(x => x.Id == AddedBan.Id, include: x => x.Include(x => x.SiteUser).ThenInclude(x => x.User));
-                var response = mapper.Map<CreateBanCommandResponse>(createdBan);
+                //var response = mapper.Map<CreateBanCommandResponse>(createdBan);
 
+                CreateBanCommandResponse response = new()
+                {
+                    Id = createdBan.Id,
+                    User = new() { Id = createdBan.Id, FirstName = createdBan.SiteUser.User.FirstName, LastName = createdBan.SiteUser.User.LastName, Biography = createdBan.SiteUser.Biography, Email = createdBan.SiteUser.User.Email, IsVerified = (bool)createdBan.SiteUser.IsVerified, ProfileImageUrl = createdBan.SiteUser.ProfileImageUrl },
+                    BanDetail = createdBan.BanDetail,
+                    BanStartDate = createdBan.BanStartDate,
+                    BanEndDate = createdBan.BanEndDate,
+                    IsPerma = createdBan.IsPerma
+                };
                 return response;
 
             }

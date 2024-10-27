@@ -21,5 +21,9 @@ namespace Application.Features.Bans.Commands.CreateBan
             this.BanEndDate = banEndDate;
             this.BanDetail = banDetail;
         }
+
+        public CreateBanCommandResponse()
+        {
+        }
     }
 }
