@@ -1,4 +1,5 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Bans.Commands.UpdateBan;
+using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using MediatR;
@@ -32,10 +33,20 @@ namespace Application.Features.Bans.Commands.DeleteBan
                 user.User.IsActive = true;
                 await siteUserRepository.UpdateAsync(user);
                 var deletedBan = await banRepository.DeleteAsync(ban);
+                var deletedBanResponse = await banRepository.GetAsync(x => x.Id == deletedBan.Id, include: x => x.Include(x => x.SiteUser).ThenInclude(x => x.User));
+                //DeleteBanCommandResponse deleteBanCommandResponse = mapper.Map<DeleteBanCommandResponse>(deletedBan);
 
-                DeleteBanCommandResponse deleteBanCommandResponse = mapper.Map<DeleteBanCommandResponse>(deletedBan);
+                DeleteBanCommandResponse response = new()
+                {
+                    Id = deletedBanResponse.Id,
+                    User = new() { Id = deletedBanResponse.Id, FirstName = deletedBanResponse.SiteUser.User.FirstName, LastName = deletedBanResponse.SiteUser.User.LastName, Biography = deletedBanResponse.SiteUser.Biography, Email = deletedBanResponse.SiteUser.User.Email, IsVerified = (bool)deletedBanResponse.SiteUser.IsVerified, ProfileImageUrl = deletedBanResponse.SiteUser.ProfileImageUrl },
+                    BanDetail = deletedBanResponse.BanDetail,
+                    BanStartDate = deletedBanResponse.BanStartDate,
+                    BanEndDate = deletedBanResponse.BanEndDate,
+                    IsPerma = deletedBanResponse.IsPerma
+                };
 
-                return deleteBanCommandResponse;
+                return response;
             }
         }
     }
