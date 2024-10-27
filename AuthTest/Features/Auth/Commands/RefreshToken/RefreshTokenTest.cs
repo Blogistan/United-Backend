@@ -31,7 +31,7 @@ namespace AuthTest.Features.Auth.Commands.RefreshToken
         private readonly IMediator mediator;
 
         public RefreshTokenTest(RefreshTokenFakeData refreshTokenFakeData,
-           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, IMediator mediator,UserLoginFakeData userLoginFakeData)
+           SiteUserFakeData siteUserFakeData, OperationClaimFakeData operationClaimFakeData, UserOperationClaimFakeData userOperationClaimFakeData, BanFakeData banFakeData, IMediator mediator,UserLoginFakeData userLoginFakeData, UserFakeData userFakeData)
         {
 
             #region Mock Repositories
@@ -41,7 +41,8 @@ namespace AuthTest.Features.Auth.Commands.RefreshToken
             IEmailAuthenticatorRepository userEmailAuthenticatorRepository =
             MockEmailAuthenticatorRepository.GetEmailAuthenticatorRepositoryMock();
             IOtpAuthenticatorRepository otpAuthenticatorRepository = MockOtpAuthRepository.GetOtpAuthenticatorRepository();
-            ISiteUserRepository siteUserRepository = new MockUserRepository(siteUserFakeData, banFakeData).GetSiteUserRepository();
+            ISiteUserRepository siteUserRepository = new MockSiteUserRepository(siteUserFakeData, banFakeData).GetSiteUserRepository();
+            IUserRepository userRepository = new MockUserRepository(userFakeData).GetUserRepository();
             IUserLoginRepository userLoginRepository = MockUserLoginRepository.GetUserLoginRepository(userLoginFakeData).Object;
 
             #endregion
@@ -58,8 +59,8 @@ namespace AuthTest.Features.Auth.Commands.RefreshToken
 
             #endregion
             HttpClient httpClient = new HttpClient();
-            AuthBussinessRules authBussinessRules = new AuthBussinessRules(,siteUserRepository);
-            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration,userLoginRepository);
+            AuthBussinessRules authBussinessRules = new AuthBussinessRules(userRepository, siteUserRepository);
+            IAuthService authService = new AuthService(tokenHelper, refreshTokenRepository, siteUserRepository, userEmailAuthenticatorRepository, userOperationClaimRepository, mailService, otpAuthenticatorHelper, emailAuthenticatorHelper, otpAuthenticatorRepository, httpClient, configuration,userLoginRepository, authBussinessRules);
             
 
             this.mediator = mediator;
