@@ -20,7 +20,7 @@ namespace AuthTest.Features.Auth.Bans.Commands.Create
         private readonly CreateBanCommandHandler createBanCommandHandler;
         private readonly CreateBanCommandValidator validationRules;
 
-        public CreateBanTest(BanFakeData banFakeData, SiteUserFakeData siteUserFakeData, ReportFakeData reportFakeData)
+        public CreateBanTest(BanFakeData banFakeData, SiteUserFakeData siteUserFakeData, ReportFakeData reportFakeData,IRefreshTokenRepository refreshTokenRepository)
         {
             this.banFakeData = banFakeData;
             this.siteUserFakeData = siteUserFakeData;
@@ -31,7 +31,7 @@ namespace AuthTest.Features.Auth.Bans.Commands.Create
             IMapper mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<MappingProfiles>()));
 
             this.createBanCommand = new CreateBanCommand();
-            this.createBanCommandHandler = new CreateBanCommandHandler(banRepository, mapper, siteUserRepository);
+            this.createBanCommandHandler = new CreateBanCommandHandler(banRepository, mapper, siteUserRepository, refreshTokenRepository);
             this.validationRules = new CreateBanCommandValidator();
         }
         [Fact]
