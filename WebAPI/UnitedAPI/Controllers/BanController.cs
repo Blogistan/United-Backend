@@ -4,7 +4,6 @@ using Application.Features.Bans.Commands.UpdateBan;
 using Application.Features.Bans.Queries.GetListBans;
 using Application.Features.Bans.Queries.GetListBansDynamic;
 using Core.Application.Requests;
-using Core.Persistence.Dynamic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace UnitedAPI.Controllers
