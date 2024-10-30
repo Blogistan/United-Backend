@@ -43,6 +43,7 @@ namespace Application
                     configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
                     configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
                     configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
+                    configuration.AddOpenBehavior(typeof(BanCheckBehavior<,>));
                 }
             );
 
