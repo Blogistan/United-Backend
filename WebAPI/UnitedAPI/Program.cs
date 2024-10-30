@@ -171,7 +171,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseMiddleware<UserStatusMiddleware>();
 app.UseHttpsRedirection();
 app.UseRateLimiter();
 app.UseAuthorization();
