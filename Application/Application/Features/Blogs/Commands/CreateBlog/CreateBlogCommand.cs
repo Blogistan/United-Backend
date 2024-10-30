@@ -24,7 +24,7 @@ namespace Application.Features.Blogs.Commands.CreateBlog
         public int ShareCount => 0;
         public int ReadCount => 0;
 
-         string[] ISecuredRequest.Roles => new string[] {"Admin","Moderator","Blogger"};
+         string[] ISecuredRequest.Roles => new string[] {"Admin","Moderator","User"};
 
 
 
