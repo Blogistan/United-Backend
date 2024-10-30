@@ -34,7 +34,7 @@ public class BanCheckBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest,
     }
     private async Task<bool> CheckIfUserIsBannedAsync(IBanRepository banRepository, int userId)
     {
-        var ban = await banRepository.GetAsync(x => x.ReportId == userId);
+        var ban = await banRepository.GetAsync(x => x.SiteUserId == userId);
 
         if (ban != null && (ban.IsPerma || (ban.BanStartDate <= DateTime.UtcNow && ban.BanEndDate >= DateTime.UtcNow)))
             return true;
