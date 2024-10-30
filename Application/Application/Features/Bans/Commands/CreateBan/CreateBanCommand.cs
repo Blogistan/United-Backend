@@ -23,13 +23,11 @@ namespace Application.Features.Bans.Commands.CreateBan
             private readonly IBanRepository banRepository;
             private readonly ISiteUserRepository siteUserRepository;
             private readonly IMapper mapper;
-            private readonly IRefreshTokenRepository refreshTokenRepository;
-            public CreateBanCommandHandler(IBanRepository banRepository, IMapper mapper, ISiteUserRepository siteUserRepository, IRefreshTokenRepository refreshTokenRepository)
+            public CreateBanCommandHandler(IBanRepository banRepository, IMapper mapper, ISiteUserRepository siteUserRepository)
             {
                 this.banRepository = banRepository;
                 this.mapper = mapper;
                 this.siteUserRepository = siteUserRepository;
-                this.refreshTokenRepository = refreshTokenRepository;
             }
 
             public async Task<CreateBanCommandResponse> Handle(CreateBanCommand request, CancellationToken cancellationToken)
@@ -45,10 +43,6 @@ namespace Application.Features.Bans.Commands.CreateBan
                 await siteUserRepository.UpdateAsync(user);
                 var createdBan = await banRepository.GetAsync(x => x.Id == AddedBan.Id, include: x => x.Include(x => x.SiteUser).ThenInclude(x => x.User));
                 //var response = mapper.Map<CreateBanCommandResponse>(createdBan);
-
-                var activeTokens = await refreshTokenRepository.GetListAsync(predicate:x=>x.UserId==user.Id && x.Expires>DateTime.UtcNow);
-
-                await refreshTokenRepository.DeleteRangeAsync(activeTokens.Items);
 
                 CreateBanCommandResponse response = new()
                 {
