@@ -49,4 +49,10 @@ public class HttpExceptionHandler : ExceptionHandler
         string details = new InternalServerErrorProblemDetails(exception.Message).AsJson();
         return Response.WriteAsync(details);
     }
+    protected override Task HandleException(BanException banException)
+    {
+        Response.StatusCode = StatusCodes.Status403Forbidden;
+        string details = new BanProblemDetails(banException.Message).AsJson();
+        return Response.WriteAsync(details);
+    }
 }
