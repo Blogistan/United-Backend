@@ -26,7 +26,7 @@ public class BanCheckBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest,
 
             if (isBanned)
             {
-                throw new AuthorizationException("User banned.");
+                throw new BanException("User banned.");
             }
         }
 
