@@ -10,6 +10,7 @@ public abstract class ExceptionHandler
             BusinessException businessException => HandleException(businessException),
             ValidationException validationException => HandleException(validationException),
             AuthorizationException authorizationException => HandleException(authorizationException),
+            BanException banException => HandleException(banException),
             NotFoundException notFoundException => HandleException(notFoundException),
             _ => HandleException(exception)
         };
