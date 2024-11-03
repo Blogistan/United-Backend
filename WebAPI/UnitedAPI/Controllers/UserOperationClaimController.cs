@@ -20,10 +20,9 @@ namespace UnitedAPI.Controllers
             GetListUserOperationClaimQueryResponse response = await Mediator.Send(getListOperationClaimQuery);
             return Ok(response);
         }
-        [HttpGet]
-        public async Task<IActionResult> GetListDynamic([FromQuery] PageRequest pageRequest, [FromQuery] DynamicQuery dynamicQuery)
+        [HttpPost]
+        public async Task<IActionResult> GetListDynamic([FromBody] GetListUserOperationClaimDynamicQuery getListUserOperationClaimDynamicQuery)
         {
-            GetListUserOperationClaimDynamicQuery getListUserOperationClaimDynamicQuery = new() { PageRequest = pageRequest, DynamicQuery = dynamicQuery };
             GetListUserOperationClaimDynamicQueryResponse response = await Mediator.Send(getListUserOperationClaimDynamicQuery);
             return Ok(response);
         }

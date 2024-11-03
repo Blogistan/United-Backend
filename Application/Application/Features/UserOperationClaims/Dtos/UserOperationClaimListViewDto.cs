@@ -6,6 +6,7 @@ namespace Application.Features.UserOperationClaims.Dtos
     {
         public int UserID { get; set; }
         public string UserName { get; set; } = string.Empty;
+        public string Email { get; set; }
         public List<OperationClaimListViewDto> Claims { get; set; }
     }
 }
