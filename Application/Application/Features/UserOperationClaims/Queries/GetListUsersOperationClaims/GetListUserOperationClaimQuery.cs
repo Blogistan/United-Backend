@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
 using Core.Security.Entities;
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.UserOperationClaims.Queries.GetListUsersOperationClaims
 {
-    public class GetListUserOperationClaimQuery : IRequest<GetListUserOperationClaimQueryResponse>
+    public class GetListUserOperationClaimQuery : IRequest<GetListUserOperationClaimQueryResponse>,ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
+        string[] ISecuredRequest.Roles => ["Admin", "Moderator"];
 
         public class GetListUserOperationClaimQueryHandler : IRequestHandler<GetListUserOperationClaimQuery, GetListUserOperationClaimQueryResponse>
         {

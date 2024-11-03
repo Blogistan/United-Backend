@@ -1,19 +1,20 @@
 ﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Core.Persistence.Paging;
 using Core.Security.Entities;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.UserOperationClaims.Queries.GetListUsesrOperationClaimDynamic
 {
-    public class GetListUserOperationClaimDynamicQuery : IRequest<GetListUserOperationClaimDynamicQueryResponse>
+    public class GetListUserOperationClaimDynamicQuery : IRequest<GetListUserOperationClaimDynamicQueryResponse>, ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
         public DynamicQuery DynamicQuery { get; set; }
+        string[] ISecuredRequest.Roles => ["Admin"];
 
         public class GetListUserOperationClaimByIdQueryHandler : IRequestHandler<GetListUserOperationClaimDynamicQuery, GetListUserOperationClaimDynamicQueryResponse>
         {

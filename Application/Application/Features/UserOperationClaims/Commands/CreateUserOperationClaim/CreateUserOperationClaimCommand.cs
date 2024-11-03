@@ -4,7 +4,6 @@ using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Persistence.Paging;
 using Core.Security.Entities;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
