@@ -1,11 +1,12 @@
 ﻿using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 public class BanCheckBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+    where TRequest : IRequest<TResponse>, ISecuredRequest
 {
     private readonly IBanRepository _banRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
