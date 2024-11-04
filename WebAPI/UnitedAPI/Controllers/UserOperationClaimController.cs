@@ -39,7 +39,7 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteOperationClaim([FromBody] DeleteUserOperationClaimCommand deleteUserOperationClaimCommand)
+        public async Task<IActionResult> DeleteUserOperationClaim([FromBody] DeleteUserOperationClaimCommand deleteUserOperationClaimCommand)
         {
             DeleteUserOperationClaimResponse response = await Mediator.Send(deleteUserOperationClaimCommand);
             return Ok(response);
