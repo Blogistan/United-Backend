@@ -31,7 +31,7 @@ namespace AuthTest.Features.Auth.Bans.Commands.Create
             IMapper mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<MappingProfiles>()));
 
             this.createBanCommand = new CreateBanCommand();
-            this.createBanCommandHandler = new CreateBanCommandHandler(banRepository, mapper, siteUserRepository, refreshTokenRepository);
+            this.createBanCommandHandler = new CreateBanCommandHandler(banRepository, mapper, siteUserRepository);
             this.validationRules = new CreateBanCommandValidator();
         }
         [Fact]
