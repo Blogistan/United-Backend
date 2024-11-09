@@ -2,6 +2,7 @@
 using Application.Features.OperationClaims.Commands.DeleteOperationClaim;
 using Application.Features.OperationClaims.Commands.UpdateOperationClaim;
 using Application.Features.OperationClaims.Queries.GetListOperationClaim;
+using Application.Features.OperationClaims.Queries.GetListOperationClaimDynamic;
 using Core.Application.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +36,12 @@ namespace UnitedAPI.Controllers
         public async Task<IActionResult> DeleteOperationClaim([FromBody] DeleteOperationClaimCommand deleteOperationClaimCommand)
         {
             DeleteOperationClaimResponse response = await Mediator.Send(deleteOperationClaimCommand);
+            return Ok(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetListDynamic([FromBody] GetListOperationClaimDynamicQuery getListOperationClaimDynamicQuery)
+        {
+            GetListOperationClaimDynamicQueryResponse response = await Mediator.Send(getListOperationClaimDynamicQuery);
             return Ok(response);
         }
     }
