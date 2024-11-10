@@ -1,6 +1,6 @@
-﻿using Application.Features.OperationClaims.Queries.GetListOperationClaim;
-using Application.Services.Repositories;
+﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Core.Persistence.Paging;
@@ -9,10 +9,11 @@ using MediatR;
 
 namespace Application.Features.OperationClaims.Queries.GetListOperationClaimDynamic
 {
-    public class GetListOperationClaimDynamicQuery: IRequest<GetListOperationClaimDynamicQueryResponse>
+    public class GetListOperationClaimDynamicQuery: IRequest<GetListOperationClaimDynamicQueryResponse>, ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
         public DynamicQuery DynamicQuery { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin"};
 
         public class GetListOperationClaimDynamicQueryHandler : IRequestHandler<GetListOperationClaimDynamicQuery, GetListOperationClaimDynamicQueryResponse>
         {
