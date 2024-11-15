@@ -30,10 +30,18 @@ namespace Application.Features.UserOperationClaims.Queries.GetListUsesrOperation
 
             public async Task<GetListUserOperationClaimDynamicQueryResponse> Handle(GetListUserOperationClaimDynamicQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<User> paginate = await userRepository.GetListByDynamicAsync(dynamic:request.DynamicQuery,index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: include => include.Include(x => x.UserOperationClaims).ThenInclude(x => x.OperationClaim));
+                IPaginate<User> paginate = await userRepository.GetListByDynamicAsync(dynamic:request.DynamicQuery,index: request.PageRequest.Page, size: request.PageRequest.PageSize,include: include => include.Include(x => x.UserOperationClaims).ThenInclude(x => x.OperationClaim));
+
+
+                foreach (var user in paginate.Items)
+                {
+                    user.UserOperationClaims = user.UserOperationClaims
+                                                   .OrderBy(uoc => uoc.OperationClaim.Id)
+                                                   .ToList();
+                }
+
 
                 var response = mapper.Map<GetListUserOperationClaimDynamicQueryResponse>(paginate);
-
                 return response;
             }
         }
