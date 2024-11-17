@@ -10,7 +10,6 @@ namespace Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand
     public class VerifyEmailAuthenticatorCommand : IRequest<Unit>
     {
         public string ActivationKey { get; set; } = string.Empty;
-        public string[] Roles => Array.Empty<string>();
 
         public class VerifyEmailAuthenticatorCommandHandler : IRequestHandler<VerifyEmailAuthenticatorCommand,Unit>
         {
@@ -35,7 +34,6 @@ namespace Application.Features.Auth.Commands.VerifyEmailAuthenticatorCommand
             private async Task VerifyEmailAuthenticator(EmailAuthenticator emailAuthenticator)
             {
                 emailAuthenticator.IsVerified = true;
-                emailAuthenticator.ActivationKey = null;
                 emailAuthenticator.User.AuthenticatorType = AuthenticatorType.Email;
                 await emailAuthenticatorRepository.UpdateAsync(emailAuthenticator);
             }

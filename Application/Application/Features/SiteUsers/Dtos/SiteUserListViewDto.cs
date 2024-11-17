@@ -1,4 +1,5 @@
 ﻿using Core.Application.Dtos;
+using Core.Security.Enums;
 
 namespace Application.Features.SiteUsers.Dtos
 {
@@ -11,6 +12,7 @@ namespace Application.Features.SiteUsers.Dtos
         public bool IsVerified { get; set; }
         public string Biography { get; set; }
         public string? ProfileImageUrl { get; set; } = string.Empty;
+        public AuthenticatorType AuthenticatorType { get; set; }
 
         public SiteUserListViewDto()
         {
