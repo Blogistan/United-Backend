@@ -1,5 +1,7 @@
 ﻿using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Client;
 using MimeKit;
 using MimeKit.Cryptography;
 using Org.BouncyCastle.Crypto;
@@ -28,7 +30,6 @@ public class MailKitMailService : IMailService
         email.Dispose();
         smtp.Dispose();
     }
-
     public async Task SendEmailAsync(Mail mail)
     {
         if (mail.ToList == null || mail.ToList.Count < 1)
@@ -38,6 +39,16 @@ public class MailKitMailService : IMailService
         smtp.Disconnect(true);
         email.Dispose();
         smtp.Dispose();
+    }
+    private async Task<string> GetAccessTokenAsync()
+    {
+        var app = ConfidentialClientApplicationBuilder.Create(_mailSettings.ClientId)
+            .WithClientSecret(_mailSettings.ClientSecret)
+            .WithAuthority($"https://login.microsoftonline.com/{_mailSettings.TenatId}")
+            .Build();
+
+        var result = await app.AcquireTokenForClient(new[] { "https://outlook.office365.com/.default" }).ExecuteAsync();
+        return result.AccessToken;
     }
 
     private void EmailPrepare(Mail mail, out MimeMessage email, out SmtpClient smtp)
@@ -51,8 +62,6 @@ public class MailKitMailService : IMailService
             email.Bcc.AddRange(mail.BccList);
 
         email.Subject = mail.Subject;
-        if (mail.UnscribeLink != null)
-            email.Headers.Add(field: "List-Unsubscribe", value: $"<{mail.UnscribeLink}>");
         BodyBuilder bodyBuilder = new() { TextBody = mail.TextBody, HtmlBody = mail.HtmlBody };
 
         if (mail.Attachments != null)
@@ -61,25 +70,15 @@ public class MailKitMailService : IMailService
                     bodyBuilder.Attachments.Add(attachment);
 
         email.Body = bodyBuilder.ToMessageBody();
-        email.Prepare(EncodingConstraint.SevenBit);
-
-        if (_mailSettings.DkimPrivateKey != null && _mailSettings.DkimSelector != null && _mailSettings.DomainName != null)
-        {
-            _signer = new DkimSigner(key: ReadPrivateKeyFromPemEncodedString(), _mailSettings.DomainName, _mailSettings.DkimSelector)
-            {
-                HeaderCanonicalizationAlgorithm = DkimCanonicalizationAlgorithm.Simple,
-                BodyCanonicalizationAlgorithm = DkimCanonicalizationAlgorithm.Simple,
-                AgentOrUserIdentifier = $"@{_mailSettings.DomainName}",
-                QueryMethod = "dns/txt"
-            };
-            HeaderId[] headers = new[] { HeaderId.From, HeaderId.Subject, HeaderId.To };
-            _signer.Sign(email, headers);
-        }
 
         smtp = new SmtpClient();
-        smtp.Connect(_mailSettings.Server, _mailSettings.Port);
+        smtp.Connect(_mailSettings.Server, _mailSettings.Port, SecureSocketOptions.StartTls);
+
         if (_mailSettings.AuthenticationRequired)
-            smtp.Authenticate(_mailSettings.UserName, _mailSettings.Password);
+        {
+            var accessToken = GetAccessTokenAsync().Result;
+            smtp.Authenticate(new SaslMechanismOAuth2(_mailSettings.UserName, accessToken));
+        }
     }
 
     private AsymmetricKeyParameter ReadPrivateKeyFromPemEncodedString()

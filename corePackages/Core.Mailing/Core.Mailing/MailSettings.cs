@@ -12,6 +12,9 @@ public class MailSettings
     public string? DkimPrivateKey { get; set; }
     public string? DkimSelector { get; set; }
     public string? DomainName { get; set; }
+    public string ClientId { get; set; }
+    public string ClientSecret { get; set; }
+    public string TenatId { get; set; }
 
     public MailSettings()
     {
