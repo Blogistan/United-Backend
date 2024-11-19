@@ -60,13 +60,12 @@ namespace Application.Features.Auth.Commands.EnableEmailAuthenticator
             {
                 List<MailboxAddress> mailboxAddresses = new List<MailboxAddress>();
                 mailboxAddresses.Add(new MailboxAddress(Encoding.UTF8, $"{siteUser.FirstName} {siteUser.LastName}", siteUser.Email));
-
                 Mail mailData = new()
                 {
                     ToList = mailboxAddresses,
                     Subject = AuthBusinessMessage.VerifyEmail,
-                    TextBody = $"{AuthBusinessMessage.ClickOnBelowLinkToVerifyEmail}\n" +
-                           $"{VerifyToMail}?activationKey={HttpUtility.UrlEncode(activationKey)}"
+                    HtmlBody = mailService.LoadMailTemplate("D:\\Workstation\\mvc\\LastDance\\C\\United\\United-Backend\\corePackages\\Core.Mailing\\Core.Mailing\\MailDesigns\\VerificationMail\\VerifyEmailAuth.html").Replace("https://test", VerifyToMail +
+                    $"?activationKey={HttpUtility.UrlEncode(activationKey)}").Replace("FIRST_NAME",siteUser.FirstName)
                 };
                 await mailService.SendEmailAsync(mailData);
             }
