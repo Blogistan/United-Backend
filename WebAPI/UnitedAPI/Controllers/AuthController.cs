@@ -93,7 +93,7 @@ namespace UnitedAPI.Controllers
         }
 
 
-        [HttpGet("VerifyEmailAuthenticator")]// Verify Email URL api'a yönlendirdiği için GET kullandık. Bir frontend yardımıyla yapılırsa PUT olabilir.
+        [HttpPut("VerifyEmailAuthenticator")]
         public async Task<IActionResult> VerifyEmailAuthenticator([FromQuery] string ActivationKey)
         {
             VerifyEmailAuthenticatorCommand command = new()
