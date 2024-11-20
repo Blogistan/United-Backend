@@ -47,8 +47,7 @@ namespace Application.Features.Auth.Commands.Register
                 byte[] hash, salt;
                 HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password, out hash, out salt);
 
-                SiteUser siteUser = mapper.Map<SiteUser>(request.UserForRegisterDto);
-
+                SiteUser siteUser = mapper.Map<SiteUser>(request.UserForRegisterDto);               
                 siteUser.User.PasswordHash = hash;
                 siteUser.User.PasswordSalt = salt;
                 siteUser.User.IsActive = true;
