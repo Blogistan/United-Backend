@@ -15,6 +15,7 @@ namespace Application.Features.Auth.Profiles
             CreateMap<User, UserForRegisterDto>().ReverseMap();
             CreateMap<SiteUser, UserForRegisterDto>().ForMember(opt => opt.FirstName, src => src.MapFrom(x => x.User.FirstName))
                 .ForMember(opt => opt.LastName, src => src.MapFrom(x => x.User.LastName))
+                .ForMember(opt=>opt.Email,src=>src.MapFrom(x=>x.User.Email))
                 .ReverseMap();
 
             CreateMap<AccessToken, AccessTokenDto>().ReverseMap();
