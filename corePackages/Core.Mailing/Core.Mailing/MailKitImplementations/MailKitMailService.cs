@@ -24,32 +24,35 @@ public class MailKitMailService : IMailService
     {
         if (mail.ToList == null || mail.ToList.Count < 1)
             return;
-        EmailPrepare(mail, email: out MimeMessage email, smtp: out SmtpClient smtp);
+
+        EmailPrepare(mail, out MimeMessage email, out SmtpClient smtp);
         smtp.Send(email);
         smtp.Disconnect(true);
         email.Dispose();
         smtp.Dispose();
     }
+
     public async Task SendEmailAsync(Mail mail)
     {
         if (mail.ToList == null || mail.ToList.Count < 1)
             return;
-        EmailPrepare(mail, email: out MimeMessage email, smtp: out SmtpClient smtp);
+
+        EmailPrepare(mail, out MimeMessage email, out SmtpClient smtp);
         await smtp.SendAsync(email);
         smtp.Disconnect(true);
         email.Dispose();
         smtp.Dispose();
     }
-    private async Task<string> GetAccessTokenAsync()
-    {
-        var app = ConfidentialClientApplicationBuilder.Create(_mailSettings.ClientId)
-            .WithClientSecret(_mailSettings.ClientSecret)
-            .WithAuthority($"https://login.microsoftonline.com/{_mailSettings.TenatId}")
-            .Build();
+    //private async Task<string> GetAccessTokenAsync()
+    //{
+    //    var app = ConfidentialClientApplicationBuilder.Create(_mailSettings.ClientId)
+    //        .WithClientSecret(_mailSettings.ClientSecret)
+    //        .WithAuthority($"https://login.microsoftonline.com/{_mailSettings.TenatId}")
+    //        .Build();
 
-        var result = await app.AcquireTokenForClient(new[] { "https://outlook.office365.com/.default" }).ExecuteAsync();
-        return result.AccessToken;
-    }
+    //    var result = await app.AcquireTokenForClient(new[] { "https://outlook.office365.com/.default" }).ExecuteAsync();
+    //    return result.AccessToken;
+    //}
 
     private void EmailPrepare(Mail mail, out MimeMessage email, out SmtpClient smtp)
     {
@@ -65,20 +68,15 @@ public class MailKitMailService : IMailService
         BodyBuilder bodyBuilder = new() { TextBody = mail.TextBody, HtmlBody = mail.HtmlBody };
 
         if (mail.Attachments != null)
-            foreach (MimeEntity? attachment in mail.Attachments)
+            foreach (var attachment in mail.Attachments)
                 if (attachment != null)
                     bodyBuilder.Attachments.Add(attachment);
 
         email.Body = bodyBuilder.ToMessageBody();
 
         smtp = new SmtpClient();
-        smtp.Connect(_mailSettings.Server, _mailSettings.Port, SecureSocketOptions.StartTls);
-
-        if (_mailSettings.AuthenticationRequired)
-        {
-            var accessToken = GetAccessTokenAsync().Result;
-            smtp.Authenticate(new SaslMechanismOAuth2(_mailSettings.UserName, accessToken));
-        }
+        smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+        smtp.Authenticate(_mailSettings.SenderEmail, _mailSettings.AppPassword);  // Uygulama şifresi ile giriş
     }
 
     private AsymmetricKeyParameter ReadPrivateKeyFromPemEncodedString()
