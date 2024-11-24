@@ -16,6 +16,7 @@ using Application.Services.Auth;
 using Core.Application.Dtos;
 using Infrastructure.Dtos.Facebook;
 using Infrastructure.Dtos.Twitter;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using UnitedAPI.ValueObjects;
@@ -94,14 +95,10 @@ namespace UnitedAPI.Controllers
 
 
         [HttpPut("VerifyEmailAuthenticator")]
-        public async Task<IActionResult> VerifyEmailAuthenticator([FromQuery] string ActivationKey)
+        public async Task<IActionResult> VerifyEmailAuthenticator([FromBody] VerifyEmailAuthenticatorCommand command)
         {
-            VerifyEmailAuthenticatorCommand command = new()
-            {
-                ActivationKey = ActivationKey
-            };
-            await Mediator.Send(command);
-            return Ok("Verification success");
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
         [HttpPost("EnableOtpAuthenticator")]
         public async Task<IActionResult> EnableOtpAuthenticator()
