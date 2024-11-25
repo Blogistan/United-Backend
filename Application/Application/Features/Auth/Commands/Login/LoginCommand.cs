@@ -59,6 +59,7 @@ namespace Application.Features.Auth.Commands.Login
                     }
                     {
                         await authService.VerifyAuthenticatorCode(siteUser, request.UserForLoginDto.AuthenticatorCode);
+                        
                     }
                 }
 
@@ -69,7 +70,7 @@ namespace Application.Features.Auth.Commands.Login
                 RefreshToken refreshToken = authService.CreateRefreshToken(siteUser, request.IpAddress);
 
                 await authService.AddRefreshToken(refreshToken);
-
+                loginResponse.RequiredAuthenticatorType = siteUser.AuthenticatorType;
                 loginResponse.RefreshToken = refreshToken;
                 loginResponse.AccessToken = accessToken;
                 return loginResponse;

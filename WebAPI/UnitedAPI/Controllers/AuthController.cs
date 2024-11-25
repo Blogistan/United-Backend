@@ -43,7 +43,7 @@ namespace UnitedAPI.Controllers
                 UserForLoginDto = userForLoginDto,
                 IpAddress = GetIpAddress()
             });
-            if (loginResponse is not null) SetRefreshTokenToCookie(loginResponse.RefreshToken);
+            if (loginResponse.RefreshToken is not null) SetRefreshTokenToCookie(loginResponse.RefreshToken);
             return Ok(loginResponse.ToHttpResponse());
         }
         [HttpPost("Register")]
