@@ -161,7 +161,7 @@ namespace Application.Services.Auth
             {
                 ToList = mailboxAddresses,
                 Subject = AuthBusinessMessage.AuthenticatorCodeSubject,
-                TextBody = AuthBusinessMessage.AuthenticatorCodeTextBody(authCode)
+                HtmlBody = mailService.LoadMailTemplate("D:\\Workstation\\mvc\\LastDance\\C\\United\\United-Backend\\corePackages\\Core.Mailing\\Core.Mailing\\MailDesigns\\OtpCodeVerification\\OtpVerificationCode.html").Replace("OTP_CODE", authCode)
             };
 
             await mailService.SendEmailAsync(mail);
