@@ -1,5 +1,6 @@
 ﻿using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand;
+using Application.Features.Auth.Commands.ExternalLoginUrl.Github;
 using Application.Features.Auth.Commands.FacebookSignIn;
 using Application.Features.Auth.Commands.ForgetPassword;
 using Application.Features.Auth.Commands.GithubSignIn;
@@ -195,6 +196,12 @@ namespace UnitedAPI.Controllers
 
             LoginResponse loginResponse = await Mediator.Send(new GithubSignInCommand { Token = result, IpAddress = GetIpAddress() });
             return Ok(loginResponse);
+        }
+        [HttpGet("GetGithubSignUrl")]
+        public async Task<IActionResult> GetGithubSignUrl()
+        {
+            GetGithubLoginLinkCommandResponse response = await Mediator.Send(new GetGithubLoginLinkCommand());
+            return Ok(response);
         }
     }
 }
