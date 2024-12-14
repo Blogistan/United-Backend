@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Commands.Login;
+﻿using Application.Features.Auth.Commands.ExternalLoginUrl.Github;
+using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Constants;
 using Application.Features.Auth.Rules;
 using Application.Services.Repositories;
@@ -336,6 +337,15 @@ namespace Application.Services.Auth
             }
             return userInfoResponse;
 
+        }
+        public async Task<GetGithubLoginUrl> GetGithubLoginLink()
+        {
+            string client_id = configuration["Authentication:Github:client_id"];
+            string callbackUri = configuration["frontEndGithubCallbackUri"];
+
+            string loginUri = $"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={callbackUri}&scope =user:email&state=UZUMYMW";
+
+            return new GetGithubLoginUrl { Url = loginUri };
         }
         public async Task<TwitterLoginLinkResponse> GetTwitterLoginUrl()
         {
