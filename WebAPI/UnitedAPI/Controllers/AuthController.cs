@@ -1,6 +1,7 @@
 ﻿using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand;
 using Application.Features.Auth.Commands.ExternalLoginUrl.Github;
+using Application.Features.Auth.Commands.ExternalLoginUrl.Twitter;
 using Application.Features.Auth.Commands.FacebookSignIn;
 using Application.Features.Auth.Commands.ForgetPassword;
 using Application.Features.Auth.Commands.GithubSignIn;
@@ -187,7 +188,8 @@ namespace UnitedAPI.Controllers
         [HttpGet("GetTwitterLoginLink")]
         public async Task<IActionResult> GetTwitterLoginLink()
         {
-            return Ok(await authService.GetTwitterLoginUrl());
+            GetTwitterLoginLinkCommandResponse response = await Mediator.Send(new GetTwitterLoginLinkCommand());
+            return Ok(response);
         }
         [HttpPost("GithubSignIn")]
         public async Task<IActionResult> GithubSignIn([FromBody] GithubSignInCommandRequest githubSignInCommandRequest)
