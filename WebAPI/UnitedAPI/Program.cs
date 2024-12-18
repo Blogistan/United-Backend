@@ -1,4 +1,4 @@
-﻿using Application;
+using Application;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Security;
 using Core.Security.Encryption;
@@ -12,6 +12,8 @@ using Newtonsoft.Json;
 using Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
 // Add services to the container.
@@ -160,6 +162,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.Map("/", () => { }).RequireRateLimiting("...");
 

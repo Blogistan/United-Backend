@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\Application\Application\Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\..\Persistance\Persistance\Persistance.csproj" />
+    <ProjectReference Include="..\..\United-Backed.ServiceDefaults\United-Backed.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>
