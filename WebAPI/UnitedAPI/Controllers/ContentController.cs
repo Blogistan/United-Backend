@@ -2,6 +2,7 @@
 using Application.Features.Contents.Commands.DeleteContent;
 using Application.Features.Contents.Commands.UpdateContent;
 using Application.Features.Contents.Queries.GetListContent;
+using Application.Features.Contents.Queries.GetListContentDynamic;
 using Core.Application.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,5 +37,12 @@ namespace UnitedAPI.Controllers
             GetListContentQueryResponse response = await Mediator.Send(getListContentQuery);
             return Ok(response);
         }
+        [HttpPost]
+        public async Task<IActionResult> GetListDynamic([FromBody] GetListContentDynamicQuery getListContentDynamicQuery)
+        {
+            GetListContentDynamicQueryResponse response = await Mediator.Send(getListContentDynamicQuery);
+            return Ok(response);
+        }
+
     }
 }
