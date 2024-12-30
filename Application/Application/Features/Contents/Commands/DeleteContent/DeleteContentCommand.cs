@@ -25,7 +25,7 @@ namespace Application.Features.Contents.Commands.DeleteContent
             {
                 var content = await contentBusinessRules.ContentCheckById(request.Id);
 
-                Content deletedContent = await contentRepository.DeleteAsync(content);
+                Content deletedContent = await contentRepository.DeleteAsync(content,true);
 
                 return new DeleteContentCommandResponse
                 {

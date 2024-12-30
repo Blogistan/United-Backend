@@ -8,9 +8,7 @@ namespace Application.Features.Contents.Commands.CreateContent
     public class CreateContentCommand : IRequest<CreateContentCommandResponse>, ISecuredRequest
     {
         public string Title { get; set; }
-
         public string? ContentImageUrl { get; set; }
-
         public string ContentPragraph { get; set; }
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
 
