@@ -24,7 +24,7 @@ public class RabbitMQLogger : LoggerServiceBase
                 Username = rabbitMQConfiguration.Username,
                 Password = rabbitMQConfiguration.Password,
                 ExchangeType = rabbitMQConfiguration.ExchangeType,
-                RouteKey = rabbitMQConfiguration.RouteKey
+                RoutingKey = rabbitMQConfiguration.RouteKey,
             };
         rabbitMQConfiguration.Hostnames.ForEach(config.Hostnames.Add);
 
@@ -32,7 +32,14 @@ public class RabbitMQLogger : LoggerServiceBase
             .RabbitMQ(
                 (clientConfiguration, sinkConfiguration) =>
                 {
-                    clientConfiguration.From(config);
+                    clientConfiguration.Port = config.Port;
+                    clientConfiguration.DeliveryMode = config.DeliveryMode;
+                    clientConfiguration.Exchange = config.Exchange;
+                    clientConfiguration.Username = config.Username;
+                    clientConfiguration.Password = config.Password;
+                    clientConfiguration.ExchangeType = config.ExchangeType;
+                    clientConfiguration.RoutingKey = config.RoutingKey;
+                    config.Hostnames.ToList().ForEach(clientConfiguration.Hostnames.Add);
                     sinkConfiguration.TextFormatter = new JsonFormatter();
                 }
             )
