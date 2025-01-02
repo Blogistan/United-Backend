@@ -17,19 +17,19 @@ namespace UnitedAPI.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> CreateComment([FromBody] CreateCommentCommand createCommentCommand)
+        public async Task<IActionResult> Create([FromBody] CreateCommentCommand createCommentCommand)
         {
             CreateCommentCommandResponse response = await Mediator.Send(createCommentCommand);
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentCommand updateCommentCommand)
+        public async Task<IActionResult> Update([FromBody] UpdateCommentCommand updateCommentCommand)
         {
             UpdateCommentResponse response = await Mediator.Send(updateCommentCommand);
             return Ok(response);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteComment([FromBody] DeleteCommentCommand deleteCommentCommand)
+        public async Task<IActionResult> Delete([FromBody] DeleteCommentCommand deleteCommentCommand)
         {
             DeleteCommentCommandResponse response = await Mediator.Send(deleteCommentCommand);
             return Ok(response);

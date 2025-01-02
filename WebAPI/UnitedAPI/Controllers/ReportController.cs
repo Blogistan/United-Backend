@@ -15,34 +15,34 @@ namespace UnitedAPI.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> GetListReport([FromQuery] PageRequest pageRequest)
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
             GetListReportQuery getListReportQuery = new() { PageRequest = pageRequest };
             GetListReportQueryResponse response = await Mediator.Send(getListReportQuery);
             return Ok(response);
         }
         [HttpPost]
-        public async Task<IActionResult> GetListDynamicReport([FromBody] GetListReportDynamicQuery getListReportDynamicQuery)
+        public async Task<IActionResult> GetListDynamic([FromBody] GetListReportDynamicQuery getListReportDynamicQuery)
         {
             GetListReportDynamicQueryResponse response = await Mediator.Send(getListReportDynamicQuery);
             return Ok(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateReport([FromBody] CreateReportCommand createReportCommand)
+        public async Task<IActionResult> Create([FromBody] CreateReportCommand createReportCommand)
         {
             createReportCommand.CreateUser = GetUserIdFromToken();
             CreateReportCommandResponse response = await Mediator.Send(createReportCommand);
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateReport([FromBody] UpdateReportCommand updateReportCommand)
+        public async Task<IActionResult> Update([FromBody] UpdateReportCommand updateReportCommand)
         {
             UpdateReportCommandResponse response = await Mediator.Send(updateReportCommand);
             return Ok(response);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteReport([FromBody] DeleteReportCommand deleteReportCommand)
+        public async Task<IActionResult> Delete([FromBody] DeleteReportCommand deleteReportCommand)
         {
             DeleteReportCommandResponse response = await Mediator.Send(deleteReportCommand);
             return Ok(response);

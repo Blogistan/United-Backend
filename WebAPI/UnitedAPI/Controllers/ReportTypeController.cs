@@ -13,26 +13,26 @@ namespace UnitedAPI.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> GetListReportType([FromQuery] PageRequest pageRequest)
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
             GetListReportTypeQuery getListReportTypeQuery = new() { PageRequest = pageRequest };
             GetListReportTypeQueryResponse response = await Mediator.Send(getListReportTypeQuery);
             return Ok(response);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateReportType([FromBody] CreateReportTypeCommand createReportTypeCommand)
+        public async Task<IActionResult> Create([FromBody] CreateReportTypeCommand createReportTypeCommand)
         {
             CreateReportTypeCommandResponse response = await Mediator.Send(createReportTypeCommand);
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateReportType([FromBody] UpdateReportTypeCommand updateReportTypeCommand)
+        public async Task<IActionResult> Update([FromBody] UpdateReportTypeCommand updateReportTypeCommand)
         {
             UpdateReportTypeCommandResponse response = await Mediator.Send(updateReportTypeCommand);
             return Ok(response);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteReportType([FromBody] DeleteReportTypeCommand deleteReportTypeCommand)
+        public async Task<IActionResult> Delete([FromBody] DeleteReportTypeCommand deleteReportTypeCommand)
         {
             DeleteReportTypeCommandResponse response = await Mediator.Send(deleteReportTypeCommand);
             return Ok(response);

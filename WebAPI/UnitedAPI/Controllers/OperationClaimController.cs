@@ -21,13 +21,13 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<IActionResult> AddOperationClaim([FromBody] CreateOperationClaimCommand createOperationClaimCommand)
+        public async Task<IActionResult> Create([FromBody] CreateOperationClaimCommand createOperationClaimCommand)
         {
             CreateOperationClaimResponse response = await Mediator.Send(createOperationClaimCommand);
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateOperationClaim([FromBody] UpdateOperationClaimCommand updateOperationClaimCommand)
+        public async Task<IActionResult> Create([FromBody] UpdateOperationClaimCommand updateOperationClaimCommand)
         {
             UpdateOperationClaimCommandResponse response = await Mediator.Send(updateOperationClaimCommand);
             return Ok(response);

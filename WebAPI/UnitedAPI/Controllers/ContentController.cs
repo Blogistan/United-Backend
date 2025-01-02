@@ -13,7 +13,7 @@ namespace UnitedAPI.Controllers
     public class ContentController:BaseController
     {
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody]CreateContentCommand createContentCommand)
+        public async Task<IActionResult> Create([FromBody]CreateContentCommand createContentCommand)
         {
             CreateContentCommandResponse response = await Mediator.Send(createContentCommand);
             return Ok(response);

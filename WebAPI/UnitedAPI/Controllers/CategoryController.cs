@@ -19,13 +19,13 @@ namespace UnitedAPI.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CreateCategoryCommand createCategoryCommand)
+        public async Task<IActionResult> Create([FromBody] CreateCategoryCommand createCategoryCommand)
         {
             CreateCategoryResponse response = await Mediator.Send(createCategoryCommand);
             return Ok(response);
         }
         [HttpPost]
-        public async Task<IActionResult> AddRange([FromBody] CreateRangeCategoryCommand createRangeCategoryCommand)
+        public async Task<IActionResult> CreateRange([FromBody] CreateRangeCategoryCommand createRangeCategoryCommand)
         {
             CreateRangeCategoryResponse response = await Mediator.Send(createRangeCategoryCommand);
             return Ok(response);

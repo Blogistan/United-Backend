@@ -29,7 +29,7 @@ namespace UnitedAPI.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CreateBlogCommand createBlogCommand)
+        public async Task<IActionResult> Create([FromBody] CreateBlogCommand createBlogCommand)
         {
             CreateBlogCommandResponse response = await Mediator.Send(createBlogCommand);
 

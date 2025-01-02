@@ -10,13 +10,13 @@ namespace UnitedAPI.Controllers
     public class BookmarkController : BaseController
     {
         [HttpPost]
-        public async Task<IActionResult> AddToBookmarks([FromBody] AddToBookmarksQuery addToBookmarksQuery)
+        public async Task<IActionResult> Create([FromBody] AddToBookmarksQuery addToBookmarksQuery)
         {
             var result = await Mediator.Send(addToBookmarksQuery);
             return Ok(result);
         }
         [HttpPost]
-        public async Task<IActionResult> RemoveFromBookmarks([FromBody] RemoveFromBookmarkQuery removeFromBookmarkQuery)
+        public async Task<IActionResult> Delete([FromBody] RemoveFromBookmarkQuery removeFromBookmarkQuery)
         {
             var result = await Mediator.Send(removeFromBookmarkQuery);
             return Ok(result);

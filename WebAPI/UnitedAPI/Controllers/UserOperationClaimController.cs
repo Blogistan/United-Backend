@@ -4,7 +4,6 @@ using Application.Features.UserOperationClaims.Commands.UpdateUserOperationClaim
 using Application.Features.UserOperationClaims.Queries.GetListUsersOperationClaims;
 using Application.Features.UserOperationClaims.Queries.GetListUsesrOperationClaimDynamic;
 using Core.Application.Requests;
-using Core.Persistence.Dynamic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace UnitedAPI.Controllers
@@ -27,19 +26,19 @@ namespace UnitedAPI.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<IActionResult> AddUserOperationClaim([FromBody] CreateUserOperationClaimCommand createUserOperationClaimCommand)
+        public async Task<IActionResult> Add([FromBody] CreateUserOperationClaimCommand createUserOperationClaimCommand)
         {
             CreateUserOperationClaimCommandResponse response = await Mediator.Send(createUserOperationClaimCommand);
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateUserOperationClaim([FromBody] UpdateUserOperationClaimCommand updateUserOperationClaimCommand)
+        public async Task<IActionResult> Update([FromBody] UpdateUserOperationClaimCommand updateUserOperationClaimCommand)
         {
             UpdateUserOperationClaimCommandResponse response = await Mediator.Send(updateUserOperationClaimCommand);
             return Ok(response);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteUserOperationClaim([FromBody] DeleteUserOperationClaimCommand deleteUserOperationClaimCommand)
+        public async Task<IActionResult> Delete([FromBody] DeleteUserOperationClaimCommand deleteUserOperationClaimCommand)
         {
             DeleteUserOperationClaimResponse response = await Mediator.Send(deleteUserOperationClaimCommand);
             return Ok(response);
