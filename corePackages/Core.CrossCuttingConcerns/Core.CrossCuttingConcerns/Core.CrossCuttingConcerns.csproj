@@ -17,7 +17,7 @@
     <PackageReference Include="Serilog.Sinks.MongoDB" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="8.1.0" />
     <PackageReference Include="Serilog.Sinks.PostgreSQL" Version="2.3.0" />
-    <PackageReference Include="Serilog.Sinks.RabbitMQ" Version="7.0.3" />
+    <PackageReference Include="Serilog.Sinks.RabbitMQ" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
