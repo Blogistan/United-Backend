@@ -40,7 +40,7 @@ namespace Application.Features.Comments.Queries.DecreaseDislikeOfCommentQuery
                     GuestName = commentWithUser.GuestName!,
                     Likes = commentWithUser.Likes,
                     CommentId = commentWithUser.CommentId,
-                    UserName = commentWithUser.SiteUser.User != null ? $"{commentWithUser.SiteUser.User!.FirstName} {commentWithUser.SiteUser.User!.LastName}" : null,
+                    UserName = commentWithUser.SiteUser != null ? $"{commentWithUser.SiteUser.User!.FirstName} {commentWithUser.SiteUser.User!.LastName}" : null,
                     CreateDate = commentWithUser.CreatedDate,
                     CommentResponses = new List<Dtos.CommentViewDto>()
                 };
