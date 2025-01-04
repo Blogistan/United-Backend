@@ -1,6 +1,7 @@
 ﻿using Application.Features.Contents.Commands.CreateContent;
 using Application.Features.Contents.Commands.DeleteContent;
 using Application.Features.Contents.Commands.UpdateContent;
+using Application.Features.Contents.Queries.GetById;
 using Application.Features.Contents.Queries.GetListContent;
 using Application.Features.Contents.Queries.GetListContentDynamic;
 using Core.Application.Requests;
@@ -28,6 +29,12 @@ namespace UnitedAPI.Controllers
         public async Task<IActionResult> Delete([FromBody] DeleteContentCommand deleteContentCommand)
         {
             DeleteContentCommandResponse response = await Mediator.Send(deleteContentCommand);
+            return Ok(response);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetById([FromQuery] GetContentByIdQuery getContentById)
+        {
+            GetContentByIdQueryResponse response = await Mediator.Send(getContentById);
             return Ok(response);
         }
         [HttpGet]
