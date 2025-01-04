@@ -11,7 +11,7 @@ namespace Application.Features.Contents.Queries.GetListContent
     public class GetListContentQuery : IRequest<GetListContentQueryResponse>,ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
-        public string[] Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "Blogger", "User" };
 
         public class GetListContentQueryHandler : IRequestHandler<GetListContentQuery, GetListContentQueryResponse>
         {
