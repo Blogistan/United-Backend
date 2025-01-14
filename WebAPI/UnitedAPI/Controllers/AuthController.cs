@@ -18,7 +18,6 @@ using Application.Services.Auth;
 using Core.Application.Dtos;
 using Infrastructure.Dtos.Facebook;
 using Infrastructure.Dtos.Twitter;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using UnitedAPI.ValueObjects;

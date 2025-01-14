@@ -66,14 +66,9 @@ namespace UnitedAPI.Controllers
 
             return Ok(categoryListDto);
         }
-        [HttpGet]
-        public async Task<IActionResult> GetListByDynamic([FromQuery] PageRequest pageRequest,[FromQuery] DynamicQuery dynamicQuery)
+        [HttpPost]
+        public async Task<IActionResult> GetListByDynamic([FromBody] GetListCategoryQueryByDynamicQuery getListCategoryQueryByDynamicQuery)
         {
-            GetListCategoryQueryByDynamicQuery getListCategoryQueryByDynamicQuery = new()
-            {
-                PageRequest = pageRequest,
-                Dynamic=dynamicQuery
-            };
 
             CategoryListDto categoryListDto = await Mediator.Send(getListCategoryQueryByDynamicQuery);
 
