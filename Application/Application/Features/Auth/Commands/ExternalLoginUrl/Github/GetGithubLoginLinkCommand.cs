@@ -1,5 +1,4 @@
 ﻿using Application.Services.Auth;
-using Core.Application.Pipelines.Authorization;
 using MediatR;
 
 namespace Application.Features.Auth.Commands.ExternalLoginUrl.Github
