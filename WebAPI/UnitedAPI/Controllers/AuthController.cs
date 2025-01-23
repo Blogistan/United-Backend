@@ -1,6 +1,7 @@
 ﻿using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticatorCommand;
 using Application.Features.Auth.Commands.ExternalLoginUrl.Github;
+using Application.Features.Auth.Commands.ExternalLoginUrl.Google;
 using Application.Features.Auth.Commands.ExternalLoginUrl.Twitter;
 using Application.Features.Auth.Commands.FacebookSignIn;
 using Application.Features.Auth.Commands.ForgetPassword;
@@ -203,6 +204,12 @@ namespace UnitedAPI.Controllers
         {
             GetGithubLoginLinkCommandResponse response = await Mediator.Send(new GetGithubLoginLinkCommand());
             return Ok(response);
+        }
+        [HttpGet("GetGoogleClient")]
+        public async Task<IActionResult> GetGoogleClient()
+        {
+            GetGoogleClientCommandResponse getGoogleClientCommandResponse = await Mediator.Send(new GetGoogleClientCommand());
+            return Ok(getGoogleClientCommandResponse);
         }
     }
 }
