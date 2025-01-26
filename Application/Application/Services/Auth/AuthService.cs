@@ -261,13 +261,13 @@ namespace Application.Services.Auth
                 switch (loginProviderType)
                 {
                     case LoginProviderType.Google:
-                        await userLoginRepository.AddAsync(new UserLogin("GOOGLE", providerKey, "GOOGLE", createdUser.Id)); break;
+                        await userLoginRepository.AddAsync(new UserLogin("GOOGLE", providerKey, "GOOGLE", createdUser.UserId)); break;
                     case LoginProviderType.Facebook:
-                        await userLoginRepository.AddAsync(new UserLogin("FACEBOOK", providerKey, "FACEBOOK", createdUser.Id)); break;
+                        await userLoginRepository.AddAsync(new UserLogin("FACEBOOK", providerKey, "FACEBOOK", createdUser.UserId)); break;
                     case LoginProviderType.Twitter:
-                        await userLoginRepository.AddAsync(new UserLogin("TWITTER", providerKey, "TWITTER", createdUser.Id)); break;
+                        await userLoginRepository.AddAsync(new UserLogin("TWITTER", providerKey, "TWITTER", createdUser.UserId)); break;
                     case LoginProviderType.Github:
-                        await userLoginRepository.AddAsync(new UserLogin("GITHUB", providerKey, "GITHUB", createdUser.Id)); break;
+                        await userLoginRepository.AddAsync(new UserLogin("GITHUB", providerKey, "GITHUB", createdUser.UserId)); break;
 
                 }
             }
