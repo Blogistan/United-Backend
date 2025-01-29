@@ -2,8 +2,7 @@
 using Application.Features.Bans.Queries.GetListBans;
 using Application.Services.Repositories;
 using AuthTest.Mocks.FakeDatas;
-using AuthTest.Mocks.Repositories;
-using AutoMapper;
+using AuthTest.Mocks.Repositories;using AutoMapper;
 using FluentValidation.TestHelper;
 using static Application.Features.Bans.Queries.GetListBans.GetListBansQuery;
 
