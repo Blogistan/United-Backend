@@ -1,6 +1,7 @@
 ﻿using Core.Security.Entities;
 using Core.Security.JWT;
 using Infrastructure;
+using Infrastructure.Dtos.Google;
 
 namespace Application.Services.Auth
 {
@@ -25,5 +26,6 @@ namespace Application.Services.Auth
 
         Task SendAuthenticatorCode(User user);
         Task VerifyAuthenticatorCode(User user, string code);
+        Task<GoogleTokenResponse> GetGoogleToken(string code);
     }
 }

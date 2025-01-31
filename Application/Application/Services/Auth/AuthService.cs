@@ -17,6 +17,7 @@ using Infrastructure.Constants;
 using Infrastructure.Dtos;
 using Infrastructure.Dtos.Facebook;
 using Infrastructure.Dtos.Github;
+using Infrastructure.Dtos.Google;
 using Infrastructure.Dtos.Twitter;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -592,6 +593,26 @@ namespace Application.Services.Auth
 
             return userInfo;
         }
+
+        public async Task<GoogleTokenResponse> GetGoogleToken(string code)
+        {
+            var client = new HttpClient();
+            var values = new Dictionary<string, string>
+            {
+                { "client_id", configuration["Authentication:Google:client_id"] },
+                { "client_secret", configuration["Authentication:Google:client_secret"] },
+                { "code", code },
+                { "grant_type", "authorization_code" },
+                { "redirect_uri", "http://localhost:4200/auth/google/callback" }
+            };
+            var content = new FormUrlEncodedContent(values);
+            var response = await client.PostAsync("https://oauth2.googleapis.com/token", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<GoogleTokenResponse>(responseString);
+        }
+
+         
     }
 
 }
