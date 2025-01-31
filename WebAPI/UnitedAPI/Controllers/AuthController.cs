@@ -155,7 +155,7 @@ namespace UnitedAPI.Controllers
         {
             GoogleSignInCommand googleSignInCommand = new GoogleSignInCommand()
             {
-                IdToken = googleSignInCommandRequest.IdToken,
+                Code = googleSignInCommandRequest.Code,
                 IpAdress = GetIpAddress()
             };
             LoginResponse response = await Mediator.Send(googleSignInCommand);
