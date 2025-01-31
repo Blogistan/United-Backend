@@ -7,7 +7,7 @@ namespace Application.Features.Auth.Commands.GoogleSignIn
         public GoogleSignInCommandValidator()
         {
 
-            RuleFor(x=>x.IdToken).NotEmpty();
+            RuleFor(x=>x.Code).NotEmpty();
             RuleFor(x=>x.IpAdress).NotEmpty();
         }
     }

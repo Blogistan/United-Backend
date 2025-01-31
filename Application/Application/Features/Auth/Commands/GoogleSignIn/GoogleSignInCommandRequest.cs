@@ -2,6 +2,6 @@
 {
     public class GoogleSignInCommandRequest
     {
-        public string IdToken { get; set; }
+        public string Code { get; set; }
     }
 }
