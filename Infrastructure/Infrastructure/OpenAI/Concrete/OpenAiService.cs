@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using Infrastructure.OpenAI.Abstract;
+﻿using Infrastructure.OpenAI.Abstract;
 using Microsoft.Extensions.Configuration;
 using OpenAI.Chat;
 using System.ClientModel;
