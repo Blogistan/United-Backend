@@ -1,5 +1,7 @@
 ﻿using Infrastructure.IpStack.Abstract;
 using Infrastructure.IpStack.Concrete;
+using Infrastructure.OpenAI.Abstract;
+using Infrastructure.OpenAI.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +13,7 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IIpStackService, IpStackService>();
+            services.AddScoped<IOpenAiService, OpenAiService>();
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = configuration.GetValue<string>("Authentication:Google:client_id");
