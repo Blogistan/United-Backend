@@ -19,7 +19,7 @@ namespace Infrastructure.OpenAI.Concrete
         {
             string jsonPayload = $$"""
         {
-   "model": "gpt-4o",
+   "model": "text-davinci-002",
    "messages": [
        {
            "role": "system",

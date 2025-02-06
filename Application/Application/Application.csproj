@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Ai\Commands\" />
+    <Folder Include="Features\Ai\Constants\" />
+    <Folder Include="Features\Ai\Dtos\" />
+    <Folder Include="Features\Ai\Models\" />
+    <Folder Include="Features\Ai\Rules\" />
+    <Folder Include="Features\Ai\Profiles\" />
     <Folder Include="Features\Auth\Models\" />
     <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Bans\Constants\" />
