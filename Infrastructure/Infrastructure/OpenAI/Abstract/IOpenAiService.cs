@@ -1,7 +1,7 @@
 ﻿namespace Infrastructure.OpenAI.Abstract
 {
-    public interface IOpenAiService
+    public interface IOpenAiService : IAiService
     {
-        Task<string> GenerateResponse(string prompt);
+
     }
 }

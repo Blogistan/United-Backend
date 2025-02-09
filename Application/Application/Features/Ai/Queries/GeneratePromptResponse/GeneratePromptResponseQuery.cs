@@ -9,14 +9,14 @@ namespace Application.Features.Ai.Queries.GeneratePromptResponse
 
         public class GeneratePromptResponseQueryHandler : IRequestHandler<GeneratePromptResponseQuery, GeneratePromptResponseQueryResponse>
         {
-            private readonly IOpenAiService openAiService;
-            public GeneratePromptResponseQueryHandler(IOpenAiService openAiService)
+            private readonly IAiService aiService;
+            public GeneratePromptResponseQueryHandler(IAiService aiService)
             {
-                this.openAiService = openAiService;
+                this.aiService = aiService;
             }
             public async Task<GeneratePromptResponseQueryResponse> Handle(GeneratePromptResponseQuery request, CancellationToken cancellationToken)
             {
-                var message = await openAiService.GenerateResponse(request.Prompt);
+                var message = await aiService.GenerateResponse(request.Prompt);
 
                 return new GeneratePromptResponseQueryResponse { Message = message };
             }
