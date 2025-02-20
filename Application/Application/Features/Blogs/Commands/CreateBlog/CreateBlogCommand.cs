@@ -24,35 +24,38 @@ namespace Application.Features.Blogs.Commands.CreateBlog
         public int ShareCount => 0;
         public int ReadCount => 0;
 
-         string[] ISecuredRequest.Roles => new string[] {"Admin","Moderator","User"};
+        string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "User" };
 
 
 
         public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, CreateBlogCommandResponse>
-    {
-        private readonly IBlogRepository blogRepository;
-        private readonly IMapper mapper;
-        private readonly BlogBusinessRules blogBusinessRules;
-        public CreateBlogCommandHandler(IBlogRepository blogRepository, IMapper mapper, BlogBusinessRules blogBusinessRules)
         {
-            this.blogRepository = blogRepository;
-            this.mapper = mapper;
-            this.blogBusinessRules = blogBusinessRules;
-        }
+            private readonly IBlogRepository blogRepository;
+            private readonly IMapper mapper;
+            private readonly BlogBusinessRules blogBusinessRules;
+            private readonly ISiteUserRepository siteUserRepository;
+            public CreateBlogCommandHandler(IBlogRepository blogRepository, IMapper mapper, BlogBusinessRules blogBusinessRules, ISiteUserRepository siteUserRepository)
+            {
+                this.blogRepository = blogRepository;
+                this.mapper = mapper;
+                this.blogBusinessRules = blogBusinessRules;
+                this.siteUserRepository = siteUserRepository;
+            }
 
-        public async Task<CreateBlogCommandResponse> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
-        {
-            await blogBusinessRules.BlogCannotBeDuplicatedWhenInserted(request.Title);
+            public async Task<CreateBlogCommandResponse> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
+            {
+                await blogBusinessRules.BlogCannotBeDuplicatedWhenInserted(request.Title);
 
-            Blog blog = mapper.Map<Blog>(request);
+                Blog blog = mapper.Map<Blog>(request);
+                var siteUser = await siteUserRepository.GetAsync(x => x.UserId == request.WriterId);
+                blog.WriterId = siteUser!.Id;
+                Blog createdBlog = await blogRepository.AddAsync(blog);
 
-            Blog createdBlog = await blogRepository.AddAsync(blog);
+                Blog blogReturn = await blogRepository.GetAsync(x => x.Id == createdBlog.Id, include: inc => inc.Include(x => x.Writer).Include(x => x.Category));
 
-            Blog blogReturn = await blogRepository.GetAsync(x => x.Id == createdBlog.Id, include: inc => inc.Include(x => x.Writer).Include(x => x.Category));
-
-            CreateBlogCommandResponse response = mapper.Map<CreateBlogCommandResponse>(blogReturn);
-            return response;
+                CreateBlogCommandResponse response = mapper.Map<CreateBlogCommandResponse>(blogReturn);
+                return response;
+            }
         }
     }
-}
 }
