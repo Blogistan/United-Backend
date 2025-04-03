@@ -3,6 +3,7 @@ using Application.Features.Blogs.Commands.DeleteBlog;
 using Application.Features.Blogs.Commands.UpdateBlog;
 using Application.Features.Blogs.Dtos;
 using Application.Features.Blogs.Queries.BlogDetailById;
+using Application.Features.Blogs.Queries.BlogExtendedList;
 using Application.Features.Blogs.Queries.DecreaseKEKWBlog;
 using Application.Features.Blogs.Queries.DecreaseLovelyBlog;
 using Application.Features.Blogs.Queries.DecreaseSadBlog;
@@ -145,6 +146,12 @@ namespace UnitedAPI.Controllers
         public async Task<IActionResult> UnBlogKekw([FromBody] DecreaseKEKWBlogQuery kEKWBlogQuery)
         {
             BlogListViewDto response = await Mediator.Send(kEKWBlogQuery);
+            return Ok(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetListBlogExtended([FromBody] BlogExtendedListQuery blogExtendedListQuery)
+        {
+            BlogExtendedListQueryResponse response = await Mediator.Send(blogExtendedListQuery);
             return Ok(response);
         }
     }
