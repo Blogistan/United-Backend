@@ -2,6 +2,7 @@
 using Application.Features.Blogs.Commands.DeleteBlog;
 using Application.Features.Blogs.Commands.UpdateBlog;
 using Application.Features.Blogs.Dtos;
+using Application.Features.Blogs.Queries.BlogExtendedList;
 using Application.Features.Blogs.Queries.GetListBlog;
 using Application.Features.Blogs.Queries.GetListBlogDynamic;
 using Application.Features.Blogs.Queries.Reports.MostReaded;
@@ -42,11 +43,16 @@ namespace Application.Features.Blogs.Profiles
                 .ForMember(opt => opt.WriterName, src => src.MapFrom(x => x.Writer.User.FirstName + ' ' + x.Writer.User.LastName))
                 .ReverseMap();
 
+            CreateMap<Blog, BlogExtendedViewDto>().ForMember(opt=>opt.Category,src=>src.MapFrom(x=>x.Category))
+                .ForMember(opt=>opt.Content,src=>src.MapFrom(x=>x.Content))
+                .ForMember(opt=>opt.WriterName,src=>src.MapFrom(x=>x.Writer.User.FirstName+' '+ x.Writer.User.LastName));
+                
+
             CreateMap<IPaginate<Blog>, GetListBlogQueryResponse>().ReverseMap();
             CreateMap<IPaginate<Blog>, MostReadedBlogQueryResponse>().ReverseMap();
             CreateMap<IPaginate<Blog>, MostReadedBlogQueryResponse>().ReverseMap();
             CreateMap<IPaginate<Blog>, GetListBlogDynamicQueryResponse>().ReverseMap();
-
+            CreateMap<IPaginate<Blog>, BlogExtendedListQueryResponse>().ReverseMap();
 
             
 
