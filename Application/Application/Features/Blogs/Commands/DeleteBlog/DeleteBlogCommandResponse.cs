@@ -2,7 +2,7 @@
 
 namespace Application.Features.Blogs.Commands.DeleteBlog
 {
-    public record DeleteBlogCommandResponse :IResponse
+    public record DeleteBlogCommandResponse : IResponse
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
@@ -17,6 +17,12 @@ namespace Application.Features.Blogs.Commands.DeleteBlog
         public int ReactionTriggeredCount { get; set; }
         public int ShareCount { get; set; }
         public int ReadCount { get; set; }
+
+
+        public DeleteBlogCommandResponse()
+        {
+
+        }
 
         public DeleteBlogCommandResponse(int ıd, string title, string categoryName, string bannerImageUrl, string writerName, DateTime createdDate, int reactionSuprisedCount, int reactionLovelyCount, int reactionSadCount, int reactionKEKWCount, int reactionTriggeredCount, int shareCount, int readCount)
         {
