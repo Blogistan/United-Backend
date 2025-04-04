@@ -28,7 +28,7 @@ namespace Application.Features.Blogs.Queries.BlogExtendedList
 
             public async Task<BlogExtendedListQueryResponse> Handle(BlogExtendedListQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<Blog> paginate = await blogRepository.GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize, include: x => x.Include(x => x.Category).Include(x => x.Content).Include(x => x.Writer).ThenInclude(x=>x.User));
+                IPaginate<Blog> paginate = await blogRepository.GetListByDynamicAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize,dynamic:request.DynamicQuery, include: x => x.Include(x => x.Category).Include(x => x.Content).Include(x => x.Writer).ThenInclude(x=>x.User));
 
                 BlogExtendedListQueryResponse response = mapper.Map<BlogExtendedListQueryResponse>(paginate);
 
