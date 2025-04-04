@@ -1,6 +1,6 @@
-﻿using Application.Features.Blogs.Queries.GetListBlog;
-using Application.Services.Repositories;
+﻿using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Dynamic;
 using Core.Persistence.Paging;
@@ -10,10 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Blogs.Queries.BlogExtendedList
 {
-    public class BlogExtendedListQuery: IRequest<BlogExtendedListQueryResponse>
+    public class BlogExtendedListQuery: IRequest<BlogExtendedListQueryResponse>,ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
         public DynamicQuery DynamicQuery { get; set; }
+        string[] ISecuredRequest.Roles => new string[] { "Admin","Moderator", "Blogger", "User" };
 
         public class BlogExtendedListQueryHandler:IRequestHandler<BlogExtendedListQuery, BlogExtendedListQueryResponse>
         {
