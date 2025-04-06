@@ -12,6 +12,7 @@ namespace Application.Features.Blogs.Commands.UpdateBlog
         public int Id { get; set; }
         public string Title { get; set; }
         public int CategoryId { get; set; }
+        public string ContentId { get; set; }
         public string BannerImageUrl { get; set; }
         public int WriterId { get; set; }
         public int ReactionSuprisedCount { get; set; }
@@ -19,9 +20,11 @@ namespace Application.Features.Blogs.Commands.UpdateBlog
         public int ReactionSadCount { get; set; }
         public int ReactionKEKWCount { get; set; }
         public int ReactionTriggeredCount { get; set; }
-
         public int ShareCount { get; set; }
         public int ReadCount { get; set; }
+        public int CreateUser { get; set; }
+        public int DeleteUser { get; set; }
+        public int UpdateUser { get; set; }
 
         string[] ISecuredRequest.Roles => new string[] { "Admin", "Moderator", "User" };
 
