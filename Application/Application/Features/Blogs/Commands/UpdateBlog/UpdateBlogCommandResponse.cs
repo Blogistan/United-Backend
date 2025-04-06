@@ -18,6 +18,11 @@ namespace Application.Features.Blogs.Commands.UpdateBlog
         public int ShareCount { get; set; }
         public int ReadCount { get; set; }
 
+
+        public UpdateBlogCommandResponse()
+        {
+            
+        }
         public UpdateBlogCommandResponse(int ıd, string title, int categoryId, string bannerImageUrl, int writerId, DateTime createdDate, int reactionSuprisedCount, int reactionLovelyCount, int reactionSadCount, int reactionKEKWCount, int reactionTriggeredCount, int shareCount, int readCount)
         {
             Id = ıd;
