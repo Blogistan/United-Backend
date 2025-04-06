@@ -20,5 +20,8 @@ namespace Application.Features.Blogs.Dtos
         public int ReactionTriggeredCount { get; set; }
         public int ShareCount { get; set; }
         public int ReadCount { get; set; }
+        public int CreateUser { get; set; }
+        public int Updateuser { get; set; }
+        public int DeleteUser { get; set; }
     }
 }
