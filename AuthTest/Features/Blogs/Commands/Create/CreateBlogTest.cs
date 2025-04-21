@@ -1,4 +1,5 @@
 ﻿using Application.Features.Blogs.Commands.CreateBlog;
+using Application.Services.Repositories;
 using AuthTest.Mocks.FakeDatas;
 using AuthTest.Mocks.Repositories;
 using Core.CrossCuttingConcerns.Exceptions.Types;
@@ -12,11 +13,12 @@ namespace AuthTest.Features.Blogs.Commands.Create
         private readonly CreateBlogCommand _command;
         private readonly CreateBlogCommandValidator _validator;
         private readonly CreateBlogCommandHandler _handler;
+        private readonly ISiteUserRepository siteUserRepository;
         public CreateBlogTest(BlogFakeData fakeData) : base(fakeData)
         {
             this._command = new CreateBlogCommand();
             this._validator = new CreateBlogCommandValidator();
-            this._handler = new CreateBlogCommandHandler(MockRepository.Object, Mapper, BusinessRules);
+            this._handler = new CreateBlogCommandHandler(MockRepository.Object, Mapper, BusinessRules,siteUserRepository);
         }
         [Fact]
         public async Task ThrowExceptionIfTitleIsEmpty()
