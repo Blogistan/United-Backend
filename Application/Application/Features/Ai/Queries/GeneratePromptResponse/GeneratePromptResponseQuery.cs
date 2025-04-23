@@ -1,24 +1,24 @@
-﻿using Infrastructure.OpenAI.Abstract;
+﻿using Application.Services.Assistant.Services;
 using MediatR;
 
 namespace Application.Features.Ai.Queries.GeneratePromptResponse
 {
-    public class GeneratePromptResponseQuery : IRequest<GeneratePromptResponseQueryResponse>
+    public class GeneratePromptResponseQuery : IRequest<Unit>
     {
         public string Prompt { get; set; }
+        public string ConnectionId { get; set; }
 
-        public class GeneratePromptResponseQueryHandler : IRequestHandler<GeneratePromptResponseQuery, GeneratePromptResponseQueryResponse>
+        public class GeneratePromptResponseQueryHandler: IRequestHandler<GeneratePromptResponseQuery, Unit>
         {
-            private readonly IAiService aiService;
-            public GeneratePromptResponseQueryHandler(IAiService aiService)
+            private readonly AiService aiService;
+            public GeneratePromptResponseQueryHandler(AiService aiService)
             {
-                this.aiService = aiService;
+                this.aiService = aiService;;
             }
-            public async Task<GeneratePromptResponseQueryResponse> Handle(GeneratePromptResponseQuery request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(GeneratePromptResponseQuery request, CancellationToken cancellationToken)
             {
-                var message = await aiService.GenerateResponse(request.Prompt);
-
-                return new GeneratePromptResponseQueryResponse { Message = message };
+                await aiService.GetMessageStreamAsync(request.Prompt, request.ConnectionId,cancellationToken);
+                return Unit.Value;
             }
         }
     }
