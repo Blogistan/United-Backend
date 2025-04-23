@@ -10,8 +10,8 @@ namespace UnitedAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> GeneratePrompt([FromBody] GeneratePromptResponseQuery generatePromptResponseQuery)
         {
-            GeneratePromptResponseQueryResponse response = await Mediator.Send(generatePromptResponseQuery);
-            return Ok(response);
+            await Mediator.Send(generatePromptResponseQuery);
+            return Ok(new { Message = "Prompt received." });
         }
     }
 }
