@@ -9,7 +9,10 @@ using Application.Features.ReportTypes.Rules;
 using Application.Features.SiteUsers.Rules;
 using Application.Features.UserOperationClaims.Rules;
 using Application.Features.Videos.Rules;
+using Application.Services.Assistant.Plugins;
+using Application.Services.Assistant.Services;
 using Application.Services.Auth;
+using Codeblaze.SemanticKernel.Connectors.Ollama;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
@@ -23,6 +26,7 @@ using Core.Mailing.MailKitImplementations;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.SemanticKernel;
 using System.Configuration;
 using System.Reflection;
 
@@ -64,6 +68,10 @@ namespace Application
             services.AddSingleton<LoggerServiceBase, MongoDbLogger>();
 
             services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
+
+            services.AddKernel().AddOllamaChatCompletion("gemma:7b", "http://localhost:11434").Plugins.AddFromType<BlogAssistantPlugin>();
+            services.AddSignalR();
+            services.AddSingleton<AiService>();
 
             return services;
         }
