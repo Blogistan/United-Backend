@@ -1,4 +1,4 @@
-using Application;
+﻿using Application;
 using Application.Services.Assistant.Hubs;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Security;
@@ -28,6 +28,13 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddCors(c =>
 {
     c.AddPolicy("AllowAnyOrigin", options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+    c.AddPolicy("AllowLocalAngularClient", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // spesifik origin
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // SignalR için lazım
+    });
 
 });
 
@@ -156,8 +163,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = tokenOptions.Issuer,
             ValidAudience = tokenOptions.Audience,
             //LifetimeValidator=(notbefore,expires,securityToken,validationParameter)=> expires!=null?expires>DateTime.Now:false
-            
-            
+
+
         };
     });
 
@@ -174,7 +181,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.MapHub<AiHub>("ai-hub");
+app.MapHub<AiHub>("ai-hub").RequireCors("AllowLocalAngularClient");
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseRateLimiter();

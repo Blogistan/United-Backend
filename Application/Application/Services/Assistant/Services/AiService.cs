@@ -22,7 +22,7 @@ namespace Application.Services.Assistant.Services
             await foreach (var response in chatCompletionService.GetStreamingChatMessageContentsAsync(history, promptExecutionSettings, kernel))
             {
                 cancellationToken?.ThrowIfCancellationRequested();
-                await hubContext.Clients.Client(connectionId).SendAsync(response.ToString());
+                await hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", response.ToString());
                 responseContent += response.ToString();
             }
             history.AddAssistantMessage(responseContent);
