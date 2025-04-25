@@ -1,4 +1,5 @@
 using Application;
+using Application.Services.Assistant.Hubs;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Security;
 using Core.Security.Encryption;
@@ -173,7 +174,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.MapHub<AiHub>("ai-hub");
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseRateLimiter();
