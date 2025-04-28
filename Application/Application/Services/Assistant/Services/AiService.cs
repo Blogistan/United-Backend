@@ -26,6 +26,7 @@ namespace Application.Services.Assistant.Services
                 responseContent += response.ToString();
             }
             history.AddAssistantMessage(responseContent);
+            history.AddAssistantMessage("[END]");
 
         }
     }
