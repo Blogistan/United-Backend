@@ -7,6 +7,7 @@ In this project , You can do blogs side operations like create blogs, report use
 # Requirements
 - [.NET CORE SDK 8.8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - [Sql Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) or [PostgreSql](https://www.postgresql.org/download/)
+- [Ollama](https://ollama.com)
 
 #  Setup
 
