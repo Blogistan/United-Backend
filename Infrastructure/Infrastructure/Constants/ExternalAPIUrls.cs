@@ -8,5 +8,7 @@
 
         public const string GithubAccessToken = "https://github.com/login/oauth/access_token";
         public const string GithubUserInfo = "https://api.github.com/user";
+
+        public const string HuggingFaceApiInterface = "https://api-inference.huggingface.co";
     }
 }
