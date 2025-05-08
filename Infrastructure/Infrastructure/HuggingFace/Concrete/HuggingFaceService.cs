@@ -12,6 +12,7 @@ namespace Infrastructure.HuggingFace.Concrete
     {
         private readonly HttpClient httpClient;
         private readonly string apiKey;
+        private readonly IConfiguration configuration;
 
         public HuggingFaceService(IConfiguration configuration, HttpClient httpClient)
         {
@@ -24,12 +25,15 @@ namespace Infrastructure.HuggingFace.Concrete
             this.httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
         }
 
-        public async Task<string> SpeechToTextAsync(byte[] audioBytes, string model)
+        public async Task<string> SpeechToTextAsync(byte[] audioBytes)
         {
+            var huggingFaceConfig = configuration.GetSection("HuggingFaceConfig");
+            var sttModel = huggingFaceConfig.GetValue<string>("STTModel") ?? throw new NullReferenceException("STT Model config not found.");
+
             using var byteContent = new ByteArrayContent(audioBytes);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("audio/wav");
 
-            var response = await httpClient.PostAsync($"/models/{model}", byteContent);
+            var response = await httpClient.PostAsync($"/models/{sttModel}", byteContent);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -39,17 +43,19 @@ namespace Infrastructure.HuggingFace.Concrete
 
             var responseContent = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent);
-            return result != null && result.TryGetValue("text", out var text)
-                ? text
-                : throw new ApplicationException("Text conversion failed.");
+
+            if (result == null || !result.TryGetValue("text", out var text))
+                throw new ApplicationException("Text conversion failed.");
+
+            return text;
         }
 
-        public async Task<byte[]> TextToSpeechAsync(string text, string model)
+        public async Task<byte[]> TextToSpeechAsync(string text)
         {
             var requestData = new { inputs = text };
             var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, MediaTypeNames.Application.Json);
-
-            var response = await httpClient.PostAsync($"/models/{model}", content);
+            var ttsModel = configuration.GetValue<string>("TTSModel") ?? throw new NullReferenceException("TTS Model config not found.");
+            var response = await httpClient.PostAsync($"/models/{ttsModel}", content);
 
             if (!response.IsSuccessStatusCode)
             {

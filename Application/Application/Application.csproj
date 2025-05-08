@@ -11,6 +11,7 @@
     <Folder Include="Features\Ai\Constants\" />
     <Folder Include="Features\Ai\Dtos\" />
     <Folder Include="Features\Ai\Models\" />
+    <Folder Include="Features\Ai\Queries\STT\" />
     <Folder Include="Features\Ai\Rules\" />
     <Folder Include="Features\Ai\Profiles\" />
     <Folder Include="Features\Auth\Models\" />

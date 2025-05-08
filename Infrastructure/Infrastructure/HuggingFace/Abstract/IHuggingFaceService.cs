@@ -2,7 +2,7 @@
 {
     public interface IHuggingFaceService
     {
-        Task<byte[]> TextToSpeechAsync(string text, string model);
-        Task<string> SpeechToTextAsync(byte[] audioBytes, string model);
+        Task<byte[]> TextToSpeechAsync(string text);
+        Task<string> SpeechToTextAsync(byte[] audioBytes);
     }
 }
