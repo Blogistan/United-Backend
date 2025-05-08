@@ -1,4 +1,6 @@
-﻿using Infrastructure.IpStack.Abstract;
+﻿using Infrastructure.HuggingFace.Abstract;
+using Infrastructure.HuggingFace.Concrete;
+using Infrastructure.IpStack.Abstract;
 using Infrastructure.IpStack.Concrete;
 using Infrastructure.OpenAI.Abstract;
 using Infrastructure.OpenAI.Concrete;
@@ -14,6 +16,7 @@ namespace Infrastructure
         {
             services.AddScoped<IIpStackService, IpStackService>();
             services.AddScoped<IAiService, OpenAiService>();
+            services.AddScoped<IHuggingFaceService, HuggingFaceService>();
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = configuration.GetValue<string>("Authentication:Google:client_id");
