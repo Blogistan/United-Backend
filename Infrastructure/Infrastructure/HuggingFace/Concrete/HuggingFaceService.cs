@@ -11,15 +11,19 @@ namespace Infrastructure.HuggingFace.Concrete
     public class HuggingFaceService : IHuggingFaceService
     {
         private readonly HttpClient httpClient;
-        private readonly string apiKey;
-        private readonly IConfiguration configuration;
+        private readonly string sttModel;
+        private readonly string ttsModel;
 
         public HuggingFaceService(IConfiguration configuration, HttpClient httpClient)
         {
             this.httpClient = httpClient;
 
             var baseUrl = ExternalAPIUrls.HuggingFaceApiInterface ?? throw new NullReferenceException("BaseUrl not found.");
-            apiKey = configuration.GetValue<string>("HuggingFace:ApiKey") ?? throw new NullReferenceException("ApiKey not found.");
+            var apiKey = configuration.GetValue<string>("HuggingFace:ApiKey") ?? throw new NullReferenceException("ApiKey not found.");
+            var huggingFaceConfig = configuration.GetSection("HuggingFaceConfig");
+
+            sttModel = huggingFaceConfig.GetValue<string>("STTModel") ?? throw new NullReferenceException("STT Model config not found.");
+            ttsModel = huggingFaceConfig.GetValue<string>("TTSModel") ?? throw new NullReferenceException("TTS Model config not found.");
 
             this.httpClient.BaseAddress = new Uri(baseUrl);
             this.httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
@@ -27,9 +31,6 @@ namespace Infrastructure.HuggingFace.Concrete
 
         public async Task<string> SpeechToTextAsync(byte[] audioBytes)
         {
-            var huggingFaceConfig = configuration.GetSection("HuggingFaceConfig");
-            var sttModel = huggingFaceConfig.GetValue<string>("STTModel") ?? throw new NullReferenceException("STT Model config not found.");
-
             using var byteContent = new ByteArrayContent(audioBytes);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("audio/wav");
 
@@ -54,7 +55,7 @@ namespace Infrastructure.HuggingFace.Concrete
         {
             var requestData = new { inputs = text };
             var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, MediaTypeNames.Application.Json);
-            var ttsModel = configuration.GetValue<string>("TTSModel") ?? throw new NullReferenceException("TTS Model config not found.");
+
             var response = await httpClient.PostAsync($"/models/{ttsModel}", content);
 
             if (!response.IsSuccessStatusCode)

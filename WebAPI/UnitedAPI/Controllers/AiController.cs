@@ -15,8 +15,8 @@ namespace UnitedAPI.Controllers
             await Mediator.Send(generatePromptResponseQuery);
             return Ok(new { Message = "Prompt received." });
         }
-        [HttpPost("speech-to-text")]
-        public async Task<IActionResult> SpeechToText([FromBody] IFormFile file)
+        [HttpPost]
+        public async Task<IActionResult> SpeechToText(IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("Didn't send sound file.");
