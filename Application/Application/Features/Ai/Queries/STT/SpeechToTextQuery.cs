@@ -1,11 +1,13 @@
-﻿using Infrastructure.HuggingFace.Abstract;
+﻿using Core.Application.Pipelines.Authorization;
+using Infrastructure.HuggingFace.Abstract;
 using MediatR;
 
 namespace Application.Features.Ai.Queries.STT
 {
-    public class SpeechToTextQuery : IRequest<SpeechToTextResponse>
+    public class SpeechToTextQuery : IRequest<SpeechToTextResponse>,ISecuredRequest
     {
         public byte[] AudioBytes { get; set; }
+        string[] ISecuredRequest.Roles => new string[] {"Admin","Moderator","User"}; 
 
         public class SpeechToTextQueryHandler: IRequestHandler<SpeechToTextQuery, SpeechToTextResponse>
         {
