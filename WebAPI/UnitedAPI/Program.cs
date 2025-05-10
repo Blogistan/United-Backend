@@ -172,7 +172,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
-
 app.Map("/", () => { }).RequireRateLimiting("...");
 
 // Configure the HTTP request pipeline.
