@@ -20,10 +20,9 @@ namespace Infrastructure.HuggingFace.Concrete
 
             var baseUrl = ExternalAPIUrls.HuggingFaceApiInterface ?? throw new NullReferenceException("BaseUrl not found.");
             var apiKey = configuration.GetValue<string>("HuggingFace:ApiKey") ?? throw new NullReferenceException("ApiKey not found.");
-            var huggingFaceConfig = configuration.GetSection("HuggingFaceConfig");
 
-            sttModel = huggingFaceConfig.GetValue<string>("STTModel") ?? throw new NullReferenceException("STT Model config not found.");
-            ttsModel = huggingFaceConfig.GetValue<string>("TTSModel") ?? throw new NullReferenceException("TTS Model config not found.");
+            sttModel = configuration.GetValue<string>("HuggingFace:STTModel") ?? throw new NullReferenceException("STT Model config not found.");
+            ttsModel = configuration.GetValue<string>("HuggingFace:TTSModel") ?? throw new NullReferenceException("TTS Model config not found.");
 
             this.httpClient.BaseAddress = new Uri(baseUrl);
             this.httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
