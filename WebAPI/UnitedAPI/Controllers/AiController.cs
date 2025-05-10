@@ -1,6 +1,5 @@
 ﻿using Application.Features.Ai.Queries.GeneratePromptResponse;
 using Application.Features.Ai.Queries.STT;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace UnitedAPI.Controllers
