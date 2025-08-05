@@ -32,4 +32,3 @@ In this project , You can do blogs side operations like create blogs, report use
 - ## Run Project
   `dotnet run`
 
-### API endpoint will be added.
